@@ -838,6 +838,71 @@
   </div>
 
   <!-- =========================================================================
+       MODAL: LUNATIC TURN TIME LIMIT SELECT (#modal-lunatic-time)
+       ========================================================================= -->
+  <div id="modal-lunatic-time" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+    <div class="max-w-lg w-full bg-slate-900 border-2 border-rose-500 rounded-3xl p-5 sm:p-6 shadow-2xl">
+      <div class="text-center mb-4">
+        <div class="inline-block bg-rose-500/20 border border-rose-400/70 text-rose-300 text-[11px] font-black px-3 py-0.5 rounded-full mb-1">
+          🌙 LUNATIC TIME LIMIT SELECT
+        </div>
+        <h3 class="text-xl sm:text-2xl font-black text-white">1人あたりの制限時間を選択</h3>
+        <p class="text-xs sm:text-sm text-slate-300 mt-1">
+          挑戦者：<span id="lunatic-time-player-name" class="font-black text-amber-300 underline">名無しの会計士</span> さん<br>
+          <span class="text-[11px] text-rose-200/90">※ルナティックのランキングは「10秒制限」「15秒制限」の2部門に分かれます（お釣り表示設定は統合）</span>
+        </p>
+      </div>
+
+      <div class="space-y-3 mb-5">
+        <!-- 10 Seconds Limit -->
+        <button id="btn-lunatic-time-10" class="btn-3d w-full text-left bg-gradient-to-r from-rose-950 via-red-950/90 to-slate-900 hover:from-rose-900 border-2 border-rose-400 rounded-2xl p-4 shadow-lg flex items-center justify-between gap-3 group">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-rose-500/25 border border-rose-400 flex items-center justify-center text-2xl shrink-0">
+              ⚡
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-base sm:text-lg font-black text-rose-300">⏱️ 10秒制限部門</span>
+                <span class="text-[10px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-full">超高速・極限</span>
+              </div>
+              <p class="text-xs text-slate-300 mt-0.5">
+                1人あたり<strong class="text-white">10秒超過で即強制終了</strong>！瞬時に消費税8%を暗算するスピード極限部門！
+              </p>
+            </div>
+          </div>
+          <span class="text-rose-400 font-black text-xl group-hover:translate-x-1 transition-transform shrink-0">🚀</span>
+        </button>
+
+        <!-- 15 Seconds Limit -->
+        <button id="btn-lunatic-time-15" class="btn-3d w-full text-left bg-gradient-to-r from-amber-950/95 via-slate-800/95 to-slate-800/95 hover:from-amber-900 border-2 border-amber-400 rounded-2xl p-4 shadow-lg flex items-center justify-between gap-3 group">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-2xl shrink-0">
+              🌙
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-base sm:text-lg font-black text-amber-300">⏱️ 15秒制限部門</span>
+                <span class="text-[10px] font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full">標準ルナティック</span>
+              </div>
+              <p class="text-xs text-slate-300 mt-0.5">
+                1人あたり<strong class="text-white">15秒超過で強制終了</strong>！落ち着いて税込金額と端数を計算できる標準部門！
+              </p>
+            </div>
+          </div>
+          <span class="text-amber-400 font-black text-xl group-hover:translate-x-1 transition-transform shrink-0">🚀</span>
+        </button>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <button id="btn-lunatic-time-back" class="btn-3d bg-slate-700 hover:bg-slate-600 text-slate-200 font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl border-b-4 border-slate-900">
+          ◀ 難易度選択に戻る
+        </button>
+        <span class="text-[11px] text-rose-300/90 font-bold">選択すると3カウント後に始まります！</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
        MODAL: STANDALONE RANKING LEADERBOARD (#modal-ranking)
        ========================================================================= -->
   <div id="modal-ranking" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-md">
@@ -852,7 +917,7 @@
                 💾 ローカル保存モード
               </span>
             </div>
-            <span class="text-[11px] text-slate-400">全6部門別（🌙ルナティック別枠含む）みんなと共有 TOP 10（自己ベスト）</span>
+            <span class="text-[11px] text-slate-400">全6部門別（通常4部門＋🌙ルナティック10秒/15秒）共有 TOP 10</span>
           </div>
         </div>
         <button id="btn-close-ranking-modal" class="btn-3d bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-extrabold px-3 py-1.5 rounded-xl">
@@ -1347,8 +1412,8 @@
     const RANKING_KEY_NO_CHANGE              = 'pittariman_ranking_no_change';
     const RANKING_KEY_CHANGE_MIN_WITH_CHANGE = 'pittariman_ranking_change_min_with_change';
     const RANKING_KEY_CHANGE_MIN_NO_CHANGE   = 'pittariman_ranking_change_min_no_change';
-    const RANKING_KEY_LUNATIC_WITH_CHANGE    = 'pittariman_ranking_lunatic_with_change';
-    const RANKING_KEY_LUNATIC_NO_CHANGE      = 'pittariman_ranking_lunatic_no_change';
+    const RANKING_KEY_LUNATIC_10S            = 'pittariman_ranking_lunatic_10s';
+    const RANKING_KEY_LUNATIC_15S            = 'pittariman_ranking_lunatic_15s';
     const PLAYER_NAME_STORAGE_KEY            = 'pittariman_player_name_v3';
     const PLAYER_HIGH_SCORES_KEY             = 'pittariman_player_highscores_v1';
     const PLAYER_LUNATIC_HIGH_SCORES_KEY     = 'pittariman_player_lunatic_highscores_v1';
@@ -1366,12 +1431,12 @@
       { id: 'cm_nc3', name: '小銭ゼロ見習い', score: 12500, perfectRate: 68, customers: 7, mode: 'NORMAL', date: '2026/11' }
     ];
 
-    const DEFAULT_RANKINGS_LUNATIC_WITH_CHANGE = [
-      { id: 'lun_wc1', name: '消費税計算マスター', score: 685000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
+    const DEFAULT_RANKINGS_LUNATIC_10S = [
+      { id: 'lun_10s_1', name: '超神速消費税マスター', score: 720000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
     ];
 
-    const DEFAULT_RANKINGS_LUNATIC_NO_CHANGE = [
-      { id: 'lun_nc1', name: '暗算消費税マスター', score: 720000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
+    const DEFAULT_RANKINGS_LUNATIC_15S = [
+      { id: 'lun_15s_1', name: '消費税計算マスター', score: 685000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
     ];
 
     const DEFAULT_RANKINGS_WITH_CHANGE = [
@@ -1402,6 +1467,7 @@
       'modal-ranking-change',
       'modal-rule-select',
       'modal-ranking-difficulty',
+      'modal-lunatic-time',
       'modal-ranking',
       'modal-tutorial-clear',
       'screen-game',
@@ -1617,7 +1683,7 @@
       static getKey(showChange, ruleType = 'wallet') {
         const r = RankingManager.normalizeRuleType(ruleType);
         if (r === 'lunatic') {
-          return showChange ? RANKING_KEY_LUNATIC_WITH_CHANGE : RANKING_KEY_LUNATIC_NO_CHANGE;
+          return showChange ? RANKING_KEY_LUNATIC_10S : RANKING_KEY_LUNATIC_15S;
         }
         if (r === 'change') {
           return showChange ? RANKING_KEY_CHANGE_MIN_WITH_CHANGE : RANKING_KEY_CHANGE_MIN_NO_CHANGE;
@@ -1628,7 +1694,7 @@
       static getDbPath(showChange, ruleType = 'wallet') {
         const r = RankingManager.normalizeRuleType(ruleType);
         if (r === 'lunatic') {
-          return showChange ? 'rankings/lunatic_with_change' : 'rankings/lunatic_no_change';
+          return showChange ? 'rankings/lunatic_10s' : 'rankings/lunatic_15s';
         }
         if (r === 'change') {
           return showChange ? 'rankings/change_min_with_change' : 'rankings/change_min_no_change';
@@ -1639,7 +1705,7 @@
       static getDefaultList(showChange, ruleType = 'wallet') {
         const r = RankingManager.normalizeRuleType(ruleType);
         if (r === 'lunatic') {
-          return showChange ? DEFAULT_RANKINGS_LUNATIC_WITH_CHANGE : DEFAULT_RANKINGS_LUNATIC_NO_CHANGE;
+          return showChange ? DEFAULT_RANKINGS_LUNATIC_10S : DEFAULT_RANKINGS_LUNATIC_15S;
         }
         if (r === 'change') {
           return showChange ? DEFAULT_RANKINGS_CHANGE_MIN_WITH_CHANGE : DEFAULT_RANKINGS_CHANGE_MIN_NO_CHANGE;
@@ -3821,6 +3887,7 @@
         this.isRankingRun = false;
         this.isTutorial = false;
         this.difficulty = 'NORMAL';
+        this.lunaticTurnLimit = 15;
         this.exSuddenDeathFailed = false;
 
         this.freePlayShowChange = true;
@@ -4065,7 +4132,26 @@
           sound.init();
           sound.startBGM();
           sound.playClick();
-          this.startRankingPlay('LUNATIC', this.playerName, this.rankingShowChange);
+          this.openLunaticTimeModal();
+        });
+
+        document.getElementById('btn-lunatic-time-10').addEventListener('click', () => {
+          sound.init();
+          sound.startBGM();
+          sound.playClick();
+          this.startRankingPlay('LUNATIC', this.playerName, this.rankingShowChange, 10);
+        });
+
+        document.getElementById('btn-lunatic-time-15').addEventListener('click', () => {
+          sound.init();
+          sound.startBGM();
+          sound.playClick();
+          this.startRankingPlay('LUNATIC', this.playerName, this.rankingShowChange, 15);
+        });
+
+        document.getElementById('btn-lunatic-time-back').addEventListener('click', () => {
+          sound.playClick();
+          switchScreen('modal-ranking-difficulty');
         });
 
         document.getElementById('tab-modal-rule-wallet').addEventListener('click', () => {
@@ -4211,7 +4297,7 @@
           sound.init();
           sound.playClick();
           if (this.isRankingRun) {
-            this.startRankingPlay(this.difficulty, this.playerName, this.rankingShowChange);
+            this.startRankingPlay(this.difficulty, this.playerName, this.rankingShowChange, this.lunaticTurnLimit);
           } else {
             this.startFreePlay(this.difficulty);
           }
@@ -4559,12 +4645,26 @@
 
         const tabOn = document.getElementById('tab-modal-rank-on');
         const tabOff = document.getElementById('tab-modal-rank-off');
-        if (showChange) {
-          tabOn.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-emerald-500 text-slate-950 shadow';
-          tabOff.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+        if (activeRule === 'lunatic') {
+          tabOn.textContent = '⏱️ 10秒制限';
+          tabOff.textContent = '⏱️ 15秒制限';
+          if (showChange) {
+            tabOn.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-rose-500 text-white shadow';
+            tabOff.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+          } else {
+            tabOn.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+            tabOff.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-amber-400 text-slate-950 shadow';
+          }
         } else {
-          tabOn.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
-          tabOff.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-purple-500 text-white shadow';
+          tabOn.textContent = '👁️ お釣り表示【あり】';
+          tabOff.textContent = '🙈 お釣り表示【なし】';
+          if (showChange) {
+            tabOn.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-emerald-500 text-slate-950 shadow';
+            tabOff.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+          } else {
+            tabOn.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+            tabOff.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-purple-500 text-white shadow';
+          }
         }
         RankingManager.renderListToContainer('standalone-ranking-list', showChange, null, activeRule);
       }
@@ -4593,15 +4693,30 @@
 
         const tabOn = document.getElementById('tab-res-rank-on');
         const tabOff = document.getElementById('tab-res-rank-off');
-        if (showChange) {
-          tabOn.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-emerald-500 text-slate-950';
-          tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+        if (activeRule === 'lunatic') {
+          tabOn.textContent = '⏱️ 10秒制限';
+          tabOff.textContent = '⏱️ 15秒制限';
+          if (showChange) {
+            tabOn.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-rose-500 text-white';
+            tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+          } else {
+            tabOn.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+            tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-amber-400 text-slate-950';
+          }
         } else {
-          tabOn.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
-          tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-purple-500 text-white';
+          tabOn.textContent = '👁️ お釣り表示【あり】';
+          tabOff.textContent = '🙈 お釣り表示【なし】';
+          if (showChange) {
+            tabOn.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-emerald-500 text-slate-950';
+            tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+          } else {
+            tabOn.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+            tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-purple-500 text-white';
+          }
         }
         const savedCategoryRule = this.difficulty === 'LUNATIC' ? 'lunatic' : this.ruleType;
-        const isMatchingTab = this.rankingShowChange === showChange && savedCategoryRule === activeRule;
+        const savedSlotFlag = this.difficulty === 'LUNATIC' ? (this.lunaticTurnLimit === 10) : this.rankingShowChange;
+        const isMatchingTab = savedSlotFlag === showChange && savedCategoryRule === activeRule;
         const highlightId = (this.isRankingRun && isMatchingTab)
           ? this.lastHighlightEntryId
           : null;
@@ -4698,6 +4813,12 @@
         }
         this.updateUnlockAndCumulativeUI();
         switchScreen('modal-ranking-difficulty');
+      }
+
+      openLunaticTimeModal() {
+        const nameEl = document.getElementById('lunatic-time-player-name');
+        if (nameEl) nameEl.textContent = this.playerName;
+        switchScreen('modal-lunatic-time');
       }
 
       openStandaloneRankingModal(fromScreenId) {
@@ -4886,7 +5007,7 @@
         this._launchGameplayWithCountdown();
       }
 
-      startRankingPlay(difficulty = 'NORMAL', playerName = '名無しの会計士', showChange = true) {
+      startRankingPlay(difficulty = 'NORMAL', playerName = '名無しの会計士', showChange = true, lunaticLimit = null) {
         if (difficulty === 'EX' && !RankingManager.isExUnlockedForPlayer(playerName)) {
           sound.playBadBuzzer();
           return;
@@ -4898,6 +5019,9 @@
         this.isTutorial = false;
         this.isRankingRun = true;
         this.difficulty = difficulty;
+        if (lunaticLimit === 10 || lunaticLimit === 15) {
+          this.lunaticTurnLimit = lunaticLimit;
+        }
         this.playerName = RankingManager.normalizeName(playerName);
         this.rankingShowChange = showChange;
         this.showChangeDisplay = showChange;
@@ -4944,7 +5068,9 @@
         if (this.isRankingRun) {
           const chgStr = this.showChangeDisplay ? '👁️あり' : '🙈なし';
           const diffStr = isLunatic ? '🌙LUNATIC' : (isEx ? '💀EX' : (isHard ? 'HARD' : 'NORMAL'));
-          badgeEl.textContent = `🏆 ${this.playerName} (${diffStr}/${chgStr})`;
+          badgeEl.textContent = isLunatic
+            ? `🏆 ${this.playerName} (🌙LUNATIC/${this.lunaticTurnLimit}秒)`
+            : `🏆 ${this.playerName} (${diffStr}/${chgStr})`;
           badgeEl.className = isLunatic
             ? 'text-[9px] sm:text-[11px] font-black px-2 py-0.5 rounded-lg bg-rose-500 text-white'
             : (isEx
@@ -5682,11 +5808,12 @@
           subtitle.className = 'text-[11px] sm:text-xs font-bold text-emerald-300 mb-1';
           subtitle.textContent = `スコア +${earnedScore.toLocaleString()} ／ タイムボーナス ${bonusSec}！`;
         } else if (grade === 'LUNATIC_TIMEOUT') {
+          const limitSec = this.lunaticTurnLimit || 15;
           card.className = 'w-full bg-slate-950/95 backdrop-blur-md border-2 border-rose-500 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
           badge.className = 'text-xl sm:text-2xl font-black tracking-wider mb-0.5 text-rose-400 drop-shadow';
-          badge.textContent = '⏰ LUNATIC 15秒超過!! 強制終了';
+          badge.textContent = `⏰ LUNATIC ${limitSec}秒超過!! 強制終了`;
           subtitle.className = 'text-[11px] sm:text-xs font-bold text-rose-300 mb-1';
-          subtitle.textContent = 'ルナティックモードでは1人15秒以内にお会計を出さないと強制終了となります！';
+          subtitle.textContent = `ルナティックモードでは1人${limitSec}秒以内にお会計を出さないと強制終了となります！`;
         } else if (grade === 'EX_FAIL') {
           card.className = 'w-full bg-slate-950/95 backdrop-blur-md border-2 border-fuchsia-500 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
           badge.className = 'text-xl sm:text-2xl font-black tracking-wider mb-0.5 text-fuchsia-400 drop-shadow';
@@ -5864,7 +5991,8 @@
 
         const lunTurnTimerEl = document.getElementById('lunatic-turn-timer');
         if (lunTurnTimerEl && this.difficulty === 'LUNATIC') {
-          const turnRemain = Math.max(0, 15.0 - this.turnElapsed);
+          const limitSec = this.lunaticTurnLimit || 15;
+          const turnRemain = Math.max(0, limitSec - this.turnElapsed);
           lunTurnTimerEl.textContent = `⏱ ${turnRemain.toFixed(1)}s`;
           if (turnRemain <= 3.0) {
             lunTurnTimerEl.className = 'font-digital bg-rose-600 border border-yellow-300 text-white font-black text-[10px] sm:text-xs px-2 py-0.5 rounded-lg shrink-0 whitespace-nowrap animate-pulse';
@@ -6014,10 +6142,11 @@
         if (this.scene3D.isZoneActive) this.scene3D.setZoneMode(false);
         sound.setZoneBGM(false);
 
+        const limitSec = this.lunaticTurnLimit || 15;
         const paidTotal = this.getTrayTotal();
         const coinsBefore = countWalletCoins(this.wallet) + this.trayList.filter(it => it.denom <= 500).length;
         this.mistakeLogs.push({
-          grade: '15秒超過',
+          grade: `${limitSec}秒超過`,
           isExFail: true,
           customerNo: this.customerIndex,
           price: this.currentPrice,
@@ -6039,7 +6168,7 @@
         this.scene3D.clearAllTrayItems(false);
         this.scene3D.triggerClerkReaction('shock', 1.6);
         sound.playBadBuzzer();
-        this.setClerkComment('exFail', '⏰15秒オーバー！ルナティックモードは1人15秒以内にお会計を出さないと強制終了です…！');
+        this.setClerkComment('exFail', `⏰${limitSec}秒オーバー！ルナティックモードは1人${limitSec}秒以内にお会計を出さないと強制終了です…！`);
         this.updateTopHUD();
         this.renderWalletUI();
         this.showJudgmentFeedback('LUNATIC_TIMEOUT', 0, { coinCount: 0 }, coinsBefore, coinsBefore, 0);
@@ -6058,8 +6187,9 @@
         this.timeLeft -= dt;
         this.turnElapsed += dt;
 
-        if (this.difficulty === 'LUNATIC' && this.turnElapsed >= 15.0) {
-          this.turnElapsed = 15.0;
+        const lunLimit = this.lunaticTurnLimit || 15;
+        if (this.difficulty === 'LUNATIC' && this.turnElapsed >= lunLimit) {
+          this.turnElapsed = lunLimit;
           this.handleLunaticTurnTimeout();
           return;
         }
@@ -6128,7 +6258,7 @@
           return;
         }
 
-        const badCount = this.mistakeLogs.filter(m => m.grade === 'BAD' || m.grade === '金額不足' || m.grade === '15秒超過').length;
+        const badCount = this.mistakeLogs.filter(m => m.grade === 'BAD' || m.grade === '金額不足' || String(m.grade).endsWith('秒超過')).length;
         const goodCount = this.mistakeLogs.filter(m => m.grade === 'GOOD').length;
         const parts = [];
         if (badCount > 0) parts.push(`BAD:${badCount}`);
@@ -6156,7 +6286,7 @@
           const priceText = m.isLunatic
             ? `本体¥${m.basePrice.toLocaleString()} → 税込(8%)¥${m.price.toLocaleString()}`
             : `請求 ¥${m.price.toLocaleString()}`;
-          const yourResultDetail = (m.grade === '金額不足' || m.grade === '15秒超過')
+          const yourResultDetail = (m.grade === '金額不足' || String(m.grade).endsWith('秒超過'))
             ? m.grade
             : (this.ruleType === 'change'
               ? `お釣り硬貨${m.changeCoinCount}枚`
@@ -6228,7 +6358,9 @@
         const modeLabel = document.getElementById('res-mode-label');
         const chgText = this.showChangeDisplay ? 'お釣りあり' : 'お釣りなし(暗算)';
         if (this.isRankingRun) {
-          modeLabel.textContent = `🏆 ランキング (${this.difficulty} / ${chgText})`;
+          modeLabel.textContent = this.difficulty === 'LUNATIC'
+            ? `🏆 ランキング (🌙LUNATIC / ${this.lunaticTurnLimit}秒)`
+            : `🏆 ランキング (${this.difficulty} / ${chgText})`;
           modeLabel.className = 'text-[10px] sm:text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950';
         } else if (this.difficulty === 'HARD') {
           modeLabel.textContent = `🔥 ハード (${chgText})`;
@@ -6273,9 +6405,10 @@
         if (this.isRankingRun) {
           const isLunaticRank = this.difficulty === 'LUNATIC';
           const targetRankingRule = isLunaticRank ? 'lunatic' : this.ruleType;
+          const targetSlotFlag = isLunaticRank ? (this.lunaticTurnLimit === 10) : this.rankingShowChange;
           const ruleLabel = this.ruleType === 'change' ? 'お釣り最小' : '財布最小';
           const deptName = this.rankingShowChange ? 'お釣りあり' : 'お釣りなし';
-          const categoryLabel = isLunaticRank ? `🌙ルナティック別枠/${deptName}` : `${ruleLabel}/${deptName}`;
+          const categoryLabel = isLunaticRank ? `🌙ルナティック/${this.lunaticTurnLimit}秒` : `${ruleLabel}/${deptName}`;
 
           if (isLunaticMinNotMet) {
             playerNameTag.textContent = `登録名: ${this.playerName}（${categoryLabel}）※5人未満のため記録なし`;
@@ -6290,7 +6423,7 @@
               this.difficulty,
               perfectRate,
               totalServed,
-              this.rankingShowChange,
+              targetSlotFlag,
               targetRankingRule
             );
             this.lastHighlightEntryId = saveResult.entryId;
@@ -6312,7 +6445,7 @@
             }
           }
 
-          this.setResultRankingTab(this.rankingShowChange, targetRankingRule);
+          this.setResultRankingTab(targetSlotFlag, targetRankingRule);
         } else {
           playerNameTag.textContent = 'フリープレイ（※ランキングモードで記録登録）';
           rankInBadge.textContent = 'フリープレイ完了';
@@ -6359,7 +6492,8 @@
         const screenResult = document.getElementById('screen-result');
         if (screenResult && !screenResult.classList.contains('hidden')) {
           const savedCategoryRule = game.difficulty === 'LUNATIC' ? 'lunatic' : game.ruleType;
-          const isMatch = game.rankingShowChange === game.resultRankingTabShowChange && savedCategoryRule === game.resultRankingTabRuleType;
+          const savedSlotFlag = game.difficulty === 'LUNATIC' ? (game.lunaticTurnLimit === 10) : game.rankingShowChange;
+          const isMatch = savedSlotFlag === game.resultRankingTabShowChange && savedCategoryRule === game.resultRankingTabRuleType;
           const highlightId = (game.isRankingRun && isMatch)
             ? game.lastHighlightEntryId
             : null;
