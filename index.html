@@ -394,6 +394,58 @@
       pointer-events: none;
       animation: dopaConfettiFall var(--dur) linear forwards;
     }
+    /* === BILL REDUCTION LIGHTNING BONUS FX === */
+    @keyframes lightningFlash {
+      0% { opacity: 0.92; }
+      18% { opacity: 0.25; }
+      32% { opacity: 0.85; }
+      55% { opacity: 0.15; }
+      100% { opacity: 0; }
+    }
+    @keyframes lightningBoltStrike {
+      0% { opacity: 0; transform: scaleY(0.15); filter: brightness(2.5); }
+      12% { opacity: 1; transform: scaleY(1.02); filter: brightness(2.2); }
+      28% { opacity: 0.35; transform: scaleY(1); }
+      42% { opacity: 1; transform: scaleY(1); filter: brightness(2.0); }
+      75% { opacity: 0.7; }
+      100% { opacity: 0; transform: scaleY(1.04); }
+    }
+    @keyframes lightningBannerPop {
+      0% { transform: translate(-50%, -20px) scale(2.0); opacity: 0; filter: blur(4px); }
+      20% { transform: translate(-50%, 0) scale(0.95); opacity: 1; filter: blur(0); }
+      78% { transform: translate(-50%, 0) scale(1.03); opacity: 1; }
+      100% { transform: translate(-50%, -18px) scale(1.15); opacity: 0; }
+    }
+    .lightning-screen-flash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.95) 0%, rgba(250, 204, 21, 0.55) 38%, rgba(56, 189, 248, 0.32) 72%, rgba(15, 23, 42, 0) 100%);
+      pointer-events: none;
+      animation: lightningFlash 0.65s ease-out forwards;
+    }
+    .lightning-bolt-svg {
+      position: fixed;
+      top: 0;
+      height: 82vh;
+      pointer-events: none;
+      transform-origin: top center;
+      filter: drop-shadow(0 0 12px #38bdf8) drop-shadow(0 0 26px #facc15);
+      animation: lightningBoltStrike 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .lightning-cutin-banner {
+      position: fixed;
+      left: 50%;
+      top: 20%;
+      pointer-events: none;
+      white-space: nowrap;
+      padding: 8px 20px;
+      border-radius: 9999px;
+      border: 3px solid #fef08a;
+      background: linear-gradient(90deg, #0f172a 0%, #1e3a8a 45%, #0284c7 100%);
+      color: #fef08a;
+      box-shadow: 0 0 28px rgba(56, 189, 248, 0.95), 0 0 48px rgba(250, 204, 21, 0.85);
+      animation: lightningBannerPop 1.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
   </style>
 </head>
 <body class="text-white select-none">
@@ -430,6 +482,9 @@
 
   <!-- ZONE SHOCKWAVE & CUT-IN OVERLAY (#zone-shockwave-layer) -->
   <div id="zone-shockwave-layer" class="fixed inset-0 z-50 hidden pointer-events-none items-center justify-center overflow-hidden"></div>
+
+  <!-- BILL REDUCTION LIGHTNING BONUS FX OVERLAY (#lightning-fx-layer) -->
+  <div id="lightning-fx-layer" class="fixed inset-0 z-60 pointer-events-none overflow-hidden" aria-hidden="true"></div>
 
   <!-- DOPAGAKI RAINBOW LED FRAME & FX OVERLAY (pointer-events-none: zero gameplay impact) -->
   <div id="dopa-rainbow-frame" aria-hidden="true"></div>
@@ -2290,6 +2345,69 @@
           this.stopBGM();
           this.startBGM();
         }
+      }
+
+      playLightningBonusSE() {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        // 1. 高電圧ザップ（稲妻の閃光音）
+        const zapOsc = this.ctx.createOscillator();
+        const zapGain = this.ctx.createGain();
+        zapOsc.type = 'sawtooth';
+        zapOsc.frequency.setValueAtTime(2400, now);
+        zapOsc.frequency.exponentialRampToValueAtTime(520, now + 0.07);
+        zapOsc.frequency.exponentialRampToValueAtTime(3200, now + 0.13);
+        zapOsc.frequency.exponentialRampToValueAtTime(180, now + 0.32);
+        zapGain.gain.setValueAtTime(0.22, now);
+        zapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
+        zapOsc.connect(zapGain);
+        zapGain.connect(this.ctx.destination);
+        zapOsc.start(now);
+        zapOsc.stop(now + 0.36);
+
+        // 2. 雷鳴の衝撃ノイズ（バリバリッ＋ドーン！）
+        const noiseDur = 0.42;
+        const bufSize = Math.floor(this.ctx.sampleRate * noiseDur);
+        const buf = this.ctx.createBuffer(1, bufSize, this.ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < bufSize; i++) {
+          const env = Math.pow(1 - i / bufSize, 1.8);
+          data[i] = (Math.random() * 2 - 1) * env;
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buf;
+
+        const bp = this.ctx.createBiquadFilter();
+        bp.type = 'bandpass';
+        bp.frequency.setValueAtTime(1600, now);
+        bp.frequency.exponentialRampToValueAtTime(220, now + noiseDur);
+        bp.Q.value = 0.9;
+
+        const nGain = this.ctx.createGain();
+        nGain.gain.setValueAtTime(0.30, now);
+        nGain.gain.exponentialRampToValueAtTime(0.002, now + noiseDur);
+        noise.connect(bp);
+        bp.connect(nGain);
+        nGain.connect(this.ctx.destination);
+        noise.start(now);
+
+        // 3. 爽快な電撃ボーナス和音
+        [880.0, 1108.73, 1318.51, 1760.0].forEach((freq, idx) => {
+          const t = now + 0.08 + idx * 0.035;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, t);
+          gain.gain.setValueAtTime(0.13, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.42);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.44);
+        });
       }
 
       playZoneShockwaveSE() {
@@ -4165,6 +4283,14 @@
     function countWalletCoins(wallet) {
       let sum = 0;
       for (const d of COIN_DENOMS) {
+        sum += (wallet[d] || 0);
+      }
+      return sum;
+    }
+
+    function countWalletBills(wallet) {
+      let sum = 0;
+      for (const d of BILL_DENOMS) {
         sum += (wallet[d] || 0);
       }
       return sum;
@@ -6499,10 +6625,32 @@
         const minPossibleCoins = this.bestSolution ? this.bestSolution.finalCoins : coinsAfter;
 
         const trayCounts = this.getTrayCountsByDenom();
-        const wastedBill = (changeAmount >= 1000 && trayCounts[1000] > 0) ||
-                           (changeAmount >= 5000 && trayCounts[5000] > 0);
+        const rawWastedBill = (changeAmount >= 1000 && trayCounts[1000] > 0) ||
+                              (changeAmount >= 5000 && trayCounts[5000] > 0);
 
         const minPossibleChangeCoins = this.bestSolution ? this.bestSolution.changeCoinCount : changeInfo.coinCount;
+        const coinsOptimal = this.ruleType === 'change'
+          ? (changeInfo.coinCount <= minPossibleChangeCoins)
+          : (coinsAfter <= minPossibleCoins);
+
+        // 最適解よりもお札の枚数が減って返ってくる出し方（例：1000円札を足して5000円札でお釣りをもらう）をボーナス判定
+        const billsBefore = countWalletBills(walletBefore);
+        const billsAfter = countWalletBills(this.wallet);
+        const optChangeInfo = this.bestSolution ? getChangeBreakdown(this.bestSolution.change) : changeInfo;
+        const optBillsAfter = this.bestSolution
+          ? (billsBefore - this.bestSolution.billCount + optChangeInfo.billCount)
+          : billsAfter;
+        const hasBillOverlap = BILL_DENOMS.some(d => (trayCounts[d] || 0) > 0 && (changeInfo.breakdown[d] || 0) > 0);
+        const billSavedCount = this.bestSolution ? Math.max(0, optChangeInfo.billCount - changeInfo.billCount) : 0;
+        const isBillBonus = Boolean(
+          this.bestSolution &&
+          coinsOptimal &&
+          !hasBillOverlap &&
+          changeInfo.billCount < optChangeInfo.billCount &&
+          billsAfter < optBillsAfter
+        );
+        const wastedBill = rawWastedBill && !isBillBonus;
+
         let grade = 'GOOD';
         if (this.ruleType === 'change') {
           // ルール②：お釣りの枚数最小ルール
@@ -6569,6 +6717,7 @@
         const modeMultiplier = isLunatic ? 100.0 : (isEx ? 10.0 : (isHard ? 1.5 : 1.0));
         const noChangeMult = this.showChangeDisplay ? 1.0 : 1.25;
         let earnedScore = 0;
+        let billBonusInfo = null;
 
         if (grade === 'PERFECT') {
           this.combo++;
@@ -6584,8 +6733,14 @@
           const zoneMult = this.scene3D.isZoneActive ? 1.35 : 1.0;
 
           const comboMult = Math.min(4.8, 1 + (this.combo - 1) * ((isEx || isLunatic) ? 0.5 : 0.35));
-          const basePt = isLunatic ? 2500 : (isEx ? 2200 : 1600);
-          earnedScore = Math.round((basePt + Math.max(0, netDiff) * 250) * comboMult * modeMultiplier * noChangeMult * zoneMult);
+          const basePt = isLunatic ? 2750 : (isEx ? 2420 : 1760);
+          earnedScore = Math.round((basePt + Math.max(0, netDiff) * 275) * comboMult * modeMultiplier * noChangeMult * zoneMult);
+
+          if (isBillBonus) {
+            const billBonusPt = Math.round(billSavedCount * 440 * comboMult * modeMultiplier * noChangeMult * zoneMult);
+            earnedScore += billBonusPt;
+            billBonusInfo = { savedBills: billSavedCount, bonusPt: billBonusPt };
+          }
           this.score += earnedScore;
 
           const bonusSec = isHard ? 1.5 : ((isEx || isLunatic) ? 2.5 : 0);
@@ -6600,12 +6755,18 @@
           }
           this.scene3D.triggerClerkReaction('happy', 1.5);
           sound.playPerfectFanfare();
+          if (isBillBonus) {
+            sound.playLightningBonusSE();
+            this.triggerBillBonusLightningEffect(billBonusInfo.savedBills, billBonusInfo.bonusPt);
+          }
           if (this.dopagakiMode) {
             sound.playPachinkoKyuin();
             this.triggerDopaBurstEffect(null, true);
           }
           if (this.combo === 10) {
             this.setClerkComment('perfect', '⚡10連続PERFECT達成！！『神域（ゾーン）』突入でスコア倍率がさらに1.35倍に跳ね上がります！！');
+          } else if (isBillBonus) {
+            this.setClerkComment('perfect', `⚡おおっ！お札までスッキリまとめる超神会計！！追加ボーナス +${billBonusInfo.bonusPt.toLocaleString()}pt です！`);
           } else {
             this.setClerkComment('perfect');
           }
@@ -6613,7 +6774,7 @@
           this.combo = 0;
           if (this.scene3D.isZoneActive) this.scene3D.setZoneMode(false);
           sound.setZoneBGM(false);
-          earnedScore = Math.round((600 + Math.max(0, netDiff) * 100) * modeMultiplier * noChangeMult);
+          earnedScore = Math.round((660 + Math.max(0, netDiff) * 110) * modeMultiplier * noChangeMult);
           this.score += earnedScore;
 
           // GOOD判定（PERFECT以外）も全モード共通で振り返りログへ保存
@@ -6681,7 +6842,7 @@
         this.updateTopHUD();
         this.renderWalletUI();
 
-        this.showJudgmentFeedback(grade, changeAmount, changeInfo, coinsBefore, coinsAfter, earnedScore);
+        this.showJudgmentFeedback(grade, changeAmount, changeInfo, coinsBefore, coinsAfter, earnedScore, billBonusInfo);
 
         // 通常ミス（BAD）時は解説表示時間を1秒延長（1450ms -> 2450ms）
         const feedbackWaitMs = grade === 'BAD' ? 2450 : 1450;
@@ -6712,7 +6873,69 @@
         setTimeout(() => el.remove(), 950);
       }
 
-      showJudgmentFeedback(grade, changeAmount, changeInfo, coinsBefore, coinsAfter, earnedScore) {
+      triggerBillBonusLightningEffect(savedBills, bonusPt) {
+        const layer = document.getElementById('lightning-fx-layer');
+        if (!layer) return;
+
+        const flash = document.createElement('div');
+        flash.className = 'lightning-screen-flash';
+        layer.appendChild(flash);
+        setTimeout(() => flash.remove(), 680);
+
+        const bolts = [
+          { left: '18%', width: 130, pts: '65,0 38,95 78,108 26,230 68,242 18,390 52,398 12,520' },
+          { left: '50%', width: 150, pts: '75,0 44,110 92,124 34,255 86,272 28,420 70,432 22,560' },
+          { left: '78%', width: 130, pts: '60,0 88,92 46,106 96,228 52,244 102,385 66,396 108,510' }
+        ];
+        bolts.forEach((b, idx) => {
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.setAttribute('viewBox', `0 0 ${b.width} 560`);
+          svg.setAttribute('class', 'lightning-bolt-svg');
+          svg.style.left = b.left;
+          svg.style.width = `${b.width}px`;
+          svg.style.marginLeft = `${-b.width / 2}px`;
+          svg.style.animationDelay = `${idx * 0.04}s`;
+
+          const outer = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+          outer.setAttribute('points', b.pts);
+          outer.setAttribute('fill', 'none');
+          outer.setAttribute('stroke', '#38bdf8');
+          outer.setAttribute('stroke-width', '12');
+          outer.setAttribute('stroke-linecap', 'round');
+          outer.setAttribute('stroke-linejoin', 'round');
+          outer.setAttribute('opacity', '0.75');
+
+          const mid = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+          mid.setAttribute('points', b.pts);
+          mid.setAttribute('fill', 'none');
+          mid.setAttribute('stroke', '#facc15');
+          mid.setAttribute('stroke-width', '7');
+          mid.setAttribute('stroke-linecap', 'round');
+          mid.setAttribute('stroke-linejoin', 'round');
+
+          const core = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+          core.setAttribute('points', b.pts);
+          core.setAttribute('fill', 'none');
+          core.setAttribute('stroke', '#ffffff');
+          core.setAttribute('stroke-width', '3');
+          core.setAttribute('stroke-linecap', 'round');
+          core.setAttribute('stroke-linejoin', 'round');
+
+          svg.appendChild(outer);
+          svg.appendChild(mid);
+          svg.appendChild(core);
+          layer.appendChild(svg);
+          setTimeout(() => svg.remove(), 820);
+        });
+
+        const banner = document.createElement('div');
+        banner.className = 'lightning-cutin-banner text-xs sm:text-xl font-black tracking-wider';
+        banner.textContent = `⚡ 札まとめ神会計!! お札 -${savedBills}枚 (+${bonusPt.toLocaleString()}pt) ⚡`;
+        layer.appendChild(banner);
+        setTimeout(() => banner.remove(), 1280);
+      }
+
+      showJudgmentFeedback(grade, changeAmount, changeInfo, coinsBefore, coinsAfter, earnedScore, billBonusInfo = null) {
         const overlay = document.getElementById('ui-judgment-overlay');
         const card = document.getElementById('ui-judgment-card');
         const badge = document.getElementById('ui-judgment-badge');
@@ -6732,11 +6955,22 @@
         const bonusSec = this.difficulty === 'HARD' ? '+1.5秒' : ((this.difficulty === 'EX' || this.difficulty === 'LUNATIC') ? '+2.5秒' : '');
 
         if (grade === 'PERFECT') {
-          card.className = 'w-full bg-slate-900/95 backdrop-blur-md border-2 border-amber-400 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
-          badge.className = 'text-xl sm:text-3xl font-black tracking-wider mb-0.5 text-amber-300 drop-shadow';
-          badge.textContent = changeAmount === 0 ? '👑 PERFECT!! ピッタリ神会計！' : '✨ PERFECT!! 神会計！';
-          subtitle.className = 'text-[11px] sm:text-xs font-bold text-emerald-300 mb-1';
-          subtitle.textContent = bonusSec ? `スコア +${earnedScore.toLocaleString()} ／ タイムボーナス ${bonusSec}！` : `スコア +${earnedScore.toLocaleString()}！`;
+          if (billBonusInfo) {
+            card.className = 'w-full bg-slate-900/95 backdrop-blur-md border-2 border-cyan-300 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-[0_0_28px_rgba(56,189,248,0.65)] animate-pop';
+            badge.className = 'text-xl sm:text-3xl font-black tracking-wider mb-0.5 text-yellow-300 drop-shadow';
+            badge.textContent = `⚡ PERFECT!! 札まとめ超神会計！`;
+            subtitle.className = 'text-[11px] sm:text-xs font-bold text-cyan-200 mb-1';
+            const billBonusText = `お札 -${billBonusInfo.savedBills}枚ボーナス +${billBonusInfo.bonusPt.toLocaleString()}pt`;
+            subtitle.textContent = bonusSec
+              ? `スコア +${earnedScore.toLocaleString()}（${billBonusText}） ／ タイムボーナス ${bonusSec}！`
+              : `スコア +${earnedScore.toLocaleString()}（${billBonusText}）！`;
+          } else {
+            card.className = 'w-full bg-slate-900/95 backdrop-blur-md border-2 border-amber-400 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
+            badge.className = 'text-xl sm:text-3xl font-black tracking-wider mb-0.5 text-amber-300 drop-shadow';
+            badge.textContent = changeAmount === 0 ? '👑 PERFECT!! ピッタリ神会計！' : '✨ PERFECT!! 神会計！';
+            subtitle.className = 'text-[11px] sm:text-xs font-bold text-emerald-300 mb-1';
+            subtitle.textContent = bonusSec ? `スコア +${earnedScore.toLocaleString()} ／ タイムボーナス ${bonusSec}！` : `スコア +${earnedScore.toLocaleString()}！`;
+          }
         } else if (grade === 'LUNATIC_TIMEOUT') {
           const limitSec = this.lunaticTurnLimit || 15;
           card.className = 'w-full bg-slate-950/95 backdrop-blur-md border-2 border-rose-500 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
