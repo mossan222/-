@@ -820,7 +820,7 @@
                 <span id="rank-lunatic-lock-badge" class="text-[10px] font-black bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full">🔒 最高300,000ptで解放</span>
               </div>
               <p id="rank-lunatic-desc" class="text-[11px] sm:text-xs text-slate-200 mt-1 leading-snug">
-                【特殊ルール：消費税8%導入】レジには<span class="text-amber-300 font-bold">本体価格（税抜）のみ</span>表示！<span class="text-rose-300 font-bold underline">本体価格×1.08の税込み金額（小数点以下切り捨て）</span>を暗算して支払おう！（60秒・スコア2.5倍）
+                【特殊ルール：消費税8%導入】レジには<span class="text-amber-300 font-bold">本体価格（税抜）のみ</span>表示！<span class="text-rose-300 font-bold underline">本体価格×1.08の税込み金額（小数点以下切り捨て）</span>を暗算して支払おう！（60秒・スコア100倍）
               </p>
             </div>
           </div>
@@ -4291,7 +4291,7 @@
           if (rankLunaticUnlocked) {
             btnRankLunatic.className = 'btn-3d w-full text-left bg-gradient-to-r from-rose-950 via-red-950/90 to-slate-950 hover:from-rose-900 border-2 border-rose-400 rounded-2xl p-3 shadow-lg flex items-center justify-between gap-3 group';
             badgeRankLunatic.className = 'text-[10px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-full animate-pulse';
-            badgeRankLunatic.textContent = `🌙 「${this.playerName}」解放済・60秒・2.5倍`;
+            badgeRankLunatic.textContent = `🌙 「${this.playerName}」解放済・60秒・100倍`;
             descRankLunatic.innerHTML = '【特殊ルール：消費税8%導入】レジには<span class="text-amber-300 font-bold">本体価格（税抜）のみ</span>表示！<span class="text-rose-300 font-bold underline">本体価格×1.08の税込み金額（小数点以下切り捨て）</span>を暗算して支払おう！';
             arrowRankLunatic.textContent = '🚀';
           } else {
@@ -5438,7 +5438,7 @@
           return;
         }
 
-        const modeMultiplier = isLunatic ? 2.5 : (isEx ? 2.0 : (isHard ? 1.5 : 1.0));
+        const modeMultiplier = isLunatic ? 100.0 : (isEx ? 2.0 : (isHard ? 1.5 : 1.0));
         const noChangeMult = this.showChangeDisplay ? 1.0 : 1.25;
         let earnedScore = 0;
 
@@ -6215,5 +6215,4 @@
   </script>
 </body>
 </html>
-
 
