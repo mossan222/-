@@ -852,7 +852,7 @@
                 💾 ローカル保存モード
               </span>
             </div>
-            <span class="text-[11px] text-slate-400">全4部門＋🌙ルナティック別枠 みんなと共有 TOP 10（自己ベスト）</span>
+            <span class="text-[11px] text-slate-400">全6部門別（🌙ルナティック別枠含む）みんなと共有 TOP 10（自己ベスト）</span>
           </div>
         </div>
         <button id="btn-close-ranking-modal" class="btn-3d bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-extrabold px-3 py-1.5 rounded-xl">
@@ -873,7 +873,7 @@
         </button>
       </div>
 
-      <!-- Change Display Tabs (2 Options -> Hidden on Lunatic tab) -->
+      <!-- Change Display Tabs (2 Options -> Total 6 Categories) -->
       <div id="modal-rank-change-tabs" class="grid grid-cols-2 gap-1.5 mb-3 bg-slate-950 p-1 rounded-2xl border border-slate-800">
         <button id="tab-modal-rank-on" class="btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-emerald-500 text-slate-950 shadow">
           👁️ お釣り表示【あり】
@@ -1347,7 +1347,8 @@
     const RANKING_KEY_NO_CHANGE              = 'pittariman_ranking_no_change';
     const RANKING_KEY_CHANGE_MIN_WITH_CHANGE = 'pittariman_ranking_change_min_with_change';
     const RANKING_KEY_CHANGE_MIN_NO_CHANGE   = 'pittariman_ranking_change_min_no_change';
-    const RANKING_KEY_LUNATIC                = 'pittariman_ranking_lunatic';
+    const RANKING_KEY_LUNATIC_WITH_CHANGE    = 'pittariman_ranking_lunatic_with_change';
+    const RANKING_KEY_LUNATIC_NO_CHANGE      = 'pittariman_ranking_lunatic_no_change';
     const PLAYER_NAME_STORAGE_KEY            = 'pittariman_player_name_v3';
     const PLAYER_HIGH_SCORES_KEY             = 'pittariman_player_highscores_v1';
     const CUMULATIVE_SCORE_KEY               = 'pittariman_cumulative_score_v1';
@@ -1364,8 +1365,12 @@
       { id: 'cm_nc3', name: '小銭ゼロ見習い', score: 12500, perfectRate: 68, customers: 7, mode: 'NORMAL', date: '2026/11' }
     ];
 
-    const DEFAULT_RANKINGS_LUNATIC = [
-      { id: 'lun1', name: '消費税計算マスター', score: 685000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
+    const DEFAULT_RANKINGS_LUNATIC_WITH_CHANGE = [
+      { id: 'lun_wc1', name: '消費税計算マスター', score: 685000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
+    ];
+
+    const DEFAULT_RANKINGS_LUNATIC_NO_CHANGE = [
+      { id: 'lun_nc1', name: '暗算消費税マスター', score: 720000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
     ];
 
     const DEFAULT_RANKINGS_WITH_CHANGE = [
@@ -1436,7 +1441,8 @@
         'wallet_false': null,
         'change_true': null,
         'change_false': null,
-        'lunatic': null
+        'lunatic_true': null,
+        'lunatic_false': null
       };
       static onSyncListeners = [];
 
@@ -1451,7 +1457,6 @@
 
       static getCacheSlot(showChange = true, ruleType = 'wallet') {
         const r = RankingManager.normalizeRuleType(ruleType);
-        if (r === 'lunatic') return 'lunatic';
         return `${r}_${Boolean(showChange)}`;
       }
 
@@ -1478,7 +1483,8 @@
         RankingManager.caches['wallet_false'] = RankingManager.loadLocal(false, 'wallet');
         RankingManager.caches['change_true']  = RankingManager.loadLocal(true, 'change');
         RankingManager.caches['change_false'] = RankingManager.loadLocal(false, 'change');
-        RankingManager.caches['lunatic']      = RankingManager.loadLocal(true, 'lunatic');
+        RankingManager.caches['lunatic_true']  = RankingManager.loadLocal(true, 'lunatic');
+        RankingManager.caches['lunatic_false'] = RankingManager.loadLocal(false, 'lunatic');
 
         if (!RankingManager.isFirebaseConfigured()) {
           RankingManager.isOnline = false;
@@ -1521,7 +1527,8 @@
             { ruleType: 'wallet', showChange: false },
             { ruleType: 'change', showChange: true },
             { ruleType: 'change', showChange: false },
-            { ruleType: 'lunatic', showChange: true }
+            { ruleType: 'lunatic', showChange: true },
+            { ruleType: 'lunatic', showChange: false }
           ];
 
           categories.forEach(({ ruleType, showChange }) => {
@@ -1608,7 +1615,9 @@
 
       static getKey(showChange, ruleType = 'wallet') {
         const r = RankingManager.normalizeRuleType(ruleType);
-        if (r === 'lunatic') return RANKING_KEY_LUNATIC;
+        if (r === 'lunatic') {
+          return showChange ? RANKING_KEY_LUNATIC_WITH_CHANGE : RANKING_KEY_LUNATIC_NO_CHANGE;
+        }
         if (r === 'change') {
           return showChange ? RANKING_KEY_CHANGE_MIN_WITH_CHANGE : RANKING_KEY_CHANGE_MIN_NO_CHANGE;
         }
@@ -1617,7 +1626,9 @@
 
       static getDbPath(showChange, ruleType = 'wallet') {
         const r = RankingManager.normalizeRuleType(ruleType);
-        if (r === 'lunatic') return 'rankings/lunatic';
+        if (r === 'lunatic') {
+          return showChange ? 'rankings/lunatic_with_change' : 'rankings/lunatic_no_change';
+        }
         if (r === 'change') {
           return showChange ? 'rankings/change_min_with_change' : 'rankings/change_min_no_change';
         }
@@ -1626,7 +1637,9 @@
 
       static getDefaultList(showChange, ruleType = 'wallet') {
         const r = RankingManager.normalizeRuleType(ruleType);
-        if (r === 'lunatic') return DEFAULT_RANKINGS_LUNATIC;
+        if (r === 'lunatic') {
+          return showChange ? DEFAULT_RANKINGS_LUNATIC_WITH_CHANGE : DEFAULT_RANKINGS_LUNATIC_NO_CHANGE;
+        }
         if (r === 'change') {
           return showChange ? DEFAULT_RANKINGS_CHANGE_MIN_WITH_CHANGE : DEFAULT_RANKINGS_CHANGE_MIN_NO_CHANGE;
         }
@@ -1661,8 +1674,7 @@
           if (num > maxScore) maxScore = num;
         }
         ['wallet', 'change', 'lunatic'].forEach((ruleType) => {
-          const changeOpts = ruleType === 'lunatic' ? [true] : [true, false];
-          changeOpts.forEach((showChange) => {
+          [true, false].forEach((showChange) => {
             const list = RankingManager.load(showChange, ruleType);
             for (const item of list) {
               if (item && typeof item.score === 'number' && item.score > maxScore) {
@@ -1895,8 +1907,7 @@
         let maxScore = Number(map[cleanName] || 0);
 
         ['wallet', 'change', 'lunatic'].forEach((ruleType) => {
-          const changeOpts = ruleType === 'lunatic' ? [true] : [true, false];
-          changeOpts.forEach((showChange) => {
+          [true, false].forEach((showChange) => {
             const list = RankingManager.load(showChange, ruleType);
             for (const item of list) {
               if (RankingManager.normalizeName(item.name) === cleanName && item.score > maxScore) {
@@ -4523,13 +4534,7 @@
             ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-rose-500 text-white shadow'
             : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-rose-300 hover:bg-slate-700';
         }
-        if (changeTabsWrap) {
-          if (activeRule === 'lunatic') {
-            changeTabsWrap.classList.add('hidden');
-          } else {
-            changeTabsWrap.classList.remove('hidden');
-          }
-        }
+        if (changeTabsWrap) changeTabsWrap.classList.remove('hidden');
 
         const tabOn = document.getElementById('tab-modal-rank-on');
         const tabOff = document.getElementById('tab-modal-rank-off');
@@ -4563,13 +4568,7 @@
             ? 'btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-rose-500 text-white'
             : 'btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-rose-300';
         }
-        if (changeTabsWrap) {
-          if (activeRule === 'lunatic') {
-            changeTabsWrap.classList.add('hidden');
-          } else {
-            changeTabsWrap.classList.remove('hidden');
-          }
-        }
+        if (changeTabsWrap) changeTabsWrap.classList.remove('hidden');
 
         const tabOn = document.getElementById('tab-res-rank-on');
         const tabOff = document.getElementById('tab-res-rank-off');
@@ -4581,9 +4580,7 @@
           tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-purple-500 text-white';
         }
         const savedCategoryRule = this.difficulty === 'LUNATIC' ? 'lunatic' : this.ruleType;
-        const isMatchingTab = savedCategoryRule === 'lunatic'
-          ? activeRule === 'lunatic'
-          : (this.rankingShowChange === showChange && savedCategoryRule === activeRule);
+        const isMatchingTab = this.rankingShowChange === showChange && savedCategoryRule === activeRule;
         const highlightId = (this.isRankingRun && isMatchingTab)
           ? this.lastHighlightEntryId
           : null;
@@ -6253,7 +6250,7 @@
           const targetRankingRule = isLunaticRank ? 'lunatic' : this.ruleType;
           const ruleLabel = this.ruleType === 'change' ? 'お釣り最小' : '財布最小';
           const deptName = this.rankingShowChange ? 'お釣りあり' : 'お釣りなし';
-          const categoryLabel = isLunaticRank ? '🌙ルナティック別枠' : `${ruleLabel}/${deptName}`;
+          const categoryLabel = isLunaticRank ? `🌙ルナティック別枠/${deptName}` : `${ruleLabel}/${deptName}`;
 
           if (isLunaticMinNotMet) {
             playerNameTag.textContent = `登録名: ${this.playerName}（${categoryLabel}）※5人未満のため記録なし`;
@@ -6337,9 +6334,7 @@
         const screenResult = document.getElementById('screen-result');
         if (screenResult && !screenResult.classList.contains('hidden')) {
           const savedCategoryRule = game.difficulty === 'LUNATIC' ? 'lunatic' : game.ruleType;
-          const isMatch = savedCategoryRule === 'lunatic'
-            ? game.resultRankingTabRuleType === 'lunatic'
-            : (game.rankingShowChange === game.resultRankingTabShowChange && savedCategoryRule === game.resultRankingTabRuleType);
+          const isMatch = game.rankingShowChange === game.resultRankingTabShowChange && savedCategoryRule === game.resultRankingTabRuleType;
           const highlightId = (game.isRankingRun && isMatch)
             ? game.lastHighlightEntryId
             : null;
