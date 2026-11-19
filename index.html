@@ -505,7 +505,7 @@
                 <span class="text-[10px] font-black bg-emerald-400 text-slate-950 px-2 py-0.5 rounded-full">すぐ遊べる・練習に最適</span>
               </div>
               <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-snug">
-                制限時間 <span class="font-bold text-white">60秒</span> ／ PERFECTで <span class="text-emerald-300 font-bold">+3.0秒</span> ボーナス！気軽に遊べる標準フリープレイ。
+                制限時間 <span class="font-bold text-white">60秒</span> ／ 気軽に遊べる標準フリープレイ。
               </p>
             </div>
           </div>
@@ -762,7 +762,7 @@
                 <span class="text-[10px] font-black bg-emerald-400 text-slate-950 px-2 py-0.5 rounded-full">60秒・標準</span>
               </div>
               <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5">
-                安定したコンボと時間ボーナス（+3.0秒）で着実にハイスコアを伸ばす王道コース！
+                安定したコンボで着実にハイスコアを伸ばす王道コース！
               </p>
             </div>
           </div>
@@ -5463,10 +5463,11 @@
           earnedScore = Math.round((basePt + Math.max(0, netDiff) * 250) * comboMult * modeMultiplier * noChangeMult * zoneMult);
           this.score += earnedScore;
 
-          const bonusSec = (isHard || isEx || isLunatic) ? 2.5 : 3.0;
-          this.timeLeft = Math.min(99.9, this.timeLeft + bonusSec);
-
-          this.showTimeBonusPopup(`+${bonusSec.toFixed(1)}秒!`, false);
+          const bonusSec = (isHard || isEx || isLunatic) ? 2.5 : 0;
+          if (bonusSec > 0) {
+            this.timeLeft = Math.min(99.9, this.timeLeft + bonusSec);
+            this.showTimeBonusPopup(`+${bonusSec.toFixed(1)}秒!`, false);
+          }
           this.scene3D.spawnPerfectParticles();
           // 5コンボごと（5, 10, 15, 20...コンボ達成時）にコインシャワー発生！
           if (this.combo > 0 && this.combo % 5 === 0) {
@@ -5599,14 +5600,16 @@
         const isLunatic = this.difficulty === 'LUNATIC';
         const diff = coinsAfter - coinsBefore;
         const diffStr = diff < 0 ? `${diff}枚スッキリ!` : (diff === 0 ? `増減なし` : `+${diff}枚増加...`);
-        const bonusSec = isHardOrExOrLun ? '+2.5秒' : '+3.0秒';
+        const bonusSec = isHardOrExOrLun ? '+2.5秒' : '';
 
         if (grade === 'PERFECT') {
           card.className = 'w-full bg-slate-900/95 backdrop-blur-md border-2 border-amber-400 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
           badge.className = 'text-xl sm:text-3xl font-black tracking-wider mb-0.5 text-amber-300 drop-shadow';
           badge.textContent = changeAmount === 0 ? '👑 PERFECT!! ピッタリ神会計！' : '✨ PERFECT!! 神会計！';
           subtitle.className = 'text-[11px] sm:text-xs font-bold text-emerald-300 mb-1';
-          subtitle.textContent = `スコア +${earnedScore.toLocaleString()} ／ タイムボーナス ${bonusSec}！`;
+          subtitle.textContent = bonusSec
+            ? `スコア +${earnedScore.toLocaleString()} ／ タイムボーナス ${bonusSec}！`
+            : `スコア +${earnedScore.toLocaleString()}！`;
         } else if (grade === 'LUNATIC_TIMEOUT') {
           card.className = 'w-full bg-slate-950/95 backdrop-blur-md border-2 border-rose-500 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
           badge.className = 'text-xl sm:text-2xl font-black tracking-wider mb-0.5 text-rose-400 drop-shadow';
@@ -6301,5 +6304,3 @@
   </script>
 </body>
 </html>
-
-
