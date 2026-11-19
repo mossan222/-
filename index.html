@@ -2237,6 +2237,11 @@
         this.bgmStep = 0;
         this.isBgmPlaying = false;
         this.isZoneBgm = false;
+        this.isDopaBgm = false;
+        this.dopaAudio = new Audio(encodeURI('./鉄の獣.mp3'));
+        this.dopaAudio.loop = true;
+        this.dopaAudio.volume = 0.55;
+        this.dopaAudio.preload = 'auto';
       }
 
       init() {
@@ -2298,6 +2303,20 @@
       setZoneBGM(isZone) {
         if (this.isZoneBgm === isZone) return;
         this.isZoneBgm = isZone;
+        if (this.isBgmPlaying && !this.isDopaBgm) {
+          this.stopBGM();
+          this.startBGM();
+        }
+      }
+
+      setDopaBGM(enabled) {
+        const next = Boolean(enabled);
+        if (this.isDopaBgm === next) return;
+        this.isDopaBgm = next;
+        if (!next && this.dopaAudio) {
+          this.dopaAudio.pause();
+          this.dopaAudio.currentTime = 0;
+        }
         if (this.isBgmPlaying) {
           this.stopBGM();
           this.startBGM();
@@ -2339,9 +2358,33 @@
       startBGM() {
         if (!this.bgmEnabled) return;
         this.init();
-        if (!this.ctx) return;
         if (this.isBgmPlaying) return;
 
+        this.isBgmPlaying = true;
+
+        if (this.isDopaBgm && this.dopaAudio) {
+          const playPromise = this.dopaAudio.play();
+          if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => {
+              // 音声ファイル未配置などで再生できない場合は通常シンセBGMへフォールバック
+              if (this.isBgmPlaying && this.isDopaBgm) {
+                this.isBgmPlaying = false;
+                this._startSynthBGM();
+              }
+            });
+          }
+          return;
+        }
+
+        this._startSynthBGM();
+      }
+
+      _startSynthBGM() {
+        if (!this.bgmEnabled) return;
+        if (!this.ctx) {
+          this.isBgmPlaying = false;
+          return;
+        }
         this.isBgmPlaying = true;
         const normalMelody = [
           523.25, 659.25, 783.99, 659.25,
@@ -2429,6 +2472,9 @@
         if (this.bgmTimer) {
           clearInterval(this.bgmTimer);
           this.bgmTimer = null;
+        }
+        if (this.dopaAudio) {
+          this.dopaAudio.pause();
         }
         this.isBgmPlaying = false;
       }
@@ -5035,6 +5081,7 @@
         this.syncDopagakiUI();
         if (this.dopagakiMode) {
           sound.playPachinkoKyupin();
+          if (sound.bgmEnabled) sound.startBGM();
           this.triggerDopaBurstEffect('🌈 ドパガキモード ON!! 脳汁全開!! 🌈', false);
         } else {
           sound.playClick();
@@ -5047,6 +5094,7 @@
         if (this.scene3D && typeof this.scene3D.setDopagakiMode === 'function') {
           this.scene3D.setDopagakiMode(on);
         }
+        sound.setDopaBGM(on);
 
         const titleBtn = document.getElementById('btn-title-dopa');
         if (titleBtn) {
@@ -7069,4 +7117,4 @@
     });
   </script>
 </body>
-</html
+</html>
