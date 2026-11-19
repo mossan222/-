@@ -1351,6 +1351,7 @@
     const RANKING_KEY_LUNATIC_NO_CHANGE      = 'pittariman_ranking_lunatic_no_change';
     const PLAYER_NAME_STORAGE_KEY            = 'pittariman_player_name_v3';
     const PLAYER_HIGH_SCORES_KEY             = 'pittariman_player_highscores_v1';
+    const PLAYER_LUNATIC_HIGH_SCORES_KEY     = 'pittariman_player_lunatic_highscores_v1';
     const CUMULATIVE_SCORE_KEY               = 'pittariman_cumulative_score_v1';
 
     const DEFAULT_RANKINGS_CHANGE_MIN_WITH_CHANGE = [
@@ -1848,7 +1849,7 @@
         RankingManager.caches[slot] = initial;
         try {
           localStorage.setItem(key, JSON.stringify(initial));
-          localStorage.removeItem(PLAYER_HIGH_SCORES_KEY);
+          localStorage.removeItem(r === 'lunatic' ? PLAYER_LUNATIC_HIGH_SCORES_KEY : PLAYER_HIGH_SCORES_KEY);
         } catch (e) {}
 
         if (RankingManager.db) {
@@ -1878,9 +1879,10 @@
         } catch (e) {}
       }
 
-      static loadPlayerHighScoresMap() {
+      static loadPlayerHighScoresMap(isLunatic = false) {
         try {
-          const raw = localStorage.getItem(PLAYER_HIGH_SCORES_KEY);
+          const key = isLunatic ? PLAYER_LUNATIC_HIGH_SCORES_KEY : PLAYER_HIGH_SCORES_KEY;
+          const raw = localStorage.getItem(key);
           if (!raw) return {};
           const parsed = JSON.parse(raw);
           return parsed && typeof parsed === 'object' ? parsed : {};
@@ -1889,32 +1891,49 @@
         }
       }
 
-      static recordPlayerHighScore(name, score) {
+      static recordPlayerHighScore(name, score, isLunatic = false) {
         const cleanName = RankingManager.normalizeName(name);
-        const map = RankingManager.loadPlayerHighScoresMap();
+        const key = isLunatic ? PLAYER_LUNATIC_HIGH_SCORES_KEY : PLAYER_HIGH_SCORES_KEY;
+        const map = RankingManager.loadPlayerHighScoresMap(isLunatic);
         const prev = Number(map[cleanName] || 0);
         if (score > prev) {
           map[cleanName] = score;
           try {
-            localStorage.setItem(PLAYER_HIGH_SCORES_KEY, JSON.stringify(map));
+            localStorage.setItem(key, JSON.stringify(map));
           } catch (e) {}
         }
       }
 
       static getPlayerMaxScore(name) {
         const cleanName = RankingManager.normalizeName(name);
-        const map = RankingManager.loadPlayerHighScoresMap();
+        const map = RankingManager.loadPlayerHighScoresMap(false);
         let maxScore = Number(map[cleanName] || 0);
 
-        ['wallet', 'change', 'lunatic'].forEach((ruleType) => {
+        ['wallet', 'change'].forEach((ruleType) => {
           [true, false].forEach((showChange) => {
             const list = RankingManager.load(showChange, ruleType);
             for (const item of list) {
-              if (RankingManager.normalizeName(item.name) === cleanName && item.score > maxScore) {
+              if (RankingManager.normalizeName(item.name) === cleanName && item.mode !== 'LUNATIC' && item.score > maxScore) {
                 maxScore = item.score;
               }
             }
           });
+        });
+        return maxScore;
+      }
+
+      static getPlayerLunaticMaxScore(name) {
+        const cleanName = RankingManager.normalizeName(name);
+        const map = RankingManager.loadPlayerHighScoresMap(true);
+        let maxScore = Number(map[cleanName] || 0);
+
+        [true, false].forEach((showChange) => {
+          const list = RankingManager.load(showChange, 'lunatic');
+          for (const item of list) {
+            if (RankingManager.normalizeName(item.name) === cleanName && item.score > maxScore) {
+              maxScore = item.score;
+            }
+          }
         });
         return maxScore;
       }
@@ -4266,13 +4285,15 @@
 
       updateUnlockAndCumulativeUI() {
         const playerMax = RankingManager.getPlayerMaxScore(this.playerName);
+        const playerLunaticMax = RankingManager.getPlayerLunaticMaxScore(this.playerName);
         const rankExUnlocked = RankingManager.isExUnlockedForPlayer(this.playerName);
         const rankLunaticUnlocked = RankingManager.isLunaticUnlockedForPlayer(this.playerName);
+        const dualBestText = `通常 ${playerMax.toLocaleString()}pt ／ 🌙 ${playerLunaticMax.toLocaleString()}pt`;
 
         // Title screen high score & status (for current player name)
         const titleCumEl = document.getElementById('title-cumulative-score');
         const titleLunStatus = document.getElementById('title-lunatic-status');
-        if (titleCumEl) titleCumEl.textContent = `${playerMax.toLocaleString()} pt (${this.playerName})`;
+        if (titleCumEl) titleCumEl.textContent = `${dualBestText} (${this.playerName})`;
         if (titleLunStatus) {
           if (rankLunaticUnlocked) {
             titleLunStatus.textContent = `🌙 「${this.playerName}」LUNATIC 解放済！`;
@@ -4286,7 +4307,7 @@
         // Mode screen high score & status (for current player name)
         const modeCumEl = document.getElementById('mode-cumulative-score');
         const modeLunBadge = document.getElementById('mode-lunatic-badge');
-        if (modeCumEl) modeCumEl.textContent = `${playerMax.toLocaleString()} pt (${this.playerName})`;
+        if (modeCumEl) modeCumEl.textContent = `${dualBestText} (${this.playerName})`;
         if (modeLunBadge) {
           if (rankLunaticUnlocked) {
             modeLunBadge.textContent = `🌙 「${this.playerName}」LUNATIC 解放済！`;
@@ -4299,7 +4320,7 @@
 
         // Ranking modal player high score (strictly for this.playerName)
         const rankModalCumEl = document.getElementById('rank-modal-cumulative-score');
-        if (rankModalCumEl) rankModalCumEl.textContent = `${playerMax.toLocaleString()} pt`;
+        if (rankModalCumEl) rankModalCumEl.textContent = dualBestText;
 
         // Ranking EX unlock check (Player's own Best Score >= 50,000pt)
         const btnRankEx = document.getElementById('btn-rank-diff-ex');
@@ -6171,21 +6192,25 @@
         const isLunaticMinNotMet = this.difficulty === 'LUNATIC' && totalServed < 5;
         const canRecordScore = !isLunaticMinNotMet;
 
-        // ランキング挑戦時はプレイヤー名ごとの最高スコア記録に反映（プレイヤー別の最高50,000ptでEX、300,000ptでLUNATIC解放！）
+        // ランキング挑戦時はプレイヤー名ごとの最高スコア記録に反映（ルナティックとそれ以外のモードで最高ptを分離管理）
+        const isLunaticMode = this.difficulty === 'LUNATIC';
         if (canRecordScore) {
           RankingManager.addCumulativeScore(this.score);
           if (this.isRankingRun) {
-            RankingManager.recordPlayerHighScore(this.playerName, this.score);
+            RankingManager.recordPlayerHighScore(this.playerName, this.score, isLunaticMode);
           }
         }
-        const playerBestNow = (this.isRankingRun && canRecordScore)
+        const normalBestNow = (this.isRankingRun && canRecordScore && !isLunaticMode)
           ? Math.max(RankingManager.getPlayerMaxScore(this.playerName), this.score)
           : RankingManager.getPlayerMaxScore(this.playerName);
-        const isLunaticNowUnlocked = playerBestNow >= LUNATIC_UNLOCK_SCORE;
+        const lunaticBestNow = (this.isRankingRun && canRecordScore && isLunaticMode)
+          ? Math.max(RankingManager.getPlayerLunaticMaxScore(this.playerName), this.score)
+          : RankingManager.getPlayerLunaticMaxScore(this.playerName);
+        const isLunaticNowUnlocked = normalBestNow >= LUNATIC_UNLOCK_SCORE;
 
         const resCumEl = document.getElementById('res-cumulative-score');
         const resLunEl = document.getElementById('res-lunatic-status');
-        if (resCumEl) resCumEl.textContent = `${playerBestNow.toLocaleString()} pt (${this.playerName})`;
+        if (resCumEl) resCumEl.textContent = `通常 ${normalBestNow.toLocaleString()}pt ／ 🌙 ${lunaticBestNow.toLocaleString()}pt (${this.playerName})`;
         if (resLunEl) {
           if (isLunaticNowUnlocked) {
             resLunEl.textContent = `🌙 「${this.playerName}」LUNATIC 解放済！`;
@@ -6257,7 +6282,7 @@
             rankInBadge.textContent = `記録対象外 (${totalServed}/5人)`;
             rankInBadge.className = 'text-[10px] sm:text-xs font-black px-2.5 py-0.5 rounded-full bg-rose-900/90 text-rose-200 border border-rose-500/70';
           } else {
-            RankingManager.recordPlayerHighScore(this.playerName, this.score);
+            RankingManager.recordPlayerHighScore(this.playerName, this.score, isLunaticRank);
 
             const saveResult = RankingManager.saveScore(
               this.playerName,
