@@ -260,6 +260,140 @@
       background: rgba(251, 191, 36, 0.5);
       border-radius: 8px;
     }
+    /* === DOPAGAKI MODE STYLES (Visual-only, zero gameplay impact) === */
+    @keyframes dopaHueCycle {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+    @keyframes dopaRainbowBorder {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes dopaBurstSpin {
+      0% { transform: translate(-50%, -50%) rotate(0deg) scale(0.75); opacity: 0.72; }
+      70% { transform: translate(-50%, -50%) rotate(150deg) scale(1.15); opacity: 0.55; }
+      100% { transform: translate(-50%, -50%) rotate(220deg) scale(1.35); opacity: 0; }
+    }
+    @keyframes dopaCutinPop {
+      0% { transform: scale(2.1) rotate(-6deg); opacity: 0; }
+      22% { transform: scale(0.96) rotate(2deg); opacity: 1; }
+      78% { transform: scale(1.05) rotate(-1deg); opacity: 1; }
+      100% { transform: scale(1.25) translateY(-18px); opacity: 0; }
+    }
+    @keyframes dopaSparkFly {
+      0% { transform: translate(0, 0) scale(0.5) rotate(0deg); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(1.25) rotate(360deg); opacity: 0; }
+    }
+    @keyframes dopaConfettiFall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(105vh) rotate(720deg); opacity: 0.2; }
+    }
+    @keyframes dopaFlashSweep {
+      0% { opacity: 0.65; }
+      100% { opacity: 0; }
+    }
+    #dopa-rainbow-frame {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 25;
+      display: none;
+      border: 5px solid transparent;
+      box-shadow:
+        inset 0 0 22px 4px rgba(255, 0, 200, 0.65),
+        inset 0 0 42px 8px rgba(0, 238, 255, 0.45);
+      animation: dopaHueCycle 1.8s linear infinite;
+    }
+    body.dopagaki-mode #dopa-rainbow-frame {
+      display: block;
+    }
+    body.dopagaki-mode #pos-panel {
+      border-color: #f472b6 !important;
+      box-shadow:
+        inset 0 4px 12px rgba(0, 0, 0, 0.85),
+        0 0 18px rgba(232, 121, 249, 0.65),
+        0 0 32px rgba(56, 189, 248, 0.45);
+    }
+    body.dopagaki-mode .wallet-card {
+      border-top: 3px solid #f472b6;
+      box-shadow: 0 -8px 28px rgba(232, 121, 249, 0.45), 0 -4px 16px rgba(56, 189, 248, 0.35);
+    }
+    body.dopagaki-mode #btn-checkout {
+      background: linear-gradient(90deg, #ff0080, #ff8c00, #ffe600, #00e676, #00b0ff, #d500f9, #ff0080) !important;
+      background-size: 260% 100% !important;
+      animation: dopaRainbowBorder 1.8s linear infinite;
+      color: #0f172a !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.75);
+      border-bottom-color: #701a75 !important;
+    }
+    body.dopagaki-mode #ui-score {
+      background: linear-gradient(90deg, #fde047, #f472b6, #38bdf8, #4ade80, #fde047);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: dopaRainbowBorder 1.4s linear infinite;
+    }
+    body.dopagaki-mode #clerk-bubble-box {
+      border-color: #e879f9 !important;
+      box-shadow: 0 0 18px rgba(232, 121, 249, 0.7), 0 0 28px rgba(56, 189, 248, 0.5);
+    }
+    .dopa-sunburst {
+      position: fixed;
+      left: 50%;
+      top: 44%;
+      width: 140vmax;
+      height: 140vmax;
+      border-radius: 9999px;
+      background: repeating-conic-gradient(
+        from 0deg,
+        rgba(255, 0, 128, 0.38) 0deg 10deg,
+        rgba(255, 230, 0, 0.35) 10deg 20deg,
+        rgba(0, 230, 255, 0.35) 20deg 30deg,
+        rgba(168, 85, 247, 0.35) 30deg 40deg
+      );
+      pointer-events: none;
+      animation: dopaBurstSpin 1.15s ease-out forwards;
+    }
+    .dopa-rainbow-flash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(255,0,200,0.38) 45%, rgba(0,225,255,0.22) 100%);
+      pointer-events: none;
+      animation: dopaFlashSweep 0.55s ease-out forwards;
+    }
+    .dopa-cutin-banner {
+      position: fixed;
+      left: 50%;
+      top: 24%;
+      transform: translateX(-50%);
+      pointer-events: none;
+      white-space: nowrap;
+      padding: 8px 20px;
+      border-radius: 9999px;
+      border: 3px solid #ffffff;
+      background: linear-gradient(90deg, #ff0080, #ff8c00, #fde047, #22c55e, #06b6d4, #a855f7, #ff0080);
+      background-size: 240% 100%;
+      box-shadow: 0 0 32px rgba(255, 0, 200, 0.9), 0 0 54px rgba(56, 189, 248, 0.8);
+      animation: dopaCutinPop 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards, dopaRainbowBorder 0.9s linear infinite;
+    }
+    .dopa-spark-pop {
+      position: fixed;
+      pointer-events: none;
+      font-weight: 900;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.95), 0 2px 6px rgba(0, 0, 0, 0.85);
+      animation: dopaSparkFly 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .dopa-confetti {
+      position: fixed;
+      top: -16px;
+      width: 10px;
+      height: 16px;
+      border-radius: 3px;
+      pointer-events: none;
+      animation: dopaConfettiFall var(--dur) linear forwards;
+    }
   </style>
 </head>
 <body class="text-white select-none">
@@ -297,6 +431,10 @@
   <!-- ZONE SHOCKWAVE & CUT-IN OVERLAY (#zone-shockwave-layer) -->
   <div id="zone-shockwave-layer" class="fixed inset-0 z-50 hidden pointer-events-none items-center justify-center overflow-hidden"></div>
 
+  <!-- DOPAGAKI RAINBOW LED FRAME & FX OVERLAY (pointer-events-none: zero gameplay impact) -->
+  <div id="dopa-rainbow-frame" aria-hidden="true"></div>
+  <div id="dopa-fx-layer" class="fixed inset-0 z-30 pointer-events-none overflow-hidden" aria-hidden="true"></div>
+
   <!-- =========================================================================
        SCREEN 1: TITLE SCREEN (#screen-title)
        ========================================================================= -->
@@ -313,6 +451,9 @@
           </button>
           <button id="btn-title-se" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[11px] font-extrabold px-2.5 py-1 rounded-xl text-emerald-300 flex items-center gap-1">
             <span>🔊</span><span class="se-label-text">SE ON</span>
+          </button>
+          <button id="btn-title-dopa" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-fuchsia-500/60 text-[11px] font-black px-2.5 py-1 rounded-xl text-fuchsia-300 flex items-center gap-1" title="虹色・パチンコ音・星目演出（プレイ影響なし）">
+            <span>🌈</span><span class="dopa-label-text">ドパガキ OFF</span>
           </button>
         </div>
       </div>
@@ -472,6 +613,23 @@
         </div>
       </div>
 
+      <!-- Dopagaki Mode Toggle Bar (Visual & Sound FX only, zero gameplay impact) -->
+      <div class="bg-gradient-to-r from-fuchsia-950/75 via-slate-900/90 to-cyan-950/75 border border-fuchsia-400/60 rounded-2xl px-3 py-2 mb-3 flex items-center justify-between gap-2 text-left">
+        <div class="min-w-0 flex-1">
+          <div class="text-xs font-black text-fuchsia-300 flex items-center gap-1 flex-wrap">
+            <span>🌈 ドパガキモード</span>
+            <span class="text-[9px] bg-slate-950/90 text-cyan-300 border border-cyan-400/50 px-1.5 py-0.5 rounded-full">プレイ影響なし</span>
+          </div>
+          <p class="text-[10px] text-slate-300 leading-tight mt-0.5">
+            虹色ネオン・パチンコ確定音（キュイキュイ＆キュピーン）・店員の目が★・脳汁MAXエフェクト！
+          </p>
+        </div>
+        <button id="btn-mode-toggle-dopa" class="btn-3d shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-slate-900 border-fuchsia-500/70 text-fuchsia-300 flex items-center gap-1 shadow">
+          <span id="mode-dopa-icon">🌈</span>
+          <span id="mode-dopa-text">ドパガキ: OFF</span>
+        </button>
+      </div>
+
       <!-- Mode Cards -->
       <div class="space-y-2.5 mb-3.5">
         <!-- 0. TUTORIAL MODE -->
@@ -505,7 +663,7 @@
                 <span class="text-[10px] font-black bg-emerald-400 text-slate-950 px-2 py-0.5 rounded-full">すぐ遊べる・練習に最適</span>
               </div>
               <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-snug">
-                制限時間 <span class="font-bold text-white">60秒</span> ／ PERFECTで <span class="text-emerald-300 font-bold">+3.0秒</span> ボーナス！気軽に遊べる標準フリープレイ。
+                制限時間 <span class="font-bold text-white">60秒</span> ／ 気軽に遊べる標準フリープレイ。
               </p>
             </div>
           </div>
@@ -762,7 +920,7 @@
                 <span class="text-[10px] font-black bg-emerald-400 text-slate-950 px-2 py-0.5 rounded-full">60秒・標準</span>
               </div>
               <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5">
-                安定したコンボと時間ボーナス（+3.0秒）で着実にハイスコアを伸ばす王道コース！
+                安定したコンボで着実にハイスコアを伸ばす王道コース！
               </p>
             </div>
           </div>
@@ -1050,6 +1208,12 @@
               <span id="hud-helper-label" class="hidden sm:inline">店長OFF</span>
             </button>
 
+            <!-- Dopagaki Mode ON/OFF Toggle Button -->
+            <button id="btn-hud-dopa-toggle" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-fuchsia-500/60 text-fuchsia-300 font-black text-[9px] sm:text-[10px] px-1.5 h-6 sm:h-7 rounded-lg flex items-center justify-center gap-0.5 shadow shrink-0" title="ドパガキモード ON/OFF（プレイ影響なし）">
+              <span id="hud-dopa-icon">🌈</span>
+              <span id="hud-dopa-label" class="hidden sm:inline">ドパOFF</span>
+            </button>
+
             <!-- BGM Toggle Button -->
             <button id="btn-bgm-toggle" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 px-1.5 h-6 sm:h-7 rounded-lg flex items-center justify-center text-[10px] font-bold text-amber-300 shadow shrink-0" title="BGM ON/OFF">
               🎵
@@ -1152,7 +1316,7 @@
             ✨ PERFECT!! ✨
           </div>
           <div id="ui-judgment-subtitle" class="text-[11px] sm:text-xs font-bold text-emerald-300 mb-1">
-            神会計！財布の小銭が最小になりました！ (+3.0秒)
+            神会計！財布の小銭が最小になりました！
           </div>
           <div id="ui-judgment-stats" class="bg-slate-800/90 rounded-xl px-2 py-1 text-[11px] sm:text-xs text-slate-200 border border-slate-700 mb-1">
             お釣り: ¥500 (500円玉×1) ／ 財布の小銭: 6枚 ➔ 2枚 (-4枚!)
@@ -2485,6 +2649,108 @@
           osc.stop(t + 0.13);
         });
       }
+
+      // パチンコ風「キュピーン！」音（鋭い高音ピッチスイープ＋キラキラ残響）
+      playPachinkoKyupin() {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        // メインの「キュピーン！」
+        const osc1 = this.ctx.createOscillator();
+        const gain1 = this.ctx.createGain();
+        osc1.type = 'sawtooth';
+        osc1.frequency.setValueAtTime(1150, now);
+        osc1.frequency.exponentialRampToValueAtTime(3850, now + 0.065);
+        osc1.frequency.exponentialRampToValueAtTime(2650, now + 0.24);
+        gain1.gain.setValueAtTime(0.11, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+        osc1.connect(gain1);
+        gain1.connect(this.ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.27);
+
+        // 金属的キラキラ倍音（ピンッ！）
+        [2637.02, 3520.0, 5274.04].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          const t = now + 0.045 + idx * 0.015;
+          osc.frequency.setValueAtTime(freq, t);
+          gain.gain.setValueAtTime(0.09 / (idx + 1), t);
+          gain.gain.exponentialRampToValueAtTime(0.0008, t + 0.32);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.34);
+        });
+      }
+
+      // パチンコ確定音「キュイ・キュイ・キュイ・キュイーン！！」
+      playPachinkoKyuin() {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        // 3連「キュイ・キュイ・キュイ」＋フィニッシュ「キュイーーーン！！」
+        const bursts = [
+          { offset: 0.00, dur: 0.095, startF: 1050, peakF: 3600, vol: 0.14 },
+          { offset: 0.105, dur: 0.095, startF: 1200, peakF: 4000, vol: 0.15 },
+          { offset: 0.21, dur: 0.095, startF: 1350, peakF: 4400, vol: 0.16 },
+          { offset: 0.32, dur: 0.42,  startF: 1500, peakF: 5200, vol: 0.17 }
+        ];
+
+        bursts.forEach((b, i) => {
+          const t = now + b.offset;
+          const osc = this.ctx.createOscillator();
+          const osc2 = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = 'sawtooth';
+          osc2.type = 'square';
+          osc.frequency.setValueAtTime(b.startF, t);
+          osc.frequency.exponentialRampToValueAtTime(b.peakF, t + b.dur * 0.65);
+          osc.frequency.exponentialRampToValueAtTime(b.peakF * (i === 3 ? 0.88 : 0.72), t + b.dur);
+
+          osc2.frequency.setValueAtTime(b.startF * 1.5, t);
+          osc2.frequency.exponentialRampToValueAtTime(b.peakF * 1.25, t + b.dur * 0.65);
+
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(2800, t);
+          filter.Q.value = 2.2;
+
+          gain.gain.setValueAtTime(b.vol, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + b.dur);
+
+          osc.connect(filter);
+          osc2.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(t);
+          osc2.start(t);
+          osc.stop(t + b.dur + 0.02);
+          osc2.stop(t + b.dur + 0.02);
+        });
+
+        // 脳汁シャキーン確定和音
+        const chordTime = now + 0.34;
+        [1046.50, 1318.51, 1567.98, 2093.00, 2637.02].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, chordTime + idx * 0.025);
+          gain.gain.setValueAtTime(0.11, chordTime + idx * 0.025);
+          gain.gain.exponentialRampToValueAtTime(0.001, chordTime + 0.62);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(chordTime + idx * 0.025);
+          osc.stop(chordTime + 0.65);
+        });
+      }
     }
 
     const sound = new SoundManager();
@@ -2767,6 +3033,10 @@
         this.titleOrbitCoins = [];
         this.zoneStarsGroup = null;
         this.isZoneActive = false;
+        this.isDopagakiMode = false;
+        this.dopaRainbowLight = null;
+        this.trayRimMat = null;
+        this.clerkStarEyes = [];
         this.isTitleMode = true;
 
         this.clerkAnimState = 'idle';
@@ -2819,6 +3089,10 @@
         const clerkFrontLight = new THREE.PointLight(0xfff9f0, 0.85, 14);
         clerkFrontLight.position.set(1.1, 3.6, 1.5);
         this.scene.add(clerkFrontLight);
+
+        this.dopaRainbowLight = new THREE.PointLight(0xff00ff, 0, 26);
+        this.dopaRainbowLight.position.set(0, 5.2, 2.2);
+        this.scene.add(this.dopaRainbowLight);
       }
 
       setupEnvironment() {
@@ -2845,9 +3119,12 @@
         const trayDepth = 3.6;
         const baseMat = new THREE.MeshStandardMaterial({
           color: 0x134da8,
+          emissive: 0x000000,
+          emissiveIntensity: 0.0,
           roughness: 0.35,
           metalness: 0.12
         });
+        this.trayRimMat = baseMat;
 
         const innerFloorGeo = new THREE.BoxGeometry(trayWidth - 0.36, 0.14, trayDepth - 0.36);
         const innerFloorMat = new THREE.MeshStandardMaterial({
@@ -2914,18 +3191,47 @@
         this.scene.add(this.zoneStarsGroup);
       }
 
-      setZoneMode(active) {
-        this.isZoneActive = active;
+      syncSceneMood() {
+        const showStars = this.isZoneActive || this.isDopagakiMode;
         if (this.zoneStarsGroup) {
-          this.zoneStarsGroup.visible = active;
+          this.zoneStarsGroup.visible = showStars;
         }
-        if (active) {
+        if (this.isZoneActive) {
           this.scene.background.setHex(0x07051a);
           if (this.scene.fog) this.scene.fog.color.setHex(0x07051a);
+        } else if (this.isDopagakiMode) {
+          this.scene.background.setHex(0x120624);
+          if (this.scene.fog) this.scene.fog.color.setHex(0x120624);
         } else {
           this.scene.background.setHex(0x1a1410);
           if (this.scene.fog) this.scene.fog.color.setHex(0x1a1410);
         }
+        if (!this.isDopagakiMode) {
+          if (this.trayRimMat) {
+            this.trayRimMat.color.setHex(0x134da8);
+            this.trayRimMat.emissive.setHex(0x000000);
+            this.trayRimMat.emissiveIntensity = 0.0;
+          }
+          if (this.dopaRainbowLight) {
+            this.dopaRainbowLight.intensity = 0;
+          }
+        }
+        if (this.clerkEyes && this.clerkStarEyes && this.clerkEyes.length === 2 && this.clerkStarEyes.length === 2) {
+          this.clerkEyes[0].visible = !this.isDopagakiMode;
+          this.clerkEyes[1].visible = !this.isDopagakiMode;
+          this.clerkStarEyes[0].visible = this.isDopagakiMode;
+          this.clerkStarEyes[1].visible = this.isDopagakiMode;
+        }
+      }
+
+      setZoneMode(active) {
+        this.isZoneActive = active;
+        this.syncSceneMood();
+      }
+
+      setDopagakiMode(active) {
+        this.isDopagakiMode = Boolean(active);
+        this.syncSceneMood();
       }
 
       spawnCoinShower(comboCount = 5) {
@@ -3040,6 +3346,41 @@
           eyeGroup.add(eye, hl);
           this.clerkHeadGroup.add(eyeGroup);
           this.clerkEyes.push(eyeGroup);
+        });
+
+        // ドパガキモード専用：店員さんのキラキラ立体「星（★）」の目
+        this.clerkStarEyes = [];
+        const starShape = new THREE.Shape();
+        const outerR = 0.145;
+        const innerR = 0.062;
+        for (let i = 0; i < 10; i++) {
+          const r = i % 2 === 0 ? outerR : innerR;
+          const a = (i * Math.PI) / 5 + Math.PI / 2;
+          const sx = Math.cos(a) * r;
+          const sy = Math.sin(a) * r;
+          if (i === 0) starShape.moveTo(sx, sy);
+          else starShape.lineTo(sx, sy);
+        }
+        starShape.closePath();
+        const starGeo = new THREE.ExtrudeGeometry(starShape, { depth: 0.04, bevelEnabled: false });
+        starGeo.center();
+
+        [-0.22, 0.22].forEach((ex) => {
+          const starGroup = new THREE.Group();
+          starGroup.position.set(ex, 0.06, 0.625);
+          starGroup.rotation.y = ex < 0 ? -0.22 : 0.22;
+          const starMat = new THREE.MeshBasicMaterial({ color: 0xffe600 });
+          const starMesh = new THREE.Mesh(starGeo, starMat);
+          const starCore = new THREE.Mesh(
+            new THREE.CircleGeometry(0.04, 12),
+            new THREE.MeshBasicMaterial({ color: 0xffffff })
+          );
+          starCore.position.z = 0.025;
+          starGroup.add(starMesh, starCore);
+          starGroup.userData = { starMat };
+          starGroup.visible = false;
+          this.clerkHeadGroup.add(starGroup);
+          this.clerkStarEyes.push(starGroup);
         });
 
         const cheekMat = new THREE.MeshBasicMaterial({ color: 0xf472b6 });
@@ -3202,12 +3543,33 @@
           rightArmZ = -0.32 - Math.sin(nowSec * 3.2) * 0.06;
         }
 
-        if (this.clerkEyes && this.clerkEyes.length === 2) {
+        if (this.isDopagakiMode && this.clerkStarEyes && this.clerkStarEyes.length === 2) {
+          const pulse = 1.05 + Math.sin(nowSec * 14) * 0.22;
+          this.clerkStarEyes.forEach((sg, idx) => {
+            sg.visible = true;
+            sg.rotation.z = nowSec * (idx === 0 ? 4.2 : -4.2);
+            sg.scale.setScalar(pulse);
+            if (sg.userData && sg.userData.starMat) {
+              const hue = (nowSec * 0.9 + idx * 0.25) % 1;
+              sg.userData.starMat.color.setHSL(hue, 1.0, 0.62);
+            }
+          });
+          if (this.clerkEyes && this.clerkEyes.length === 2) {
+            this.clerkEyes[0].visible = false;
+            this.clerkEyes[1].visible = false;
+          }
+        } else if (this.clerkEyes && this.clerkEyes.length === 2) {
           const blinkCycle = nowSec % 3.8;
           const isBlinking = blinkCycle > 3.66;
           const eyeScaleY = isBlinking ? 0.12 : 1.0;
+          this.clerkEyes[0].visible = true;
+          this.clerkEyes[1].visible = true;
           this.clerkEyes[0].scale.y = eyeScaleY;
           this.clerkEyes[1].scale.y = eyeScaleY;
+          if (this.clerkStarEyes && this.clerkStarEyes.length === 2) {
+            this.clerkStarEyes[0].visible = false;
+            this.clerkStarEyes[1].visible = false;
+          }
         }
 
         this.clerkGroup.position.y += (targetY - this.clerkGroup.position.y) * 0.25;
@@ -3541,9 +3903,12 @@
       }
 
       spawnPerfectParticles() {
-        const colors = [0xfbbf24, 0x34d399, 0x60a5fa, 0xf472b6, 0xfffbeb];
+        const colors = this.isDopagakiMode
+          ? [0xff0080, 0xff8c00, 0xffe600, 0x00ff88, 0x00e5ff, 0xc084fc, 0xffffff]
+          : [0xfbbf24, 0x34d399, 0x60a5fa, 0xf472b6, 0xfffbeb];
         const trayZ = this.trayGroup.position.z;
-        for (let i = 0; i < 38; i++) {
+        const count = this.isDopagakiMode ? 72 : 38;
+        for (let i = 0; i < count; i++) {
           const isCoinSparkle = i % 3 === 0;
           const geo = isCoinSparkle
             ? new THREE.CylinderGeometry(0.24, 0.24, 0.05, 16)
@@ -3735,8 +4100,22 @@
           }
         }
 
-        if (this.isZoneActive && this.zoneStarsGroup) {
-          this.zoneStarsGroup.rotation.y += dt * 0.18;
+        if ((this.isZoneActive || this.isDopagakiMode) && this.zoneStarsGroup) {
+          this.zoneStarsGroup.rotation.y += dt * (this.isDopagakiMode ? 0.45 : 0.18);
+        }
+
+        if (this.isDopagakiMode) {
+          const h = (nowSec * 0.55) % 1;
+          if (this.trayRimMat) {
+            this.trayRimMat.color.setHSL(h, 0.95, 0.54);
+            this.trayRimMat.emissive.setHSL((h + 0.15) % 1, 1.0, 0.35);
+            this.trayRimMat.emissiveIntensity = 0.65;
+          }
+          if (this.dopaRainbowLight) {
+            this.dopaRainbowLight.intensity = 1.65;
+            this.dopaRainbowLight.color.setHSL((h + 0.33) % 1, 1.0, 0.58);
+            this.dopaRainbowLight.position.x = Math.sin(nowSec * 3.2) * 3.4;
+          }
         }
 
         this.renderer.render(this.scene, this.camera);
@@ -3894,6 +4273,9 @@
         this.rankingShowChange = true;
         this.showChangeDisplay = true;
         this.aiHelperEnabled = false;
+        this.dopagakiMode = (() => {
+          try { return localStorage.getItem('pittariman_dopagaki_mode_v1') === '1'; } catch (e) { return false; }
+        })();
 
         // ルールコンセプト: 'wallet' (財布の小銭枚数最小ルール) | 'change' (お釣りの枚数最小ルール)
         this.ruleType = 'wallet';
@@ -3937,6 +4319,7 @@
         this.bindUIEvents();
         this.syncChangeToggleUI();
         this.syncHelperToggleUI();
+        this.syncDopagakiUI();
         this.syncRuleToggleUI();
         this.updateUnlockAndCumulativeUI();
         sound.syncSoundButtonsUI();
@@ -3949,6 +4332,13 @@
         document.getElementById('btn-title-se').addEventListener('click', () => {
           sound.toggleSE();
         });
+        const btnTitleDopa = document.getElementById('btn-title-dopa');
+        if (btnTitleDopa) {
+          btnTitleDopa.addEventListener('click', () => {
+            sound.init();
+            this.toggleDopagakiMode();
+          });
+        }
         document.getElementById('btn-bgm-toggle').addEventListener('click', () => {
           sound.toggleBGM();
         });
@@ -3995,6 +4385,14 @@
             sound.playClick();
             this.aiHelperEnabled = !this.aiHelperEnabled;
             this.syncHelperToggleUI();
+          });
+        }
+
+        const btnModeDopa = document.getElementById('btn-mode-toggle-dopa');
+        if (btnModeDopa) {
+          btnModeDopa.addEventListener('click', () => {
+            sound.init();
+            this.toggleDopagakiMode();
           });
         }
 
@@ -4223,6 +4621,14 @@
             this.aiHelperEnabled = !this.aiHelperEnabled;
             this.syncHelperToggleUI();
             this.renderWalletUI();
+          });
+        }
+
+        const btnHudDopa = document.getElementById('btn-hud-dopa-toggle');
+        if (btnHudDopa) {
+          btnHudDopa.addEventListener('click', () => {
+            sound.init();
+            this.toggleDopagakiMode();
           });
         }
 
@@ -4621,6 +5027,135 @@
         }
       }
 
+      toggleDopagakiMode() {
+        this.dopagakiMode = !this.dopagakiMode;
+        try {
+          localStorage.setItem('pittariman_dopagaki_mode_v1', this.dopagakiMode ? '1' : '0');
+        } catch (e) {}
+        this.syncDopagakiUI();
+        if (this.dopagakiMode) {
+          sound.playPachinkoKyupin();
+          this.triggerDopaBurstEffect('🌈 ドパガキモード ON!! 脳汁全開!! 🌈', false);
+        } else {
+          sound.playClick();
+        }
+      }
+
+      syncDopagakiUI() {
+        const on = Boolean(this.dopagakiMode);
+        document.body.classList.toggle('dopagaki-mode', on);
+        if (this.scene3D && typeof this.scene3D.setDopagakiMode === 'function') {
+          this.scene3D.setDopagakiMode(on);
+        }
+
+        const titleBtn = document.getElementById('btn-title-dopa');
+        if (titleBtn) {
+          titleBtn.className = on
+            ? 'btn-3d bg-gradient-to-r from-fuchsia-500 via-amber-400 to-cyan-400 text-slate-950 border-2 border-white text-[11px] font-black px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-lg animate-pulse'
+            : 'btn-3d bg-slate-800 hover:bg-slate-700 border border-fuchsia-500/60 text-[11px] font-black px-2.5 py-1 rounded-xl text-fuchsia-300 flex items-center gap-1';
+        }
+        document.querySelectorAll('.dopa-label-text').forEach((el) => {
+          el.textContent = on ? 'ドパガキ ON' : 'ドパガキ OFF';
+        });
+
+        const modeBtn = document.getElementById('btn-mode-toggle-dopa');
+        const modeText = document.getElementById('mode-dopa-text');
+        if (modeBtn && modeText) {
+          modeBtn.className = on
+            ? 'btn-3d shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-gradient-to-r from-fuchsia-500 via-amber-400 to-cyan-400 border-white text-slate-950 flex items-center gap-1 shadow-lg animate-pulse'
+            : 'btn-3d shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-slate-900 border-fuchsia-500/70 text-fuchsia-300 flex items-center gap-1 shadow';
+          modeText.textContent = on ? 'ドパガキ: ON!!' : 'ドパガキ: OFF';
+        }
+
+        const hudBtn = document.getElementById('btn-hud-dopa-toggle');
+        const hudLabel = document.getElementById('hud-dopa-label');
+        if (hudBtn && hudLabel) {
+          hudBtn.className = on
+            ? 'btn-3d bg-gradient-to-r from-fuchsia-500 via-amber-400 to-cyan-400 border border-white text-slate-950 font-black text-[9px] sm:text-[10px] px-1.5 h-6 sm:h-7 rounded-lg flex items-center justify-center gap-0.5 shadow shrink-0 animate-pulse'
+            : 'btn-3d bg-slate-800 hover:bg-slate-700 border border-fuchsia-500/60 text-fuchsia-300 font-black text-[9px] sm:text-[10px] px-1.5 h-6 sm:h-7 rounded-lg flex items-center justify-center gap-0.5 shadow shrink-0';
+          hudLabel.textContent = on ? 'ドパON' : 'ドパOFF';
+        }
+      }
+
+      spawnDopaTapSparks(denom) {
+        if (!this.dopagakiMode) return;
+        const layer = document.getElementById('dopa-fx-layer');
+        if (!layer) return;
+
+        const cx = window.innerWidth * (0.28 + Math.random() * 0.44);
+        const cy = window.innerHeight * (0.36 + Math.random() * 0.24);
+        const icons = ['✨', '🌈', '💎', '⚡', '★', '🪙'];
+        const colors = ['#ff0080', '#fde047', '#38bdf8', '#4ade80', '#e879f9', '#fb923c'];
+
+        for (let i = 0; i < 6; i++) {
+          const el = document.createElement('div');
+          el.className = 'dopa-spark-pop text-sm sm:text-lg';
+          el.textContent = icons[i % icons.length];
+          const angle = (Math.PI * 2 * i) / 6 + (Math.random() - 0.5) * 0.5;
+          const dist = 42 + Math.random() * 58;
+          el.style.left = `${cx}px`;
+          el.style.top = `${cy}px`;
+          el.style.color = colors[i % colors.length];
+          el.style.setProperty('--dx', `${Math.round(Math.cos(angle) * dist)}px`);
+          el.style.setProperty('--dy', `${Math.round(Math.sin(angle) * dist - 20)}px`);
+          layer.appendChild(el);
+          setTimeout(() => el.remove(), 740);
+        }
+
+        const hypeWords = [`+¥${denom.toLocaleString()}!!`, 'キュピーン!!', 'アツい!!', '脳汁!!', 'キタァ!!'];
+        const wordEl = document.createElement('div');
+        wordEl.className = 'dopa-spark-pop text-xs sm:text-base font-black';
+        wordEl.textContent = hypeWords[Math.floor(Math.random() * hypeWords.length)];
+        wordEl.style.left = `${cx - 24}px`;
+        wordEl.style.top = `${cy - 12}px`;
+        wordEl.style.color = colors[Math.floor(Math.random() * colors.length)];
+        wordEl.style.setProperty('--dx', `${Math.round((Math.random() - 0.5) * 40)}px`);
+        wordEl.style.setProperty('--dy', '-65px');
+        layer.appendChild(wordEl);
+        setTimeout(() => wordEl.remove(), 740);
+      }
+
+      triggerDopaBurstEffect(customBannerText = null, heavyConfetti = true) {
+        if (!this.dopagakiMode) return;
+        const layer = document.getElementById('dopa-fx-layer');
+        if (!layer) return;
+
+        const flash = document.createElement('div');
+        flash.className = 'dopa-rainbow-flash';
+        layer.appendChild(flash);
+        setTimeout(() => flash.remove(), 580);
+
+        const burst = document.createElement('div');
+        burst.className = 'dopa-sunburst';
+        layer.appendChild(burst);
+        setTimeout(() => burst.remove(), 1180);
+
+        const banners = [
+          '🌈 777 大当たり!! キュイキュイキュイーン!! 🌈',
+          '💎 脳汁ブシャー!! 神確変 PERFECT!! 💎',
+          '⚡ 激アツ!! 超ドパガキ FEVER!! ⚡',
+          '★ 確定演出!! 虹色レジェンド会計!! ★'
+        ];
+        const banner = document.createElement('div');
+        banner.className = 'dopa-cutin-banner text-sm sm:text-2xl font-black text-slate-950 tracking-wider';
+        banner.textContent = customBannerText || banners[Math.floor(Math.random() * banners.length)];
+        layer.appendChild(banner);
+        setTimeout(() => banner.remove(), 1180);
+
+        if (heavyConfetti) {
+          const confettiColors = ['#ff0080', '#ff8c00', '#ffe600', '#00e676', '#00e5ff', '#a855f7', '#ffffff'];
+          for (let i = 0; i < 28; i++) {
+            const c = document.createElement('div');
+            c.className = 'dopa-confetti';
+            c.style.left = `${Math.random() * 100}%`;
+            c.style.backgroundColor = confettiColors[i % confettiColors.length];
+            c.style.setProperty('--dur', `${(1.1 + Math.random() * 0.9).toFixed(2)}s`);
+            layer.appendChild(c);
+            setTimeout(() => c.remove(), 2100);
+          }
+        }
+      }
+
       setModalRankingTab(showChange, ruleType = null) {
         this.modalRankingTabShowChange = showChange;
         if (ruleType) this.modalRankingTabRuleType = ruleType;
@@ -4868,7 +5403,7 @@
           lunaticNext: 'border-rose-400'
         };
 
-        iconEl.textContent = avatarMap[type] || '💁‍♀️';
+        iconEl.textContent = this.dopagakiMode ? '🤩' : (avatarMap[type] || '💁‍♀️');
 
         let text = customText;
         if (!text) {
@@ -5379,6 +5914,10 @@
         } else {
           sound.playBillIn();
         }
+        if (this.dopagakiMode) {
+          sound.playPachinkoKyupin();
+          this.spawnDopaTapSparks(denom);
+        }
 
         this.scene3D.spawnMoneyToTray(id, denom);
         this.updatePOSDisplay();
@@ -5398,6 +5937,9 @@
           const expectedAfterCoins = countWalletCoins(this.wallet) + changeInfo.coinCount;
           if (expectedAfterCoins <= this.bestSolution.finalCoins) {
             this.setClerkComment('optimalReady');
+            if (this.dopagakiMode) {
+              sound.playPachinkoKyupin();
+            }
           } else if (
             this.difficulty === 'NORMAL' &&
             this.bestSolution.paidCoinCount > 0 &&
@@ -5480,6 +6022,11 @@
           this.state = 'JUDGING';
           sound.playRegisterCheckout();
           sound.playPerfectFanfare();
+          if (this.dopagakiMode) {
+            sound.playPachinkoKyuin();
+            this.triggerDopaBurstEffect('🌈 777 神会計!! キュイキュイキュイーン!! 🌈', true);
+            this.scene3D.spawnCoinShower(8);
+          }
           this.scene3D.spawnPerfectParticles();
           this.scene3D.triggerClerkReaction('happy', 2.2);
           this.setClerkComment('perfect', 'おぉーっ！完璧な神会計です！お釣りが500円玉1枚にまとまりましたね🎉');
@@ -5663,17 +6210,22 @@
           earnedScore = Math.round((basePt + Math.max(0, netDiff) * 250) * comboMult * modeMultiplier * noChangeMult * zoneMult);
           this.score += earnedScore;
 
-          const bonusSec = isHard ? 1.5 : ((isEx || isLunatic) ? 2.5 : 3.0);
-          this.timeLeft = Math.min(99.9, this.timeLeft + bonusSec);
-
-          this.showTimeBonusPopup(`+${bonusSec.toFixed(1)}秒!`, false);
+          const bonusSec = isHard ? 1.5 : ((isEx || isLunatic) ? 2.5 : 0);
+          if (bonusSec > 0) {
+            this.timeLeft = Math.min(99.9, this.timeLeft + bonusSec);
+            this.showTimeBonusPopup(`+${bonusSec.toFixed(1)}秒!`, false);
+          }
           this.scene3D.spawnPerfectParticles();
-          // 5コンボごと（5, 10, 15, 20...コンボ達成時）にコインシャワー発生！
-          if (this.combo > 0 && this.combo % 5 === 0) {
-            this.scene3D.spawnCoinShower(this.combo);
+          // 5コンボごと（5, 10, 15, 20...コンボ達成時）またはドパガキモード時は毎回コインシャワー発生！
+          if (this.dopagakiMode || (this.combo > 0 && this.combo % 5 === 0)) {
+            this.scene3D.spawnCoinShower(Math.max(6, this.combo));
           }
           this.scene3D.triggerClerkReaction('happy', 1.5);
           sound.playPerfectFanfare();
+          if (this.dopagakiMode) {
+            sound.playPachinkoKyuin();
+            this.triggerDopaBurstEffect(null, true);
+          }
           if (this.combo === 10) {
             this.setClerkComment('perfect', '⚡10連続PERFECT達成！！『神域（ゾーン）』突入でスコア倍率がさらに1.35倍に跳ね上がります！！');
           } else {
@@ -5799,14 +6351,14 @@
         const isLunatic = this.difficulty === 'LUNATIC';
         const diff = coinsAfter - coinsBefore;
         const diffStr = diff < 0 ? `${diff}枚スッキリ!` : (diff === 0 ? `増減なし` : `+${diff}枚増加...`);
-        const bonusSec = this.difficulty === 'HARD' ? '+1.5秒' : ((this.difficulty === 'EX' || this.difficulty === 'LUNATIC') ? '+2.5秒' : '+3.0秒');
+        const bonusSec = this.difficulty === 'HARD' ? '+1.5秒' : ((this.difficulty === 'EX' || this.difficulty === 'LUNATIC') ? '+2.5秒' : '');
 
         if (grade === 'PERFECT') {
           card.className = 'w-full bg-slate-900/95 backdrop-blur-md border-2 border-amber-400 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
           badge.className = 'text-xl sm:text-3xl font-black tracking-wider mb-0.5 text-amber-300 drop-shadow';
           badge.textContent = changeAmount === 0 ? '👑 PERFECT!! ピッタリ神会計！' : '✨ PERFECT!! 神会計！';
           subtitle.className = 'text-[11px] sm:text-xs font-bold text-emerald-300 mb-1';
-          subtitle.textContent = `スコア +${earnedScore.toLocaleString()} ／ タイムボーナス ${bonusSec}！`;
+          subtitle.textContent = bonusSec ? `スコア +${earnedScore.toLocaleString()} ／ タイムボーナス ${bonusSec}！` : `スコア +${earnedScore.toLocaleString()}！`;
         } else if (grade === 'LUNATIC_TIMEOUT') {
           const limitSec = this.lunaticTurnLimit || 15;
           card.className = 'w-full bg-slate-950/95 backdrop-blur-md border-2 border-rose-500 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
@@ -6517,4 +7069,4 @@
     });
   </script>
 </body>
-</html>
+</html
