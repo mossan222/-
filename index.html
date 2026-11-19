@@ -1110,10 +1110,7 @@
         <!-- Populated by JS -->
       </div>
 
-      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
-        <button id="btn-reset-ranking" class="btn-3d bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-700/60 text-xs font-bold px-3 py-1.5 rounded-xl">
-          🗑️ 表示中の部門を初期化
-        </button>
+      <div class="flex items-center justify-end pt-2 border-t border-slate-800">
         <button id="btn-ranking-play-now" class="btn-3d bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black text-xs sm:text-sm px-4 py-2 rounded-xl">
           🏆 ランキングモードに挑戦する
         </button>
@@ -1563,9 +1560,6 @@
       appId: "1:14231242123:web:78a4b9a73855fc56681b8e",
       measurementId: "G-WNN447ZYTJ"
     };
-
-    // 共有ランキングをリセット（初期化）する際の管理者パスコード（好きな数字・文字に変更可）
-    const ADMIN_RESET_PIN = "2489";
 
     // 解放条件定数（最高スコア基準）
     const EX_UNLOCK_SCORE = 50000;
@@ -2068,31 +2062,6 @@
         }
 
         return resultObj;
-      }
-
-      static reset(showChange = true, ruleType = 'wallet') {
-        const r = RankingManager.normalizeRuleType(ruleType);
-        const key = RankingManager.getKey(showChange, r);
-        const slot = RankingManager.getCacheSlot(showChange, r);
-        const defaults = RankingManager.getDefaultList(showChange, r);
-        const initial = RankingManager.deduplicateAndSort(defaults);
-        RankingManager.caches[slot] = initial;
-        try {
-          localStorage.setItem(key, JSON.stringify(initial));
-          localStorage.removeItem(r === 'lunatic' ? PLAYER_LUNATIC_HIGH_SCORES_KEY : PLAYER_HIGH_SCORES_KEY);
-        } catch (e) {}
-
-        if (RankingManager.db) {
-          const seed = {};
-          initial.forEach((item) => {
-            seed[RankingManager.toSafeDbKey(item.name)] = item;
-          });
-          RankingManager.db.ref(RankingManager.getDbPath(showChange, r)).set(seed).catch((err) => {
-            console.warn('Firebase reset error:', err);
-          });
-        }
-
-        return initial;
       }
 
       static getSavedPlayerName() {
@@ -4333,8 +4302,6 @@
         this.resultRankingTabRuleType = 'wallet';
         this.resultRankingTabShowChange = true;
         this.lastHighlightEntryId = null;
-        this.rankingResetConfirmStep = 0;
-        this.rankingResetConfirmTimer = null;
 
         this.playerName = RankingManager.getSavedPlayerName() || '名無しの会計士';
 
@@ -4600,38 +4567,28 @@
 
         document.getElementById('tab-modal-rule-wallet').addEventListener('click', () => {
           sound.playClick();
-          this.resetRankingConfirmState();
           this.setModalRankingTab(this.modalRankingTabShowChange, 'wallet');
         });
         document.getElementById('tab-modal-rule-change').addEventListener('click', () => {
           sound.playClick();
-          this.resetRankingConfirmState();
           this.setModalRankingTab(this.modalRankingTabShowChange, 'change');
         });
         document.getElementById('tab-modal-rule-lunatic').addEventListener('click', () => {
           sound.playClick();
-          this.resetRankingConfirmState();
           this.setModalRankingTab(this.modalRankingTabShowChange, 'lunatic');
         });
         document.getElementById('tab-modal-rank-on').addEventListener('click', () => {
           sound.playClick();
-          this.resetRankingConfirmState();
           this.setModalRankingTab(true, this.modalRankingTabRuleType);
         });
         document.getElementById('tab-modal-rank-off').addEventListener('click', () => {
           sound.playClick();
-          this.resetRankingConfirmState();
           this.setModalRankingTab(false, this.modalRankingTabRuleType);
         });
 
         document.getElementById('btn-close-ranking-modal').addEventListener('click', () => {
           sound.playClick();
-          this.resetRankingConfirmState();
           switchScreen(this.prevScreenBeforeRanking || 'screen-title');
-        });
-
-        document.getElementById('btn-reset-ranking').addEventListener('click', () => {
-          this.handleRankingResetClick();
         });
 
         document.getElementById('btn-ranking-play-now').addEventListener('click', () => {
@@ -4754,71 +4711,6 @@
             this.startFreePlay(this.difficulty);
           }
         });
-      }
-
-      resetRankingConfirmState() {
-        this.rankingResetConfirmStep = 0;
-        if (this.rankingResetConfirmTimer) {
-          clearTimeout(this.rankingResetConfirmTimer);
-          this.rankingResetConfirmTimer = null;
-        }
-        const btn = document.getElementById('btn-reset-ranking');
-        if (btn) {
-          btn.textContent = '🗑️ 表示中の部門を初期化';
-          btn.className = 'btn-3d bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-700/60 text-xs font-bold px-3 py-1.5 rounded-xl';
-        }
-      }
-
-      handleRankingResetClick() {
-        const btn = document.getElementById('btn-reset-ranking');
-        if (!btn) return;
-
-        if (this.rankingResetConfirmTimer) {
-          clearTimeout(this.rankingResetConfirmTimer);
-          this.rankingResetConfirmTimer = null;
-        }
-
-        this.rankingResetConfirmStep = (this.rankingResetConfirmStep || 0) + 1;
-
-        if (this.rankingResetConfirmStep === 1) {
-          sound.playClick();
-          btn.textContent = '⚠️ 本当によろしいですか？ (1/3)';
-          btn.className = 'btn-3d bg-amber-900/95 hover:bg-amber-800 text-amber-200 border-2 border-amber-400 text-xs font-black px-3 py-1.5 rounded-xl shadow-lg';
-        } else if (this.rankingResetConfirmStep === 2) {
-          sound.playClick();
-          btn.textContent = '⚠️ 本当によろしいですか？ (2/3)';
-          btn.className = 'btn-3d bg-orange-900/95 hover:bg-orange-800 text-orange-100 border-2 border-orange-400 text-xs font-black px-3 py-1.5 rounded-xl shadow-lg';
-        } else if (this.rankingResetConfirmStep === 3) {
-          sound.playBadBuzzer();
-          btn.textContent = '🚨 本当によろしいですか！？ (3/3・次で消去)';
-          btn.className = 'btn-3d bg-rose-600 hover:bg-rose-500 text-white border-2 border-yellow-300 text-xs font-black px-3 py-1.5 rounded-xl shadow-xl animate-pulse';
-        } else if (this.rankingResetConfirmStep >= 4) {
-          if (RankingManager.isOnline) {
-            const inputPin = window.prompt('🌐 全員共有オンラインランキングを初期化するには管理者パスコードを入力してください：');
-            if (inputPin !== ADMIN_RESET_PIN) {
-              sound.playBadBuzzer();
-              this.resetRankingConfirmState();
-              alert('パスコードが一致しないため初期化をキャンセルしました。');
-              return;
-            }
-          }
-          sound.playReturn();
-          RankingManager.reset(this.modalRankingTabShowChange, this.modalRankingTabRuleType);
-          RankingManager.renderListToContainer('standalone-ranking-list', this.modalRankingTabShowChange, null, this.modalRankingTabRuleType);
-          this.updateUnlockAndCumulativeUI();
-          this.rankingResetConfirmStep = 0;
-          btn.textContent = '✅ 初期化しました';
-          btn.className = 'btn-3d bg-emerald-900/90 text-emerald-200 border border-emerald-400 text-xs font-black px-3 py-1.5 rounded-xl';
-          this.rankingResetConfirmTimer = setTimeout(() => {
-            this.resetRankingConfirmState();
-          }, 1800);
-          return;
-        }
-
-        // 操作がない場合は6秒後に安全のため確認ステップをリセット
-        this.rankingResetConfirmTimer = setTimeout(() => {
-          this.resetRankingConfirmState();
-        }, 6000);
       }
 
       updateUnlockAndCumulativeUI() {
@@ -5406,7 +5298,6 @@
 
       openStandaloneRankingModal(fromScreenId) {
         this.prevScreenBeforeRanking = fromScreenId;
-        this.resetRankingConfirmState();
         this.setModalRankingTab(this.modalRankingTabShowChange, this.ruleType);
         switchScreen('modal-ranking');
       }
