@@ -5299,10 +5299,10 @@
           sound.playBadBuzzer();
           this.scene3D.triggerClerkReaction('shock', 1.0);
 
-          if (isEx) {
+          if (isEx || isLunatic) {
             this.state = 'JUDGING';
             this.exSuddenDeathFailed = true;
-            this.setClerkComment('exFail');
+            this.setClerkComment('exFail', isLunatic ? 'あぁーっ！ルナティックモードはPERFECT以外即終了です…！極限の挑戦、お見事でした！' : null);
             const coinsBefore = countWalletCoins(this.wallet) + this.trayList.filter(it => it.denom <= 500).length;
             this.mistakeLogs.push({
               grade: '金額不足',
@@ -5399,7 +5399,7 @@
         const netDiff = coinsBefore - coinsAfter;
         if (netDiff > 0) this.totalCoinsSaved += netDiff;
 
-        if (isEx && grade !== 'PERFECT') {
+        if ((isEx || isLunatic) && grade !== 'PERFECT') {
           this.combo = 0;
           this.exSuddenDeathFailed = true;
           this.mistakeLogs.push({
@@ -5424,7 +5424,7 @@
           this.scene3D.clearAllTrayItems(false);
           this.scene3D.triggerClerkReaction('shock', 1.6);
           sound.playBadBuzzer();
-          this.setClerkComment('exFail');
+          this.setClerkComment('exFail', isLunatic ? 'あぁーっ！ルナティックモードはPERFECT以外即終了です…！極限の挑戦、お見事でした！' : null);
           this.updateTopHUD();
           this.renderWalletUI();
           this.showJudgmentFeedback('EX_FAIL', changeAmount, changeInfo, coinsBefore, coinsAfter, 0);
@@ -5607,9 +5607,11 @@
         } else if (grade === 'EX_FAIL') {
           card.className = 'w-full bg-slate-950/95 backdrop-blur-md border-2 border-fuchsia-500 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
           badge.className = 'text-xl sm:text-2xl font-black tracking-wider mb-0.5 text-fuchsia-400 drop-shadow';
-          badge.textContent = '💀 EX SUDDEN DEATH!! 即終了';
+          badge.textContent = isLunatic ? '🌙 LUNATIC SUDDEN DEATH!! 即終了' : '💀 EX SUDDEN DEATH!! 即終了';
           subtitle.className = 'text-[11px] sm:text-xs font-bold text-rose-300 mb-1';
-          subtitle.textContent = 'EXモードではPERFECT以外の会計で即ゲームオーバーとなります！';
+          subtitle.textContent = isLunatic
+            ? 'ルナティックモードではPERFECT以外の会計で即ゲームオーバーとなります！'
+            : 'EXモードではPERFECT以外の会計で即ゲームオーバーとなります！';
         } else if (grade === 'GOOD') {
           card.className = 'w-full bg-slate-900/95 backdrop-blur-md border-2 border-sky-400 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
           badge.className = 'text-xl sm:text-2xl font-black tracking-wider mb-0.5 text-sky-300 drop-shadow';
@@ -6001,7 +6003,7 @@
           }`;
 
           const gradeBadge = m.isExFail
-            ? `<span class="inline-block px-1.5 py-0.5 rounded bg-fuchsia-600 text-white text-[9px] font-black mr-1">💀EX終了(${m.grade})</span>`
+            ? `<span class="inline-block px-1.5 py-0.5 rounded ${m.isLunatic ? 'bg-rose-600' : 'bg-fuchsia-600'} text-white text-[9px] font-black mr-1">${m.isLunatic ? '🌙LUNATIC終了' : '💀EX終了'}(${m.grade})</span>`
             : (isGood
               ? '<span class="inline-block px-1.5 py-0.5 rounded bg-sky-500 text-white text-[9px] font-black mr-1">👍GOOD</span>'
               : '<span class="inline-block px-1.5 py-0.5 rounded bg-rose-500 text-white text-[9px] font-black mr-1">💦BAD</span>');
@@ -6087,8 +6089,10 @@
         let desc = 'まずはお釣りが500円や100円になるように端数を合わせてみよう！';
 
         if (this.exSuddenDeathFailed) {
-          title = '💀 EX サドンデス敗退';
-          desc = 'EXモードは1回のミスも許されない極限の戦い！リベンジで神会計を繋げよう！';
+          title = this.difficulty === 'LUNATIC' ? '🌙 LUNATIC サドンデス敗退' : '💀 EX サドンデス敗退';
+          desc = this.difficulty === 'LUNATIC'
+            ? 'ルナティックモードは1回のミスも許されない極限の戦い！リベンジで神会計を繋げよう！'
+            : 'EXモードは1回のミスも許されない極限の戦い！リベンジで神会計を繋げよう！';
         } else if (this.difficulty === 'LUNATIC' && this.score >= 35000) {
           title = '🌙✨ 消費税計算の超神・ルナティック制覇';
           desc = '本体価格からの消費税8%（小数点切り捨て）を瞬時に暗算する人間電卓レベルです！';
@@ -6215,4 +6219,3 @@
   </script>
 </body>
 </html>
-
