@@ -505,7 +505,7 @@
                 <span class="text-[10px] font-black bg-emerald-400 text-slate-950 px-2 py-0.5 rounded-full">すぐ遊べる・練習に最適</span>
               </div>
               <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-snug">
-                制限時間 <span class="font-bold text-white">60秒</span> ／ 気軽に遊べる標準フリープレイ。
+                制限時間 <span class="font-bold text-white">60秒</span> ／ PERFECTで <span class="text-emerald-300 font-bold">+3.0秒</span> ボーナス！気軽に遊べる標準フリープレイ。
               </p>
             </div>
           </div>
@@ -762,7 +762,7 @@
                 <span class="text-[10px] font-black bg-emerald-400 text-slate-950 px-2 py-0.5 rounded-full">60秒・標準</span>
               </div>
               <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5">
-                安定したコンボで着実にハイスコアを伸ばす王道コース！
+                安定したコンボと時間ボーナス（+3.0秒）で着実にハイスコアを伸ばす王道コース！
               </p>
             </div>
           </div>
@@ -800,7 +800,7 @@
                 <span id="rank-ex-lock-badge" class="text-[10px] font-black bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full">🔒 自己ベスト50,000ptで解放</span>
               </div>
               <p id="rank-ex-desc" class="text-[11px] sm:text-xs text-slate-300 mt-0.5">
-                一撃サドンデス！<span class="text-rose-300 font-bold">1回でもPERFECT以外を出すと即終了！</span>（45秒・スコア2.0倍）
+                一撃サドンデス！<span class="text-rose-300 font-bold">1回でもPERFECT以外を出すと即終了！</span>（45秒・スコア10倍）
               </p>
             </div>
           </div>
@@ -852,7 +852,7 @@
                 💾 ローカル保存モード
               </span>
             </div>
-            <span class="text-[11px] text-slate-400">全4部門別 みんなと共有 TOP 10（同名重複なし・自己ベスト）</span>
+            <span class="text-[11px] text-slate-400">全4部門＋🌙ルナティック別枠 みんなと共有 TOP 10（自己ベスト）</span>
           </div>
         </div>
         <button id="btn-close-ranking-modal" class="btn-3d bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-extrabold px-3 py-1.5 rounded-xl">
@@ -860,18 +860,21 @@
         </button>
       </div>
 
-      <!-- Rule Category Tabs (2 Rules) -->
-      <div class="grid grid-cols-2 gap-1.5 mb-1.5 bg-slate-950 p-1 rounded-2xl border border-slate-800">
-        <button id="tab-modal-rule-wallet" class="btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-cyan-500 text-slate-950 shadow">
+      <!-- Rule Category Tabs (2 Rules + Lunatic Separate Ranking) -->
+      <div class="grid grid-cols-3 gap-1.5 mb-1.5 bg-slate-950 p-1 rounded-2xl border border-slate-800">
+        <button id="tab-modal-rule-wallet" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950 shadow">
           👛 財布の小銭最小
         </button>
-        <button id="tab-modal-rule-change" class="btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700">
+        <button id="tab-modal-rule-change" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700">
           🪙 お釣り枚数最小
+        </button>
+        <button id="tab-modal-rule-lunatic" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-rose-300 hover:bg-slate-700">
+          🌙 ルナティック
         </button>
       </div>
 
-      <!-- Change Display Tabs (2 Options -> Total 4 Categories) -->
-      <div class="grid grid-cols-2 gap-1.5 mb-3 bg-slate-950 p-1 rounded-2xl border border-slate-800">
+      <!-- Change Display Tabs (2 Options -> Hidden on Lunatic tab) -->
+      <div id="modal-rank-change-tabs" class="grid grid-cols-2 gap-1.5 mb-3 bg-slate-950 p-1 rounded-2xl border border-slate-800">
         <button id="tab-modal-rank-on" class="btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-emerald-500 text-slate-950 shadow">
           👁️ お釣り表示【あり】
         </button>
@@ -1201,17 +1204,20 @@
         </div>
 
         <!-- Rule Tabs in Result Screen -->
-        <div class="grid grid-cols-2 gap-1 mb-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
-          <button id="tab-res-rule-wallet" class="btn-3d py-0.5 px-2 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950">
+        <div class="grid grid-cols-3 gap-1 mb-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
+          <button id="tab-res-rule-wallet" class="btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950">
             👛 財布の小銭最小
           </button>
-          <button id="tab-res-rule-change" class="btn-3d py-0.5 px-2 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300">
+          <button id="tab-res-rule-change" class="btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300">
             🪙 お釣り枚数最小
+          </button>
+          <button id="tab-res-rule-lunatic" class="btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-rose-300">
+            🌙 ルナティック
           </button>
         </div>
 
         <!-- Change Display Tabs in Result Screen -->
-        <div class="grid grid-cols-2 gap-1.5 mb-2 bg-slate-900 p-1 rounded-xl border border-slate-800">
+        <div id="res-rank-change-tabs" class="grid grid-cols-2 gap-1.5 mb-2 bg-slate-900 p-1 rounded-xl border border-slate-800">
           <button id="tab-res-rank-on" class="btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-emerald-500 text-slate-950">
             👁️ お釣り表示【あり】
           </button>
@@ -1341,6 +1347,7 @@
     const RANKING_KEY_NO_CHANGE              = 'pittariman_ranking_no_change';
     const RANKING_KEY_CHANGE_MIN_WITH_CHANGE = 'pittariman_ranking_change_min_with_change';
     const RANKING_KEY_CHANGE_MIN_NO_CHANGE   = 'pittariman_ranking_change_min_no_change';
+    const RANKING_KEY_LUNATIC                = 'pittariman_ranking_lunatic';
     const PLAYER_NAME_STORAGE_KEY            = 'pittariman_player_name_v3';
     const PLAYER_HIGH_SCORES_KEY             = 'pittariman_player_highscores_v1';
     const CUMULATIVE_SCORE_KEY               = 'pittariman_cumulative_score_v1';
@@ -1355,6 +1362,10 @@
       { id: 'cm_nc1', name: '暗算ゼロ釣り神', score: 39800, perfectRate: 92, customers: 13, mode: 'HARD', date: '2026/11' },
       { id: 'cm_nc2', name: '脳内レジスター', score: 24100, perfectRate: 82, customers: 10, mode: 'NORMAL', date: '2026/11' },
       { id: 'cm_nc3', name: '小銭ゼロ見習い', score: 12500, perfectRate: 68, customers: 7, mode: 'NORMAL', date: '2026/11' }
+    ];
+
+    const DEFAULT_RANKINGS_LUNATIC = [
+      { id: 'lun1', name: '消費税計算マスター', score: 685000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
     ];
 
     const DEFAULT_RANKINGS_WITH_CHANGE = [
@@ -1424,7 +1435,8 @@
         'wallet_true': null,
         'wallet_false': null,
         'change_true': null,
-        'change_false': null
+        'change_false': null,
+        'lunatic': null
       };
       static onSyncListeners = [];
 
@@ -1433,11 +1445,13 @@
       }
 
       static normalizeRuleType(ruleType) {
+        if (ruleType === 'lunatic') return 'lunatic';
         return ruleType === 'change' ? 'change' : 'wallet';
       }
 
       static getCacheSlot(showChange = true, ruleType = 'wallet') {
         const r = RankingManager.normalizeRuleType(ruleType);
+        if (r === 'lunatic') return 'lunatic';
         return `${r}_${Boolean(showChange)}`;
       }
 
@@ -1459,11 +1473,12 @@
       }
 
       static initFirebase() {
-        // 4部門すべてのローカルキャッシュを先に読み込み
+        // 全部門（通常4部門＋ルナティック別枠）のローカルキャッシュを先に読み込み
         RankingManager.caches['wallet_true']  = RankingManager.loadLocal(true, 'wallet');
         RankingManager.caches['wallet_false'] = RankingManager.loadLocal(false, 'wallet');
         RankingManager.caches['change_true']  = RankingManager.loadLocal(true, 'change');
         RankingManager.caches['change_false'] = RankingManager.loadLocal(false, 'change');
+        RankingManager.caches['lunatic']      = RankingManager.loadLocal(true, 'lunatic');
 
         if (!RankingManager.isFirebaseConfigured()) {
           RankingManager.isOnline = false;
@@ -1500,12 +1515,13 @@
             return;
           }).catch(() => {});
 
-          // 全4部門のリアルタイム同期リスナー登録
+          // 全部門（通常4部門＋ルナティック別枠）のリアルタイム同期リスナー登録
           const categories = [
             { ruleType: 'wallet', showChange: true },
             { ruleType: 'wallet', showChange: false },
             { ruleType: 'change', showChange: true },
-            { ruleType: 'change', showChange: false }
+            { ruleType: 'change', showChange: false },
+            { ruleType: 'lunatic', showChange: true }
           ];
 
           categories.forEach(({ ruleType, showChange }) => {
@@ -1592,6 +1608,7 @@
 
       static getKey(showChange, ruleType = 'wallet') {
         const r = RankingManager.normalizeRuleType(ruleType);
+        if (r === 'lunatic') return RANKING_KEY_LUNATIC;
         if (r === 'change') {
           return showChange ? RANKING_KEY_CHANGE_MIN_WITH_CHANGE : RANKING_KEY_CHANGE_MIN_NO_CHANGE;
         }
@@ -1600,6 +1617,7 @@
 
       static getDbPath(showChange, ruleType = 'wallet') {
         const r = RankingManager.normalizeRuleType(ruleType);
+        if (r === 'lunatic') return 'rankings/lunatic';
         if (r === 'change') {
           return showChange ? 'rankings/change_min_with_change' : 'rankings/change_min_no_change';
         }
@@ -1608,6 +1626,7 @@
 
       static getDefaultList(showChange, ruleType = 'wallet') {
         const r = RankingManager.normalizeRuleType(ruleType);
+        if (r === 'lunatic') return DEFAULT_RANKINGS_LUNATIC;
         if (r === 'change') {
           return showChange ? DEFAULT_RANKINGS_CHANGE_MIN_WITH_CHANGE : DEFAULT_RANKINGS_CHANGE_MIN_NO_CHANGE;
         }
@@ -1641,8 +1660,9 @@
           const num = Number(v || 0);
           if (num > maxScore) maxScore = num;
         }
-        ['wallet', 'change'].forEach((ruleType) => {
-          [true, false].forEach((showChange) => {
+        ['wallet', 'change', 'lunatic'].forEach((ruleType) => {
+          const changeOpts = ruleType === 'lunatic' ? [true] : [true, false];
+          changeOpts.forEach((showChange) => {
             const list = RankingManager.load(showChange, ruleType);
             for (const item of list) {
               if (item && typeof item.score === 'number' && item.score > maxScore) {
@@ -1874,8 +1894,9 @@
         const map = RankingManager.loadPlayerHighScoresMap();
         let maxScore = Number(map[cleanName] || 0);
 
-        ['wallet', 'change'].forEach((ruleType) => {
-          [true, false].forEach((showChange) => {
+        ['wallet', 'change', 'lunatic'].forEach((ruleType) => {
+          const changeOpts = ruleType === 'lunatic' ? [true] : [true, false];
+          changeOpts.forEach((showChange) => {
             const list = RankingManager.load(showChange, ruleType);
             for (const item of list) {
               if (RankingManager.normalizeName(item.name) === cleanName && item.score > maxScore) {
@@ -4027,6 +4048,11 @@
           this.resetRankingConfirmState();
           this.setModalRankingTab(this.modalRankingTabShowChange, 'change');
         });
+        document.getElementById('tab-modal-rule-lunatic').addEventListener('click', () => {
+          sound.playClick();
+          this.resetRankingConfirmState();
+          this.setModalRankingTab(this.modalRankingTabShowChange, 'lunatic');
+        });
         document.getElementById('tab-modal-rank-on').addEventListener('click', () => {
           sound.playClick();
           this.resetRankingConfirmState();
@@ -4111,6 +4137,10 @@
         document.getElementById('tab-res-rule-change').addEventListener('click', () => {
           sound.playClick();
           this.setResultRankingTab(this.resultRankingTabShowChange, 'change');
+        });
+        document.getElementById('tab-res-rule-lunatic').addEventListener('click', () => {
+          sound.playClick();
+          this.setResultRankingTab(this.resultRankingTabShowChange, 'lunatic');
         });
         document.getElementById('tab-res-rank-on').addEventListener('click', () => {
           sound.playClick();
@@ -4271,7 +4301,7 @@
           if (rankExUnlocked) {
             btnRankEx.className = 'btn-3d w-full text-left bg-gradient-to-r from-fuchsia-950/95 via-slate-900/95 to-slate-900/95 hover:from-fuchsia-900 border-2 border-fuchsia-400 rounded-2xl p-3 shadow-lg flex items-center justify-between gap-3 group';
             badgeRankEx.className = 'text-[10px] font-black bg-fuchsia-400 text-slate-950 px-2 py-0.5 rounded-full animate-pulse';
-            badgeRankEx.textContent = `💀 「${this.playerName}」解放済・45秒・2.0倍`;
+            badgeRankEx.textContent = `💀 「${this.playerName}」解放済・45秒・10倍`;
             descRankEx.innerHTML = '一撃サドンデス！<span class="text-rose-300 font-bold">1回でもPERFECT以外を出すと即終了！</span>爆発的なスコア倍率でランキング覇者を狙え！';
             arrowRankEx.textContent = '🚀';
           } else {
@@ -4480,13 +4510,24 @@
 
         const tabRuleW = document.getElementById('tab-modal-rule-wallet');
         const tabRuleC = document.getElementById('tab-modal-rule-change');
-        if (tabRuleW && tabRuleC) {
-          if (activeRule === 'wallet') {
-            tabRuleW.className = 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-cyan-500 text-slate-950 shadow';
-            tabRuleC.className = 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+        const tabRuleL = document.getElementById('tab-modal-rule-lunatic');
+        const changeTabsWrap = document.getElementById('modal-rank-change-tabs');
+        if (tabRuleW && tabRuleC && tabRuleL) {
+          tabRuleW.className = activeRule === 'wallet'
+            ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950 shadow'
+            : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+          tabRuleC.className = activeRule === 'change'
+            ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-amber-400 text-slate-950 shadow'
+            : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+          tabRuleL.className = activeRule === 'lunatic'
+            ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-rose-500 text-white shadow'
+            : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-rose-300 hover:bg-slate-700';
+        }
+        if (changeTabsWrap) {
+          if (activeRule === 'lunatic') {
+            changeTabsWrap.classList.add('hidden');
           } else {
-            tabRuleW.className = 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
-            tabRuleC.className = 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-amber-400 text-slate-950 shadow';
+            changeTabsWrap.classList.remove('hidden');
           }
         }
 
@@ -4509,13 +4550,24 @@
 
         const tabRuleW = document.getElementById('tab-res-rule-wallet');
         const tabRuleC = document.getElementById('tab-res-rule-change');
-        if (tabRuleW && tabRuleC) {
-          if (activeRule === 'wallet') {
-            tabRuleW.className = 'btn-3d py-0.5 px-2 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950';
-            tabRuleC.className = 'btn-3d py-0.5 px-2 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+        const tabRuleL = document.getElementById('tab-res-rule-lunatic');
+        const changeTabsWrap = document.getElementById('res-rank-change-tabs');
+        if (tabRuleW && tabRuleC && tabRuleL) {
+          tabRuleW.className = activeRule === 'wallet'
+            ? 'btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950'
+            : 'btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+          tabRuleC.className = activeRule === 'change'
+            ? 'btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-amber-400 text-slate-950'
+            : 'btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+          tabRuleL.className = activeRule === 'lunatic'
+            ? 'btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-rose-500 text-white'
+            : 'btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-rose-300';
+        }
+        if (changeTabsWrap) {
+          if (activeRule === 'lunatic') {
+            changeTabsWrap.classList.add('hidden');
           } else {
-            tabRuleW.className = 'btn-3d py-0.5 px-2 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
-            tabRuleC.className = 'btn-3d py-0.5 px-2 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-amber-400 text-slate-950';
+            changeTabsWrap.classList.remove('hidden');
           }
         }
 
@@ -4528,7 +4580,11 @@
           tabOn.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
           tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-purple-500 text-white';
         }
-        const highlightId = (this.isRankingRun && this.rankingShowChange === showChange && this.ruleType === activeRule)
+        const savedCategoryRule = this.difficulty === 'LUNATIC' ? 'lunatic' : this.ruleType;
+        const isMatchingTab = savedCategoryRule === 'lunatic'
+          ? activeRule === 'lunatic'
+          : (this.rankingShowChange === showChange && savedCategoryRule === activeRule);
+        const highlightId = (this.isRankingRun && isMatchingTab)
           ? this.lastHighlightEntryId
           : null;
         RankingManager.renderListToContainer('result-ranking-list', showChange, highlightId, activeRule);
@@ -5441,7 +5497,7 @@
           return;
         }
 
-        const modeMultiplier = isLunatic ? 100.0 : (isEx ? 2.0 : (isHard ? 1.5 : 1.0));
+        const modeMultiplier = isLunatic ? 100.0 : (isEx ? 10.0 : (isHard ? 1.5 : 1.0));
         const noChangeMult = this.showChangeDisplay ? 1.0 : 1.25;
         let earnedScore = 0;
 
@@ -5463,11 +5519,10 @@
           earnedScore = Math.round((basePt + Math.max(0, netDiff) * 250) * comboMult * modeMultiplier * noChangeMult * zoneMult);
           this.score += earnedScore;
 
-          const bonusSec = (isHard || isEx || isLunatic) ? 2.5 : 0;
-          if (bonusSec > 0) {
-            this.timeLeft = Math.min(99.9, this.timeLeft + bonusSec);
-            this.showTimeBonusPopup(`+${bonusSec.toFixed(1)}秒!`, false);
-          }
+          const bonusSec = isHard ? 1.5 : ((isEx || isLunatic) ? 2.5 : 3.0);
+          this.timeLeft = Math.min(99.9, this.timeLeft + bonusSec);
+
+          this.showTimeBonusPopup(`+${bonusSec.toFixed(1)}秒!`, false);
           this.scene3D.spawnPerfectParticles();
           // 5コンボごと（5, 10, 15, 20...コンボ達成時）にコインシャワー発生！
           if (this.combo > 0 && this.combo % 5 === 0) {
@@ -5600,16 +5655,14 @@
         const isLunatic = this.difficulty === 'LUNATIC';
         const diff = coinsAfter - coinsBefore;
         const diffStr = diff < 0 ? `${diff}枚スッキリ!` : (diff === 0 ? `増減なし` : `+${diff}枚増加...`);
-        const bonusSec = isHardOrExOrLun ? '+2.5秒' : '';
+        const bonusSec = this.difficulty === 'HARD' ? '+1.5秒' : ((this.difficulty === 'EX' || this.difficulty === 'LUNATIC') ? '+2.5秒' : '+3.0秒');
 
         if (grade === 'PERFECT') {
           card.className = 'w-full bg-slate-900/95 backdrop-blur-md border-2 border-amber-400 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
           badge.className = 'text-xl sm:text-3xl font-black tracking-wider mb-0.5 text-amber-300 drop-shadow';
           badge.textContent = changeAmount === 0 ? '👑 PERFECT!! ピッタリ神会計！' : '✨ PERFECT!! 神会計！';
           subtitle.className = 'text-[11px] sm:text-xs font-bold text-emerald-300 mb-1';
-          subtitle.textContent = bonusSec
-            ? `スコア +${earnedScore.toLocaleString()} ／ タイムボーナス ${bonusSec}！`
-            : `スコア +${earnedScore.toLocaleString()}！`;
+          subtitle.textContent = `スコア +${earnedScore.toLocaleString()} ／ タイムボーナス ${bonusSec}！`;
         } else if (grade === 'LUNATIC_TIMEOUT') {
           card.className = 'w-full bg-slate-950/95 backdrop-blur-md border-2 border-rose-500 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
           badge.className = 'text-xl sm:text-2xl font-black tracking-wider mb-0.5 text-rose-400 drop-shadow';
@@ -6196,11 +6249,14 @@
         this.lastHighlightEntryId = null;
 
         if (this.isRankingRun) {
+          const isLunaticRank = this.difficulty === 'LUNATIC';
+          const targetRankingRule = isLunaticRank ? 'lunatic' : this.ruleType;
           const ruleLabel = this.ruleType === 'change' ? 'お釣り最小' : '財布最小';
           const deptName = this.rankingShowChange ? 'お釣りあり' : 'お釣りなし';
+          const categoryLabel = isLunaticRank ? '🌙ルナティック別枠' : `${ruleLabel}/${deptName}`;
 
           if (isLunaticMinNotMet) {
-            playerNameTag.textContent = `登録名: ${this.playerName}（${ruleLabel}/${deptName}）※5人未満のため記録なし`;
+            playerNameTag.textContent = `登録名: ${this.playerName}（${categoryLabel}）※5人未満のため記録なし`;
             rankInBadge.textContent = `記録対象外 (${totalServed}/5人)`;
             rankInBadge.className = 'text-[10px] sm:text-xs font-black px-2.5 py-0.5 rounded-full bg-rose-900/90 text-rose-200 border border-rose-500/70';
           } else {
@@ -6213,11 +6269,11 @@
               perfectRate,
               totalServed,
               this.rankingShowChange,
-              this.ruleType
+              targetRankingRule
             );
             this.lastHighlightEntryId = saveResult.entryId;
 
-            playerNameTag.textContent = `登録名: ${this.playerName}（${ruleLabel}/${deptName}）`;
+            playerNameTag.textContent = `登録名: ${this.playerName}（${categoryLabel}）`;
 
             if (saveResult.status === 'UPDATED_BEST') {
               rankInBadge.textContent = `🎉 自己ベスト更新! ${saveResult.rank}位`;
@@ -6234,7 +6290,7 @@
             }
           }
 
-          this.setResultRankingTab(this.rankingShowChange, this.ruleType);
+          this.setResultRankingTab(this.rankingShowChange, targetRankingRule);
         } else {
           playerNameTag.textContent = 'フリープレイ（※ランキングモードで記録登録）';
           rankInBadge.textContent = 'フリープレイ完了';
@@ -6280,7 +6336,11 @@
         }
         const screenResult = document.getElementById('screen-result');
         if (screenResult && !screenResult.classList.contains('hidden')) {
-          const highlightId = (game.isRankingRun && game.rankingShowChange === game.resultRankingTabShowChange && game.ruleType === game.resultRankingTabRuleType)
+          const savedCategoryRule = game.difficulty === 'LUNATIC' ? 'lunatic' : game.ruleType;
+          const isMatch = savedCategoryRule === 'lunatic'
+            ? game.resultRankingTabRuleType === 'lunatic'
+            : (game.rankingShowChange === game.resultRankingTabShowChange && savedCategoryRule === game.resultRankingTabRuleType);
+          const highlightId = (game.isRankingRun && isMatch)
             ? game.lastHighlightEntryId
             : null;
           RankingManager.renderListToContainer('result-ranking-list', game.resultRankingTabShowChange, highlightId, game.resultRankingTabRuleType);
