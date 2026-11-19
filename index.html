@@ -1060,6 +1060,9 @@
         <span class="text-[10px] sm:text-xs font-extrabold text-rose-100 flex-1 text-left">
           表示は<span class="text-amber-300 underline">本体価格（税抜）</span>です！<span class="text-white">本体価格 × 1.08（小数点以下切り捨て）</span>の税込金額を計算して支払おう！
         </span>
+        <span id="lunatic-turn-timer" class="font-digital bg-slate-950/90 border border-rose-400 text-amber-300 font-black text-[10px] sm:text-xs px-2 py-0.5 rounded-lg shrink-0 whitespace-nowrap">
+          ⏱ 10.0s
+        </span>
       </div>
 
       <!-- Tutorial Step Progress Banner (Shown only in Tutorial Mode) -->
@@ -5604,6 +5607,12 @@
           badge.textContent = changeAmount === 0 ? '👑 PERFECT!! ピッタリ神会計！' : '✨ PERFECT!! 神会計！';
           subtitle.className = 'text-[11px] sm:text-xs font-bold text-emerald-300 mb-1';
           subtitle.textContent = `スコア +${earnedScore.toLocaleString()} ／ タイムボーナス ${bonusSec}！`;
+        } else if (grade === 'LUNATIC_TIMEOUT') {
+          card.className = 'w-full bg-slate-950/95 backdrop-blur-md border-2 border-rose-500 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
+          badge.className = 'text-xl sm:text-2xl font-black tracking-wider mb-0.5 text-rose-400 drop-shadow';
+          badge.textContent = '⏰ LUNATIC 10秒超過!! 強制終了';
+          subtitle.className = 'text-[11px] sm:text-xs font-bold text-rose-300 mb-1';
+          subtitle.textContent = 'ルナティックモードでは1人10秒以内にお会計を出さないと強制終了となります！';
         } else if (grade === 'EX_FAIL') {
           card.className = 'w-full bg-slate-950/95 backdrop-blur-md border-2 border-fuchsia-500 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
           badge.className = 'text-xl sm:text-2xl font-black tracking-wider mb-0.5 text-fuchsia-400 drop-shadow';
@@ -5778,6 +5787,17 @@
           timeText.className = 'font-digital text-sm sm:text-lg font-bold text-white leading-none';
           timeBar.className = 'h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full transition-all duration-100';
         }
+
+        const lunTurnTimerEl = document.getElementById('lunatic-turn-timer');
+        if (lunTurnTimerEl && this.difficulty === 'LUNATIC') {
+          const turnRemain = Math.max(0, 10.0 - this.turnElapsed);
+          lunTurnTimerEl.textContent = `⏱ ${turnRemain.toFixed(1)}s`;
+          if (turnRemain <= 3.0) {
+            lunTurnTimerEl.className = 'font-digital bg-rose-600 border border-yellow-300 text-white font-black text-[10px] sm:text-xs px-2 py-0.5 rounded-lg shrink-0 whitespace-nowrap animate-pulse';
+          } else {
+            lunTurnTimerEl.className = 'font-digital bg-slate-950/90 border border-rose-400 text-amber-300 font-black text-[10px] sm:text-xs px-2 py-0.5 rounded-lg shrink-0 whitespace-nowrap';
+          }
+        }
       }
 
       getHelperGuideTargets() {
@@ -5913,11 +5933,62 @@
         }
       }
 
+      handleLunaticTurnTimeout() {
+        this.state = 'JUDGING';
+        this.combo = 0;
+        this.exSuddenDeathFailed = true;
+        if (this.scene3D.isZoneActive) this.scene3D.setZoneMode(false);
+        sound.setZoneBGM(false);
+
+        const paidTotal = this.getTrayTotal();
+        const coinsBefore = countWalletCoins(this.wallet) + this.trayList.filter(it => it.denom <= 500).length;
+        this.mistakeLogs.push({
+          grade: '10秒超過',
+          isExFail: true,
+          customerNo: this.customerIndex,
+          price: this.currentPrice,
+          basePrice: this.basePrice,
+          isLunatic: true,
+          paidTotal,
+          changeAmount: 0,
+          changeCoinCount: 0,
+          coinsBefore,
+          coinsAfter: coinsBefore,
+          bestPaid: this.bestSolution ? this.bestSolution.totalPaid : null,
+          bestBreakdown: this.bestSolution ? formatMoneyBreakdown(this.bestSolution.breakdown) : '',
+          bestChange: this.bestSolution ? this.bestSolution.change : 0,
+          bestChangeCoins: this.bestSolution ? this.bestSolution.changeCoinCount : 0,
+          bestFinalCoins: this.bestSolution ? this.bestSolution.finalCoins : coinsBefore
+        });
+
+        this.trayList = [];
+        this.scene3D.clearAllTrayItems(false);
+        this.scene3D.triggerClerkReaction('shock', 1.6);
+        sound.playBadBuzzer();
+        this.setClerkComment('exFail', '⏰10秒オーバー！ルナティックモードは1人10秒以内にお会計を出さないと強制終了です…！');
+        this.updateTopHUD();
+        this.renderWalletUI();
+        this.showJudgmentFeedback('LUNATIC_TIMEOUT', 0, { coinCount: 0 }, coinsBefore, coinsBefore, 0);
+
+        this.clearActiveTimers();
+        this.nextTurnTimeout = setTimeout(() => {
+          this.nextTurnTimeout = null;
+          document.getElementById('ui-judgment-overlay').classList.add('hidden');
+          this.endGame();
+        }, 3500);
+      }
+
       update(dt) {
         if (this.state !== 'PLAYING' || this.isTutorial) return;
 
         this.timeLeft -= dt;
         this.turnElapsed += dt;
+
+        if (this.difficulty === 'LUNATIC' && this.turnElapsed >= 10.0) {
+          this.turnElapsed = 10.0;
+          this.handleLunaticTurnTimeout();
+          return;
+        }
 
         if (!this.hesitationHintShown && this.turnElapsed >= 6.5 && this.difficulty !== 'EX' && this.difficulty !== 'LUNATIC') {
           this.hesitationHintShown = true;
@@ -5983,7 +6054,7 @@
           return;
         }
 
-        const badCount = this.mistakeLogs.filter(m => m.grade === 'BAD' || m.grade === '金額不足').length;
+        const badCount = this.mistakeLogs.filter(m => m.grade === 'BAD' || m.grade === '金額不足' || m.grade === '10秒超過').length;
         const goodCount = this.mistakeLogs.filter(m => m.grade === 'GOOD').length;
         const parts = [];
         if (badCount > 0) parts.push(`BAD:${badCount}`);
@@ -6011,8 +6082,8 @@
           const priceText = m.isLunatic
             ? `本体¥${m.basePrice.toLocaleString()} → 税込(8%)¥${m.price.toLocaleString()}`
             : `請求 ¥${m.price.toLocaleString()}`;
-          const yourResultDetail = m.grade === '金額不足'
-            ? '金額不足'
+          const yourResultDetail = (m.grade === '金額不足' || m.grade === '10秒超過')
+            ? m.grade
             : (this.ruleType === 'change'
               ? `お釣り硬貨${m.changeCoinCount}枚`
               : `お釣り硬貨${m.changeCoinCount}枚 / 小銭${m.coinsBefore}→${m.coinsAfter}枚`);
