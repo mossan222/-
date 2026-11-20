@@ -1965,6 +1965,26 @@
 
     <!-- BOTTOM WALLET & ACTION CONTROLS -->
     <footer class="w-full max-w-3xl mx-auto pointer-events-auto">
+      <!-- VERSUS JAMMER MODE HP BAR (Positioned right above the wallet panel) -->
+      <div id="vs-hp-bar-wrap" class="hidden px-3 sm:px-6 mb-1.5 pointer-events-none">
+        <div id="vs-hp-bar-card" class="max-w-md mx-auto bg-slate-950/90 backdrop-blur-md border-2 border-emerald-400/80 rounded-2xl px-3 py-1.5 shadow-[0_4px_18px_rgba(0,0,0,0.75)] relative">
+          <div class="flex items-center justify-between gap-2 mb-1 leading-none">
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs sm:text-sm">❤️</span>
+              <span class="text-[10px] sm:text-xs font-black text-white tracking-wider">YOUR HP</span>
+              <span id="vs-hp-zone-atk-badge" class="hidden text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded-full bg-gradient-to-r from-fuchsia-500 to-amber-400 text-slate-950 animate-pulse">⚡ 攻撃力×1.5</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span id="vs-hp-dmg-popup" class="font-digital text-[11px] sm:text-xs font-black text-rose-400"></span>
+              <span id="vs-hp-text" class="font-digital text-xs sm:text-sm font-black text-emerald-300">1000 / 1000</span>
+            </div>
+          </div>
+          <div class="w-full h-2.5 sm:h-3 bg-slate-800/95 rounded-full overflow-hidden border border-slate-700">
+            <div id="vs-hp-fill" class="h-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 rounded-full transition-all duration-200" style="width: 100%;"></div>
+          </div>
+        </div>
+      </div>
+
       <div class="wallet-card rounded-t-3xl px-2.5 pt-2 pb-2.5 sm:px-4 sm:pt-2.5 sm:pb-3.5">
         <!-- Bills Row (10000, 5000, 1000) -->
         <div class="flex items-center justify-between gap-1.5 sm:gap-2.5 mb-2 pt-1">
@@ -6380,9 +6400,12 @@
         this.lastRoomData = null;
         this.matchLaunched = false;
         this.resultShown = false;
+        this.VS_JAMMER_MAX_HP = 1000;
         this.lastJammerSeq = 0;
+        this.lastReceivedDamage = 0;
         this.finishWaitTimeout = null;
         this.jammerSentCount = 0;
+        this.damageDealtTotal = 0;
         this.vsResultCooldownInterval = null;
         this.vsResultCooldownRemaining = 0;
         this.vsCanRematch = false;
@@ -6716,6 +6739,8 @@
         this.game.scene3D.setTitleMode(true);
         document.getElementById('ui-judgment-overlay').classList.add('hidden');
         document.getElementById('vs-opponent-bar').classList.add('hidden');
+        const hpWrap = document.getElementById('vs-hp-bar-wrap');
+        if (hpWrap) hpWrap.classList.add('hidden');
 
         const nameInput = document.getElementById('input-vs-name');
         if (nameInput) nameInput.value = RankingManager.getSavedPlayerName() || this.game.playerName || '';
@@ -6773,11 +6798,23 @@
           maxCombo: 0,
           perfectCount: 0,
           served: 0,
+          hp: this.VS_JAMMER_MAX_HP,
+          maxHp: this.VS_JAMMER_MAX_HP,
+          damageDealt: 0,
+          koDefeated: false,
           finished: false,
           failedSuddenDeath: false,
           jammerSentCount: 0,
           jammerHitCount: 0
         };
+      }
+
+      calcJammerAttackDamage(comboCount = 1, isZoneActive = false, isFromBot = false) {
+        const c = Math.max(1, Number(comboCount) || 1);
+        const base = isFromBot ? 52 : 65;
+        const comboMult = 1 + (c - 1) * (isFromBot ? 0.18 : 0.22);
+        const zoneMult = isZoneActive ? 1.5 : 1.0;
+        return Math.round(base * comboMult * zoneMult);
       }
 
       getPlayerEntries(data) {
@@ -7386,7 +7423,9 @@
         this.matchLaunched = false;
         this.resultShown = false;
         this.lastJammerSeq = 0;
+        this.lastReceivedDamage = 0;
         this.jammerSentCount = 0;
+        this.damageDealtTotal = 0;
         this.lastHumanCount = 1;
 
         const myConnRef = ref.child(`players/${slot}/connected`);
@@ -7493,7 +7532,9 @@
             this.matchLaunched = true;
             this.resultShown = false;
             this.lastJammerSeq = 0;
+            this.lastReceivedDamage = 0;
             this.jammerSentCount = 0;
+            this.damageDealtTotal = 0;
             this.isRandomSearching = false;
             if (this.botFillTimer) {
               clearInterval(this.botFillTimer);
@@ -7516,13 +7557,25 @@
           // HUD更新（2〜10人対応）
           this.updateOpponentHUD(data);
 
-          // 自分宛てのお邪魔受信チェック
+          // 自分宛てのお邪魔＆HPダメージ受信チェック
           if (data.settings && data.settings.vsRule === 'jammer' && data.jammers && this.mySlot) {
             const jam = data.jammers[this.mySlot];
             if (jam && jam.seq > this.lastJammerSeq) {
               this.lastJammerSeq = jam.seq;
-              if ((jam.c1 || 0) > 0 || (jam.c10 || 0) > 0) {
-                this.game.receiveVersusJammer(jam.c1 || 0, jam.c10 || 0, jam.fromCombo || 1, jam.fromName || 'ライバル');
+              const totalDmg = Number(jam.totalDamage || 0);
+              const deltaDmg = Math.max(0, totalDmg > 0 ? (totalDmg - this.lastReceivedDamage) : Number(jam.damage || 0));
+              if (totalDmg > this.lastReceivedDamage) {
+                this.lastReceivedDamage = totalDmg;
+              }
+              if ((jam.c1 || 0) > 0 || (jam.c10 || 0) > 0 || deltaDmg > 0) {
+                this.game.receiveVersusJammer(
+                  jam.c1 || 0,
+                  jam.c10 || 0,
+                  jam.fromCombo || 1,
+                  jam.fromName || 'ライバル',
+                  deltaDmg,
+                  Boolean(jam.isZone)
+                );
               }
             }
           }
@@ -7537,6 +7590,23 @@
           if (participants.length <= 1 && !data.winner) {
             this.claimWinner(this.mySlot, '他のプレイヤーが退出したため勝利となりました！');
             return;
+          }
+
+          // お邪魔HP制モード：KOにより生存者が1人だけになった場合は即勝利確定！
+          if (data.settings && data.settings.vsRule === 'jammer' && participants.length >= 2 && !data.winner) {
+            const alive = participants.filter(({ player }) => {
+              const hpVal = typeof player.hp === 'number' ? player.hp : this.VS_JAMMER_MAX_HP;
+              return !player.koDefeated && hpVal > 0 && !player.failedSuddenDeath;
+            });
+            const hasAnyKO = participants.some(({ player }) => {
+              const hpVal = typeof player.hp === 'number' ? player.hp : this.VS_JAMMER_MAX_HP;
+              return Boolean(player.koDefeated) || hpVal <= 0;
+            });
+            if (hasAnyKO && alive.length === 1) {
+              const survivor = alive[0];
+              this.claimWinner(survivor.slot, `💥 ${survivor.player.name} が相手をK.O.（HP 0）にして勝利！`);
+              return;
+            }
           }
 
           // 全参加者が終了したら勝敗決定
@@ -7625,7 +7695,7 @@
         const expEl = document.getElementById('vs-rule-explain');
         if (expEl) {
           if (s.vsRule === 'jammer') {
-            expEl.textContent = '💣 3回PERFECTごとに必殺カットイン発動！他プレイヤーの財布に1円・10円玉を送り込むお邪魔バトル！';
+            expEl.textContent = '❤️ HP制60秒バトル！PERFECT攻撃で相手HPを減らし、コンボ＆ゾーン(1.5倍)で火力UP！HP0で強制終了・残りHPが多い方が勝ち！';
           } else if (s.vsRule === 'race') {
             expEl.textContent = `⚡ 先に ${s.raceTarget || 7}人 PERFECTを達成したプレイヤーが即勝利する超スピード勝負！`;
           } else {
@@ -7678,14 +7748,14 @@
           const existing = data.players ? data.players[slot] : null;
           if (existing && !existing.isBot && existing.connected !== false) {
             nextPlayers[slot] = this.makeEmptyPlayer(existing.name, false, existing.uid);
-            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, fromCombo: 0, fromName: '' };
+            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, damage: 0, totalDamage: 0, isZone: false, fromCombo: 0, fromName: '' };
           } else if (fillWithBots) {
             const bName = this.BOT_NAMES[botIdx % this.BOT_NAMES.length];
             botIdx++;
             const uniqueName = usedBotNames.has(bName) ? `${bName}#${botIdx}` : bName;
             usedBotNames.add(uniqueName);
             nextPlayers[slot] = this.makeEmptyPlayer(uniqueName, true, `bot_${slot}_${Date.now()}`);
-            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, fromCombo: 0, fromName: '' };
+            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, damage: 0, totalDamage: 0, isZone: false, fromCombo: 0, fromName: '' };
           }
         }
 
@@ -7730,7 +7800,7 @@
         const s = { ...this.getDefaultSettings(), ...(roomData.settings || {}) };
         const diff = s.difficulty || 'NORMAL';
         const diffMult = diff === 'LUNATIC' ? 100 : (diff === 'EX' ? 10 : (diff === 'HARD' ? 1.5 : 1.0));
-        const matchDurMs = s.vsRule === 'race' ? 180000 : ((diff === 'HARD' || diff === 'EX') ? 45000 : 60000);
+        const matchDurMs = s.vsRule === 'race' ? 180000 : (s.vsRule === 'jammer' ? 60000 : ((diff === 'HARD' || diff === 'EX') ? 45000 : 60000));
         const playStartMs = Date.now() + 5750; // VSイントロ演出(2.85秒)＋3秒カウントダウン完了後
 
         this.botStates = {};
@@ -7749,10 +7819,15 @@
             maxCombo: 0,
             perfectCount: 0,
             served: 0,
+            hp: this.VS_JAMMER_MAX_HP,
+            maxHp: this.VS_JAMMER_MAX_HP,
+            damageDealt: 0,
+            koDefeated: false,
             finished: false,
             failedSuddenDeath: false,
             jammerSentCount: 0,
             jammerHitCount: 0,
+            lastReceivedDamage: 0,
             paceBase,
             perfRate,
             nextActionAt: playStartMs + 1600 + Math.random() * 2400,
@@ -7779,15 +7854,33 @@
           for (const st of Object.values(this.botStates)) {
             if (st.finished) continue;
 
-            // BOTへのお邪魔被弾チェック（被弾すると回答が遅れる＆ヒット数加算）
+            // BOTへのお邪魔＆HPダメージ被弾チェック
             if (s.vsRule === 'jammer' && this.lastRoomData.jammers && this.lastRoomData.jammers[st.slot]) {
               const jam = this.lastRoomData.jammers[st.slot];
               if (jam.seq > (this.botLastJammerSeqs[st.slot] || 0)) {
                 this.botLastJammerSeqs[st.slot] = jam.seq;
-                st.jammerHitCount += (jam.c1 || 0) + (jam.c10 || 0);
-                st.nextActionAt = Math.max(st.nextActionAt, now) + 1400 + Math.random() * 900;
-                updates[`players/${st.slot}/jammerHitCount`] = st.jammerHitCount;
+                const totalDmg = Number(jam.totalDamage || 0);
+                const deltaDmg = Math.max(0, totalDmg > 0 ? (totalDmg - (st.lastReceivedDamage || 0)) : Number(jam.damage || 0));
+                if (totalDmg > (st.lastReceivedDamage || 0)) st.lastReceivedDamage = totalDmg;
+
+                if ((jam.c1 || 0) > 0 || (jam.c10 || 0) > 0) {
+                  st.jammerHitCount += (jam.c1 || 0) + (jam.c10 || 0);
+                  st.nextActionAt = Math.max(st.nextActionAt, now) + 1200 + Math.random() * 800;
+                  updates[`players/${st.slot}/jammerHitCount`] = st.jammerHitCount;
+                }
+                if (deltaDmg > 0) {
+                  st.hp = Math.max(0, (typeof st.hp === 'number' ? st.hp : this.VS_JAMMER_MAX_HP) - deltaDmg);
+                  updates[`players/${st.slot}/hp`] = st.hp;
+                  if (st.hp <= 0) {
+                    st.hp = 0;
+                    st.koDefeated = true;
+                    st.finished = true;
+                    updates[`players/${st.slot}/koDefeated`] = true;
+                    updates[`players/${st.slot}/finished`] = true;
+                  }
+                }
                 dirty = true;
+                if (st.finished) continue;
               }
             }
 
@@ -7808,19 +7901,24 @@
                 const basePt = 1100 + Math.floor(Math.random() * 450) + st.combo * 180;
                 st.score += Math.round(basePt * diffMult);
 
-                // お邪魔モード時はプレイヤーと同じく3回PERFECTごと（＋全体クールダウン7.5秒以上）でBOTがお邪魔発動
-                if (
-                  s.vsRule === 'jammer' &&
-                  st.perfectCount > 0 &&
-                  st.perfectCount % 3 === 0 &&
-                  now >= (st.nextJammerAt || 0) &&
-                  (now - (this.lastGlobalBotJammerAt || 0)) >= 7500
-                ) {
-                  this.lastGlobalBotJammerAt = now;
-                  st.nextJammerAt = now + 10000 + Math.random() * 5000;
-                  this.sendJammerFromSlot(st.slot, st.name, st.combo, true);
-                  const sentCoins = st.combo >= 5 ? 4 : (st.combo >= 3 ? 3 : 2);
-                  st.jammerSentCount += sentCoins;
+                // お邪魔モード時はPERFECTごとにHP攻撃！（3回PERFECTごとにお邪魔小銭も同時送信）
+                if (s.vsRule === 'jammer') {
+                  const botInZone = st.combo >= 7;
+                  const withCoins = (
+                    st.perfectCount > 0 &&
+                    st.perfectCount % 3 === 0 &&
+                    now >= (st.nextJammerAt || 0) &&
+                    (now - (this.lastGlobalBotJammerAt || 0)) >= 7500
+                  );
+                  if (withCoins) {
+                    this.lastGlobalBotJammerAt = now;
+                    st.nextJammerAt = now + 10000 + Math.random() * 5000;
+                  }
+                  const atkRes = this.sendJammerFromSlot(st.slot, st.name, st.combo, true, botInZone, withCoins);
+                  if (atkRes) {
+                    st.damageDealt += (atkRes.damage || 0);
+                    st.jammerSentCount += (atkRes.coins || 0);
+                  }
                 }
 
                 // 先取ルール達成チェック
@@ -7866,6 +7964,10 @@
                 maxCombo: st.maxCombo,
                 perfectCount: st.perfectCount,
                 served: st.served,
+                hp: st.hp,
+                maxHp: st.maxHp,
+                damageDealt: st.damageDealt,
+                koDefeated: st.koDefeated,
                 finished: st.finished,
                 failedSuddenDeath: st.failedSuddenDeath,
                 jammerSentCount: st.jammerSentCount,
@@ -7895,6 +7997,12 @@
             combo: isMe ? (this.game.combo || 0) : (player.combo || 0),
             maxCombo: isMe ? Math.max(player.maxCombo || 0, this.game.maxCombo || 0) : (player.maxCombo || 0),
             served: isMe ? Math.max(player.served || 0, Math.max(0, this.game.customerIndex - 1)) : (player.served || 0),
+            hp: isMe
+              ? Math.max(0, typeof this.game.vsHp === 'number' ? this.game.vsHp : this.VS_JAMMER_MAX_HP)
+              : Math.max(0, typeof player.hp === 'number' ? player.hp : this.VS_JAMMER_MAX_HP),
+            maxHp: typeof player.maxHp === 'number' ? player.maxHp : this.VS_JAMMER_MAX_HP,
+            damageDealt: isMe ? Math.max(player.damageDealt || 0, this.damageDealtTotal || 0) : (player.damageDealt || 0),
+            koDefeated: isMe ? Boolean(this.game.vsKoDefeated || player.koDefeated) : Boolean(player.koDefeated),
             jammerSentCount: isMe ? Math.max(player.jammerSentCount || 0, this.jammerSentCount || 0) : (player.jammerSentCount || 0),
             jammerHitCount: player.jammerHitCount || 0,
             failedSuddenDeath: Boolean(player.failedSuddenDeath)
@@ -7902,7 +8010,9 @@
         });
 
         list.sort((a, b) => {
-          if (s.vsRule === 'race') {
+          if (s.vsRule === 'jammer') {
+            if (b.hp !== a.hp) return b.hp - a.hp;
+          } else if (s.vsRule === 'race') {
             if (b.perfectCount !== a.perfectCount) return b.perfectCount - a.perfectCount;
           }
           if (b.score !== a.score) return b.score - a.score;
@@ -7939,7 +8049,7 @@
         }
         if (rulePillEl) {
           rulePillEl.textContent = s.vsRule === 'jammer'
-            ? '💣お邪魔対決'
+            ? '❤️HPお邪魔バトル'
             : (s.vsRule === 'race' ? `⚡${s.raceTarget || 7}人先取` : '🏆スコア対決');
         }
 
@@ -7952,7 +8062,25 @@
         const oppScore = focusTarget ? focusTarget.score : 0;
         const oppPerfect = focusTarget ? focusTarget.perfectCount : 0;
 
-        if (s.vsRule === 'race') {
+        if (s.vsRule === 'jammer') {
+          const myHp = meObj ? meObj.hp : (this.game.vsHp || 0);
+          const oppHp = focusTarget ? focusTarget.hp : 0;
+          const oppMaxHp = focusTarget ? focusTarget.maxHp : this.VS_JAMMER_MAX_HP;
+          if (oppScoreEl) oppScoreEl.textContent = oppHp <= 0 ? '💀 K.O.' : `❤️${oppHp}/${oppMaxHp}`;
+          if (oppSubEl) oppSubEl.textContent = focusTarget && focusTarget.combo >= 2 ? `${focusTarget.combo}連` : '';
+          if (leadBadge) {
+            if (myHp > oppHp) {
+              leadBadge.textContent = `HP +${myHp - oppHp} 優勢`;
+              leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-emerald-400 text-slate-950 leading-none';
+            } else if (myHp < oppHp) {
+              leadBadge.textContent = `HP -${oppHp - myHp} 劣勢`;
+              leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-rose-500 text-white leading-none';
+            } else {
+              leadBadge.textContent = `HP 互角`;
+              leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 leading-none';
+            }
+          }
+        } else if (s.vsRule === 'race') {
           const target = s.raceTarget || 7;
           if (oppScoreEl) oppScoreEl.textContent = `${oppPerfect}/${target}神`;
           if (oppSubEl) oppSubEl.textContent = `${oppScore.toLocaleString()}pt`;
@@ -7992,7 +8120,7 @@
             miniBoard.classList.remove('hidden');
             miniBoard.innerHTML = standings.slice(0, 4).map((p, idx) => {
               const medal = idx === 0 ? '🥇' : (idx === 1 ? '🥈' : (idx === 2 ? '🥉' : `${idx + 1}位`));
-              const valStr = s.vsRule === 'race' ? `${p.perfectCount}神` : `${p.score.toLocaleString()}`;
+              const valStr = s.vsRule === 'jammer' ? (p.hp <= 0 ? 'KO' : `❤️${p.hp}`) : (s.vsRule === 'race' ? `${p.perfectCount}神` : `${p.score.toLocaleString()}`);
               return `<span class="shrink-0 px-1.5 py-0.5 rounded ${p.isMe ? 'bg-cyan-400 text-slate-950 font-black' : 'bg-slate-800/90 text-slate-200 font-bold'}">${medal}${escapeHtml(p.name.slice(0, 6))} ${valStr}</span>`;
             }).join('');
           } else {
@@ -8010,6 +8138,10 @@
           maxCombo: this.game.maxCombo || 0,
           perfectCount: this.game.perfectCount || 0,
           served: served,
+          hp: Math.max(0, typeof this.game.vsHp === 'number' ? this.game.vsHp : this.VS_JAMMER_MAX_HP),
+          maxHp: this.game.vsMaxHp || this.VS_JAMMER_MAX_HP,
+          damageDealt: this.damageDealtTotal || 0,
+          koDefeated: Boolean(this.game.vsKoDefeated),
           finished: Boolean(finished),
           failedSuddenDeath: Boolean(failedSuddenDeath),
           jammerSentCount: this.jammerSentCount || 0
@@ -8023,10 +8155,13 @@
           }
           // 2人対戦時のサドンデス即決着（3人以上では他の生存者が続行し、全員終了時に順位決定）
           const active = this.getActiveParticipants(this.lastRoomData);
-          if (failedSuddenDeath && active.length === 2) {
+          if ((failedSuddenDeath || this.game.vsKoDefeated) && active.length === 2) {
             const other = active.find((x) => x.slot !== this.mySlot);
             if (other) {
-              this.claimWinner(other.slot, `💀 ${this.game.playerName} がサドンデスで脱落！`);
+              const reasonMsg = this.game.vsKoDefeated
+                ? `💥 ${this.game.playerName} のHPが0になりK.O.！`
+                : `💀 ${this.game.playerName} がサドンデスで脱落！`;
+              this.claimWinner(other.slot, reasonMsg);
               return;
             }
           }
@@ -8042,48 +8177,73 @@
         }
       }
 
-      sendJammerFromSlot(fromSlot, fromName, comboCount, isFromBot = false) {
-        if (!this.roomRef || !this.lastRoomData) return;
+      sendJammerFromSlot(fromSlot, fromName, comboCount, isFromBot = false, isZoneActive = false, withCoins = true) {
+        if (!this.roomRef || !this.lastRoomData) return null;
         const s = this.lastRoomData.settings || {};
-        if (s.vsRule !== 'jammer') return;
+        if (s.vsRule !== 'jammer') return null;
 
         // 自分以外の生存中プレイヤーからターゲットを選出
         const candidates = this.getActiveParticipants(this.lastRoomData)
-          .filter(({ slot, player }) => slot !== fromSlot && !player.finished);
-        if (candidates.length === 0) return;
+          .filter(({ slot, player }) => {
+            const hpVal = typeof player.hp === 'number' ? player.hp : this.VS_JAMMER_MAX_HP;
+            return slot !== fromSlot && !player.finished && !player.koDefeated && hpVal > 0;
+          });
+        if (candidates.length === 0) return null;
 
         const target = candidates[Math.floor(Math.random() * candidates.length)];
+        const damage = this.calcJammerAttackDamage(comboCount, isZoneActive, isFromBot);
 
-        let c1 = 2;
+        let c1 = 0;
         let c10 = 0;
-        if (isFromBot) {
-          if (comboCount >= 5) {
-            c1 = 3; c10 = 1;
-          } else if (comboCount >= 3) {
-            c1 = 2; c10 = 1;
-          }
-        } else {
-          if (comboCount >= 5) {
-            c1 = 4; c10 = 2;
-          } else if (comboCount >= 3) {
-            c1 = 3; c10 = 1;
+        if (withCoins) {
+          c1 = 2;
+          c10 = 0;
+          if (isFromBot) {
+            if (comboCount >= 5) {
+              c1 = 3; c10 = 1;
+            } else if (comboCount >= 3) {
+              c1 = 2; c10 = 1;
+            }
+          } else {
+            if (comboCount >= 5) {
+              c1 = 4; c10 = 2;
+            } else if (comboCount >= 3) {
+              c1 = 3; c10 = 1;
+            }
           }
         }
 
         this.roomRef.child('jammers/' + target.slot).transaction((cur) => {
           const nextSeq = (cur && typeof cur.seq === 'number' ? cur.seq : 0) + 1;
-          return { seq: nextSeq, c1, c10, fromCombo: comboCount, fromName: fromName || 'ライバル' };
+          const prevTotalDmg = (cur && typeof cur.totalDamage === 'number') ? cur.totalDamage : 0;
+          return {
+            seq: nextSeq,
+            c1,
+            c10,
+            damage,
+            totalDamage: prevTotalDmg + damage,
+            isZone: Boolean(isZoneActive),
+            fromCombo: comboCount,
+            fromName: fromName || 'ライバル'
+          };
         }).catch(() => {});
 
         if (!isFromBot) {
           this.jammerSentCount += (c1 + c10);
-          this.game.triggerVersusSpecialAttackFX(comboCount, c1, c10, target.player.name || '相手');
+          this.damageDealtTotal += damage;
+          if (withCoins) {
+            this.game.triggerVersusSpecialAttackFX(comboCount, c1, c10, target.player.name || '相手', damage, isZoneActive);
+          } else {
+            const zoneTag = isZoneActive ? '⚡ZONE×1.5! ' : '';
+            this.game.showVersusJammerToast(`${zoneTag}⚔️ ${target.player.name || '相手'} へ ${damage} DMG! (${comboCount}連)`, false);
+          }
         }
+        return { damage, coins: c1 + c10, targetSlot: target.slot };
       }
 
-      sendJammerToOpponent(comboCount) {
+      sendJammerToOpponent(comboCount, isZoneActive = false, withCoins = true) {
         if (!this.mySlot) return;
-        this.sendJammerFromSlot(this.mySlot, this.game.playerName, comboCount, false);
+        this.sendJammerFromSlot(this.mySlot, this.game.playerName, comboCount, false, isZoneActive, withCoins);
       }
 
       claimWinner(winnerSlot, reason) {
@@ -8100,10 +8260,24 @@
 
       resolveScoreWinner(data) {
         if (!data || !data.players || data.winner) return;
+        const s = { ...this.getDefaultSettings(), ...(data.settings || {}) };
         const standings = this.getSortedStandings(data);
         if (standings.length === 0) return;
         const top = standings[0];
         const second = standings[1];
+
+        if (s.vsRule === 'jammer') {
+          if (second && top.hp === second.hp && top.score === second.score) {
+            this.claimWinner('draw', `同HP（❤️${top.hp}）・同点で引き分け！白熱のバトルでした！`);
+          } else if (second && top.hp === second.hp) {
+            this.claimWinner(top.slot, `🏆 同HP（❤️${top.hp}）のスコア差で ${top.name} が勝利！`);
+          } else {
+            const hpDiff = second ? `（2位とHP +${top.hp - second.hp} 差）` : '';
+            this.claimWinner(top.slot, `🏆 ${top.name} が残りHP ❤️${top.hp} で勝利！${hpDiff}`);
+          }
+          return;
+        }
+
         if (second && top.score === second.score && top.perfectCount === second.perfectCount) {
           this.claimWinner('draw', '同点引き分け！白熱の名勝負でした！');
         } else {
@@ -8131,6 +8305,7 @@
         this.game.scene3D.setTitleMode(true);
         document.getElementById('ui-judgment-overlay').classList.add('hidden');
         document.getElementById('vs-opponent-bar').classList.add('hidden');
+        document.getElementById('vs-hp-bar-wrap').classList.add('hidden');
         document.getElementById('lunatic-banner').classList.add('hidden');
 
         const standings = this.getSortedStandings(data);
@@ -8180,12 +8355,15 @@
                     ${p.isBot ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/30 text-amber-200 border border-amber-400/60 font-black shrink-0">BOT</span>' : ''}
                   </div>
                   <div class="text-[10px] text-slate-300 font-bold mt-0.5">
-                    神:${p.perfectCount}回 ／ 処理:${p.served}人 ／ 最大${p.maxCombo}連${isJammer ? ` ／ 妨害:${p.jammerSentCount}枚` : ''}
+                    神:${p.perfectCount}回 ／ 処理:${p.served}人 ／ 最大${p.maxCombo}連${isJammer ? ` ／ 与ダメ:${p.damageDealt} ／ 妨害:${p.jammerSentCount}枚` : ''}
                   </div>
                 </div>
               </div>
-              <div class="font-digital text-sm sm:text-lg font-black text-amber-300 shrink-0">
-                ${Number(p.score || 0).toLocaleString()} pt
+              <div class="text-right shrink-0">
+                ${isJammer ? `<div class="font-digital text-sm sm:text-base font-black ${p.hp <= 0 ? 'text-rose-400' : 'text-emerald-300'}">${p.hp <= 0 ? '💀 K.O.' : `❤️ ${p.hp} HP`}</div>` : ''}
+                <div class="font-digital ${isJammer ? 'text-[10px] text-amber-300/90' : 'text-sm sm:text-lg text-amber-300'} font-black">
+                  ${Number(p.score || 0).toLocaleString()} pt
+                </div>
               </div>
             `;
             listEl.appendChild(row);
@@ -8231,6 +8409,9 @@
         this.isRankingRun = false;
         this.isVersusRun = false;
         this.vsSettings = null;
+        this.vsHp = 1000;
+        this.vsMaxHp = 1000;
+        this.vsKoDefeated = false;
         this.isTutorial = false;
         this.difficulty = 'NORMAL';
         this.lunaticTaxRate = 8;
@@ -10030,6 +10211,9 @@
         this.isRankingRun = false; // ランキングには一切影響させない
         this.isVersusRun = true;
         this.vsSettings = s;
+        this.vsMaxHp = this.versus ? this.versus.VS_JAMMER_MAX_HP : 1000;
+        this.vsHp = this.vsMaxHp;
+        this.vsKoDefeated = false;
         this.mistakeLogs = [];
         this.ruleType = s.ruleType === 'change' ? 'change' : 'wallet';
         this.difficulty = s.difficulty || 'NORMAL';
@@ -10059,9 +10243,13 @@
           if (s.vsRule === 'race') {
             this.maxTime = 180.0;
             this.timeLeft = 180.0;
+          } else if (s.vsRule === 'jammer') {
+            this.maxTime = 60.0;
+            this.timeLeft = 60.0;
           }
           const barEl = document.getElementById('vs-opponent-bar');
           if (barEl) barEl.classList.remove('hidden');
+          this.updateVersusHpBar();
           this.updateTopHUD();
         });
       }
@@ -10245,50 +10433,138 @@
         }, 2850));
       }
 
-      receiveVersusJammer(c1, c10, fromCombo, fromName = 'ライバル') {
-        if (!this.isVersusRun || this.state === 'RESULT') return;
-        this.wallet[1] = (this.wallet[1] || 0) + (c1 || 0);
-        this.wallet[10] = (this.wallet[10] || 0) + (c10 || 0);
+      isVersusJammerMode() {
+        return Boolean(this.isVersusRun && this.vsSettings && this.vsSettings.vsRule === 'jammer');
+      }
 
-        // 現在の問題に対する最適解を即座に再計算（財布が増えたため）
-        if (this.state === 'PLAYING') {
-          this.bestSolution = findBestPayment(this.currentPrice, this.wallet, this.ruleType);
-          this.updatePOSDisplay();
-          this.renderWalletUI();
+      updateVersusHpBar(lastDamage = 0) {
+        const wrap = document.getElementById('vs-hp-bar-wrap');
+        if (!wrap) return;
+        if (!this.isVersusJammerMode()) {
+          wrap.classList.add('hidden');
+          return;
+        }
+        wrap.classList.remove('hidden');
+
+        const maxHp = Math.max(1, this.vsMaxHp || 1000);
+        const curHp = Math.max(0, Math.min(maxHp, Math.round(this.vsHp || 0)));
+        const pct = (curHp / maxHp) * 100;
+
+        const hpText = document.getElementById('vs-hp-text');
+        const hpFill = document.getElementById('vs-hp-fill');
+        const hpCard = document.getElementById('vs-hp-bar-card');
+        const zoneAtkBadge = document.getElementById('vs-hp-zone-atk-badge');
+        const dmgPopup = document.getElementById('vs-hp-dmg-popup');
+
+        if (hpText) {
+          hpText.textContent = `${curHp} / ${maxHp}`;
+          hpText.className = pct <= 30
+            ? 'font-digital text-xs sm:text-sm font-black text-rose-400 animate-pulse'
+            : (pct <= 60 ? 'font-digital text-xs sm:text-sm font-black text-amber-300' : 'font-digital text-xs sm:text-sm font-black text-emerald-300');
+        }
+        if (hpFill) {
+          hpFill.style.width = `${pct}%`;
+          hpFill.className = pct <= 30
+            ? 'h-full bg-gradient-to-r from-rose-600 via-red-500 to-amber-400 rounded-full transition-all duration-200'
+            : (pct <= 60
+              ? 'h-full bg-gradient-to-r from-amber-500 via-orange-400 to-yellow-300 rounded-full transition-all duration-200'
+              : 'h-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 rounded-full transition-all duration-200');
+        }
+        if (hpCard) {
+          hpCard.className = pct <= 30
+            ? 'max-w-md mx-auto bg-rose-950/90 backdrop-blur-md border-2 border-rose-500 rounded-2xl px-3 py-1.5 shadow-[0_0_20px_rgba(244,63,94,0.65)] relative'
+            : (this.scene3D && this.scene3D.isZoneActive
+              ? 'max-w-md mx-auto bg-slate-950/90 backdrop-blur-md border-2 border-fuchsia-400 rounded-2xl px-3 py-1.5 shadow-[0_0_18px_rgba(232,121,249,0.55)] relative'
+              : 'max-w-md mx-auto bg-slate-950/90 backdrop-blur-md border-2 border-emerald-400/80 rounded-2xl px-3 py-1.5 shadow-[0_4px_18px_rgba(0,0,0,0.75)] relative');
+        }
+        if (zoneAtkBadge) {
+          zoneAtkBadge.classList.toggle('hidden', !(this.scene3D && this.scene3D.isZoneActive));
+        }
+        if (lastDamage > 0 && dmgPopup) {
+          dmgPopup.textContent = `-${lastDamage}`;
+          if (hpCard) {
+            hpCard.classList.remove('animate-shake');
+            void hpCard.offsetWidth;
+            hpCard.classList.add('animate-shake');
+          }
+          clearTimeout(this._hpDmgPopupTimer);
+          this._hpDmgPopupTimer = setTimeout(() => {
+            if (dmgPopup) dmgPopup.textContent = '';
+          }, 1100);
+        }
+      }
+
+      receiveVersusJammer(c1, c10, fromCombo, fromName = 'ライバル', damage = 0, isZoneAttack = false) {
+        if (!this.isVersusRun || this.state === 'RESULT') return;
+        const hasCoins = (c1 || 0) > 0 || (c10 || 0) > 0;
+        const dmg = Math.max(0, Math.round(Number(damage) || 0));
+
+        if (hasCoins) {
+          this.wallet[1] = (this.wallet[1] || 0) + (c1 || 0);
+          this.wallet[10] = (this.wallet[10] || 0) + (c10 || 0);
+          if (this.state === 'PLAYING') {
+            this.bestSolution = findBestPayment(this.currentPrice, this.wallet, this.ruleType);
+            this.updatePOSDisplay();
+            this.renderWalletUI();
+          }
         }
 
-        // 重厚な被弾ダメージ演出（SE・バイブ・3Dカメラ揺れ・店員ショック・コイン雨・ダメージカットイン）
+        if (dmg > 0 && this.isVersusJammerMode()) {
+          this.vsHp = Math.max(0, (this.vsHp || 0) - dmg);
+          this.updateVersusHpBar(dmg);
+        }
+
+        // 被弾演出（コイン付き攻撃は大演出、通常HP攻撃は軽快な被弾演出）
         sound.playJammerDamageSE();
-        this.vibrate([80, 40, 120]);
+        this.vibrate(hasCoins ? [80, 40, 120] : 70);
 
         if (this.scene3D) {
-          this.scene3D.triggerDamageShake(0.45, 0.5);
-          this.scene3D.triggerClerkReaction('shock', 1.45);
-          this.scene3D.spawnJammerCoinRain(c1 || 0, c10 || 0);
-        }
-        this.setClerkComment('bad', `きゃっ！${fromName}さんからお邪魔コインが降ってきました💦`);
-
-        const screenEl = document.getElementById('screen-game');
-        if (screenEl) {
-          screenEl.classList.remove('vs-screen-damage-shake');
-          void screenEl.offsetWidth;
-          screenEl.classList.add('vs-screen-damage-shake');
-          setTimeout(() => screenEl.classList.remove('vs-screen-damage-shake'), 520);
-        }
-        const posPanel = document.getElementById('pos-panel');
-        if (posPanel) {
-          posPanel.classList.remove('animate-shake');
-          void posPanel.offsetWidth;
-          posPanel.classList.add('animate-shake');
+          this.scene3D.triggerDamageShake(hasCoins ? 0.45 : 0.25, hasCoins ? 0.5 : 0.28);
+          this.scene3D.triggerClerkReaction('shock', hasCoins ? 1.45 : 0.8);
+          if (hasCoins) this.scene3D.spawnJammerCoinRain(c1 || 0, c10 || 0);
         }
 
         const parts = [];
         if (c1 > 0) parts.push(`1円×${c1}`);
         if (c10 > 0) parts.push(`10円×${c10}`);
-        this.triggerVersusDamageFX(fromName, parts.join('・'), c1 || 0, c10 || 0);
+
+        if (hasCoins) {
+          this.setClerkComment('bad', `きゃっ！${fromName}さんから ${dmg > 0 ? `HP -${dmg} ＆ ` : ''}お邪魔コインが飛んできました💦`);
+          const screenEl = document.getElementById('screen-game');
+          if (screenEl) {
+            screenEl.classList.remove('vs-screen-damage-shake');
+            void screenEl.offsetWidth;
+            screenEl.classList.add('vs-screen-damage-shake');
+            setTimeout(() => screenEl.classList.remove('vs-screen-damage-shake'), 520);
+          }
+          const posPanel = document.getElementById('pos-panel');
+          if (posPanel) {
+            posPanel.classList.remove('animate-shake');
+            void posPanel.offsetWidth;
+            posPanel.classList.add('animate-shake');
+          }
+          this.triggerVersusDamageFX(fromName, parts.join('・'), c1 || 0, c10 || 0, dmg, isZoneAttack);
+        } else if (dmg > 0) {
+          const zoneLabel = isZoneAttack ? '⚡ZONE強化 ' : '';
+          this.showVersusJammerToast(`💥 ${fromName} の${zoneLabel}攻撃！ HP -${dmg}`, true);
+        }
+
+        // HPが0になったら強制終了！
+        if (this.isVersusJammerMode() && this.vsHp <= 0 && !this.vsKoDefeated) {
+          this.vsHp = 0;
+          this.vsKoDefeated = true;
+          this.updateVersusHpBar(0);
+          this.setClerkComment('bad', 'あぁっ…HPが0になってしまいました…！K.O.強制終了です！');
+          this.endGame();
+          return;
+        }
+
+        if (this.isVersusRun && this.versus) {
+          this.versus.syncMyProgress(false, false);
+        }
       }
 
-      triggerVersusDamageFX(fromName, coinText, c1 = 2, c10 = 0) {
+      triggerVersusDamageFX(fromName, coinText, c1 = 2, c10 = 0, damage = 0, isZoneAttack = false) {
         const layer = document.getElementById('vs-fx-layer');
         if (!layer) return;
 
@@ -10305,11 +10581,13 @@
         setTimeout(() => ring.remove(), 650);
 
         // 被弾ダメージカットイン帯
+        const dmgStr = damage > 0 ? `HP -${damage}${coinText ? ' ＆ ' : ''}` : '';
+        const coinStr = coinText ? `財布に ${escapeHtml(coinText)} 襲来!!` : '大ダメージ!!';
         const cutin = document.createElement('div');
         cutin.className = 'vs-damage-cutin';
         cutin.innerHTML = `
-          <div class="text-[11px] sm:text-xs font-black text-rose-200 tracking-widest">💥 ${escapeHtml(fromName)} のお邪魔攻撃!! 💥</div>
-          <div class="text-lg sm:text-2xl font-black text-white drop-shadow mt-0.5">💢 DAMAGE! 財布に ${escapeHtml(coinText)} 襲来!!</div>
+          <div class="text-[11px] sm:text-xs font-black text-rose-200 tracking-widest">💥 ${escapeHtml(fromName)} の${isZoneAttack ? '⚡ZONE ' : ''}お邪魔攻撃!! 💥</div>
+          <div class="text-lg sm:text-2xl font-black text-white drop-shadow mt-0.5">💢 ${dmgStr}${coinStr}</div>
         `;
         layer.appendChild(cutin);
         setTimeout(() => cutin.remove(), 1200);
@@ -10329,7 +10607,7 @@
         }
       }
 
-      triggerVersusSpecialAttackFX(comboCount, c1, c10, targetName = '相手') {
+      triggerVersusSpecialAttackFX(comboCount, c1, c10, targetName = '相手', damage = 0, isZoneAttack = false) {
         const layer = document.getElementById('vs-fx-layer');
         if (!layer) return;
 
@@ -10352,18 +10630,19 @@
         layer.appendChild(lines);
         setTimeout(() => lines.remove(), 980);
 
+        const dmgBadge = damage > 0 ? `<span class="text-rose-300 font-black">⚔️ ${damage} DMG</span>${parts.length ? ' ＋ ' : ''}` : '';
         const band = document.createElement('div');
         band.className = 'vs-special-band';
         band.innerHTML = `
           <div class="vs-special-title">
             <div class="text-[10px] sm:text-xs font-black text-cyan-200 tracking-widest uppercase">
-              ✨ SPECIAL JAMMER ATTACK // ${comboCount} COMBO ✨
+              ✨ SPECIAL ATTACK // ${comboCount} COMBO${isZoneAttack ? ' // ⚡ ZONE ATK×1.5' : ''} ✨
             </div>
             <div class="text-xl sm:text-3xl font-black text-amber-300 drop-shadow-[0_2px_10px_rgba(250,204,21,0.9)] tracking-wide mt-0.5">
               ${skillName}
             </div>
             <div class="text-xs sm:text-sm font-black text-white mt-0.5">
-              🎯 ${escapeHtml(targetName)} へ <span class="text-cyan-300">${escapeHtml(parts.join('・'))}</span> を送り込んだ!!
+              🎯 ${escapeHtml(targetName)} へ ${dmgBadge}<span class="text-cyan-300">${escapeHtml(parts.join('・'))}</span>!!
             </div>
           </div>
         `;
@@ -10409,6 +10688,7 @@
         this.lowTimeWarned = false;
         this.trayList = [];
         this.syncRuleToggleUI();
+        this.updateVersusHpBar();
 
         this.scene3D.clearAllTrayItems(false);
         this.scene3D.setTitleMode(false);
@@ -11090,7 +11370,7 @@
             return;
           }
 
-          if (isHard || isLunatic) {
+          if (!this.isVersusJammerMode() && (isHard || isLunatic)) {
             this.timeLeft = Math.max(0, this.timeLeft - 2.0);
             this.showTimeBonusPopup('-2.0秒!', true);
             if (isLunatic) {
@@ -11265,11 +11545,13 @@
             billBonusInfo = { savedBills: billSavedCount, bonusPt: billBonusPt };
           }
           this.score += earnedScore;
-          if (this.isVersusRun && this.versus && this.perfectCount > 0 && this.perfectCount % 3 === 0) {
-            this.versus.sendJammerToOpponent(this.combo);
+          if (this.isVersusJammerMode() && this.versus) {
+            const withCoins = this.perfectCount > 0 && this.perfectCount % 3 === 0;
+            this.versus.sendJammerToOpponent(this.combo, Boolean(this.scene3D.isZoneActive), withCoins);
+            this.updateVersusHpBar();
           }
 
-          const bonusSec = isHard ? 1.5 : (isExOrLun ? 2.5 : 0);
+          const bonusSec = this.isVersusJammerMode() ? 0 : (isHard ? 1.5 : (isExOrLun ? 2.5 : 0));
           if (bonusSec > 0) {
             this.timeLeft = Math.min(99.9, this.timeLeft + bonusSec);
             this.showTimeBonusPopup(`+${bonusSec.toFixed(1)}秒!`, false);
@@ -11359,7 +11641,7 @@
           earnedScore = (isHard || isLunatic) ? -400 : -200;
           this.score = Math.max(0, this.score + earnedScore);
 
-          if (isHard || isLunatic) {
+          if (!this.isVersusJammerMode() && (isHard || isLunatic)) {
             this.timeLeft = Math.max(0, this.timeLeft - 4.0);
             this.showTimeBonusPopup('-4.0秒!', true);
           }
@@ -11508,7 +11790,7 @@
         const isLunatic = this.difficulty === 'LUNATIC';
         const diff = coinsAfter - coinsBefore;
         const diffStr = diff < 0 ? `${diff}枚スッキリ!` : (diff === 0 ? `増減なし` : `+${diff}枚増加...`);
-        const bonusSec = this.difficulty === 'HARD' ? '+1.5秒' : ((this.difficulty === 'EX' || this.difficulty === 'LUNATIC') ? '+2.5秒' : '');
+        const bonusSec = this.isVersusJammerMode() ? '' : (this.difficulty === 'HARD' ? '+1.5秒' : ((this.difficulty === 'EX' || this.difficulty === 'LUNATIC') ? '+2.5秒' : ''));
 
         if (grade === 'PERFECT') {
           if (billBonusInfo) {
@@ -11555,7 +11837,7 @@
           badge.className = 'text-xl sm:text-2xl font-black tracking-wider mb-0.5 text-rose-400 drop-shadow';
           badge.textContent = this.ruleType === 'change' ? '💦 BAD... お釣り硬貨が多すぎ！' : '💦 BAD... 小銭ジャラジャラ';
           subtitle.className = 'text-[11px] sm:text-xs font-bold text-rose-200 mb-1';
-          subtitle.textContent = isHardOrExOrLun
+          subtitle.textContent = (!this.isVersusJammerMode() && isHardOrExOrLun)
             ? `スコア ${earnedScore} ＆ -4.0秒ペナルティ... 端数を合わせて出そう！`
             : `スコア ${earnedScore} ＆ コンボリセット... 端数を合わせて出そう！`;
         }
@@ -12056,6 +12338,7 @@
           this.scene3D.setZoneMode(false);
         }
         sound.setZoneBGM(false);
+        this.updateVersusHpBar();
       }
 
       update(dt) {
@@ -12213,7 +12496,7 @@
           this.clearActiveTimers();
           this.state = 'RESULT';
           sound.playRegisterCheckout();
-          this.versus.syncMyProgress(true, Boolean(this.exSuddenDeathFailed));
+          this.versus.syncMyProgress(true, Boolean(this.exSuddenDeathFailed || this.vsKoDefeated));
           return;
         }
         this.clearActiveTimers();
