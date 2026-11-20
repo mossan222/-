@@ -570,7 +570,7 @@
             <span class="font-extrabold text-rose-300">最高難易度「ルナティック（LUNATIC）」</span>
             <p class="text-slate-300 leading-relaxed">
               最高スコア <span class="text-amber-300 font-bold">300,000pt（30万pt）</span> で解放される<span class="text-amber-300 font-bold">ランキングモード専用</span>の超難関！<br>
-              レジには<span class="text-rose-300 font-bold">「本体価格（税抜）」のみ</span>が表示され、<span class="text-white font-bold underline decoration-rose-400">消費税8%を加算した税込み金額（本体価格 × 1.08・小数点以下切り捨て）</span>を暗算して支払います！
+              レジには<span class="text-rose-300 font-bold">「本体価格（税抜）」のみ</span>が表示され、<span class="text-white font-bold underline decoration-rose-400">消費税8% または 10% を加算した税込み金額（小数点以下切り捨て）</span>を暗算して支払います！
             </p>
           </div>
         </div>
@@ -756,8 +756,8 @@
                 <span class="text-[10px] font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full">EX・🌙LUNATIC専用モード</span>
               </div>
               <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-snug">
-                「名前入力」➔「お釣り表示 あり/なし」➔「難易度選択」で挑戦！<br>
-                高難易度 <span class="text-fuchsia-300 font-bold">EX（最高5万pt解放）</span> や、最高30万pt解放の <span class="text-rose-300 font-bold">🌙ルナティック（消費税8%暗算）</span> はこちらからプレイ可能！
+                「名前入力」➔「ルール選択」➔「難易度選択」で挑戦！（ランキングは統合部門）<br>
+                高難易度 <span class="text-fuchsia-300 font-bold">EX（最高5万pt解放）</span> や、最高30万pt解放の <span class="text-rose-300 font-bold">🌙ルナティック（消費税8%/10%暗算）</span> はこちらからプレイ可能！
               </p>
             </div>
           </div>
@@ -804,7 +804,7 @@
           戻る
         </button>
         <button id="btn-name-confirm" class="btn-3d flex-1 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-300 hover:to-orange-300 text-slate-950 font-black text-base sm:text-lg py-3 rounded-xl border-b-4 border-amber-800 shadow-lg">
-          次へ（お釣り表示選択） ▶
+          次へ（ルール選択） ▶
         </button>
       </div>
     </div>
@@ -930,11 +930,26 @@
         </button>
       </div>
 
+      <!-- Free Play Only: Change Display ON/OFF Selector -->
+      <div id="rule-select-free-change-box" class="hidden mb-4 bg-slate-950/90 border border-emerald-500/40 rounded-2xl p-3 text-left">
+        <div class="text-[10px] font-black text-emerald-300 uppercase tracking-wider mb-1.5">
+          📟 お釣り表示設定（フリープレイ専用）
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btn-rule-free-change-on" type="button" class="btn-3d py-2 px-2 rounded-xl font-black text-xs border-2 bg-emerald-500/25 border-emerald-400 text-emerald-200">
+            👁️ お釣り表示【あり】
+          </button>
+          <button id="btn-rule-free-change-off" type="button" class="btn-3d py-2 px-2 rounded-xl font-black text-xs border-2 bg-slate-800 border-slate-600 text-slate-300">
+            🙈 お釣り表示【なし(暗算)】
+          </button>
+        </div>
+      </div>
+
       <div class="flex justify-between items-center">
         <button id="btn-rule-select-back" class="btn-3d bg-slate-700 hover:bg-slate-600 text-slate-200 font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl border-b-4 border-slate-900">
           ◀ 戻る
         </button>
-        <span class="text-[11px] text-cyan-300/90 font-bold">次は難易度選択です</span>
+        <span id="rule-select-next-hint" class="text-[11px] text-cyan-300/90 font-bold">次は難易度選択です</span>
       </div>
     </div>
   </div>
@@ -1033,7 +1048,7 @@
                 <span id="rank-lunatic-lock-badge" class="text-[10px] font-black bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full">🔒 最高300,000ptで解放</span>
               </div>
               <p id="rank-lunatic-desc" class="text-[11px] sm:text-xs text-slate-200 mt-1 leading-snug">
-                【特殊ルール：消費税8%導入】レジには<span class="text-amber-300 font-bold">本体価格（税抜）のみ</span>表示！<span class="text-rose-300 font-bold underline">本体価格×1.08の税込み金額（小数点以下切り捨て）</span>を暗算して支払おう！（60秒・スコア100倍）
+                【特殊ルール：消費税8% / 10%選択】レジには<span class="text-amber-300 font-bold">本体価格（税抜）のみ</span>表示！選んだ税率（<span class="text-rose-300 font-bold underline">×1.08 または ×1.10・小数点以下切り捨て</span>）の税込み金額を暗算して支払おう！（60秒・スコア100倍）
               </p>
             </div>
           </div>
@@ -1043,9 +1058,74 @@
 
       <div class="flex justify-between items-center">
         <button id="btn-rank-diff-back" class="btn-3d bg-slate-700 hover:bg-slate-600 text-slate-200 font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl border-b-4 border-slate-900">
-          ◀ お釣り表示選択に戻る
+          ◀ ルール選択に戻る
         </button>
         <span class="text-[11px] text-amber-300/90 font-bold">選択すると3カウント後に始まります！</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: LUNATIC TAX RATE SELECT (#modal-lunatic-tax)
+       ========================================================================= -->
+  <div id="modal-lunatic-tax" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+    <div class="max-w-lg w-full bg-slate-900 border-2 border-rose-500 rounded-3xl p-5 sm:p-6 shadow-2xl">
+      <div class="text-center mb-4">
+        <div class="inline-block bg-rose-500/20 border border-rose-400/70 text-rose-300 text-[11px] font-black px-3 py-0.5 rounded-full mb-1">
+          🌙 LUNATIC TAX RATE SELECT (1 / 2)
+        </div>
+        <h3 class="text-xl sm:text-2xl font-black text-white">消費税率を選択</h3>
+        <p class="text-xs sm:text-sm text-slate-300 mt-1">
+          挑戦者：<span id="lunatic-tax-player-name" class="font-black text-amber-300 underline">名無しの会計士</span> さん<br>
+          <span class="text-[11px] text-rose-200/90">※「8% / 10%」×「10秒 / 15秒」の全4部門でランキングが分かれます</span>
+        </p>
+      </div>
+
+      <div class="space-y-3 mb-5">
+        <!-- 8% Tax Mode -->
+        <button id="btn-lunatic-tax-8" class="btn-3d w-full text-left bg-gradient-to-r from-rose-950 via-red-950/90 to-slate-900 hover:from-rose-900 border-2 border-rose-400 rounded-2xl p-4 shadow-lg flex items-center justify-between gap-3 group">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-rose-500/25 border border-rose-400 flex items-center justify-center text-2xl shrink-0">
+              🍙
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-base sm:text-lg font-black text-rose-300">消費税 8% モード（軽減税率）</span>
+                <span class="text-[10px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-full">×1.08 切捨・超難関</span>
+              </div>
+              <p class="text-xs text-slate-300 mt-0.5">
+                本体価格 × <strong class="text-white">1.08（小数点以下切り捨て）</strong>！端数暗算が最も複雑な極限モード！
+              </p>
+            </div>
+          </div>
+          <span class="text-rose-400 font-black text-xl group-hover:translate-x-1 transition-transform shrink-0">▶</span>
+        </button>
+
+        <!-- 10% Tax Mode -->
+        <button id="btn-lunatic-tax-10" class="btn-3d w-full text-left bg-gradient-to-r from-amber-950/95 via-slate-800/95 to-slate-800/95 hover:from-amber-900 border-2 border-amber-400 rounded-2xl p-4 shadow-lg flex items-center justify-between gap-3 group">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-2xl shrink-0">
+              🛍️
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-base sm:text-lg font-black text-amber-300">消費税 10% モード（標準税率）</span>
+                <span class="text-[10px] font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full">×1.10 切捨・スピード勝負</span>
+              </div>
+              <p class="text-xs text-slate-300 mt-0.5">
+                本体価格 × <strong class="text-white">1.10（小数点以下切り捨て）</strong>！テンポよく税込金額を弾き出す高速暗算モード！
+              </p>
+            </div>
+          </div>
+          <span class="text-amber-400 font-black text-xl group-hover:translate-x-1 transition-transform shrink-0">▶</span>
+        </button>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <button id="btn-lunatic-tax-back" class="btn-3d bg-slate-700 hover:bg-slate-600 text-slate-200 font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl border-b-4 border-slate-900">
+          ◀ 難易度選択に戻る
+        </button>
+        <span class="text-[11px] text-rose-300/90 font-bold">次は制限時間（10秒/15秒）を選択します</span>
       </div>
     </div>
   </div>
@@ -1057,12 +1137,19 @@
     <div class="max-w-lg w-full bg-slate-900 border-2 border-rose-500 rounded-3xl p-5 sm:p-6 shadow-2xl">
       <div class="text-center mb-4">
         <div class="inline-block bg-rose-500/20 border border-rose-400/70 text-rose-300 text-[11px] font-black px-3 py-0.5 rounded-full mb-1">
-          🌙 LUNATIC TIME LIMIT SELECT
+          🌙 LUNATIC TIME LIMIT SELECT (2 / 2)
         </div>
         <h3 class="text-xl sm:text-2xl font-black text-white">1人あたりの制限時間を選択</h3>
-        <p class="text-xs sm:text-sm text-slate-300 mt-1">
-          挑戦者：<span id="lunatic-time-player-name" class="font-black text-amber-300 underline">名無しの会計士</span> さん<br>
-          <span class="text-[11px] text-rose-200/90">※ルナティックのランキングは「10秒制限」「15秒制限」の2部門に分かれます（お釣り表示設定は統合）</span>
+        <div class="flex items-center justify-center gap-2 mt-1 flex-wrap">
+          <span class="text-xs sm:text-sm text-slate-300">
+            挑戦者：<span id="lunatic-time-player-name" class="font-black text-amber-300 underline">名無しの会計士</span> さん
+          </span>
+          <span id="lunatic-time-tax-badge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-rose-500 text-white">
+            消費税 8% モード
+          </span>
+        </div>
+        <p class="text-[11px] text-rose-200/90 mt-1">
+          ※選択した税率ごとに「10秒制限」「15秒制限」でランキングが記録されます
         </p>
       </div>
 
@@ -1079,7 +1166,7 @@
                 <span class="text-[10px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-full">超高速・極限</span>
               </div>
               <p class="text-xs text-slate-300 mt-0.5">
-                1人あたり<strong class="text-white">10秒超過で即強制終了</strong>！瞬時に消費税8%を暗算するスピード極限部門！
+                1人あたり<strong class="text-white">10秒超過で即強制終了</strong>！瞬時に消費税を暗算するスピード極限部門！
               </p>
             </div>
           </div>
@@ -1108,7 +1195,7 @@
 
       <div class="flex justify-between items-center">
         <button id="btn-lunatic-time-back" class="btn-3d bg-slate-700 hover:bg-slate-600 text-slate-200 font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl border-b-4 border-slate-900">
-          ◀ 難易度選択に戻る
+          ◀ 消費税選択に戻る
         </button>
         <span class="text-[11px] text-rose-300/90 font-bold">選択すると3カウント後に始まります！</span>
       </div>
@@ -1130,7 +1217,7 @@
                 💾 ローカル保存モード
               </span>
             </div>
-            <span class="text-[11px] text-slate-400">全6部門別（通常4部門＋🌙ルナティック10秒/15秒）共有 TOP 10</span>
+            <span class="text-[11px] text-slate-400">全6部門別（通常2部門統合＋🌙ルナティック4部門）共有 TOP 10</span>
           </div>
         </div>
         <button id="btn-close-ranking-modal" class="btn-3d bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-extrabold px-3 py-1.5 rounded-xl">
@@ -1138,8 +1225,8 @@
         </button>
       </div>
 
-      <!-- Rule Category Tabs (2 Rules + Lunatic Separate Ranking) -->
-      <div class="grid grid-cols-3 gap-1.5 mb-1.5 bg-slate-950 p-1 rounded-2xl border border-slate-800">
+      <!-- Rule Category Tabs (2 Unified Normal Rules + Lunatic 4 Sub-Categories) -->
+      <div class="grid grid-cols-3 gap-1.5 mb-2 bg-slate-950 p-1 rounded-2xl border border-slate-800">
         <button id="tab-modal-rule-wallet" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950 shadow">
           👛 財布の小銭最小
         </button>
@@ -1151,13 +1238,19 @@
         </button>
       </div>
 
-      <!-- Change Display Tabs (2 Options -> Total 6 Categories) -->
-      <div id="modal-rank-change-tabs" class="grid grid-cols-2 gap-1.5 mb-3 bg-slate-950 p-1 rounded-2xl border border-slate-800">
-        <button id="tab-modal-rank-on" class="btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-emerald-500 text-slate-950 shadow">
-          👁️ お釣り表示【あり】
+      <!-- Lunatic 4-Category Sub Tabs (Shown only when Lunatic tab is active) -->
+      <div id="modal-rank-lunatic-tabs" class="hidden grid-cols-2 sm:grid-cols-4 gap-1.5 mb-3 bg-slate-950 p-1 rounded-2xl border border-rose-500/40">
+        <button id="tab-modal-lun-8-10" class="btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-rose-500 text-white shadow">
+          8%・10秒
         </button>
-        <button id="tab-modal-rank-off" class="btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700">
-          🙈 お釣り表示【なし】
+        <button id="tab-modal-lun-8-15" class="btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700">
+          8%・15秒
+        </button>
+        <button id="tab-modal-lun-10-10" class="btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700">
+          10%・10秒
+        </button>
+        <button id="tab-modal-lun-10-15" class="btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700">
+          10%・15秒
         </button>
       </div>
 
@@ -1230,7 +1323,7 @@
             </div>
 
             <div id="ui-zone-badge" class="hidden bg-gradient-to-r from-fuchsia-500 via-indigo-500 to-cyan-400 text-white px-2 py-0.5 rounded-lg font-black text-[9px] sm:text-[11px] leading-none shadow animate-pulse border border-white/50">
-              ⚡ 神域ZONE ×1.35
+              ⚡ 神域ZONE ×2.5
             </div>
 
             <div class="flex items-center gap-0.5 text-[10px] sm:text-xs text-slate-300 bg-slate-800/80 px-1.5 py-0.5 rounded-lg border border-slate-700 leading-none">
@@ -1291,6 +1384,19 @@
         <div class="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
           <div id="ui-time-bar" class="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full transition-all duration-100" style="width: 100%;"></div>
         </div>
+
+        <!-- Compact Zone Gauge Bar -->
+        <div id="ui-zone-gauge-wrap" class="mt-1 flex items-center gap-1.5">
+          <span id="ui-zone-gauge-label" class="text-[9px] sm:text-[10px] font-black text-fuchsia-300 shrink-0 leading-none">
+            ⚡ ZONE 0/7
+          </span>
+          <div class="flex-1 h-1.5 sm:h-2 bg-slate-800 rounded-full overflow-hidden border border-slate-700/80">
+            <div id="ui-zone-gauge-bar" class="h-full bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-cyan-300 rounded-full transition-all duration-100" style="width: 0%;"></div>
+          </div>
+          <span id="ui-zone-gauge-status" class="font-digital text-[9px] sm:text-[10px] font-black text-slate-300 shrink-0 leading-none min-w-[44px] text-right">
+            ×2.5待機
+          </span>
+        </div>
       </div>
 
       <!-- ULTRA-COMPACT POS REGISTER BAR -->
@@ -1336,12 +1442,12 @@
         </div>
       </div>
 
-      <!-- Lunatic Tax 8% Rule Reminder Banner (Shown only in LUNATIC Mode) -->
+      <!-- Lunatic Tax 8%/10% Rule Reminder Banner (Shown only in LUNATIC Mode) -->
       <div id="lunatic-banner" class="hidden mt-1 bg-rose-950/95 border border-rose-500 rounded-xl px-2.5 py-1 flex items-center justify-between gap-2 shadow">
-        <span class="bg-rose-500 text-white font-black text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full shrink-0">
+        <span id="lunatic-banner-tax-badge" class="bg-rose-500 text-white font-black text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full shrink-0">
           🌙 消費税 8% モード
         </span>
-        <span class="text-[10px] sm:text-xs font-extrabold text-rose-100 flex-1 text-left">
+        <span id="lunatic-banner-rule-text" class="text-[10px] sm:text-xs font-extrabold text-rose-100 flex-1 text-left">
           表示は<span class="text-amber-300 underline">本体価格（税抜）</span>です！<span class="text-white">本体価格 × 1.08（小数点以下切り捨て）</span>の税込金額を計算して支払おう！
         </span>
         <span id="lunatic-turn-timer" class="font-digital bg-slate-950/90 border border-rose-400 text-amber-300 font-black text-[10px] sm:text-xs px-2 py-0.5 rounded-lg shrink-0 whitespace-nowrap">
@@ -1497,13 +1603,19 @@
           </button>
         </div>
 
-        <!-- Change Display Tabs in Result Screen -->
-        <div id="res-rank-change-tabs" class="grid grid-cols-2 gap-1.5 mb-2 bg-slate-900 p-1 rounded-xl border border-slate-800">
-          <button id="tab-res-rank-on" class="btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-emerald-500 text-slate-950">
-            👁️ お釣り表示【あり】
+        <!-- Lunatic 4-Category Sub Tabs in Result Screen (Shown only when Lunatic tab is active) -->
+        <div id="res-rank-lunatic-tabs" class="hidden grid-cols-2 sm:grid-cols-4 gap-1 mb-2 bg-slate-900 p-1 rounded-xl border border-rose-500/40">
+          <button id="tab-res-lun-8-10" class="btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-rose-500 text-white">
+            8%・10秒
           </button>
-          <button id="tab-res-rank-off" class="btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300">
-            🙈 お釣り表示【なし】
+          <button id="tab-res-lun-8-15" class="btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300">
+            8%・15秒
+          </button>
+          <button id="tab-res-lun-10-10" class="btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300">
+            10%・10秒
+          </button>
+          <button id="tab-res-lun-10-15" class="btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300">
+            10%・15秒
           </button>
         </div>
 
@@ -1620,13 +1732,17 @@
     const EX_UNLOCK_SCORE = 50000;
     const LUNATIC_UNLOCK_SCORE = 300000;
 
-    // ストレージキー（ローカルキャッシュ＆オフライン用バックアップ - 既存2部門完全維持＋新ルール2部門拡張）
+    // ストレージキー（通常2部門統合＋ルナティック4部門 = 全6部門）
     const RANKING_KEY_WITH_CHANGE            = 'pittariman_ranking_with_change';
     const RANKING_KEY_NO_CHANGE              = 'pittariman_ranking_no_change';
     const RANKING_KEY_CHANGE_MIN_WITH_CHANGE = 'pittariman_ranking_change_min_with_change';
     const RANKING_KEY_CHANGE_MIN_NO_CHANGE   = 'pittariman_ranking_change_min_no_change';
-    const RANKING_KEY_LUNATIC_10S            = 'pittariman_ranking_lunatic_10s';
-    const RANKING_KEY_LUNATIC_15S            = 'pittariman_ranking_lunatic_15s';
+    const RANKING_KEY_WALLET_UNIFIED         = 'pittariman_ranking_wallet_unified_v2';
+    const RANKING_KEY_CHANGE_UNIFIED         = 'pittariman_ranking_change_unified_v2';
+    const RANKING_KEY_LUNATIC_8_10           = 'pittariman_ranking_lunatic_10s';
+    const RANKING_KEY_LUNATIC_8_15           = 'pittariman_ranking_lunatic_15s';
+    const RANKING_KEY_LUNATIC_10_10          = 'pittariman_ranking_lunatic_10p_10s';
+    const RANKING_KEY_LUNATIC_10_15          = 'pittariman_ranking_lunatic_10p_15s';
     const PLAYER_NAME_STORAGE_KEY            = 'pittariman_player_name_v3';
     const PLAYER_HIGH_SCORES_KEY             = 'pittariman_player_highscores_v1';
     const PLAYER_LUNATIC_HIGH_SCORES_KEY     = 'pittariman_player_lunatic_highscores_v1';
@@ -1644,12 +1760,20 @@
       { id: 'cm_nc3', name: '小銭ゼロ見習い', score: 12500, perfectRate: 68, customers: 7, mode: 'NORMAL', date: '2026/11' }
     ];
 
-    const DEFAULT_RANKINGS_LUNATIC_10S = [
+    const DEFAULT_RANKINGS_LUNATIC_8_10 = [
       { id: 'lun_10s_1', name: '超神速消費税マスター', score: 720000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
     ];
 
-    const DEFAULT_RANKINGS_LUNATIC_15S = [
+    const DEFAULT_RANKINGS_LUNATIC_8_15 = [
       { id: 'lun_15s_1', name: '消費税計算マスター', score: 685000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
+    ];
+
+    const DEFAULT_RANKINGS_LUNATIC_10_10 = [
+      { id: 'lun_10p_10s_1', name: '電光石火10%達人', score: 700000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
+    ];
+
+    const DEFAULT_RANKINGS_LUNATIC_10_15 = [
+      { id: 'lun_10p_15s_1', name: '標準税率マスター', score: 650000, perfectRate: 100, customers: 6, mode: 'LUNATIC', date: '2026/11' }
     ];
 
     const DEFAULT_RANKINGS_WITH_CHANGE = [
@@ -1680,6 +1804,7 @@
       'modal-ranking-change',
       'modal-rule-select',
       'modal-ranking-difficulty',
+      'modal-lunatic-tax',
       'modal-lunatic-time',
       'modal-ranking',
       'modal-tutorial-clear',
@@ -1716,13 +1841,18 @@
     class RankingManager {
       static db = null;
       static isOnline = false;
+      static ALL_CATEGORIES = ['wallet', 'change', 'lunatic_8_10', 'lunatic_8_15', 'lunatic_10_10', 'lunatic_10_15'];
       static caches = {
-        'wallet_true': null,
-        'wallet_false': null,
-        'change_true': null,
-        'change_false': null,
-        'lunatic_true': null,
-        'lunatic_false': null
+        wallet: null,
+        change: null,
+        lunatic_8_10: null,
+        lunatic_8_15: null,
+        lunatic_10_10: null,
+        lunatic_10_15: null
+      };
+      static sourceBuckets = {
+        wallet: {},
+        change: {}
       };
       static onSyncListeners = [];
 
@@ -1730,14 +1860,15 @@
         return String(name || '').trim() || '名無しの会計士';
       }
 
-      static normalizeRuleType(ruleType) {
-        if (ruleType === 'lunatic') return 'lunatic';
-        return ruleType === 'change' ? 'change' : 'wallet';
+      static normalizeCategory(categoryKey = 'wallet') {
+        if (RankingManager.ALL_CATEGORIES.includes(categoryKey)) return categoryKey;
+        return categoryKey === 'change' ? 'change' : 'wallet';
       }
 
-      static getCacheSlot(showChange = true, ruleType = 'wallet') {
-        const r = RankingManager.normalizeRuleType(ruleType);
-        return `${r}_${Boolean(showChange)}`;
+      static getLunaticCategoryKey(taxRate = 8, turnLimit = 15) {
+        const rate = taxRate === 10 ? 10 : 8;
+        const limit = turnLimit === 10 ? 10 : 15;
+        return `lunatic_${rate}_${limit}`;
       }
 
       // Firebase Realtime Database のキーに使用できない文字 (., #, $, [, ], /) を安全な文字列へ変換
@@ -1757,14 +1888,55 @@
         );
       }
 
+      static getKey(categoryKey = 'wallet') {
+        const cat = RankingManager.normalizeCategory(categoryKey);
+        switch (cat) {
+          case 'change': return RANKING_KEY_CHANGE_UNIFIED;
+          case 'lunatic_8_10': return RANKING_KEY_LUNATIC_8_10;
+          case 'lunatic_8_15': return RANKING_KEY_LUNATIC_8_15;
+          case 'lunatic_10_10': return RANKING_KEY_LUNATIC_10_10;
+          case 'lunatic_10_15': return RANKING_KEY_LUNATIC_10_15;
+          default: return RANKING_KEY_WALLET_UNIFIED;
+        }
+      }
+
+      // 書き込み先 Firebase パス（既存データと互換性を保ちつつ統合）
+      static getDbPath(categoryKey = 'wallet') {
+        const cat = RankingManager.normalizeCategory(categoryKey);
+        switch (cat) {
+          case 'change': return 'rankings/change_min_no_change';
+          case 'lunatic_8_10': return 'rankings/lunatic_10s';
+          case 'lunatic_8_15': return 'rankings/lunatic_15s';
+          case 'lunatic_10_10': return 'rankings/lunatic_10p_10s';
+          case 'lunatic_10_15': return 'rankings/lunatic_10p_15s';
+          default: return 'rankings/no_change';
+        }
+      }
+
+      // 統合カテゴリで過去のお釣り表示あり/なしノードを両方マージ購読するパス一覧
+      static getSourceDbPaths(categoryKey = 'wallet') {
+        const cat = RankingManager.normalizeCategory(categoryKey);
+        if (cat === 'wallet') return ['rankings/with_change', 'rankings/no_change'];
+        if (cat === 'change') return ['rankings/change_min_with_change', 'rankings/change_min_no_change'];
+        return [RankingManager.getDbPath(cat)];
+      }
+
+      static getDefaultList(categoryKey = 'wallet') {
+        const cat = RankingManager.normalizeCategory(categoryKey);
+        switch (cat) {
+          case 'change': return [...DEFAULT_RANKINGS_CHANGE_MIN_WITH_CHANGE, ...DEFAULT_RANKINGS_CHANGE_MIN_NO_CHANGE];
+          case 'lunatic_8_10': return DEFAULT_RANKINGS_LUNATIC_8_10;
+          case 'lunatic_8_15': return DEFAULT_RANKINGS_LUNATIC_8_15;
+          case 'lunatic_10_10': return DEFAULT_RANKINGS_LUNATIC_10_10;
+          case 'lunatic_10_15': return DEFAULT_RANKINGS_LUNATIC_10_15;
+          default: return [...DEFAULT_RANKINGS_WITH_CHANGE, ...DEFAULT_RANKINGS_NO_CHANGE];
+        }
+      }
+
       static initFirebase() {
-        // 全部門（通常4部門＋ルナティック別枠）のローカルキャッシュを先に読み込み
-        RankingManager.caches['wallet_true']  = RankingManager.loadLocal(true, 'wallet');
-        RankingManager.caches['wallet_false'] = RankingManager.loadLocal(false, 'wallet');
-        RankingManager.caches['change_true']  = RankingManager.loadLocal(true, 'change');
-        RankingManager.caches['change_false'] = RankingManager.loadLocal(false, 'change');
-        RankingManager.caches['lunatic_true']  = RankingManager.loadLocal(true, 'lunatic');
-        RankingManager.caches['lunatic_false'] = RankingManager.loadLocal(false, 'lunatic');
+        RankingManager.ALL_CATEGORIES.forEach((cat) => {
+          RankingManager.caches[cat] = RankingManager.loadLocal(cat);
+        });
 
         if (!RankingManager.isFirebaseConfigured()) {
           RankingManager.isOnline = false;
@@ -1784,7 +1956,7 @@
             RankingManager.updateSyncBadges();
           });
 
-          // お友達「tasuki」さんの記録（財布最小ルール・お釣り表示なし部門・HARD・488565pt）を保護
+          // お友達「tasuki」さんの記録（財布最小・HARD・488565pt）を保護
           const tasukiEntry = {
             id: 'nc_tasuki',
             name: 'tasuki',
@@ -1801,40 +1973,56 @@
             return;
           }).catch(() => {});
 
-          // 全部門（通常4部門＋ルナティック別枠）のリアルタイム同期リスナー登録
-          const categories = [
-            { ruleType: 'wallet', showChange: true },
-            { ruleType: 'wallet', showChange: false },
-            { ruleType: 'change', showChange: true },
-            { ruleType: 'change', showChange: false },
-            { ruleType: 'lunatic', showChange: true },
-            { ruleType: 'lunatic', showChange: false }
-          ];
+          // 通常2部門（旧あり/なしノードをリアルタイム統合マージ）＋ルナティック4部門を購読
+          RankingManager.ALL_CATEGORIES.forEach((cat) => {
+            const sourcePaths = RankingManager.getSourceDbPaths(cat);
+            const primaryPath = RankingManager.getDbPath(cat);
+            const localKey = RankingManager.getKey(cat);
+            const defaults = RankingManager.getDefaultList(cat);
 
-          categories.forEach(({ ruleType, showChange }) => {
-            const dbPath = RankingManager.getDbPath(showChange, ruleType);
-            const localKey = RankingManager.getKey(showChange, ruleType);
-            const defaults = RankingManager.getDefaultList(showChange, ruleType);
-            const slot = RankingManager.getCacheSlot(showChange, ruleType);
-
-            RankingManager.db.ref(dbPath).on('value', (snapshot) => {
-              const val = snapshot.val();
-              if (!val) {
-                const seed = {};
-                defaults.forEach((item) => {
-                  seed[RankingManager.toSafeDbKey(item.name)] = item;
+            if (sourcePaths.length > 1) {
+              RankingManager.sourceBuckets[cat] = {};
+              sourcePaths.forEach((srcPath) => {
+                RankingManager.db.ref(srcPath).on('value', (snapshot) => {
+                  const val = snapshot.val();
+                  if (!val && srcPath === primaryPath) {
+                    const seed = {};
+                    defaults.forEach((item) => {
+                      seed[RankingManager.toSafeDbKey(item.name)] = item;
+                    });
+                    RankingManager.db.ref(primaryPath).set(seed);
+                    return;
+                  }
+                  RankingManager.sourceBuckets[cat][srcPath] = val ? Object.values(val) : [];
+                  const combined = Object.values(RankingManager.sourceBuckets[cat]).flat();
+                  const sorted = RankingManager.deduplicateAndSort(combined.length > 0 ? combined : defaults);
+                  RankingManager.caches[cat] = sorted;
+                  try {
+                    localStorage.setItem(localKey, JSON.stringify(sorted));
+                  } catch (e) {}
+                  RankingManager.notifyListeners();
                 });
-                RankingManager.db.ref(dbPath).set(seed);
-                return;
-              }
-              const rawList = Object.values(val);
-              const sorted = RankingManager.deduplicateAndSort(rawList);
-              RankingManager.caches[slot] = sorted;
-              try {
-                localStorage.setItem(localKey, JSON.stringify(sorted));
-              } catch (e) {}
-              RankingManager.notifyListeners();
-            });
+              });
+            } else {
+              RankingManager.db.ref(primaryPath).on('value', (snapshot) => {
+                const val = snapshot.val();
+                if (!val) {
+                  const seed = {};
+                  defaults.forEach((item) => {
+                    seed[RankingManager.toSafeDbKey(item.name)] = item;
+                  });
+                  RankingManager.db.ref(primaryPath).set(seed);
+                  return;
+                }
+                const rawList = Object.values(val);
+                const sorted = RankingManager.deduplicateAndSort(rawList);
+                RankingManager.caches[cat] = sorted;
+                try {
+                  localStorage.setItem(localKey, JSON.stringify(sorted));
+                } catch (e) {}
+                RankingManager.notifyListeners();
+              });
+            }
           });
 
           RankingManager.isOnline = true;
@@ -1893,39 +2081,6 @@
         }
       }
 
-      static getKey(showChange, ruleType = 'wallet') {
-        const r = RankingManager.normalizeRuleType(ruleType);
-        if (r === 'lunatic') {
-          return showChange ? RANKING_KEY_LUNATIC_10S : RANKING_KEY_LUNATIC_15S;
-        }
-        if (r === 'change') {
-          return showChange ? RANKING_KEY_CHANGE_MIN_WITH_CHANGE : RANKING_KEY_CHANGE_MIN_NO_CHANGE;
-        }
-        return showChange ? RANKING_KEY_WITH_CHANGE : RANKING_KEY_NO_CHANGE;
-      }
-
-      static getDbPath(showChange, ruleType = 'wallet') {
-        const r = RankingManager.normalizeRuleType(ruleType);
-        if (r === 'lunatic') {
-          return showChange ? 'rankings/lunatic_10s' : 'rankings/lunatic_15s';
-        }
-        if (r === 'change') {
-          return showChange ? 'rankings/change_min_with_change' : 'rankings/change_min_no_change';
-        }
-        return showChange ? 'rankings/with_change' : 'rankings/no_change';
-      }
-
-      static getDefaultList(showChange, ruleType = 'wallet') {
-        const r = RankingManager.normalizeRuleType(ruleType);
-        if (r === 'lunatic') {
-          return showChange ? DEFAULT_RANKINGS_LUNATIC_10S : DEFAULT_RANKINGS_LUNATIC_15S;
-        }
-        if (r === 'change') {
-          return showChange ? DEFAULT_RANKINGS_CHANGE_MIN_WITH_CHANGE : DEFAULT_RANKINGS_CHANGE_MIN_NO_CHANGE;
-        }
-        return showChange ? DEFAULT_RANKINGS_WITH_CHANGE : DEFAULT_RANKINGS_NO_CHANGE;
-      }
-
       static getCumulativeScore() {
         try {
           const val = Number(localStorage.getItem(CUMULATIVE_SCORE_KEY) || 0);
@@ -1953,15 +2108,13 @@
           const num = Number(v || 0);
           if (num > maxScore) maxScore = num;
         }
-        ['wallet', 'change', 'lunatic'].forEach((ruleType) => {
-          [true, false].forEach((showChange) => {
-            const list = RankingManager.load(showChange, ruleType);
-            for (const item of list) {
-              if (item && typeof item.score === 'number' && item.score > maxScore) {
-                maxScore = item.score;
-              }
+        RankingManager.ALL_CATEGORIES.forEach((cat) => {
+          const list = RankingManager.load(cat);
+          for (const item of list) {
+            if (item && typeof item.score === 'number' && item.score > maxScore) {
+              maxScore = item.score;
             }
-          });
+          }
         });
         return maxScore;
       }
@@ -1990,25 +2143,47 @@
         return merged.slice(0, 10);
       }
 
-      static loadLocal(showChange = true, ruleType = 'wallet') {
-        const r = RankingManager.normalizeRuleType(ruleType);
-        const key = RankingManager.getKey(showChange, r);
-        const defaults = RankingManager.getDefaultList(showChange, r);
+      static loadLocal(categoryKey = 'wallet') {
+        const cat = RankingManager.normalizeCategory(categoryKey);
+        const key = RankingManager.getKey(cat);
+        const defaults = RankingManager.getDefaultList(cat);
         try {
+          let merged = [];
           const raw = localStorage.getItem(key);
-          if (!raw) {
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) merged = merged.concat(parsed);
+          } else if (cat === 'wallet') {
+            [RANKING_KEY_WITH_CHANGE, RANKING_KEY_NO_CHANGE].forEach((legacyKey) => {
+              try {
+                const lRaw = localStorage.getItem(legacyKey);
+                if (lRaw) {
+                  const lParsed = JSON.parse(lRaw);
+                  if (Array.isArray(lParsed)) merged = merged.concat(lParsed);
+                }
+              } catch (e) {}
+            });
+          } else if (cat === 'change') {
+            [RANKING_KEY_CHANGE_MIN_WITH_CHANGE, RANKING_KEY_CHANGE_MIN_NO_CHANGE].forEach((legacyKey) => {
+              try {
+                const lRaw = localStorage.getItem(legacyKey);
+                if (lRaw) {
+                  const lParsed = JSON.parse(lRaw);
+                  if (Array.isArray(lParsed)) merged = merged.concat(lParsed);
+                }
+              } catch (e) {}
+            });
+          }
+
+          if (merged.length === 0) {
             const initial = RankingManager.deduplicateAndSort(defaults);
             localStorage.setItem(key, JSON.stringify(initial));
             return initial;
           }
-          const parsed = JSON.parse(raw);
-          if (!Array.isArray(parsed) || parsed.length === 0) {
-            return RankingManager.deduplicateAndSort(defaults);
+          if (cat === 'wallet' && !merged.some(it => it && RankingManager.normalizeName(it.name) === 'tasuki' && it.score >= 488565)) {
+            merged.push({ id: 'nc_tasuki', name: 'tasuki', score: 488565, perfectRate: 92, customers: 18, mode: 'HARD', date: '2026/11/18' });
           }
-          if (r === 'wallet' && !showChange && !parsed.some(it => it && RankingManager.normalizeName(it.name) === 'tasuki' && it.score >= 488565)) {
-            parsed.push({ id: 'nc_tasuki', name: 'tasuki', score: 488565, perfectRate: 92, customers: 18, mode: 'HARD', date: '2026/11/18' });
-          }
-          const cleaned = RankingManager.deduplicateAndSort(parsed);
+          const cleaned = RankingManager.deduplicateAndSort(merged);
           localStorage.setItem(key, JSON.stringify(cleaned));
           return cleaned;
         } catch (e) {
@@ -2016,20 +2191,19 @@
         }
       }
 
-      static load(showChange = true, ruleType = 'wallet') {
-        const slot = RankingManager.getCacheSlot(showChange, ruleType);
-        if (Array.isArray(RankingManager.caches[slot])) {
-          return RankingManager.caches[slot];
+      static load(categoryKey = 'wallet') {
+        const cat = RankingManager.normalizeCategory(categoryKey);
+        if (Array.isArray(RankingManager.caches[cat])) {
+          return RankingManager.caches[cat];
         }
-        return RankingManager.loadLocal(showChange, ruleType);
+        return RankingManager.loadLocal(cat);
       }
 
-      static saveScore(name, score, difficulty, perfectRate, customers, showChange = true, ruleType = 'wallet') {
+      static saveScore(name, score, difficulty, perfectRate, customers, categoryKey = 'wallet') {
         const cleanName = RankingManager.normalizeName(name);
-        const r = RankingManager.normalizeRuleType(ruleType);
-        const key = RankingManager.getKey(showChange, r);
-        const slot = RankingManager.getCacheSlot(showChange, r);
-        const list = [...RankingManager.load(showChange, r)];
+        const cat = RankingManager.normalizeCategory(categoryKey);
+        const key = RankingManager.getKey(cat);
+        const list = [...RankingManager.load(cat)];
         const existingIdx = list.findIndex(item => RankingManager.normalizeName(item.name) === cleanName);
         const nowStr = new Date().toLocaleDateString('ja-JP');
 
@@ -2046,12 +2220,12 @@
               perfectRate: perfectRate,
               customers: customers,
               mode: difficulty || 'NORMAL',
-              ruleType: r,
+              category: cat,
               date: nowStr
             };
             list[existingIdx] = updatedEntry;
             const top10 = RankingManager.deduplicateAndSort(list);
-            RankingManager.caches[slot] = top10;
+            RankingManager.caches[cat] = top10;
             try {
               localStorage.setItem(key, JSON.stringify(top10));
             } catch (e) {}
@@ -2083,12 +2257,12 @@
             perfectRate: perfectRate,
             customers: customers,
             mode: difficulty || 'NORMAL',
-            ruleType: r,
+            category: cat,
             date: nowStr
           };
           list.push(newEntry);
           const top10 = RankingManager.deduplicateAndSort(list);
-          RankingManager.caches[slot] = top10;
+          RankingManager.caches[cat] = top10;
           try {
             localStorage.setItem(key, JSON.stringify(top10));
           } catch (e) {}
@@ -2105,12 +2279,12 @@
 
         // Firebase Realtime Database が有効な場合、トランザクションで安全に自己ベストをクラウド保存
         if (entryToSync && RankingManager.db) {
-          const dbPath = `${RankingManager.getDbPath(showChange, r)}/${RankingManager.toSafeDbKey(cleanName)}`;
+          const dbPath = `${RankingManager.getDbPath(cat)}/${RankingManager.toSafeDbKey(cleanName)}`;
           RankingManager.db.ref(dbPath).transaction((currentData) => {
             if (!currentData || typeof currentData.score !== 'number' || entryToSync.score > currentData.score) {
               return entryToSync;
             }
-            return; // 既にクラウド側にさらに高い記録がある場合は上書きしない
+            return;
           }).catch((err) => {
             console.warn('Firebase score transaction error:', err);
           });
@@ -2163,15 +2337,13 @@
         const map = RankingManager.loadPlayerHighScoresMap(false);
         let maxScore = Number(map[cleanName] || 0);
 
-        ['wallet', 'change'].forEach((ruleType) => {
-          [true, false].forEach((showChange) => {
-            const list = RankingManager.load(showChange, ruleType);
-            for (const item of list) {
-              if (RankingManager.normalizeName(item.name) === cleanName && item.mode !== 'LUNATIC' && item.score > maxScore) {
-                maxScore = item.score;
-              }
+        ['wallet', 'change'].forEach((cat) => {
+          const list = RankingManager.load(cat);
+          for (const item of list) {
+            if (RankingManager.normalizeName(item.name) === cleanName && item.mode !== 'LUNATIC' && item.score > maxScore) {
+              maxScore = item.score;
             }
-          });
+          }
         });
         return maxScore;
       }
@@ -2181,8 +2353,8 @@
         const map = RankingManager.loadPlayerHighScoresMap(true);
         let maxScore = Number(map[cleanName] || 0);
 
-        [true, false].forEach((showChange) => {
-          const list = RankingManager.load(showChange, 'lunatic');
+        ['lunatic_8_10', 'lunatic_8_15', 'lunatic_10_10', 'lunatic_10_15'].forEach((cat) => {
+          const list = RankingManager.load(cat);
           for (const item of list) {
             if (RankingManager.normalizeName(item.name) === cleanName && item.score > maxScore) {
               maxScore = item.score;
@@ -2196,10 +2368,10 @@
         return RankingManager.getPlayerMaxScore(name) >= EX_UNLOCK_SCORE;
       }
 
-      static renderListToContainer(containerId, showChange = true, highlightId = null, ruleType = 'wallet') {
+      static renderListToContainer(containerId, categoryKey = 'wallet', highlightId = null) {
         const container = document.getElementById(containerId);
         if (!container) return;
-        const list = RankingManager.load(showChange, ruleType);
+        const list = RankingManager.load(categoryKey);
         container.innerHTML = '';
 
         list.forEach((item, idx) => {
@@ -4258,9 +4430,10 @@
     /*************************************************************************
      * 7. お釣り計算 ＆ 最適解（最小硬貨枚数）探索アルゴリズム
      *************************************************************************/
-    function calcTaxIncludedPrice(basePrice) {
-      // 消費税8%を加算し、小数点以下切り捨て（浮動小数点誤差防止のため整数演算併用）
-      return Math.floor((basePrice * 108) / 100);
+    function calcTaxIncludedPrice(basePrice, taxRate = 8) {
+      // 消費税8%または10%を加算し、小数点以下切り捨て（浮動小数点誤差防止のため整数演算併用）
+      const rate = taxRate === 10 ? 10 : 8;
+      return Math.floor((basePrice * (100 + rate)) / 100);
     }
 
     function getChangeBreakdown(changeAmount) {
@@ -4763,11 +4936,11 @@
         this.isRankingRun = false;
         this.isTutorial = false;
         this.difficulty = 'NORMAL';
+        this.lunaticTaxRate = 8;
         this.lunaticTurnLimit = 15;
         this.exSuddenDeathFailed = false;
 
         this.freePlayShowChange = true;
-        this.rankingShowChange = true;
         this.showChangeDisplay = true;
         this.aiHelperEnabled = false;
         this.dopagakiMode = (() => {
@@ -4780,9 +4953,9 @@
         this.mistakeLogs = [];
 
         this.modalRankingTabRuleType = 'wallet';
-        this.modalRankingTabShowChange = true;
+        this.modalRankingTabLunaticKey = 'lunatic_8_10';
         this.resultRankingTabRuleType = 'wallet';
-        this.resultRankingTabShowChange = true;
+        this.resultRankingTabLunaticKey = 'lunatic_8_10';
         this.lastHighlightEntryId = null;
 
         this.playerName = RankingManager.getSavedPlayerName() || '名無しの会計士';
@@ -4790,6 +4963,9 @@
         this.score = 0;
         this.combo = 0;
         this.maxCombo = 0;
+        this.zoneCharge = 0;
+        this.zoneMaxTime = 10.0;
+        this.zoneTimeLeft = 0.0;
         this.maxTime = 60.0;
         this.timeLeft = 60.0;
         this.customerIndex = 0;
@@ -4941,32 +5117,34 @@
         });
 
         document.getElementById('btn-name-confirm').addEventListener('click', () => {
-          this.confirmNameAndOpenChangeSelectModal();
+          this.confirmNameAndOpenRuleSelectModal();
         });
 
         document.getElementById('input-player-name').addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
-            this.confirmNameAndOpenChangeSelectModal();
+            this.confirmNameAndOpenRuleSelectModal();
           }
         });
 
-        document.getElementById('btn-rank-change-back').addEventListener('click', () => {
-          sound.playClick();
-          this.openNameInputModal();
-        });
-
-        document.getElementById('btn-rank-change-on').addEventListener('click', () => {
-          sound.playClick();
-          this.rankingShowChange = true;
-          this.openRuleSelectModal({ flow: 'RANKING' });
-        });
-
-        document.getElementById('btn-rank-change-off').addEventListener('click', () => {
-          sound.playClick();
-          this.rankingShowChange = false;
-          this.openRuleSelectModal({ flow: 'RANKING' });
-        });
+        const btnRuleFreeOn = document.getElementById('btn-rule-free-change-on');
+        if (btnRuleFreeOn) {
+          btnRuleFreeOn.addEventListener('click', () => {
+            sound.playClick();
+            this.freePlayShowChange = true;
+            this.showChangeDisplay = true;
+            this.syncChangeToggleUI();
+          });
+        }
+        const btnRuleFreeOff = document.getElementById('btn-rule-free-change-off');
+        if (btnRuleFreeOff) {
+          btnRuleFreeOff.addEventListener('click', () => {
+            sound.playClick();
+            this.freePlayShowChange = false;
+            this.showChangeDisplay = false;
+            this.syncChangeToggleUI();
+          });
+        }
 
         document.getElementById('btn-choose-rule-wallet').addEventListener('click', () => {
           sound.playClick();
@@ -4981,7 +5159,7 @@
         document.getElementById('btn-rule-select-back').addEventListener('click', () => {
           sound.playClick();
           if (this.pendingRuleContext && this.pendingRuleContext.flow === 'RANKING') {
-            switchScreen('modal-ranking-change');
+            this.openNameInputModal();
           } else {
             switchScreen('screen-mode');
           }
@@ -4996,14 +5174,14 @@
           sound.init();
           sound.startBGM();
           sound.playClick();
-          this.startRankingPlay('NORMAL', this.playerName, this.rankingShowChange);
+          this.startRankingPlay('NORMAL', this.playerName);
         });
 
         document.getElementById('btn-rank-diff-hard').addEventListener('click', () => {
           sound.init();
           sound.startBGM();
           sound.playClick();
-          this.startRankingPlay('HARD', this.playerName, this.rankingShowChange);
+          this.startRankingPlay('HARD', this.playerName);
         });
 
         document.getElementById('btn-rank-diff-ex').addEventListener('click', () => {
@@ -5014,7 +5192,7 @@
           sound.init();
           sound.startBGM();
           sound.playClick();
-          this.startRankingPlay('EX', this.playerName, this.rankingShowChange);
+          this.startRankingPlay('EX', this.playerName);
         });
 
         document.getElementById('btn-rank-diff-lunatic').addEventListener('click', () => {
@@ -5025,47 +5203,66 @@
           sound.init();
           sound.startBGM();
           sound.playClick();
+          this.openLunaticTaxModal();
+        });
+
+        document.getElementById('btn-lunatic-tax-8').addEventListener('click', () => {
+          sound.playClick();
+          this.lunaticTaxRate = 8;
           this.openLunaticTimeModal();
+        });
+
+        document.getElementById('btn-lunatic-tax-10').addEventListener('click', () => {
+          sound.playClick();
+          this.lunaticTaxRate = 10;
+          this.openLunaticTimeModal();
+        });
+
+        document.getElementById('btn-lunatic-tax-back').addEventListener('click', () => {
+          sound.playClick();
+          switchScreen('modal-ranking-difficulty');
         });
 
         document.getElementById('btn-lunatic-time-10').addEventListener('click', () => {
           sound.init();
           sound.startBGM();
           sound.playClick();
-          this.startRankingPlay('LUNATIC', this.playerName, this.rankingShowChange, 10);
+          this.startRankingPlay('LUNATIC', this.playerName, 10, this.lunaticTaxRate);
         });
 
         document.getElementById('btn-lunatic-time-15').addEventListener('click', () => {
           sound.init();
           sound.startBGM();
           sound.playClick();
-          this.startRankingPlay('LUNATIC', this.playerName, this.rankingShowChange, 15);
+          this.startRankingPlay('LUNATIC', this.playerName, 15, this.lunaticTaxRate);
         });
 
         document.getElementById('btn-lunatic-time-back').addEventListener('click', () => {
           sound.playClick();
-          switchScreen('modal-ranking-difficulty');
+          this.openLunaticTaxModal();
         });
 
         document.getElementById('tab-modal-rule-wallet').addEventListener('click', () => {
           sound.playClick();
-          this.setModalRankingTab(this.modalRankingTabShowChange, 'wallet');
+          this.setModalRankingTab('wallet');
         });
         document.getElementById('tab-modal-rule-change').addEventListener('click', () => {
           sound.playClick();
-          this.setModalRankingTab(this.modalRankingTabShowChange, 'change');
+          this.setModalRankingTab('change');
         });
         document.getElementById('tab-modal-rule-lunatic').addEventListener('click', () => {
           sound.playClick();
-          this.setModalRankingTab(this.modalRankingTabShowChange, 'lunatic');
+          this.setModalRankingTab('lunatic', this.modalRankingTabLunaticKey);
         });
-        document.getElementById('tab-modal-rank-on').addEventListener('click', () => {
-          sound.playClick();
-          this.setModalRankingTab(true, this.modalRankingTabRuleType);
-        });
-        document.getElementById('tab-modal-rank-off').addEventListener('click', () => {
-          sound.playClick();
-          this.setModalRankingTab(false, this.modalRankingTabRuleType);
+        ['lunatic_8_10', 'lunatic_8_15', 'lunatic_10_10', 'lunatic_10_15'].forEach((lk) => {
+          const btnId = 'tab-modal-' + lk.replace('lunatic_', 'lun-').replace('_', '-');
+          const el = document.getElementById(btnId);
+          if (el) {
+            el.addEventListener('click', () => {
+              sound.playClick();
+              this.setModalRankingTab('lunatic', lk);
+            });
+          }
         });
 
         document.getElementById('btn-close-ranking-modal').addEventListener('click', () => {
@@ -5139,23 +5336,25 @@
 
         document.getElementById('tab-res-rule-wallet').addEventListener('click', () => {
           sound.playClick();
-          this.setResultRankingTab(this.resultRankingTabShowChange, 'wallet');
+          this.setResultRankingTab('wallet');
         });
         document.getElementById('tab-res-rule-change').addEventListener('click', () => {
           sound.playClick();
-          this.setResultRankingTab(this.resultRankingTabShowChange, 'change');
+          this.setResultRankingTab('change');
         });
         document.getElementById('tab-res-rule-lunatic').addEventListener('click', () => {
           sound.playClick();
-          this.setResultRankingTab(this.resultRankingTabShowChange, 'lunatic');
+          this.setResultRankingTab('lunatic', this.resultRankingTabLunaticKey);
         });
-        document.getElementById('tab-res-rank-on').addEventListener('click', () => {
-          sound.playClick();
-          this.setResultRankingTab(true, this.resultRankingTabRuleType);
-        });
-        document.getElementById('tab-res-rank-off').addEventListener('click', () => {
-          sound.playClick();
-          this.setResultRankingTab(false, this.resultRankingTabRuleType);
+        ['lunatic_8_10', 'lunatic_8_15', 'lunatic_10_10', 'lunatic_10_15'].forEach((lk) => {
+          const btnId = 'tab-res-' + lk.replace('lunatic_', 'lun-').replace('_', '-');
+          const el = document.getElementById(btnId);
+          if (el) {
+            el.addEventListener('click', () => {
+              sound.playClick();
+              this.setResultRankingTab('lunatic', lk);
+            });
+          }
         });
 
         const btnToggleMistakes = document.getElementById('btn-toggle-mistakes');
@@ -5188,7 +5387,7 @@
           sound.init();
           sound.playClick();
           if (this.isRankingRun) {
-            this.startRankingPlay(this.difficulty, this.playerName, this.rankingShowChange, this.lunaticTurnLimit);
+            this.startRankingPlay(this.difficulty, this.playerName, this.lunaticTurnLimit, this.lunaticTaxRate);
           } else {
             this.startFreePlay(this.difficulty);
           }
@@ -5269,13 +5468,13 @@
             btnRankLunatic.className = 'btn-3d w-full text-left bg-gradient-to-r from-rose-950 via-red-950/90 to-slate-950 hover:from-rose-900 border-2 border-rose-400 rounded-2xl p-3 shadow-lg flex items-center justify-between gap-3 group';
             badgeRankLunatic.className = 'text-[10px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-full animate-pulse';
             badgeRankLunatic.textContent = `🌙 「${this.playerName}」解放済・60秒・100倍`;
-            descRankLunatic.innerHTML = '【特殊ルール：消費税8%導入】レジには<span class="text-amber-300 font-bold">本体価格（税抜）のみ</span>表示！<span class="text-rose-300 font-bold underline">本体価格×1.08の税込み金額（小数点以下切り捨て）</span>を暗算して支払おう！';
+            descRankLunatic.innerHTML = '【特殊ルール：消費税8% / 10%選択】レジには<span class="text-amber-300 font-bold">本体価格（税抜）のみ</span>表示！選んだ税率（<span class="text-rose-300 font-bold underline">×1.08 または ×1.10・小数点以下切り捨て</span>）の税込み金額を暗算して支払おう！';
             arrowRankLunatic.textContent = '🚀';
           } else {
             btnRankLunatic.className = 'btn-3d w-full text-left bg-slate-900/80 border-2 border-slate-700 rounded-2xl p-3 opacity-60 cursor-not-allowed flex items-center justify-between gap-3';
             badgeRankLunatic.className = 'text-[10px] font-black bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full';
             badgeRankLunatic.textContent = `🔒 「${this.playerName}」の最高: ${playerMax.toLocaleString()} / 300,000pt`;
-            descRankLunatic.innerHTML = `プレイヤー「<span class="text-amber-300 font-bold">${escapeHtml(this.playerName)}</span>」の最高スコアが <span class="text-amber-300 font-bold">300,000pt（30万pt）以上</span> に達すると解放されます！表示は<span class="text-amber-300 font-bold">本体価格（税抜）のみ</span>となり、<span class="text-rose-300 font-bold">税込み金額（本体価格×1.08・小数点以下切り捨て）</span>を暗算して支払います！`;
+            descRankLunatic.innerHTML = `プレイヤー「<span class="text-amber-300 font-bold">${escapeHtml(this.playerName)}</span>」の最高スコアが <span class="text-amber-300 font-bold">300,000pt（30万pt）以上</span> に達すると解放されます！表示は<span class="text-amber-300 font-bold">本体価格（税抜）のみ</span>となり、<span class="text-rose-300 font-bold">税込み金額（消費税8% / 10%・小数点以下切り捨て）</span>を暗算して支払います！`;
             arrowRankLunatic.textContent = '🔒';
           }
         }
@@ -5353,12 +5552,19 @@
         this.pendingRuleContext = context;
         const badge = document.getElementById('rule-select-step-badge');
         const sub = document.getElementById('rule-select-subtitle');
+        const freeChangeBox = document.getElementById('rule-select-free-change-box');
+        const nextHint = document.getElementById('rule-select-next-hint');
         if (context.flow === 'RANKING') {
-          if (badge) badge.textContent = 'RANKING CHALLENGE - RULE SELECT';
+          if (badge) badge.textContent = 'RANKING CHALLENGE - STEP 2 / 3';
           if (sub) sub.textContent = `挑戦者「${this.playerName}」さん：ルールごとに独立したランキングへ記録されます！`;
+          if (freeChangeBox) freeChangeBox.classList.add('hidden');
+          if (nextHint) nextHint.textContent = '次は難易度選択です';
         } else {
           if (badge) badge.textContent = `FREE PLAY (${context.difficulty}) - RULE SELECT`;
-          if (sub) sub.textContent = 'どちらのルールコンセプトでプレイするか選択してください！';
+          if (sub) sub.textContent = 'お釣り表示の有無と、遊ぶルールを選択してください！';
+          if (freeChangeBox) freeChangeBox.classList.remove('hidden');
+          if (nextHint) nextHint.textContent = 'ルールを選ぶと3カウント後に始まります';
+          this.syncChangeToggleUI();
         }
         switchScreen('modal-rule-select');
       }
@@ -5387,6 +5593,18 @@
             modeBtn.className = 'btn-3d shrink-0 whitespace-nowrap px-2.5 py-1.5 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-purple-500/25 border-purple-400 text-purple-200 flex items-center gap-1 shadow';
             modeIcon.textContent = '🙈';
             modeText.textContent = 'お釣り表示: OFF(暗算)';
+          }
+        }
+
+        const ruleOnBtn = document.getElementById('btn-rule-free-change-on');
+        const ruleOffBtn = document.getElementById('btn-rule-free-change-off');
+        if (ruleOnBtn && ruleOffBtn) {
+          if (this.freePlayShowChange) {
+            ruleOnBtn.className = 'btn-3d py-2 px-2 rounded-xl font-black text-xs border-2 bg-emerald-500/25 border-emerald-400 text-emerald-200 shadow';
+            ruleOffBtn.className = 'btn-3d py-2 px-2 rounded-xl font-black text-xs border-2 bg-slate-800 border-slate-600 text-slate-400';
+          } else {
+            ruleOnBtn.className = 'btn-3d py-2 px-2 rounded-xl font-black text-xs border-2 bg-slate-800 border-slate-600 text-slate-400';
+            ruleOffBtn.className = 'btn-3d py-2 px-2 rounded-xl font-black text-xs border-2 bg-purple-500/25 border-purple-400 text-purple-200 shadow';
           }
         }
 
@@ -5578,15 +5796,28 @@
         }
       }
 
-      setModalRankingTab(showChange, ruleType = null) {
-        this.modalRankingTabShowChange = showChange;
+      getActiveModalRankingCategory() {
+        return this.modalRankingTabRuleType === 'lunatic'
+          ? (this.modalRankingTabLunaticKey || 'lunatic_8_10')
+          : (this.modalRankingTabRuleType === 'change' ? 'change' : 'wallet');
+      }
+
+      getActiveResultRankingCategory() {
+        return this.resultRankingTabRuleType === 'lunatic'
+          ? (this.resultRankingTabLunaticKey || 'lunatic_8_10')
+          : (this.resultRankingTabRuleType === 'change' ? 'change' : 'wallet');
+      }
+
+      setModalRankingTab(ruleType = 'wallet', lunaticKey = null) {
         if (ruleType) this.modalRankingTabRuleType = ruleType;
+        if (lunaticKey) this.modalRankingTabLunaticKey = lunaticKey;
         const activeRule = this.modalRankingTabRuleType || 'wallet';
+        const activeLunKey = this.modalRankingTabLunaticKey || 'lunatic_8_10';
 
         const tabRuleW = document.getElementById('tab-modal-rule-wallet');
         const tabRuleC = document.getElementById('tab-modal-rule-change');
         const tabRuleL = document.getElementById('tab-modal-rule-lunatic');
-        const changeTabsWrap = document.getElementById('modal-rank-change-tabs');
+        const lunTabsWrap = document.getElementById('modal-rank-lunatic-tabs');
         if (tabRuleW && tabRuleC && tabRuleL) {
           tabRuleW.className = activeRule === 'wallet'
             ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950 shadow'
@@ -5598,43 +5829,43 @@
             ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-rose-500 text-white shadow'
             : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-rose-300 hover:bg-slate-700';
         }
-        if (changeTabsWrap) changeTabsWrap.classList.remove('hidden');
 
-        const tabOn = document.getElementById('tab-modal-rank-on');
-        const tabOff = document.getElementById('tab-modal-rank-off');
-        if (activeRule === 'lunatic') {
-          tabOn.textContent = '⏱️ 10秒制限';
-          tabOff.textContent = '⏱️ 15秒制限';
-          if (showChange) {
-            tabOn.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-rose-500 text-white shadow';
-            tabOff.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+        if (lunTabsWrap) {
+          if (activeRule === 'lunatic') {
+            lunTabsWrap.classList.remove('hidden');
+            lunTabsWrap.classList.add('grid');
           } else {
-            tabOn.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
-            tabOff.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-amber-400 text-slate-950 shadow';
-          }
-        } else {
-          tabOn.textContent = '👁️ お釣り表示【あり】';
-          tabOff.textContent = '🙈 お釣り表示【なし】';
-          if (showChange) {
-            tabOn.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-emerald-500 text-slate-950 shadow';
-            tabOff.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
-          } else {
-            tabOn.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
-            tabOff.className = 'btn-3d py-1.5 px-3 rounded-xl font-black text-xs sm:text-sm transition-colors bg-purple-500 text-white shadow';
+            lunTabsWrap.classList.add('hidden');
+            lunTabsWrap.classList.remove('grid');
           }
         }
-        RankingManager.renderListToContainer('standalone-ranking-list', showChange, null, activeRule);
+
+        ['lunatic_8_10', 'lunatic_8_15', 'lunatic_10_10', 'lunatic_10_15'].forEach((lk) => {
+          const btnId = 'tab-modal-' + lk.replace('lunatic_', 'lun-').replace('_', '-');
+          const el = document.getElementById(btnId);
+          if (!el) return;
+          const isActive = lk === activeLunKey;
+          const activeClass = lk.startsWith('lunatic_10_')
+            ? 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-amber-400 text-slate-950 shadow'
+            : 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-rose-500 text-white shadow';
+          el.className = isActive
+            ? activeClass
+            : 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+        });
+
+        RankingManager.renderListToContainer('standalone-ranking-list', this.getActiveModalRankingCategory(), null);
       }
 
-      setResultRankingTab(showChange, ruleType = null) {
-        this.resultRankingTabShowChange = showChange;
+      setResultRankingTab(ruleType = 'wallet', lunaticKey = null) {
         if (ruleType) this.resultRankingTabRuleType = ruleType;
+        if (lunaticKey) this.resultRankingTabLunaticKey = lunaticKey;
         const activeRule = this.resultRankingTabRuleType || 'wallet';
+        const activeLunKey = this.resultRankingTabLunaticKey || 'lunatic_8_10';
 
         const tabRuleW = document.getElementById('tab-res-rule-wallet');
         const tabRuleC = document.getElementById('tab-res-rule-change');
         const tabRuleL = document.getElementById('tab-res-rule-lunatic');
-        const changeTabsWrap = document.getElementById('res-rank-change-tabs');
+        const lunTabsWrap = document.getElementById('res-rank-lunatic-tabs');
         if (tabRuleW && tabRuleC && tabRuleL) {
           tabRuleW.className = activeRule === 'wallet'
             ? 'btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950'
@@ -5646,38 +5877,38 @@
             ? 'btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-rose-500 text-white'
             : 'btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-rose-300';
         }
-        if (changeTabsWrap) changeTabsWrap.classList.remove('hidden');
 
-        const tabOn = document.getElementById('tab-res-rank-on');
-        const tabOff = document.getElementById('tab-res-rank-off');
-        if (activeRule === 'lunatic') {
-          tabOn.textContent = '⏱️ 10秒制限';
-          tabOff.textContent = '⏱️ 15秒制限';
-          if (showChange) {
-            tabOn.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-rose-500 text-white';
-            tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+        if (lunTabsWrap) {
+          if (activeRule === 'lunatic') {
+            lunTabsWrap.classList.remove('hidden');
+            lunTabsWrap.classList.add('grid');
           } else {
-            tabOn.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
-            tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-amber-400 text-slate-950';
-          }
-        } else {
-          tabOn.textContent = '👁️ お釣り表示【あり】';
-          tabOff.textContent = '🙈 お釣り表示【なし】';
-          if (showChange) {
-            tabOn.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-emerald-500 text-slate-950';
-            tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
-          } else {
-            tabOn.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
-            tabOff.className = 'btn-3d py-1 px-2 rounded-lg font-black text-[11px] sm:text-xs transition-colors bg-purple-500 text-white';
+            lunTabsWrap.classList.add('hidden');
+            lunTabsWrap.classList.remove('grid');
           }
         }
-        const savedCategoryRule = this.difficulty === 'LUNATIC' ? 'lunatic' : this.ruleType;
-        const savedSlotFlag = this.difficulty === 'LUNATIC' ? (this.lunaticTurnLimit === 10) : this.rankingShowChange;
-        const isMatchingTab = savedSlotFlag === showChange && savedCategoryRule === activeRule;
-        const highlightId = (this.isRankingRun && isMatchingTab)
+
+        ['lunatic_8_10', 'lunatic_8_15', 'lunatic_10_10', 'lunatic_10_15'].forEach((lk) => {
+          const btnId = 'tab-res-' + lk.replace('lunatic_', 'lun-').replace('_', '-');
+          const el = document.getElementById(btnId);
+          if (!el) return;
+          const isActive = lk === activeLunKey;
+          const activeClass = lk.startsWith('lunatic_10_')
+            ? 'btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-amber-400 text-slate-950'
+            : 'btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-rose-500 text-white';
+          el.className = isActive
+            ? activeClass
+            : 'btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+        });
+
+        const activeCategory = this.getActiveResultRankingCategory();
+        const savedCategory = this.difficulty === 'LUNATIC'
+          ? RankingManager.getLunaticCategoryKey(this.lunaticTaxRate, this.lunaticTurnLimit)
+          : (this.ruleType === 'change' ? 'change' : 'wallet');
+        const highlightId = (this.isRankingRun && activeCategory === savedCategory)
           ? this.lastHighlightEntryId
           : null;
-        RankingManager.renderListToContainer('result-ranking-list', showChange, highlightId, activeRule);
+        RankingManager.renderListToContainer('result-ranking-list', activeCategory, highlightId);
       }
 
       clearActiveTimers() {
@@ -5709,8 +5940,7 @@
         this.trayList = [];
         this.scene3D.clearAllTrayItems(false);
         this.scene3D.setTitleMode(true);
-        this.scene3D.setZoneMode(false);
-        sound.setZoneBGM(false);
+        this.exitZoneMode();
         this.scene3D.triggerClerkReaction('idle', 0);
         document.getElementById('ui-judgment-overlay').classList.add('hidden');
         document.getElementById('tutorial-banner').classList.add('hidden');
@@ -5741,17 +5971,14 @@
         setTimeout(() => input.focus(), 80);
       }
 
-      confirmNameAndOpenChangeSelectModal() {
+      confirmNameAndOpenRuleSelectModal() {
         sound.init();
         sound.playClick();
         const input = document.getElementById('input-player-name');
         const name = RankingManager.normalizeName(input.value);
         this.playerName = name;
         RankingManager.setSavedPlayerName(name);
-
-        const step2NameEl = document.getElementById('ranking-step2-name');
-        if (step2NameEl) step2NameEl.textContent = name;
-        switchScreen('modal-ranking-change');
+        this.openRuleSelectModal({ flow: 'RANKING' });
       }
 
       openRankingDifficultyModal() {
@@ -5760,27 +5987,41 @@
 
         const changeBadge = document.getElementById('ranking-selected-change-badge');
         if (changeBadge) {
-          if (this.rankingShowChange) {
-            changeBadge.textContent = '👁️ お釣り表示【あり】部門';
-            changeBadge.className = 'text-[11px] font-black px-2.5 py-0.5 rounded-full bg-emerald-400 text-slate-950';
+          if (this.ruleType === 'change') {
+            changeBadge.textContent = '🪙 お釣り枚数最小ルール';
+            changeBadge.className = 'text-[11px] font-black px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950';
           } else {
-            changeBadge.textContent = '🙈 お釣り表示【なし】部門（暗算）';
-            changeBadge.className = 'text-[11px] font-black px-2.5 py-0.5 rounded-full bg-purple-400 text-slate-950';
+            changeBadge.textContent = '👛 財布の小銭最小ルール';
+            changeBadge.className = 'text-[11px] font-black px-2.5 py-0.5 rounded-full bg-cyan-400 text-slate-950';
           }
         }
         this.updateUnlockAndCumulativeUI();
         switchScreen('modal-ranking-difficulty');
       }
 
+      openLunaticTaxModal() {
+        const nameEl = document.getElementById('lunatic-tax-player-name');
+        if (nameEl) nameEl.textContent = this.playerName;
+        switchScreen('modal-lunatic-tax');
+      }
+
       openLunaticTimeModal() {
         const nameEl = document.getElementById('lunatic-time-player-name');
         if (nameEl) nameEl.textContent = this.playerName;
+        const taxBadge = document.getElementById('lunatic-time-tax-badge');
+        if (taxBadge) {
+          const rate = this.lunaticTaxRate === 10 ? 10 : 8;
+          taxBadge.textContent = `消費税 ${rate}% モード`;
+          taxBadge.className = rate === 10
+            ? 'text-[11px] font-black px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950'
+            : 'text-[11px] font-black px-2.5 py-0.5 rounded-full bg-rose-500 text-white';
+        }
         switchScreen('modal-lunatic-time');
       }
 
       openStandaloneRankingModal(fromScreenId) {
         this.prevScreenBeforeRanking = fromScreenId;
-        this.setModalRankingTab(this.modalRankingTabShowChange, this.ruleType);
+        this.setModalRankingTab(this.ruleType === 'change' ? 'change' : 'wallet');
         switchScreen('modal-ranking');
       }
 
@@ -5850,6 +6091,8 @@
         this.state = 'PLAYING';
         this.score = 0;
         this.combo = 0;
+        this.zoneCharge = 0;
+        this.zoneTimeLeft = 0;
         this.maxTime = 999;
         this.timeLeft = 999;
         this.customerIndex = 1;
@@ -5963,7 +6206,7 @@
         this._launchGameplayWithCountdown();
       }
 
-      startRankingPlay(difficulty = 'NORMAL', playerName = '名無しの会計士', showChange = true, lunaticLimit = null) {
+      startRankingPlay(difficulty = 'NORMAL', playerName = '名無しの会計士', lunaticLimit = null, lunaticTaxRate = null) {
         if (difficulty === 'EX' && !RankingManager.isExUnlockedForPlayer(playerName)) {
           sound.playBadBuzzer();
           return;
@@ -5978,9 +6221,12 @@
         if (lunaticLimit === 10 || lunaticLimit === 15) {
           this.lunaticTurnLimit = lunaticLimit;
         }
+        if (lunaticTaxRate === 8 || lunaticTaxRate === 10) {
+          this.lunaticTaxRate = lunaticTaxRate;
+        }
         this.playerName = RankingManager.normalizeName(playerName);
-        this.rankingShowChange = showChange;
-        this.showChangeDisplay = showChange;
+        // ランキングモードはお釣り表示を統一（暗算固定）し、フリープレイでお釣り表示あり/なしを選択させる
+        this.showChangeDisplay = false;
         this._launchGameplayWithCountdown();
       }
 
@@ -5990,6 +6236,8 @@
         this.score = 0;
         this.combo = 0;
         this.maxCombo = 0;
+        this.zoneCharge = 0;
+        this.zoneTimeLeft = 0;
         this.exSuddenDeathFailed = false;
 
         const isHard = this.difficulty === 'HARD';
@@ -5998,6 +6246,7 @@
 
         this.maxTime = (isHard || isEx) ? 45.0 : 60.0;
         this.timeLeft = this.maxTime;
+        this.zoneMaxTime = (isEx || isLunatic) ? 5.0 : 10.0;
         this.customerIndex = 0;
         this.perfectCount = 0;
         this.totalCoinsSaved = 0;
@@ -6013,20 +6262,27 @@
         this.scene3D.triggerClerkReaction('idle', 0);
 
         document.getElementById('tutorial-banner').classList.add('hidden');
+        const taxRate = this.lunaticTaxRate === 10 ? 10 : 8;
+        const taxMultStr = taxRate === 10 ? '1.10' : '1.08';
         const lunaticBanner = document.getElementById('lunatic-banner');
         if (isLunatic) {
           lunaticBanner.classList.remove('hidden');
+          const taxBadgeEl = document.getElementById('lunatic-banner-tax-badge');
+          const ruleTextEl = document.getElementById('lunatic-banner-rule-text');
+          if (taxBadgeEl) taxBadgeEl.textContent = `🌙 消費税 ${taxRate}% モード`;
+          if (ruleTextEl) {
+            ruleTextEl.innerHTML = `表示は<span class="text-amber-300 underline">本体価格（税抜）</span>です！<span class="text-white">本体価格 × ${taxMultStr}（小数点以下切り捨て）</span>の税込金額を計算して支払おう！`;
+          }
         } else {
           lunaticBanner.classList.add('hidden');
         }
 
         const badgeEl = document.getElementById('ui-mode-badge');
         if (this.isRankingRun) {
-          const chgStr = this.showChangeDisplay ? '👁️あり' : '🙈なし';
           const diffStr = isLunatic ? '🌙LUNATIC' : (isEx ? '💀EX' : (isHard ? 'HARD' : 'NORMAL'));
           badgeEl.textContent = isLunatic
-            ? `🏆 ${this.playerName} (🌙LUNATIC/${this.lunaticTurnLimit}秒)`
-            : `🏆 ${this.playerName} (${diffStr}/${chgStr})`;
+            ? `🏆 ${this.playerName} (🌙LUNATIC/${taxRate}%/${this.lunaticTurnLimit}秒)`
+            : `🏆 ${this.playerName} (${diffStr})`;
           badgeEl.className = isLunatic
             ? 'text-[9px] sm:text-[11px] font-black px-2 py-0.5 rounded-lg bg-rose-500 text-white'
             : (isEx
@@ -6112,8 +6368,8 @@
         cdOverlay.classList.add('flex');
 
         if (isLunatic) {
-          cdSubLabel.textContent = '🌙 LUNATIC MODE (TAX 8%)';
-          cdRuleHint.innerHTML = '表示は<span class="text-amber-300 font-bold">本体価格（税抜）</span>のみ！<span class="text-rose-300 font-bold">×1.08（小数点以下切り捨て）</span>の税込金額で会計しよう！';
+          cdSubLabel.textContent = `🌙 LUNATIC MODE (TAX ${taxRate}%)`;
+          cdRuleHint.innerHTML = `表示は<span class="text-amber-300 font-bold">本体価格（税抜）</span>のみ！<span class="text-rose-300 font-bold">×${taxMultStr}（小数点以下切り捨て）</span>の税込金額で会計しよう！`;
         } else if (isEx) {
           cdSubLabel.textContent = '💀 EXTREME MODE (SUDDEN DEATH)';
           cdRuleHint.textContent = '1回でもPERFECT以外を出すと即終了！極限の集中力で挑め！';
@@ -6182,9 +6438,11 @@
         document.getElementById('ui-customer-avatar').textContent = avatar;
         document.getElementById('ui-customer-count').textContent = this.customerIndex;
 
+        const lunTaxRate = this.lunaticTaxRate === 10 ? 10 : 8;
+        const lunTaxMult = lunTaxRate === 10 ? '1.10' : '1.08';
         if (isFirstTurn) {
           if (isLunatic) {
-            this.setClerkComment('lunaticStart');
+            this.setClerkComment('lunaticStart', `🌙ルナティックモードへようこそ！表示されるのは『本体価格（税抜）』のみ！消費税${lunTaxRate}%（×${lunTaxMult}・小数点以下切り捨て）を暗算してお支払いください！`);
           } else if (this.difficulty === 'EX') {
             this.setClerkComment('exStart');
           } else {
@@ -6194,7 +6452,7 @@
           this.setClerkComment('hurry');
           this.scene3D.triggerClerkReaction('hurry', 10);
         } else if (isLunatic) {
-          this.setClerkComment('lunaticNext');
+          this.setClerkComment('lunaticNext', `本体価格に消費税${lunTaxRate}%（×${lunTaxMult}・小数点以下切り捨て）を掛けた税込金額で、お釣りを最小にしてくださいね！`);
           this.scene3D.triggerClerkReaction('idle', 0);
         } else {
           this.setClerkComment('nextCustomer');
@@ -6224,7 +6482,7 @@
         if (isLunatic) {
           // ルナティックは本体価格（税抜）を生成し、税込8%（小数点以下切り捨て）を実際の請求金額とする
           this.basePrice = this.generateLunaticBasePrice(isFirstTurn);
-          this.currentPrice = calcTaxIncludedPrice(this.basePrice);
+          this.currentPrice = calcTaxIncludedPrice(this.basePrice, this.lunaticTaxRate);
         } else if (isFirstTurn && this.difficulty === 'NORMAL') {
           this.basePrice = 680;
           this.currentPrice = 680;
@@ -6363,15 +6621,16 @@
       }
 
       generateLunaticBasePrice(isFirstTurn = false) {
+        const taxRate = this.lunaticTaxRate === 10 ? 10 : 8;
         return this._selectValidatedPrice({
           allowWantExact: !isFirstTurn,
           exactPreferProb: 0.10,
           easyCoinsProb: 0,
           moreCoinsProb: 0,
           sampleRaw: () => sampleLunaticBasePriceCandidate(isFirstTurn).basePrice,
-          toCheckPrice: (bp) => calcTaxIncludedPrice(bp),
+          toCheckPrice: (bp) => calcTaxIncludedPrice(bp, taxRate),
           sampleFallbackA: (wt) => {
-            const maxBp = Math.max(100, Math.min(3999, Math.floor((wt * 100) / 108)));
+            const maxBp = Math.max(100, Math.min(3999, Math.floor((wt * 100) / (100 + taxRate))));
             if (isFirstTurn) {
               const maxTens = Math.max(10, Math.min(99, Math.floor(maxBp / 10)));
               return randomIntInclusive(10, maxTens) * 10;
@@ -6565,6 +6824,7 @@
               price: this.currentPrice,
               basePrice: this.basePrice,
               isLunatic,
+              taxRate: this.lunaticTaxRate === 10 ? 10 : 8,
               paidTotal,
               changeAmount: 0,
               changeCoinCount: 0,
@@ -6592,7 +6852,7 @@
             this.timeLeft = Math.max(0, this.timeLeft - 2.0);
             this.showTimeBonusPopup('-2.0秒!', true);
             if (isLunatic) {
-              this.setClerkComment('insufficient', `税込み金額（本体¥${this.basePrice}×1.08切り捨て）に足りていません！-2秒ペナルティです💦`);
+              this.setClerkComment('insufficient', `税込み金額（本体¥${this.basePrice}×${this.lunaticTaxRate === 10 ? "1.10" : "1.08"}切り捨て）に足りていません！-2秒ペナルティです💦`);
             } else {
               this.setClerkComment('insufficient', '金額が足りませんっ！ハードモードなので-2秒ペナルティです💦');
             }
@@ -6685,6 +6945,7 @@
             price: this.currentPrice,
             basePrice: this.basePrice,
             isLunatic,
+            taxRate: this.lunaticTaxRate === 10 ? 10 : 8,
             paidTotal,
             changeAmount,
             changeCoinCount: changeInfo.coinCount,
@@ -6716,6 +6977,8 @@
 
         const modeMultiplier = isLunatic ? 100.0 : (isEx ? 10.0 : (isHard ? 1.5 : 1.0));
         const noChangeMult = this.showChangeDisplay ? 1.0 : 1.25;
+        const isExOrLun = isEx || isLunatic;
+        const defaultZoneSec = isExOrLun ? 5.0 : 10.0;
         let earnedScore = 0;
         let billBonusInfo = null;
 
@@ -6724,15 +6987,27 @@
           if (this.combo > this.maxCombo) this.maxCombo = this.combo;
           this.perfectCount++;
 
-          // 10連続PERFECTで「神域（ゾーン）」突入！（衝撃波エフェクト＋専用ハイテンポBGM切替）
-          if (this.combo >= 10 && !this.scene3D.isZoneActive) {
-            this.scene3D.setZoneMode(true);
-            sound.setZoneBGM(true);
-            this.triggerZoneShockwaveEffect();
+          const wasInZone = this.scene3D.isZoneActive;
+          let justEnteredZone = false;
+          if (!wasInZone) {
+            this.zoneCharge++;
+            // 7連続PERFECTで「神域（ゾーン）」突入！（倍率2.5倍・EX未満はデフォ10秒、EX以上はデフォ5秒）
+            if (this.zoneCharge >= 7) {
+              this.scene3D.setZoneMode(true);
+              sound.setZoneBGM(true);
+              this.zoneMaxTime = defaultZoneSec;
+              this.zoneTimeLeft = defaultZoneSec;
+              this.triggerZoneShockwaveEffect();
+              justEnteredZone = true;
+            }
+          } else {
+            // ゾーン中にPERFECTを出すと1秒増加（全難易度共通）
+            this.zoneTimeLeft += 1.0;
+            this.showTimeBonusPopup('ZONE +1.0s!', false);
           }
-          const zoneMult = this.scene3D.isZoneActive ? 1.35 : 1.0;
+          const zoneMult = this.scene3D.isZoneActive ? 2.5 : 1.0;
 
-          const comboMult = Math.min(4.8, 1 + (this.combo - 1) * ((isEx || isLunatic) ? 0.5 : 0.35));
+          const comboMult = Math.min(4.8, 1 + (this.combo - 1) * (isExOrLun ? 0.5 : 0.35));
           const basePt = isLunatic ? 2750 : (isEx ? 2420 : 1760);
           earnedScore = Math.round((basePt + Math.max(0, netDiff) * 275) * comboMult * modeMultiplier * noChangeMult * zoneMult);
 
@@ -6743,7 +7018,7 @@
           }
           this.score += earnedScore;
 
-          const bonusSec = isHard ? 1.5 : ((isEx || isLunatic) ? 2.5 : 0);
+          const bonusSec = isHard ? 1.5 : (isExOrLun ? 2.5 : 0);
           if (bonusSec > 0) {
             this.timeLeft = Math.min(99.9, this.timeLeft + bonusSec);
             this.showTimeBonusPopup(`+${bonusSec.toFixed(1)}秒!`, false);
@@ -6763,8 +7038,8 @@
             sound.playPachinkoKyuin();
             this.triggerDopaBurstEffect(null, true);
           }
-          if (this.combo === 10) {
-            this.setClerkComment('perfect', '⚡10連続PERFECT達成！！『神域（ゾーン）』突入でスコア倍率がさらに1.35倍に跳ね上がります！！');
+          if (justEnteredZone) {
+            this.setClerkComment('perfect', `⚡7連続PERFECT達成！！『神域（ゾーン）』突入（${defaultZoneSec}秒間）でスコア倍率が2.5倍に跳ね上がります！！`);
           } else if (isBillBonus) {
             this.setClerkComment('perfect', `⚡おおっ！お札までスッキリまとめる超神会計！！追加ボーナス +${billBonusInfo.bonusPt.toLocaleString()}pt です！`);
           } else {
@@ -6772,9 +7047,20 @@
           }
         } else if (grade === 'GOOD') {
           this.combo = 0;
-          if (this.scene3D.isZoneActive) this.scene3D.setZoneMode(false);
-          sound.setZoneBGM(false);
-          earnedScore = Math.round((660 + Math.max(0, netDiff) * 110) * modeMultiplier * noChangeMult);
+          const zoneMult = this.scene3D.isZoneActive ? 2.5 : 1.0;
+          if (this.scene3D.isZoneActive) {
+            if (!isExOrLun) {
+              // PERFECT・BAD以外（GOOD）はゾーン残り1秒減少
+              this.zoneTimeLeft = Math.max(0, this.zoneTimeLeft - 1.0);
+              this.showTimeBonusPopup('ZONE -1.0s', true);
+              if (this.zoneTimeLeft <= 0) {
+                this.exitZoneMode();
+              }
+            }
+          } else {
+            this.zoneCharge = 0;
+          }
+          earnedScore = Math.round((660 + Math.max(0, netDiff) * 110) * modeMultiplier * noChangeMult * zoneMult);
           this.score += earnedScore;
 
           // GOOD判定（PERFECT以外）も全モード共通で振り返りログへ保存
@@ -6785,6 +7071,7 @@
             price: this.currentPrice,
             basePrice: this.basePrice,
             isLunatic,
+            taxRate: this.lunaticTaxRate === 10 ? 10 : 8,
             paidTotal,
             changeAmount,
             changeCoinCount: changeInfo.coinCount,
@@ -6802,8 +7089,18 @@
           this.setClerkComment('good');
         } else {
           this.combo = 0;
-          if (this.scene3D.isZoneActive) this.scene3D.setZoneMode(false);
-          sound.setZoneBGM(false);
+          if (this.scene3D.isZoneActive) {
+            if (!isExOrLun) {
+              // BADを出すたびゾーン残り2秒減少
+              this.zoneTimeLeft = Math.max(0, this.zoneTimeLeft - 2.0);
+              this.showTimeBonusPopup('ZONE -2.0s!', true);
+              if (this.zoneTimeLeft <= 0) {
+                this.exitZoneMode();
+              }
+            }
+          } else {
+            this.zoneCharge = 0;
+          }
           earnedScore = (isHard || isLunatic) ? -400 : -200;
           this.score = Math.max(0, this.score + earnedScore);
 
@@ -6820,6 +7117,7 @@
             price: this.currentPrice,
             basePrice: this.basePrice,
             isLunatic,
+            taxRate: this.lunaticTaxRate === 10 ? 10 : 8,
             paidTotal,
             changeAmount,
             changeCoinCount: changeInfo.coinCount,
@@ -7003,7 +7301,7 @@
         }
 
         const taxPrefix = isLunatic
-          ? `【本体¥${this.basePrice.toLocaleString()} → 税込(8%切捨)¥${this.currentPrice.toLocaleString()}】 `
+          ? `【本体¥${this.basePrice.toLocaleString()} → 税込(${this.lunaticTaxRate === 10 ? 10 : 8}%切捨)¥${this.currentPrice.toLocaleString()}】 `
           : '';
         stats.textContent = `${taxPrefix}お釣り: ¥${changeAmount.toLocaleString()}（硬貨${changeInfo.coinCount}枚） ／ 小銭: ${coinsBefore}枚 ➔ ${coinsAfter}枚（${diffStr}）`;
 
@@ -7022,7 +7320,7 @@
 
         if (isLunatic) {
           // ルナティックモードでは「本体価格（税抜）」のみを表示し、税込み金額（×1.08切り捨て）はプレイヤーが暗算する
-          priceLabelEl.textContent = '本体価格（税抜・税8%別）';
+          priceLabelEl.textContent = `本体価格（税抜・税${this.lunaticTaxRate === 10 ? 10 : 8}%別）`;
           priceLabelEl.className = 'text-[8px] sm:text-[9px] text-rose-400 font-black leading-none';
           priceEl.textContent = `¥ ${this.basePrice.toLocaleString()}`;
           priceEl.className = 'font-digital text-lg sm:text-2xl font-bold text-rose-300 lcd-glow-crimson leading-none tracking-tight mt-0.5';
@@ -7055,8 +7353,8 @@
           visibleContent.classList.add('hidden');
           hiddenBadge.classList.remove('hidden');
           hiddenBadge.innerHTML = `
-            <div class="text-[9px] sm:text-[10px] font-black text-rose-300 leading-none">🌙 税込8%暗算中</div>
-            <div class="text-[8px] text-slate-400 font-bold leading-none mt-0.5">×1.08 (小数点切捨)</div>
+            <div class="text-[9px] sm:text-[10px] font-black text-rose-300 leading-none">🌙 税込${this.lunaticTaxRate === 10 ? 10 : 8}%暗算中</div>
+            <div class="text-[8px] text-slate-400 font-bold leading-none mt-0.5">×${this.lunaticTaxRate === 10 ? '1.10' : '1.08'} (小数点切捨)</div>
           `;
           changeBox.className = 'text-right bg-rose-950/50 px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-lg border border-rose-500/60 min-w-[92px] sm:min-w-[118px]';
           afterWrap.classList.add('hidden');
@@ -7117,10 +7415,47 @@
 
         const zoneBadge = document.getElementById('ui-zone-badge');
         if (zoneBadge) {
-          if (this.scene3D.isZoneActive && this.combo >= 10) {
+          if (this.scene3D.isZoneActive) {
             zoneBadge.classList.remove('hidden');
+            zoneBadge.textContent = `⚡ ZONE ×2.5 (${Math.max(0, this.zoneTimeLeft).toFixed(1)}s)`;
           } else {
             zoneBadge.classList.add('hidden');
+          }
+        }
+
+        const zoneGaugeWrap = document.getElementById('ui-zone-gauge-wrap');
+        const zoneGaugeLabel = document.getElementById('ui-zone-gauge-label');
+        const zoneGaugeBar = document.getElementById('ui-zone-gauge-bar');
+        const zoneGaugeStatus = document.getElementById('ui-zone-gauge-status');
+        if (zoneGaugeWrap && zoneGaugeLabel && zoneGaugeBar && zoneGaugeStatus) {
+          if (this.isTutorial) {
+            zoneGaugeWrap.classList.add('hidden');
+          } else {
+            zoneGaugeWrap.classList.remove('hidden');
+            if (this.scene3D.isZoneActive) {
+              zoneGaugeLabel.textContent = '⚡ 神域ZONE ×2.5';
+              zoneGaugeLabel.className = 'text-[9px] sm:text-[10px] font-black text-amber-300 shrink-0 leading-none animate-pulse';
+              const zMax = Math.max(1.0, this.zoneMaxTime || 10.0);
+              const zRatio = Math.max(0, Math.min(100, (this.zoneTimeLeft / zMax) * 100));
+              zoneGaugeBar.style.width = `${zRatio}%`;
+              if (this.zoneTimeLeft <= 2.5) {
+                zoneGaugeBar.className = 'h-full bg-gradient-to-r from-rose-500 to-amber-400 rounded-full transition-all duration-100';
+                zoneGaugeStatus.className = 'font-digital text-[9px] sm:text-[10px] font-black text-rose-400 animate-pulse shrink-0 leading-none min-w-[44px] text-right';
+              } else {
+                zoneGaugeBar.className = 'h-full bg-gradient-to-r from-fuchsia-500 via-amber-300 to-cyan-400 rounded-full transition-all duration-100';
+                zoneGaugeStatus.className = 'font-digital text-[9px] sm:text-[10px] font-black text-amber-300 shrink-0 leading-none min-w-[44px] text-right';
+              }
+              zoneGaugeStatus.textContent = `${Math.max(0, this.zoneTimeLeft).toFixed(1)}s`;
+            } else {
+              const charge = Math.min(7, this.zoneCharge || 0);
+              const chargePct = (charge / 7) * 100;
+              zoneGaugeLabel.textContent = `⚡ ZONE ${charge}/7`;
+              zoneGaugeLabel.className = 'text-[9px] sm:text-[10px] font-black text-fuchsia-300 shrink-0 leading-none';
+              zoneGaugeBar.style.width = `${chargePct}%`;
+              zoneGaugeBar.className = 'h-full bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-cyan-300 rounded-full transition-all duration-150';
+              zoneGaugeStatus.textContent = '×2.5待機';
+              zoneGaugeStatus.className = 'font-digital text-[9px] sm:text-[10px] font-black text-slate-400 shrink-0 leading-none min-w-[44px] text-right';
+            }
           }
         }
 
@@ -7316,6 +7651,7 @@
           price: this.currentPrice,
           basePrice: this.basePrice,
           isLunatic: true,
+          taxRate: this.lunaticTaxRate === 10 ? 10 : 8,
           paidTotal,
           changeAmount: 0,
           changeCoinCount: 0,
@@ -7345,11 +7681,28 @@
         }, 3500);
       }
 
+      exitZoneMode() {
+        this.zoneTimeLeft = 0;
+        this.zoneCharge = 0;
+        if (this.scene3D.isZoneActive) {
+          this.scene3D.setZoneMode(false);
+        }
+        sound.setZoneBGM(false);
+      }
+
       update(dt) {
         if (this.state !== 'PLAYING' || this.isTutorial) return;
 
         this.timeLeft -= dt;
         this.turnElapsed += dt;
+
+        // 全難易度でゾーンを秒数制カウントダウン（NORMAL/HARD: デフォ10秒, EX/LUNATIC: デフォ5秒）
+        if (this.scene3D.isZoneActive) {
+          this.zoneTimeLeft -= dt;
+          if (this.zoneTimeLeft <= 0) {
+            this.exitZoneMode();
+          }
+        }
 
         const lunLimit = this.lunaticTurnLimit || 15;
         if (this.difficulty === 'LUNATIC' && this.turnElapsed >= lunLimit) {
@@ -7387,11 +7740,11 @@
           <div class="zone-shockwave-ring"></div>
           <div class="zone-shockwave-ring-2"></div>
           <div class="zone-cutin-text text-center px-6 py-3 rounded-3xl bg-slate-950/80 border-2 border-fuchsia-400 shadow-[0_0_40px_rgba(217,70,239,0.9)]">
-            <div class="text-xs sm:text-sm font-black tracking-widest text-cyan-300 uppercase">10 COMBO FEVER!!</div>
+            <div class="text-xs sm:text-sm font-black tracking-widest text-cyan-300 uppercase">7 COMBO FEVER!!</div>
             <div class="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-300 via-white to-cyan-300 drop-shadow">
               ⚡ 神域（ゾーン）突入 ⚡
             </div>
-            <div class="text-xs sm:text-sm font-extrabold text-amber-300 mt-0.5">SCORE ×1.35 フィーバータイム！</div>
+            <div class="text-xs sm:text-sm font-extrabold text-amber-300 mt-0.5">SCORE ×2.5 フィーバータイム！</div>
           </div>
         `;
         layer.classList.remove('hidden');
@@ -7448,7 +7801,7 @@
               : '<span class="inline-block px-1.5 py-0.5 rounded bg-rose-500 text-white text-[9px] font-black mr-1">💦BAD</span>');
 
           const priceText = m.isLunatic
-            ? `本体¥${m.basePrice.toLocaleString()} → 税込(8%)¥${m.price.toLocaleString()}`
+            ? `本体¥${m.basePrice.toLocaleString()} → 税込(${m.taxRate || 8}%)¥${m.price.toLocaleString()}`
             : `請求 ¥${m.price.toLocaleString()}`;
           const yourResultDetail = (m.grade === '金額不足' || String(m.grade).endsWith('秒超過'))
             ? m.grade
@@ -7475,6 +7828,7 @@
         sound.playRegisterCheckout();
 
         this.trayList = [];
+        this.exitZoneMode();
         this.scene3D.clearAllTrayItems(false);
         this.scene3D.setTitleMode(true);
         document.getElementById('ui-judgment-overlay').classList.add('hidden');
@@ -7521,10 +7875,11 @@
 
         const modeLabel = document.getElementById('res-mode-label');
         const chgText = this.showChangeDisplay ? 'お釣りあり' : 'お釣りなし(暗算)';
+        const lunTax = this.lunaticTaxRate === 10 ? 10 : 8;
         if (this.isRankingRun) {
           modeLabel.textContent = this.difficulty === 'LUNATIC'
-            ? `🏆 ランキング (🌙LUNATIC / ${this.lunaticTurnLimit}秒)`
-            : `🏆 ランキング (${this.difficulty} / ${chgText})`;
+            ? `🏆 ランキング (🌙LUNATIC / 税${lunTax}% / ${this.lunaticTurnLimit}秒)`
+            : `🏆 ランキング (${this.difficulty})`;
           modeLabel.className = 'text-[10px] sm:text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950';
         } else if (this.difficulty === 'HARD') {
           modeLabel.textContent = `🔥 ハード (${chgText})`;
@@ -7544,7 +7899,7 @@
             : 'EXモードは1回のミスも許されない極限の戦い！リベンジで神会計を繋げよう！';
         } else if (this.difficulty === 'LUNATIC' && this.score >= 35000) {
           title = '🌙✨ 消費税計算の超神・ルナティック制覇';
-          desc = '本体価格からの消費税8%（小数点切り捨て）を瞬時に暗算する人間電卓レベルです！';
+          desc = `本体価格からの消費税${lunTax}%（小数点切り捨て）を瞬時に暗算する人間電卓レベルです！`;
         } else if (this.score >= 50000) {
           title = '👑✨ 伝説の超神速・会計マスター';
           desc = 'EXモード解放基準突破＆圧倒的スコア！まさに人間レジスター！';
@@ -7568,11 +7923,13 @@
 
         if (this.isRankingRun) {
           const isLunaticRank = this.difficulty === 'LUNATIC';
-          const targetRankingRule = isLunaticRank ? 'lunatic' : this.ruleType;
-          const targetSlotFlag = isLunaticRank ? (this.lunaticTurnLimit === 10) : this.rankingShowChange;
-          const ruleLabel = this.ruleType === 'change' ? 'お釣り最小' : '財布最小';
-          const deptName = this.rankingShowChange ? 'お釣りあり' : 'お釣りなし';
-          const categoryLabel = isLunaticRank ? `🌙ルナティック/${this.lunaticTurnLimit}秒` : `${ruleLabel}/${deptName}`;
+          const targetCategoryKey = isLunaticRank
+            ? RankingManager.getLunaticCategoryKey(this.lunaticTaxRate, this.lunaticTurnLimit)
+            : (this.ruleType === 'change' ? 'change' : 'wallet');
+          const ruleLabel = this.ruleType === 'change' ? 'お釣り枚数最小' : '財布の小銭最小';
+          const categoryLabel = isLunaticRank
+            ? `🌙ルナティック/税${lunTax}%/${this.lunaticTurnLimit}秒`
+            : `${ruleLabel}`;
 
           if (isLunaticMinNotMet) {
             playerNameTag.textContent = `登録名: ${this.playerName}（${categoryLabel}）※5人未満のため記録なし`;
@@ -7587,8 +7944,7 @@
               this.difficulty,
               perfectRate,
               totalServed,
-              targetSlotFlag,
-              targetRankingRule
+              targetCategoryKey
             );
             this.lastHighlightEntryId = saveResult.entryId;
 
@@ -7609,12 +7965,16 @@
             }
           }
 
-          this.setResultRankingTab(targetSlotFlag, targetRankingRule);
+          if (isLunaticRank) {
+            this.setResultRankingTab('lunatic', targetCategoryKey);
+          } else {
+            this.setResultRankingTab(targetCategoryKey);
+          }
         } else {
           playerNameTag.textContent = 'フリープレイ（※ランキングモードで記録登録）';
           rankInBadge.textContent = 'フリープレイ完了';
           rankInBadge.className = 'text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300';
-          this.setResultRankingTab(this.freePlayShowChange, this.ruleType);
+          this.setResultRankingTab(this.ruleType === 'change' ? 'change' : 'wallet');
         }
 
         const receiptDateEl = document.getElementById('res-receipt-date');
@@ -7651,17 +8011,18 @@
         game.updateUnlockAndCumulativeUI();
         const modalRanking = document.getElementById('modal-ranking');
         if (modalRanking && !modalRanking.classList.contains('hidden')) {
-          RankingManager.renderListToContainer('standalone-ranking-list', game.modalRankingTabShowChange, null, game.modalRankingTabRuleType);
+          RankingManager.renderListToContainer('standalone-ranking-list', game.getActiveModalRankingCategory(), null);
         }
         const screenResult = document.getElementById('screen-result');
         if (screenResult && !screenResult.classList.contains('hidden')) {
-          const savedCategoryRule = game.difficulty === 'LUNATIC' ? 'lunatic' : game.ruleType;
-          const savedSlotFlag = game.difficulty === 'LUNATIC' ? (game.lunaticTurnLimit === 10) : game.rankingShowChange;
-          const isMatch = savedSlotFlag === game.resultRankingTabShowChange && savedCategoryRule === game.resultRankingTabRuleType;
-          const highlightId = (game.isRankingRun && isMatch)
+          const activeCategory = game.getActiveResultRankingCategory();
+          const savedCategory = game.difficulty === 'LUNATIC'
+            ? RankingManager.getLunaticCategoryKey(game.lunaticTaxRate, game.lunaticTurnLimit)
+            : (game.ruleType === 'change' ? 'change' : 'wallet');
+          const highlightId = (game.isRankingRun && activeCategory === savedCategory)
             ? game.lastHighlightEntryId
             : null;
-          RankingManager.renderListToContainer('result-ranking-list', game.resultRankingTabShowChange, highlightId, game.resultRankingTabRuleType);
+          RankingManager.renderListToContainer('result-ranking-list', activeCategory, highlightId);
         }
       });
 
