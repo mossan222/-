@@ -1968,7 +1968,7 @@
       <!-- VERSUS JAMMER MODE HP BAR + LEFT(HEAL) / RIGHT(STUN) ITEM BUTTONS -->
       <div id="vs-hp-bar-wrap" class="hidden px-2 sm:px-4 mb-1.5 pointer-events-none">
         <div class="max-w-2xl mx-auto flex items-stretch justify-center gap-1.5 sm:gap-2">
-          <!-- Left: Heal Item Button (+300 HP) -->
+          <!-- Left: Heal Item Button (+100 HP) -->
           <button id="btn-vs-item-heal" type="button" disabled class="hidden pointer-events-auto btn-3d shrink-0 w-[86px] sm:w-[116px] bg-gradient-to-b from-emerald-500 to-teal-700 hover:from-emerald-400 hover:to-teal-600 text-white rounded-2xl border-2 border-emerald-300 px-1.5 py-1 shadow-lg flex flex-col items-center justify-center leading-tight disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed relative">
             <span id="key-hint-item-heal" class="hidden sm:inline-block absolute -top-2 -left-1.5 font-digital text-[9px] font-black px-1.5 py-0.5 rounded bg-slate-950 text-emerald-300 border border-emerald-400 leading-none">G</span>
             <div class="text-[11px] sm:text-xs font-black flex items-center gap-0.5"><span>💚</span><span>回復</span></div>
@@ -2415,7 +2415,7 @@
 
         <!-- 1c. Jammer Items ON/OFF (Only when jammer selected) -->
         <div id="vs-jammer-items-row" class="hidden">
-          <div class="text-[10px] font-bold text-slate-400 mb-1">🎁 アイテム（回復+300 / スタン100DMG+2秒痺れ）</div>
+          <div class="text-[10px] font-bold text-slate-400 mb-1">🎁 アイテム（回復+100 / スタン100DMG+2秒痺れ）</div>
           <div class="grid grid-cols-2 gap-1.5">
             <button data-vs-set="itemsEnabled" data-vs-val="true" class="vs-opt-btn btn-3d py-1 px-2 rounded-xl text-[11px] font-black border-2">🎁 アイテムあり</button>
             <button data-vs-set="itemsEnabled" data-vs-val="false" class="vs-opt-btn btn-3d py-1 px-2 rounded-xl text-[11px] font-black border-2">🚫 アイテムなし</button>
@@ -2712,7 +2712,7 @@
       { action: 'ret_1',     label: '↩️ 1円玉を戻す',      group: 'お金戻し' },
       { action: 'checkout',  label: '🔔 お会計！（決定）', group: '操作' },
       { action: 'reset',     label: '↩️ 全戻し',           group: '操作' },
-      { action: 'item_heal', label: '💚 回復アイテム (+300HP)', group: '対戦アイテム' },
+      { action: 'item_heal', label: '💚 回復アイテム (+100HP)', group: '対戦アイテム' },
       { action: 'item_stun', label: '⚡ スタンアイテム (100DMG+2秒痺れ)', group: '対戦アイテム' }
     ];
 
@@ -10650,14 +10650,13 @@
 
         const remPerfect = Math.max(1, 2 - (this.vsItemPerfectProgress || 0));
         if (hasCharge) {
-          const stockTxt = this.vsItemCharges > 1 ? `×${this.vsItemCharges} ` : '';
           if (healSub) {
             healSub.textContent = !canAfford
               ? `要${costLabel}`
-              : ((this.vsHp || 0) >= (this.vsMaxHp || 1000) ? 'HP満タン' : `${stockTxt}+300 (${costLabel})`);
+              : ((this.vsHp || 0) >= (this.vsMaxHp || 1000) ? 'HP満タン' : `+100 (${costLabel})`);
           }
           if (stunSub) {
-            stunSub.textContent = !canAfford ? `要${costLabel}` : `${stockTxt}100+2s (${costLabel})`;
+            stunSub.textContent = !canAfford ? `要${costLabel}` : `100+2s (${costLabel})`;
           }
         } else {
           if (healSub) healSub.textContent = `あと${remPerfect}回神`;
@@ -10679,10 +10678,11 @@
             sound.playReturn();
             return;
           }
-          this.vsItemCharges -= 1;
+          this.vsItemCharges = 0;
+          this.vsItemPerfectProgress = 0;
           this.score = Math.max(0, this.score - cost);
           const beforeHp = this.vsHp || 0;
-          this.vsHp = Math.min(this.vsMaxHp || 1000, beforeHp + 300);
+          this.vsHp = Math.min(this.vsMaxHp || 1000, beforeHp + 100);
           const healed = this.vsHp - beforeHp;
           sound.playPerfectFanfare();
           this.vibrate(45);
@@ -10697,7 +10697,8 @@
             sound.playBadBuzzer();
             return;
           }
-          this.vsItemCharges -= 1;
+          this.vsItemCharges = 0;
+          this.vsItemPerfectProgress = 0;
           this.score = Math.max(0, this.score - cost);
           sound.playLightningBonusSE();
           this.vibrate([40, 25, 60]);
@@ -11226,6 +11227,7 @@
         this.bestSolution = findBestPayment(this.currentPrice, this.wallet, this.isTutorial ? 'wallet' : this.ruleType);
         this.updatePOSDisplay();
         this.renderWalletUI();
+        this.updateVersusHpBar();
       }
 
       _ensurePriceGenState() {
@@ -11837,11 +11839,11 @@
           }
           this.score += earnedScore;
           if (this.isVersusJammerMode() && this.versus) {
-            if (this.isVersusJammerItemsEnabled()) {
+            if (this.isVersusJammerItemsEnabled() && (this.vsItemCharges || 0) < 1) {
               this.vsItemPerfectProgress = (this.vsItemPerfectProgress || 0) + 1;
               if (this.vsItemPerfectProgress >= 2) {
                 this.vsItemPerfectProgress = 0;
-                this.vsItemCharges = Math.min(3, (this.vsItemCharges || 0) + 1);
+                this.vsItemCharges = 1;
               }
             }
             const withCoins = this.perfectCount > 0 && this.perfectCount % 3 === 0;
