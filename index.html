@@ -263,17 +263,35 @@
     }
     .wallet-count-badge {
       position: absolute;
-      top: -6px;
-      right: -5px;
+      top: -8px;
+      right: -6px;
       z-index: 10;
       display: inline-flex;
       align-items: baseline;
+      justify-content: center;
       gap: 1px;
-      padding: 1px 6px;
+      min-width: 38px;
+      padding: 2px 8px;
       border-radius: 9999px;
       border-width: 2px;
-      line-height: 1.05;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.75);
+      line-height: 1;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.85);
+      pointer-events: none;
+    }
+    .wallet-count-pill {
+      position: relative;
+      z-index: 10;
+      margin-top: -5px;
+      display: inline-flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 1px;
+      min-width: 42px;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      border-width: 2px;
+      line-height: 1;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.85);
       pointer-events: none;
     }
     .money-svg-shadow {
@@ -9353,24 +9371,25 @@
         return { denoms: needed, checkout: allMatched && this.getTrayTotal() >= this.currentPrice };
       }
 
-      getWalletCountBadgeHTML(count) {
+      getWalletCountBadgeHTML(count, variant = 'corner') {
         let badgeStyle;
         if (count <= 0) {
-          badgeStyle = 'bg-slate-800 text-slate-300 border-slate-500';
+          badgeStyle = 'bg-slate-900 text-slate-300 border-slate-500';
         } else if (count >= 4) {
           badgeStyle = 'bg-rose-600 text-white border-amber-200';
         } else {
           badgeStyle = 'bg-slate-950 text-amber-300 border-amber-400';
         }
+        const posClass = variant === 'below' ? 'wallet-count-pill' : 'wallet-count-badge';
         return `
-          <span class="wallet-count-badge ${badgeStyle}">
-            <span class="text-[9px] sm:text-[10px] font-bold opacity-85">×</span>
-            <span class="font-digital text-[12px] sm:text-sm font-black">${count}</span>
+          <span class="${posClass} ${badgeStyle}">
+            <span class="text-xs sm:text-sm font-black opacity-90">×</span>
+            <span class="font-digital text-[17px] sm:text-xl font-black tracking-tight">${count}</span>
           </span>
         `;
       }
 
-      getBillIllustrationSVG(denom) {
+      getBillIllustrationSVG(denom, disabled = false) {
         const themes = {
           10000: { bg1: '#f6e7c8', bg2: '#d5b17a', border: '#6b4423', text: '#4a2c11', accent: '#9a6534', label: '10000', sub: '壱万円' },
           5000:  { bg1: '#f0e4f9', bg2: '#c5a8de', border: '#4c2f6e', text: '#351c52', accent: '#754ca0', label: '5000',  sub: '五千円' },
@@ -9378,8 +9397,9 @@
         };
         const t = themes[denom] || themes[1000];
         const gid = `billGrad_${denom}`;
+        const dimClass = disabled ? 'grayscale opacity-45' : '';
         return `
-          <svg viewBox="0 0 120 56" class="w-full h-10 sm:h-12 block money-svg-shadow" aria-hidden="true">
+          <svg viewBox="0 0 120 56" class="w-full h-11 sm:h-12 block money-svg-shadow ${dimClass}" aria-hidden="true">
             <defs>
               <linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="${t.bg1}"/>
@@ -9390,21 +9410,21 @@
             <rect x="1.5" y="1.5" width="117" height="53" rx="6" fill="url(#${gid})" stroke="${t.border}" stroke-width="2.5"/>
             <rect x="5" y="5" width="110" height="46" rx="3.5" fill="none" stroke="${t.accent}" stroke-width="1" stroke-dasharray="3 1.5" opacity="0.7"/>
             <!-- 透かし楕円（左） -->
-            <ellipse cx="22" cy="28" rx="11" ry="15" fill="rgba(255,255,255,0.65)" stroke="${t.accent}" stroke-width="1" opacity="0.85"/>
+            <ellipse cx="19" cy="28" rx="9.5" ry="14" fill="rgba(255,255,255,0.65)" stroke="${t.accent}" stroke-width="1" opacity="0.85"/>
             <!-- 肖像シルエット風メダリオン（右） -->
-            <ellipse cx="97" cy="29" rx="12" ry="16" fill="${t.accent}" opacity="0.16" stroke="${t.border}" stroke-width="1"/>
-            <circle cx="97" cy="24" r="5" fill="${t.border}" opacity="0.32"/>
-            <path d="M89 39 C89 33, 105 33, 105 39" fill="${t.border}" opacity="0.32"/>
+            <ellipse cx="98" cy="30" rx="11" ry="15" fill="${t.accent}" opacity="0.16" stroke="${t.border}" stroke-width="1"/>
+            <circle cx="98" cy="25" r="4.5" fill="${t.border}" opacity="0.32"/>
+            <path d="M90 40 C90 34, 106 34, 106 40" fill="${t.border}" opacity="0.32"/>
             <!-- 赤い印鑑 -->
-            <circle cx="38" cy="40" r="4.2" fill="#dc2626" opacity="0.85"/>
-            <!-- 金額表示 -->
-            <text x="58" y="29" text-anchor="middle" fill="${t.text}" font-family="'Share Tech Mono', monospace" font-weight="900" font-size="${denom === 10000 ? 21 : 23}" letter-spacing="-0.5">¥${t.label}</text>
-            <text x="61" y="44" text-anchor="middle" fill="${t.border}" font-family="'M PLUS Rounded 1c', sans-serif" font-weight="900" font-size="9.5">${t.sub}</text>
+            <circle cx="33" cy="41" r="4" fill="#dc2626" opacity="0.85"/>
+            <!-- 金額表示（右上バッジと被らないようやや左寄り） -->
+            <text x="51" y="30" text-anchor="middle" fill="${t.text}" font-family="'Share Tech Mono', monospace" font-weight="900" font-size="${denom === 10000 ? 20 : 22}" letter-spacing="-0.5">¥${t.label}</text>
+            <text x="55" y="45" text-anchor="middle" fill="${t.border}" font-family="'M PLUS Rounded 1c', sans-serif" font-weight="900" font-size="9.5">${t.sub}</text>
           </svg>
         `;
       }
 
-      getCoinIllustrationSVG(denom) {
+      getCoinIllustrationSVG(denom, disabled = false) {
         const themes = {
           500: { outer1: '#fff6cc', outer2: '#d4a946', inner1: '#f8f2d8', inner2: '#dfc26b', rim: '#8f6919', text: '#3b2805', hole: false, bicolor: true },
           100: { outer1: '#ffffff', outer2: '#94a3b8', inner1: '#f1f5f9', inner2: '#cbd5e1', rim: '#475569', text: '#0f172a', hole: false, bicolor: false },
@@ -9417,9 +9437,10 @@
         const gOuter = `coinOut_${denom}`;
         const gInner = `coinIn_${denom}`;
         const textStroke = denom === 10 ? 'rgba(67,20,7,0.75)' : 'rgba(255,255,255,0.55)';
+        const dimClass = disabled ? 'grayscale opacity-45' : '';
 
         return `
-          <svg viewBox="0 0 64 64" class="w-11 h-11 sm:w-14 sm:h-14 block money-svg-shadow" aria-hidden="true">
+          <svg viewBox="0 0 64 64" class="w-11 h-11 sm:w-14 sm:h-14 block money-svg-shadow ${dimClass}" aria-hidden="true">
             <defs>
               <radialGradient id="${gOuter}" cx="30%" cy="28%" r="72%">
                 <stop offset="0%" stop-color="${t.outer1}"/>
@@ -9487,12 +9508,12 @@
           addBtn.className = `bill-illust-btn flex-1 min-w-0 ${
             count > 0
               ? 'cursor-pointer hover:brightness-110'
-              : 'grayscale opacity-55 cursor-not-allowed'
+              : 'cursor-not-allowed'
           } ${isHighlight ? 'tutorial-highlight ring-2 ring-amber-300' : (isHelperGlow ? 'helper-guide-highlight ring-2 ring-emerald-400' : '')}`;
 
           addBtn.innerHTML = `
-            ${this.getBillIllustrationSVG(d)}
-            ${this.getWalletCountBadgeHTML(count)}
+            ${this.getBillIllustrationSVG(d, count <= 0)}
+            ${this.getWalletCountBadgeHTML(count, 'corner')}
           `;
           addBtn.addEventListener('click', () => this.putMoneyOnTray(d));
           wrap.appendChild(addBtn);
@@ -9524,15 +9545,15 @@
           const btn = document.createElement('button');
           btn.disabled = count <= 0;
           btn.setAttribute('aria-label', `${d}円玉 所持数${count}枚`);
-          btn.className = `coin-btn rounded-full p-0.5 ${
+          btn.className = `coin-btn rounded-2xl p-0.5 ${
             count > 0
               ? 'cursor-pointer hover:brightness-110'
-              : 'grayscale opacity-55 cursor-not-allowed'
+              : 'cursor-not-allowed'
           } ${isHighlight ? 'tutorial-highlight ring-2 ring-amber-300' : (isHelperGlow ? 'helper-guide-highlight ring-2 ring-emerald-400' : '')}`;
 
           btn.innerHTML = `
-            ${this.getCoinIllustrationSVG(d)}
-            ${this.getWalletCountBadgeHTML(count)}
+            ${this.getCoinIllustrationSVG(d, count <= 0)}
+            ${this.getWalletCountBadgeHTML(count, 'below')}
           `;
           btn.addEventListener('click', () => this.putMoneyOnTray(d));
           col.appendChild(btn);
