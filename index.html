@@ -3302,10 +3302,115 @@
         this.isBgmPlaying = false;
         this.isZoneBgm = false;
         this.isDopaBgm = false;
+        this.isBackgroundPaused = Boolean(typeof document !== 'undefined' && document.hidden);
+        this.wasPlayingBeforeBg = false;
+        this.autoStartPending = false;
+        this.unlockListenersAttached = false;
         this.dopaAudio = new Audio(encodeURI('./鉄の獣.mp3'));
         this.dopaAudio.loop = true;
         this.dopaAudio.volume = 0.55;
         this.dopaAudio.preload = 'auto';
+        this.setupLifecycleListeners();
+      }
+
+      setupLifecycleListeners() {
+        if (typeof document === 'undefined' || typeof window === 'undefined') return;
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            this.pauseForBackground();
+          } else {
+            this.resumeFromBackground();
+          }
+        });
+        window.addEventListener('pagehide', () => this.pauseForBackground());
+        window.addEventListener('blur', () => this.pauseForBackground());
+        window.addEventListener('focus', () => {
+          if (!document.hidden) this.resumeFromBackground();
+        });
+        window.addEventListener('pageshow', () => {
+          if (!document.hidden) this.resumeFromBackground();
+        });
+      }
+
+      pauseForBackground() {
+        if (this.isBackgroundPaused) return;
+        this.isBackgroundPaused = true;
+        this.wasPlayingBeforeBg = this.isBgmPlaying || this.autoStartPending;
+        if (this.bgmTimer) {
+          clearInterval(this.bgmTimer);
+          this.bgmTimer = null;
+        }
+        if (this.dopaAudio && !this.dopaAudio.paused) {
+          this.dopaAudio.pause();
+        }
+        this.isBgmPlaying = false;
+        if (this.ctx && this.ctx.state === 'running') {
+          this.ctx.suspend().catch(() => {});
+        }
+      }
+
+      resumeFromBackground() {
+        if (typeof document !== 'undefined' && document.hidden) return;
+        const shouldResume = this.bgmEnabled && (this.wasPlayingBeforeBg || this.autoStartPending);
+        this.isBackgroundPaused = false;
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+        if (shouldResume) {
+          this.wasPlayingBeforeBg = false;
+          this.startBGM();
+        }
+      }
+
+      tryAutoStartBGM() {
+        if (!this.bgmEnabled) return;
+        this.autoStartPending = true;
+        this.attachFirstGestureUnlock();
+        if (this.isBackgroundPaused || (typeof document !== 'undefined' && document.hidden)) {
+          return;
+        }
+        this.startBGM();
+      }
+
+      attachFirstGestureUnlock() {
+        if (this.unlockListenersAttached || typeof window === 'undefined') return;
+        this.unlockListenersAttached = true;
+
+        const onFirstGesture = (e) => {
+          if (!this.bgmEnabled) {
+            this.autoStartPending = false;
+            return;
+          }
+          // BGMトグルボタン自体を押したときはtoggleBGM()に任せる
+          if (e && e.target && typeof e.target.closest === 'function' && e.target.closest('#btn-title-bgm, #btn-bgm-toggle')) {
+            return;
+          }
+          if (this.isBackgroundPaused || (typeof document !== 'undefined' && document.hidden)) {
+            return;
+          }
+          this.init();
+          if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume().then(() => {
+              if (this.bgmEnabled && !this.isBackgroundPaused && !document.hidden) {
+                if (!this.isBgmPlaying) this.startBGM();
+              }
+            }).catch(() => {});
+          }
+          if (!this.isBgmPlaying) {
+            this.startBGM();
+          } else if (this.isDopaBgm && this.dopaAudio && this.dopaAudio.paused) {
+            this.dopaAudio.play().then(() => {
+              this.autoStartPending = false;
+            }).catch(() => {});
+          }
+          if (this.ctx && this.ctx.state === 'running' && (!this.isDopaBgm || (this.dopaAudio && !this.dopaAudio.paused))) {
+            this.autoStartPending = false;
+          }
+        };
+
+        ['pointerdown', 'touchstart', 'keydown'].forEach((evt) => {
+          window.addEventListener(evt, onFirstGesture, { capture: true, passive: true });
+        });
       }
 
       init() {
@@ -3315,8 +3420,8 @@
             this.ctx = new AudioCtx();
           }
         }
-        if (this.ctx && this.ctx.state === 'suspended') {
-          this.ctx.resume();
+        if (this.ctx && this.ctx.state === 'suspended' && !this.isBackgroundPaused) {
+          this.ctx.resume().catch(() => {});
         }
       }
 
@@ -3332,8 +3437,11 @@
         this.bgmEnabled = !this.bgmEnabled;
         this.init();
         if (this.bgmEnabled) {
+          this.autoStartPending = true;
           this.startBGM();
         } else {
+          this.autoStartPending = false;
+          this.wasPlayingBeforeBg = false;
           this.stopBGM();
         }
         this.syncSoundButtonsUI();
@@ -3484,15 +3592,33 @@
 
       startBGM() {
         if (!this.bgmEnabled) return;
+        if (this.isBackgroundPaused || (typeof document !== 'undefined' && document.hidden)) {
+          this.wasPlayingBeforeBg = true;
+          return;
+        }
         this.init();
-        if (this.isBgmPlaying) return;
+        if (this.isBgmPlaying) {
+          if (this.isDopaBgm && this.dopaAudio && this.dopaAudio.paused) {
+            this.dopaAudio.play().then(() => { this.autoStartPending = false; }).catch(() => {});
+          }
+          return;
+        }
 
         this.isBgmPlaying = true;
 
         if (this.isDopaBgm && this.dopaAudio) {
           const playPromise = this.dopaAudio.play();
-          if (playPromise && typeof playPromise.catch === 'function') {
-            playPromise.catch(() => {
+          if (playPromise && typeof playPromise.then === 'function') {
+            playPromise.then(() => {
+              this.autoStartPending = false;
+            }).catch((err) => {
+              if (err && err.name === 'NotAllowedError') {
+                // ブラウザの自動再生制限時は初回操作で即再生できるよう待機
+                this.isBgmPlaying = false;
+                this.autoStartPending = true;
+                this.attachFirstGestureUnlock();
+                return;
+              }
               // 音声ファイル未配置などで再生できない場合は通常シンセBGMへフォールバック
               if (this.isBgmPlaying && this.isDopaBgm) {
                 this.isBgmPlaying = false;
@@ -3543,7 +3669,9 @@
         const stepIntervalMs = this.isZoneBgm ? 105 : 155;
 
         this.bgmTimer = setInterval(() => {
-          if (!this.bgmEnabled || !this.ctx || this.ctx.state !== 'running') return;
+          if (!this.bgmEnabled || this.isBackgroundPaused || (typeof document !== 'undefined' && document.hidden)) return;
+          if (!this.ctx || this.ctx.state !== 'running') return;
+          this.autoStartPending = false;
 
           const now = this.ctx.currentTime;
           const step = this.bgmStep % 16;
@@ -11856,6 +11984,7 @@
       });
 
       switchScreen('screen-title');
+      sound.tryAutoStartBGM();
 
       let lastTime = performance.now();
       function animate(now) {
