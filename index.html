@@ -1257,23 +1257,23 @@
           <span class="text-cyan-400 font-black text-xl group-hover:translate-x-1 transition-transform shrink-0">▶</span>
         </button>
 
-        <!-- Rule B: Change Coins Minimization -->
-        <button id="btn-choose-rule-change" class="btn-3d w-full text-left bg-gradient-to-r from-amber-950/95 via-slate-800/95 to-slate-800/95 hover:from-amber-900 border-2 border-amber-400 rounded-2xl p-4 shadow-lg flex items-center justify-between gap-3 group">
+        <!-- Rule B: Change Coins Minimization (Recommended!) -->
+        <button id="btn-choose-rule-change" class="btn-3d w-full text-left bg-gradient-to-r from-amber-900/95 via-orange-950/80 to-slate-800/95 hover:from-amber-800 border-2 border-amber-300 ring-2 ring-amber-400/50 rounded-2xl p-4 shadow-xl flex items-center justify-between gap-3 group">
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-2xl shrink-0">
+            <div class="w-12 h-12 rounded-2xl bg-amber-400/25 border-2 border-amber-300 flex items-center justify-center text-2xl shrink-0 shadow">
               🪙
             </div>
             <div>
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="text-base sm:text-lg font-black text-amber-300">② お釣りの枚数最小ルール</span>
-                <span class="text-[10px] font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full">新ルール</span>
+                <span class="text-base sm:text-lg font-black text-amber-200">② お釣りの枚数最小ルール</span>
+                <span class="text-[11px] font-black bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400 text-slate-950 px-2.5 py-0.5 rounded-full shadow">⭐ おすすめ！</span>
               </div>
-              <p class="text-xs text-slate-300 mt-0.5 leading-snug">
-                レジから返ってくる<strong>「お釣りの硬貨枚数」</strong>を最小（0枚や1枚）に抑えるルール！
+              <p class="text-xs text-amber-100/90 mt-0.5 leading-snug">
+                レジから返ってくる<strong>「お釣りの硬貨枚数」</strong>を最小（0枚や1枚）に抑えるルール！直感的で遊びやすいおすすめルールです！
               </p>
             </div>
           </div>
-          <span class="text-amber-400 font-black text-xl group-hover:translate-x-1 transition-transform shrink-0">▶</span>
+          <span class="text-amber-300 font-black text-xl group-hover:translate-x-1 transition-transform shrink-0">▶</span>
         </button>
       </div>
 
@@ -1651,8 +1651,8 @@
         <button id="tab-modal-rule-wallet" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950 shadow">
           👛 財布の小銭最小
         </button>
-        <button id="tab-modal-rule-change" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700">
-          🪙 お釣り枚数最小
+        <button id="tab-modal-rule-change" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[9px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700">
+          🪙 お釣り最小⭐おすすめ
         </button>
         <button id="tab-modal-rule-lunatic" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-rose-300 hover:bg-slate-700">
           🌙 ルナティック
@@ -2052,8 +2052,8 @@
           <button id="tab-res-rule-wallet" class="btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950">
             👛 財布の小銭最小
           </button>
-          <button id="tab-res-rule-change" class="btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300">
-            🪙 お釣り枚数最小
+          <button id="tab-res-rule-change" class="btn-3d py-0.5 px-1.5 rounded-lg font-black text-[9px] sm:text-xs transition-colors bg-slate-800 text-slate-300">
+            🪙 お釣り最小⭐おすすめ
           </button>
           <button id="tab-res-rule-lunatic" class="btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-rose-300">
             🌙 ルナティック
@@ -2152,6 +2152,16 @@
           </button>
           <button id="btn-vs-rand-rule-race" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
             ⚡ 7人先取
+          </button>
+        </div>
+        <div class="text-[10px] font-bold text-slate-400 mb-1">会計ルール（最小ルール）</div>
+        <div class="grid grid-cols-2 gap-1.5 mb-2.5">
+          <button id="btn-vs-rand-acct-change" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-amber-400 text-slate-950 border-white shadow flex items-center justify-center gap-1 flex-wrap">
+            <span>🪙 お釣り枚数最小</span>
+            <span class="text-[9px] font-black bg-rose-600 text-white px-1.5 py-0.2 rounded-full">⭐おすすめ！</span>
+          </button>
+          <button id="btn-vs-rand-acct-wallet" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
+            👛 財布の小銭最小
           </button>
         </div>
         <div class="text-[10px] font-bold text-slate-400 mb-1">金額の出題方式</div>
@@ -2325,7 +2335,7 @@
           <div class="text-[10px] font-bold text-slate-400 mb-1">会計ルール</div>
           <div class="grid grid-cols-2 gap-1.5">
             <button data-vs-set="ruleType" data-vs-val="wallet" class="vs-opt-btn btn-3d py-1.5 px-2 rounded-xl text-[11px] font-black border-2">👛 財布の小銭最小</button>
-            <button data-vs-set="ruleType" data-vs-val="change" class="vs-opt-btn btn-3d py-1.5 px-2 rounded-xl text-[11px] font-black border-2">🪙 お釣り枚数最小</button>
+            <button data-vs-set="ruleType" data-vs-val="change" class="vs-opt-btn btn-3d py-1.5 px-2 rounded-xl text-[11px] font-black border-2">🪙 お釣り枚数最小 <span class="inline-block text-[9px] bg-rose-600 text-white px-1.5 py-0.2 rounded-full ml-0.5">⭐おすすめ！</span></button>
           </div>
         </div>
 
@@ -2397,7 +2407,16 @@
       </p>
 
       <!-- Standings List (2〜10人対応) -->
-      <div id="vs-res-standings" class="custom-scroll max-h-60 overflow-y-auto space-y-1.5 mb-4 text-left pr-1"></div>
+      <div id="vs-res-standings" class="custom-scroll max-h-60 overflow-y-auto space-y-1.5 mb-3 text-left pr-1"></div>
+
+      <!-- Non-PERFECT Review (オンライン対戦版：PERFECT以外の振り返り・解説) -->
+      <div id="vs-res-mistake-review-box" class="mb-3 bg-slate-950/90 border border-slate-700/90 rounded-2xl p-2.5 text-left">
+        <button id="btn-vs-toggle-mistakes" type="button" class="w-full flex items-center justify-between gap-2 text-xs font-black text-rose-200 hover:text-white bg-rose-950/80 hover:bg-rose-900/80 px-3 py-2 rounded-xl border border-rose-500/70 transition-colors text-left">
+          <span id="vs-res-mistake-summary-label" class="break-words">📝 PERFECT以外の振り返り・解説を見る (0件)</span>
+          <span id="vs-res-mistake-arrow" class="shrink-0">▼</span>
+        </button>
+        <div id="vs-res-mistake-list" class="hidden mt-2 max-h-48 overflow-y-auto custom-scroll space-y-1.5 text-[10px] sm:text-[11px] leading-relaxed text-slate-100 pr-1 pb-1"></div>
+      </div>
 
       <div class="text-[11px] font-bold text-slate-400 bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-2 mb-4">
         ※リアルタイム対戦モードのスコアはランキングおよび自己ベスト・解放条件には影響しません。
@@ -5563,8 +5582,9 @@
             const nextSum = sumVal + d * k;
             const nextCount = info.count + k;
             const existing = coinSums.get(nextSum);
-            // 同じ金額を作るなら、より多くの小銭を消費できる組み合わせを優先
-            if (!existing || nextCount > existing.count) {
+            // 財布最小ルールはより多く小銭を消費する組み合わせ、お釣り最小ルールはより少なくシンプルな組み合わせを優先
+            const preferCoinComb = !existing || (isChangeRule ? nextCount < existing.count : nextCount > existing.count);
+            if (preferCoinComb) {
               coinSums.set(nextSum, {
                 count: nextCount,
                 breakdown: { ...info.breakdown, [d]: k }
@@ -5624,8 +5644,9 @@
             : isChangeRule
               ? (
                   changeInfo.coinCount < bestSolution.changeCoinCount ||
-                  (changeInfo.coinCount === bestSolution.changeCoinCount && finalCoins < bestSolution.finalCoins) ||
-                  (changeInfo.coinCount === bestSolution.changeCoinCount && finalCoins === bestSolution.finalCoins && change < bestSolution.change)
+                  (changeInfo.coinCount === bestSolution.changeCoinCount && change < bestSolution.change) ||
+                  (changeInfo.coinCount === bestSolution.changeCoinCount && change === bestSolution.change && cInfo.count < bestSolution.paidCoinCount) ||
+                  (changeInfo.coinCount === bestSolution.changeCoinCount && change === bestSolution.change && cInfo.count === bestSolution.paidCoinCount && bInfo.billCount < bestSolution.billCount)
                 )
               : (
                   finalCoins < bestSolution.finalCoins ||
@@ -6055,6 +6076,7 @@
         this.queueRoomCode = null;
         this.isRandomSearching = false;
         this.selectedRandomRule = 'score';
+        this.selectedRandomRuleType = 'change';
         this.selectedRandomGenMode = 'clean';
         this.randomSizeMode = 'any'; // 'any' | 'custom'
         this.lastRoomData = null;
@@ -6103,12 +6125,15 @@
         return Boolean(RankingManager.db && RankingManager.isOnline);
       }
 
-      getDefaultSettings(vsRule = 'score', priceGenMode = 'clean', maxPlayers = 4) {
+      getDefaultSettings(vsRule = 'score', priceGenMode = 'clean', maxPlayers = 4, ruleType = null) {
         const clamped = Math.max(2, Math.min(10, Number(maxPlayers) || 4));
+        const resolvedRuleType = (ruleType === 'change' || ruleType === 'wallet')
+          ? ruleType
+          : 'change';
         return {
           vsRule: vsRule,
           raceTarget: 7,
-          ruleType: this.game.ruleType || 'wallet',
+          ruleType: resolvedRuleType,
           difficulty: 'NORMAL',
           priceGenMode: priceGenMode === 'random' ? 'random' : 'clean',
           lunaticTaxRate: 8,
@@ -6195,6 +6220,26 @@
               : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
           }
         };
+        const setRandAcctRule = (acctRule) => {
+          this.selectedRandomRuleType = acctRule === 'wallet' ? 'wallet' : 'change';
+          const btnCh = document.getElementById('btn-vs-rand-acct-change');
+          const btnWl = document.getElementById('btn-vs-rand-acct-wallet');
+          if (btnCh) {
+            btnCh.className = this.selectedRandomRuleType === 'change'
+              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-amber-400 text-slate-950 border-white shadow flex items-center justify-center gap-1 flex-wrap'
+              : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600 flex items-center justify-center gap-1 flex-wrap';
+          }
+          if (btnWl) {
+            btnWl.className = this.selectedRandomRuleType === 'wallet'
+              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-cyan-400 text-slate-950 border-white shadow'
+              : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
+          }
+        };
+        const btnRandAcctCh = document.getElementById('btn-vs-rand-acct-change');
+        const btnRandAcctWl = document.getElementById('btn-vs-rand-acct-wallet');
+        if (btnRandAcctCh) btnRandAcctCh.addEventListener('click', () => { sound.playClick(); setRandAcctRule('change'); });
+        if (btnRandAcctWl) btnRandAcctWl.addEventListener('click', () => { sound.playClick(); setRandAcctRule('wallet'); });
+
         document.getElementById('btn-vs-rand-gen-clean').addEventListener('click', () => { sound.playClick(); setRandGenMode('clean'); });
         document.getElementById('btn-vs-rand-gen-random').addEventListener('click', () => { sound.playClick(); setRandGenMode('random'); });
 
@@ -6546,7 +6591,7 @@
         this.lastGlobalBotJammerAt = 0;
       }
 
-      async createPrivateRoom(isRandom = false, forcedVsRule = null, forcedGenMode = null, maxPlayers = 4, anyCount = false, anyRule = false) {
+      async createPrivateRoom(isRandom = false, forcedVsRule = null, forcedGenMode = null, maxPlayers = 4, anyCount = false, anyRule = false, forcedRuleType = null) {
         const db = this.getDb();
         if (!db) {
           this.showLobbyError('Firebaseに接続できていません。ネット環境を確認してください。');
@@ -6561,7 +6606,7 @@
         const code = this.generate4DigitCode();
         const ref = db.ref('rooms/' + code);
         const initialRule = anyRule ? 'score' : (forcedVsRule || 'score');
-        const settings = this.getDefaultSettings(initialRule, forcedGenMode || 'clean', maxPlayers);
+        const settings = this.getDefaultSettings(initialRule, forcedGenMode || 'clean', maxPlayers, forcedRuleType);
         const now = Date.now();
         const roomData = {
           code,
@@ -6596,7 +6641,7 @@
         }
       }
 
-      async joinRoomByCode(code, isRandom = false, desiredCount = null, isAnyCount = true, desiredRule = 'any', desiredGenMode = null) {
+      async joinRoomByCode(code, isRandom = false, desiredCount = null, isAnyCount = true, desiredRule = 'any', desiredGenMode = null, desiredRuleType = null) {
         const db = this.getDb();
         if (!db) {
           this.showLobbyError('Firebaseに接続できていません。');
@@ -6659,6 +6704,11 @@
               const roomGenMode = (s.priceGenMode === 'random') ? 'random' : 'clean';
               if (desiredGenMode && roomGenMode !== desiredGenMode) {
                 failReason = '金額の出題方式が一致しません。';
+                return;
+              }
+              const roomRuleType = (s.ruleType === 'change') ? 'change' : 'wallet';
+              if (desiredRuleType && roomRuleType !== desiredRuleType) {
+                failReason = '会計ルール（最小ルール）が一致しません。';
                 return;
               }
               const wantAnyRule = (desiredRule === 'any' || !desiredRule);
@@ -6761,8 +6811,9 @@
 
         const rule = this.selectedRandomRule || 'score';
         const isAnyRule = (rule === 'any');
+        const acctRule = this.selectedRandomRuleType === 'wallet' ? 'wallet' : 'change';
         const genMode = this.selectedRandomGenMode === 'random' ? 'random' : 'clean';
-        const queueKey = genMode === 'random' ? 'multi_pool_random' : 'multi_pool_clean';
+        const queueKey = `multi_pool_${genMode}_${acctRule}`;
         const qRef = db.ref('versus_queue/' + queueKey);
         this.queueRef = qRef;
         this.isRandomSearching = true;
@@ -6795,7 +6846,7 @@
 
           for (const cand of candidates) {
             if (!this.isRandomSearching) return;
-            const ok = await this.joinRoomByCode(cand.code, true, targetCount, anyCount, rule, genMode);
+            const ok = await this.joinRoomByCode(cand.code, true, targetCount, anyCount, rule, genMode, acctRule);
             if (ok) {
               this.queueRoomCode = cand.code;
               // キュー情報を最新化
@@ -6816,7 +6867,7 @@
           if (!this.isRandomSearching) return;
 
           // 該当待機ルームがないため新規ランダムルームを作成してキュー登録
-          const newCode = await this.createPrivateRoom(true, isAnyRule ? 'score' : rule, genMode, targetCount, anyCount, isAnyRule);
+          const newCode = await this.createPrivateRoom(true, isAnyRule ? 'score' : rule, genMode, targetCount, anyCount, isAnyRule, acctRule);
           if (!newCode) {
             this.cancelRandomSearch();
             return;
@@ -6830,6 +6881,7 @@
           this.myRandomSearchOpts = {
             rule,
             isAnyRule,
+            acctRule,
             genMode,
             targetCount,
             anyCount,
@@ -6840,6 +6892,7 @@
             hostUid: this.myUid,
             vsRule: isAnyRule ? 'any' : rule,
             anyRule: isAnyRule,
+            ruleType: acctRule,
             priceGenMode: genMode,
             maxPlayers: targetCount,
             anyCount: anyCount,
@@ -6940,7 +6993,7 @@
               const oldRoomCode = this.roomCode;
               const qRef = this.queueRef;
 
-              const ok = await this.joinRoomByCode(cand.code, true, opts.targetCount, opts.anyCount, opts.rule, opts.genMode);
+              const ok = await this.joinRoomByCode(cand.code, true, opts.targetCount, opts.anyCount, opts.rule, opts.genMode, opts.acctRule);
               if (ok) {
                 // 自分の古い仮ルームとキューを削除して合流完了！
                 if (oldRoomCode && oldRoomCode !== cand.code) {
@@ -7841,6 +7894,10 @@
           });
         }
 
+        if (this.game && typeof this.game.renderMistakeReviewList === 'function') {
+          this.game.renderMistakeReviewList('versus');
+        }
+
         const canRematch = Boolean(this.roomRef && !data.isRandom);
         switchScreen('screen-versus-result');
         this.startVersusResultCooldown(canRematch);
@@ -8391,6 +8448,19 @@
           });
         }
 
+        const btnVsToggleMistakes = document.getElementById('btn-vs-toggle-mistakes');
+        if (btnVsToggleMistakes) {
+          btnVsToggleMistakes.addEventListener('click', () => {
+            sound.playClick();
+            const listEl = document.getElementById('vs-res-mistake-list');
+            const arrowEl = document.getElementById('vs-res-mistake-arrow');
+            if (listEl) {
+              const isHidden = listEl.classList.toggle('hidden');
+              if (arrowEl) arrowEl.textContent = isHidden ? '▼' : '▲';
+            }
+          });
+        }
+
         document.getElementById('btn-result-title').addEventListener('click', () => {
           if (this.retryCooldownRemaining > 0) return;
           sound.playReturn();
@@ -8547,15 +8617,15 @@
         const isChangeRule = this.ruleType === 'change';
         const titleDesc = document.getElementById('title-rule-desc');
         if (titleDesc) {
-          titleDesc.textContent = isChangeRule
-            ? '🪙 お釣りの枚数最小ルール（お釣りの小銭を最小に！）'
-            : '👛 財布の小銭枚数最小ルール（支払い後の財布小銭を最小に！）';
+          titleDesc.innerHTML = isChangeRule
+            ? '🪙 お釣りの枚数最小ルール <span class="inline-block text-[10px] font-black bg-amber-400 text-slate-950 px-1.5 py-0.2 rounded-full ml-0.5">⭐おすすめ！</span>'
+            : '👛 財布の小銭枚数最小ルール <span class="text-[10px] text-amber-300 font-bold">（※お釣り最小がおすすめ！）</span>';
         }
         const modeDesc = document.getElementById('mode-rule-desc');
         if (modeDesc) {
-          modeDesc.textContent = isChangeRule
-            ? '🪙 お釣りの枚数最小ルール（お釣りでもらう小銭枚数を最小に！）'
-            : '👛 財布の小銭枚数最小ルール（支払い後の財布小銭を最小に！）';
+          modeDesc.innerHTML = isChangeRule
+            ? '🪙 お釣りの枚数最小ルール <span class="inline-block text-[10px] font-black bg-amber-400 text-slate-950 px-1.5 py-0.2 rounded-full ml-0.5">⭐おすすめ！</span>（お釣りの小銭枚数を最小に！）'
+            : '👛 財布の小銭枚数最小ルール <span class="text-[10px] text-amber-300 font-bold">（※お釣り枚数最小がおすすめ！）</span>';
         }
         const hudRuleBadge = document.getElementById('ui-rule-badge');
         if (hudRuleBadge) {
@@ -9397,6 +9467,7 @@
         this.isRankingRun = false; // ランキングには一切影響させない
         this.isVersusRun = true;
         this.vsSettings = s;
+        this.mistakeLogs = [];
         this.ruleType = s.ruleType === 'change' ? 'change' : 'wallet';
         this.difficulty = s.difficulty || 'NORMAL';
         this.priceGenMode = s.priceGenMode === 'random' ? 'random' : 'clean';
@@ -9405,6 +9476,7 @@
         this.showChangeDisplay = Boolean(s.showChange);
         this.aiHelperEnabled = false;
         this.syncHelperToggleUI();
+        this.syncRuleToggleUI();
 
         // 両プレイヤー共通のシードで乱数を初期化
         setSeededRng(roomData.seed || 12345);
@@ -10658,6 +10730,10 @@
             this.setClerkComment('perfect', `⚡7連続PERFECT達成！！『神域（ゾーン）』突入（${defaultZoneSec}秒間）でスコア倍率が2.5倍に跳ね上がります！！`);
           } else if (isBillBonus) {
             this.setClerkComment('perfect', `⚡おおっ！お札までスッキリまとめる超神会計！！追加ボーナス +${billBonusInfo.bonusPt.toLocaleString()}pt です！`);
+          } else if (this.ruleType === 'change') {
+            this.setClerkComment('perfect', changeAmount === 0
+              ? 'おぉーっ！ピッタリ神会計！お釣り硬貨0枚でお見事です！'
+              : `おぉーっ！神会計です！お釣りの硬貨が最小（${changeInfo.coinCount}枚）にまとまりましたね！`);
           } else {
             this.setClerkComment('perfect');
           }
@@ -10908,11 +10984,13 @@
           badge.className = 'text-xl sm:text-2xl font-black tracking-wider mb-0.5 text-sky-300 drop-shadow';
           badge.textContent = '👍 GOOD! ナイス会計！';
           subtitle.className = 'text-[11px] sm:text-xs font-bold text-slate-200 mb-1';
-          subtitle.textContent = `スコア +${earnedScore.toLocaleString()} （さらに小銭を減らせる出し方がありました！）`;
+          subtitle.textContent = this.ruleType === 'change'
+            ? `スコア +${earnedScore.toLocaleString()} （さらにお釣りの硬貨枚数を減らせる出し方がありました！）`
+            : `スコア +${earnedScore.toLocaleString()} （さらに財布の小銭を減らせる出し方がありました！）`;
         } else {
           card.className = 'w-full bg-slate-900/95 backdrop-blur-md border-2 border-rose-500 rounded-2xl px-3.5 py-2 sm:px-5 sm:py-3 shadow-2xl animate-pop';
           badge.className = 'text-xl sm:text-2xl font-black tracking-wider mb-0.5 text-rose-400 drop-shadow';
-          badge.textContent = '💦 BAD... 小銭ジャラジャラ';
+          badge.textContent = this.ruleType === 'change' ? '💦 BAD... お釣り硬貨が多すぎ！' : '💦 BAD... 小銭ジャラジャラ';
           subtitle.className = 'text-[11px] sm:text-xs font-bold text-rose-200 mb-1';
           subtitle.textContent = isHardOrExOrLun
             ? `スコア ${earnedScore} ＆ -4.0秒ペナルティ... 端数を合わせて出そう！`
@@ -10922,13 +11000,23 @@
         const taxPrefix = isLunatic
           ? `【本体¥${this.basePrice.toLocaleString()} → 税込(${this.lunaticTaxRate === 10 ? 10 : 8}%切捨)¥${this.currentPrice.toLocaleString()}】 `
           : '';
-        stats.textContent = `${taxPrefix}お釣り: ¥${changeAmount.toLocaleString()}（硬貨${changeInfo.coinCount}枚） ／ 小銭: ${coinsBefore}枚 ➔ ${coinsAfter}枚（${diffStr}）`;
+        if (this.ruleType === 'change') {
+          const minCh = this.bestSolution ? this.bestSolution.changeCoinCount : changeInfo.coinCount;
+          const chStatus = changeInfo.coinCount <= minCh ? '最小達成！' : `最小は${minCh}枚`;
+          stats.textContent = `${taxPrefix}🪙お釣り最小ルール：お釣り ¥${changeAmount.toLocaleString()}（硬貨${changeInfo.coinCount}枚・${chStatus}）`;
+        } else {
+          stats.textContent = `${taxPrefix}お釣り: ¥${changeAmount.toLocaleString()}（硬貨${changeInfo.coinCount}枚） ／ 財布小銭: ${coinsBefore}枚 ➔ ${coinsAfter}枚（${diffStr}）`;
+        }
 
         if (this.bestSolution) {
           const optPaid = this.bestSolution.totalPaid.toLocaleString();
           const optChange = this.bestSolution.change.toLocaleString();
           const optBreakdownStr = formatMoneyBreakdown(this.bestSolution.breakdown);
-          optimal.textContent = `💡 神会計の例: ¥${optPaid}（${optBreakdownStr}）➔ お釣り¥${optChange}で残り小銭${this.bestSolution.finalCoins}枚`;
+          if (this.ruleType === 'change') {
+            optimal.textContent = `💡 神会計の例: ¥${optPaid}（${optBreakdownStr}）➔ お釣り¥${optChange}（硬貨${this.bestSolution.changeCoinCount}枚）`;
+          } else {
+            optimal.textContent = `💡 神会計の例: ¥${optPaid}（${optBreakdownStr}）➔ お釣り¥${optChange}で残り小銭${this.bestSolution.finalCoins}枚`;
+          }
         }
       }
 
@@ -11466,11 +11554,12 @@
         }, 1500);
       }
 
-      renderMistakeReviewList() {
-        const box = document.getElementById('res-mistake-review-box');
-        const label = document.getElementById('res-mistake-summary-label');
-        const listEl = document.getElementById('res-mistake-list');
-        const arrowEl = document.getElementById('res-mistake-arrow');
+      renderMistakeReviewList(target = 'normal') {
+        const isVersus = target === 'versus';
+        const box = document.getElementById(isVersus ? 'vs-res-mistake-review-box' : 'res-mistake-review-box');
+        const label = document.getElementById(isVersus ? 'vs-res-mistake-summary-label' : 'res-mistake-summary-label');
+        const listEl = document.getElementById(isVersus ? 'vs-res-mistake-list' : 'res-mistake-list');
+        const arrowEl = document.getElementById(isVersus ? 'vs-res-mistake-arrow' : 'res-mistake-arrow');
         if (!box || !label || !listEl) return;
 
         const count = this.mistakeLogs.length;
@@ -11480,8 +11569,12 @@
 
         if (count === 0) {
           label.textContent = '✨ PERFECT以外 0件！全問PERFECT神会計！';
-          label.parentElement.className = 'w-full flex items-center justify-between gap-2 text-[11px] font-black text-emerald-800 bg-emerald-100/90 px-2.5 py-1.5 rounded-lg border border-emerald-300 text-left';
-          listEl.innerHTML = '<div class="text-center py-1.5 text-emerald-800 font-bold">今回のプレイはすべてPERFECTでした！完璧な神会計です！</div>';
+          label.parentElement.className = isVersus
+            ? 'w-full flex items-center justify-between gap-2 text-xs font-black text-emerald-200 bg-emerald-950/75 px-3 py-2 rounded-xl border border-emerald-400/70 text-left'
+            : 'w-full flex items-center justify-between gap-2 text-[11px] font-black text-emerald-800 bg-emerald-100/90 px-2.5 py-1.5 rounded-lg border border-emerald-300 text-left';
+          listEl.innerHTML = isVersus
+            ? '<div class="text-center py-2 text-emerald-300 font-bold">今回の対戦はすべてPERFECTでした！完璧な神会計です！</div>'
+            : '<div class="text-center py-1.5 text-emerald-800 font-bold">今回のプレイはすべてPERFECTでした！完璧な神会計です！</div>';
           return;
         }
 
@@ -11493,16 +11586,24 @@
         const detailTag = parts.length > 0 ? ` / ${parts.join('・')}` : '';
 
         label.textContent = `📝 PERFECT以外の振り返り・解説を見る (${count}件${detailTag})`;
-        label.parentElement.className = 'w-full flex items-center justify-between gap-2 text-[11px] font-black text-rose-700 hover:text-rose-900 bg-rose-100/90 px-2.5 py-1.5 rounded-lg border border-rose-300 transition-colors text-left';
+        label.parentElement.className = isVersus
+          ? 'w-full flex items-center justify-between gap-2 text-xs font-black text-rose-200 hover:text-white bg-rose-950/80 hover:bg-rose-900/80 px-3 py-2 rounded-xl border border-rose-500/70 transition-colors text-left'
+          : 'w-full flex items-center justify-between gap-2 text-[11px] font-black text-rose-700 hover:text-rose-900 bg-rose-100/90 px-2.5 py-1.5 rounded-lg border border-rose-300 transition-colors text-left';
 
         this.mistakeLogs.forEach((m) => {
           const isGood = m.grade === 'GOOD';
           const item = document.createElement('div');
-          item.className = `bg-white/95 rounded-lg p-2 text-left shadow-2xs border break-words ${
-            m.isExFail
-              ? 'border-fuchsia-400'
-              : (isGood ? 'border-sky-300' : 'border-rose-300')
-          }`;
+          item.className = isVersus
+            ? `bg-slate-900/95 rounded-xl p-2.5 text-left shadow border break-words ${
+                m.isExFail
+                  ? 'border-fuchsia-400/80'
+                  : (isGood ? 'border-sky-400/70' : 'border-rose-400/75')
+              }`
+            : `bg-white/95 rounded-lg p-2 text-left shadow-2xs border break-words ${
+                m.isExFail
+                  ? 'border-fuchsia-400'
+                  : (isGood ? 'border-sky-300' : 'border-rose-300')
+              }`;
 
           const gradeBadge = m.isExFail
             ? `<span class="inline-block px-1.5 py-0.5 rounded ${m.isLunatic ? 'bg-rose-600' : 'bg-fuchsia-600'} text-white text-[9px] font-black mr-1">${m.isLunatic ? '🌙LUNATIC終了' : '💀EX終了'}(${m.grade})</span>`
@@ -11522,11 +11623,16 @@
             ? `お釣り¥${m.bestChange.toLocaleString()}(硬貨${m.bestChangeCoins}枚)`
             : `お釣り¥${m.bestChange.toLocaleString()}(残り小銭${m.bestFinalCoins}枚)`;
 
+          const titleColor = isVersus
+            ? (m.isExFail ? 'text-fuchsia-300' : (isGood ? 'text-sky-200' : 'text-rose-200'))
+            : (m.isExFail ? 'text-fuchsia-800' : (isGood ? 'text-sky-800' : 'text-rose-700'));
+          const optColor = isVersus ? 'text-emerald-300' : 'text-emerald-800';
+
           item.innerHTML = `
-            <div class="font-black ${m.isExFail ? 'text-fuchsia-800' : (isGood ? 'text-sky-800' : 'text-rose-700')} leading-snug">
+            <div class="font-black ${titleColor} leading-snug">
               ${gradeBadge}【${m.customerNo}人目】${priceText} ／ 支払: ¥${m.paidTotal.toLocaleString()}（${yourResultDetail}）
             </div>
-            ${m.bestPaid !== null ? `<div class="font-bold text-emerald-800 mt-1 leading-snug">💡 最適解: ¥${m.bestPaid.toLocaleString()}（${m.bestBreakdown}）➔ ${optDetail}</div>` : ''}
+            ${m.bestPaid !== null ? `<div class="font-bold ${optColor} mt-1 leading-snug">💡 最適解: ¥${m.bestPaid.toLocaleString()}（${m.bestBreakdown}）➔ ${optDetail}</div>` : ''}
           `;
           listEl.appendChild(item);
         });
@@ -11766,5 +11872,3 @@
   </script>
 </body>
 </html>
-
-
