@@ -798,6 +798,9 @@
   <div id="dopa-fx-layer" class="fixed inset-0 z-30 pointer-events-none overflow-hidden" aria-hidden="true"></div>
   <div id="vs-fx-layer" class="fixed inset-0 z-[70] pointer-events-none overflow-hidden" style="z-index: 70;" aria-hidden="true"></div>
 
+  <!-- VERSUS RULE ROULETTE OVERLAY (#vs-roulette-overlay) -->
+  <div id="vs-roulette-overlay" class="fixed inset-0 z-[76] hidden items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md select-none" style="z-index: 76;"></div>
+
   <!-- VERSUS MATCH START INTRO OVERLAY (#vs-intro-overlay) -->
   <div id="vs-intro-overlay" class="fixed inset-0 z-[75] hidden overflow-hidden select-none" style="z-index: 75;"></div>
 
@@ -1971,8 +1974,8 @@
           <!-- Left: Heal Item Button (+100 HP) -->
           <button id="btn-vs-item-heal" type="button" disabled class="hidden pointer-events-auto btn-3d shrink-0 w-[86px] sm:w-[116px] bg-gradient-to-b from-emerald-500 to-teal-700 hover:from-emerald-400 hover:to-teal-600 text-white rounded-2xl border-2 border-emerald-300 px-1.5 py-1 shadow-lg flex flex-col items-center justify-center leading-tight disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed relative">
             <span id="key-hint-item-heal" class="hidden sm:inline-block absolute -top-2 -left-1.5 font-digital text-[9px] font-black px-1.5 py-0.5 rounded bg-slate-950 text-emerald-300 border border-emerald-400 leading-none">G</span>
-            <div class="text-[11px] sm:text-xs font-black flex items-center gap-0.5"><span>💚</span><span>回復</span></div>
-            <div id="vs-item-heal-sub" class="text-[9px] sm:text-[10px] font-extrabold text-emerald-100 mt-0.5">あと2回</div>
+            <div class="text-[11px] sm:text-xs font-black flex items-center gap-0.5"><span>💚</span><span>回復</span><span id="vs-item-heal-uses" class="text-[9px] px-1 rounded bg-slate-950/70 text-emerald-200">残3</span></div>
+            <div id="vs-item-heal-sub" class="text-[9px] sm:text-[10px] font-extrabold text-emerald-100 mt-0.5">あと3回神</div>
           </button>
 
           <!-- Center: HP Bar -->
@@ -1996,8 +1999,8 @@
           <!-- Right: Stun Item Button (100 DMG + 2s Stun) -->
           <button id="btn-vs-item-stun" type="button" disabled class="hidden pointer-events-auto btn-3d shrink-0 w-[86px] sm:w-[116px] bg-gradient-to-b from-amber-400 to-orange-600 hover:from-amber-300 hover:to-orange-500 text-slate-950 rounded-2xl border-2 border-yellow-200 px-1.5 py-1 shadow-lg flex flex-col items-center justify-center leading-tight disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed relative">
             <span id="key-hint-item-stun" class="hidden sm:inline-block absolute -top-2 -right-1.5 font-digital text-[9px] font-black px-1.5 py-0.5 rounded bg-slate-950 text-amber-300 border border-amber-400 leading-none">H</span>
-            <div class="text-[11px] sm:text-xs font-black flex items-center gap-0.5"><span>⚡</span><span>スタン</span></div>
-            <div id="vs-item-stun-sub" class="text-[9px] sm:text-[10px] font-extrabold text-slate-900 mt-0.5">あと2回</div>
+            <div class="text-[11px] sm:text-xs font-black flex items-center gap-0.5"><span>⚡</span><span>スタン</span><span id="vs-item-stun-uses" class="text-[9px] px-1 rounded bg-slate-950/80 text-amber-300">残3</span></div>
+            <div id="vs-item-stun-sub" class="text-[9px] sm:text-[10px] font-extrabold text-slate-900 mt-0.5">あと3回神</div>
           </button>
         </div>
       </div>
@@ -2213,7 +2216,7 @@
           <div class="text-sm sm:text-base font-black text-violet-300">🎲 ランダムマッチ（自動対戦）</div>
           <span class="text-[10px] font-black bg-violet-400 text-slate-950 px-2 py-0.5 rounded-full">すぐ対戦</span>
         </div>
-        <div class="text-[11px] text-slate-300 mb-2">希望の対戦モードを選択！（同じモード同士でマッチ／「どのモードでも」は全モードとマッチ）</div>
+        <div class="text-[11px] text-slate-300 mb-2">希望の対戦モードを選択！会計ルール・出題方式・アイテムは相手と違ってもマッチし、異なる項目は🎰ルーレットでランダム決定！</div>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-2">
           <button id="btn-vs-rand-rule-any" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
             🎲 どのモードでも
@@ -4469,6 +4472,48 @@
           g.connect(this.ctx.destination);
           osc.start(t);
           osc.stop(t + 0.28);
+        });
+      }
+
+      // ルールルーレット回転音（カチッ・コチッ）
+      playRouletteTick(stepIdx = 0) {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const baseFreq = (stepIdx % 2 === 0) ? 980 : 1240;
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(baseFreq, now);
+        osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.55, now + 0.045);
+        gain.gain.setValueAtTime(0.16, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.055);
+      }
+
+      // ルールルーレット決定音（ピコーン！ジャジャーン！）
+      playRouletteDecide() {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const notes = [659.25, 880.0, 1046.5, 1318.51];
+        notes.forEach((f, idx) => {
+          const t = now + idx * 0.045;
+          const osc = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          osc.type = idx === 3 ? 'triangle' : 'sine';
+          osc.frequency.setValueAtTime(f, t);
+          g.gain.setValueAtTime(0.16, t);
+          g.gain.exponentialRampToValueAtTime(0.001, t + (idx === 3 ? 0.45 : 0.18));
+          osc.connect(g);
+          g.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.48);
         });
       }
     }
@@ -6853,8 +6898,8 @@
         return String(1000 + Math.floor(Math.random() * 9000));
       }
 
-      makeEmptyPlayer(name, isBot = false, uidOverride = null) {
-        return {
+      makeEmptyPlayer(name, isBot = false, uidOverride = null, pref = null) {
+        const obj = {
           uid: uidOverride || this.myUid,
           name: name,
           isBot: Boolean(isBot),
@@ -6873,6 +6918,14 @@
           jammerSentCount: 0,
           jammerHitCount: 0
         };
+        if (pref && typeof pref === 'object') {
+          obj.pref = {
+            ruleType: pref.ruleType === 'wallet' ? 'wallet' : 'change',
+            priceGenMode: pref.priceGenMode === 'random' ? 'random' : 'clean',
+            itemsEnabled: pref.itemsEnabled !== false
+          };
+        }
+        return obj;
       }
 
       calcJammerAttackDamage(comboCount = 1, isZoneActive = false, isFromBot = false) {
@@ -7022,7 +7075,11 @@
           settings,
           winner: null,
           players: {
-            p1: this.makeEmptyPlayer(name, false, this.myUid)
+            p1: this.makeEmptyPlayer(name, false, this.myUid, isRandom ? {
+              ruleType: settings.ruleType,
+              priceGenMode: settings.priceGenMode,
+              itemsEnabled: settings.itemsEnabled
+            } : null)
           },
           jammers: {}
         };
@@ -7102,16 +7159,6 @@
               if (p && !p.isBot && p.connected !== false) curHumans++;
             }
             if (isRandom) {
-              const roomGenMode = (s.priceGenMode === 'random') ? 'random' : 'clean';
-              if (desiredGenMode && roomGenMode !== desiredGenMode) {
-                failReason = '金額の出題方式が一致しません。';
-                return;
-              }
-              const roomRuleType = (s.ruleType === 'change') ? 'change' : 'wallet';
-              if (desiredRuleType && roomRuleType !== desiredRuleType) {
-                failReason = '会計ルール（最小ルール）が一致しません。';
-                return;
-              }
               const wantAnyRule = (desiredRule === 'any' || !desiredRule);
               const roomAnyRule = Boolean(data.anyRule);
               if (!wantAnyRule) {
@@ -7124,13 +7171,7 @@
                   return;
                 }
               }
-              if (desiredItemsEnabled !== null && ((s.vsRule || 'score') === 'jammer' || desiredRule === 'jammer')) {
-                const roomItems = s.itemsEnabled !== false;
-                if (roomItems !== Boolean(desiredItemsEnabled)) {
-                  failReason = 'アイテム設定が一致しません。';
-                  return;
-                }
-              }
+              // 会計ルール・出題方式・アイテムは相手と違っていてもマッチング許可（開始時にルーレットで決定）
             }
             if (isRandom && !isAnyCount && desiredCount) {
               if (data.anyCount) {
@@ -7163,7 +7204,11 @@
             }
 
             assignedSlot = freeSlot;
-            data.players[freeSlot] = this.makeEmptyPlayer(name, false, this.myUid);
+            data.players[freeSlot] = this.makeEmptyPlayer(name, false, this.myUid, isRandom ? {
+              ruleType: desiredRuleType || 'change',
+              priceGenMode: desiredGenMode || 'clean',
+              itemsEnabled: desiredItemsEnabled !== false
+            } : null);
 
             // ランダムマッチ中、新しいプレイヤーが入るたびに20秒BOT補充タイマーをリセット！
             if (data.isRandom) {
@@ -7222,7 +7267,7 @@
         const acctRule = this.selectedRandomRuleType === 'wallet' ? 'wallet' : 'change';
         const genMode = this.selectedRandomGenMode === 'random' ? 'random' : 'clean';
         const itemsEnabled = this.selectedRandomItems !== false;
-        const queueKey = `multi_pool_${genMode}_${acctRule}`;
+        const queueKey = 'multi_pool_all';
         const qRef = db.ref('versus_queue/' + queueKey);
         this.queueRef = qRef;
         this.isRandomSearching = true;
@@ -7246,10 +7291,7 @@
                 const candAnyRule = Boolean(e.anyRule);
                 if (!candAnyRule && e.vsRule !== rule) return false;
               }
-              if (rule === 'jammer' || e.vsRule === 'jammer') {
-                const candItems = e.itemsEnabled !== false;
-                if (candItems !== itemsEnabled) return false;
-              }
+
               // 人数一致チェック
               if (anyCount) return true;
               if (e.anyCount) return curH < targetCount;
@@ -7857,11 +7899,66 @@
           finalSettings.vsRule = rulePool[Math.floor(Math.random() * rulePool.length)];
         }
 
+        const rouletteConflicts = [];
+        if (data.isRandom) {
+          const humanPrefs = [];
+          for (let i = 1; i <= maxP; i++) {
+            const p = data.players ? data.players['p' + i] : null;
+            if (p && !p.isBot && p.connected !== false && p.pref) {
+              humanPrefs.push(p.pref);
+            }
+          }
+          if (humanPrefs.length >= 2) {
+            const ruleTypes = new Set(humanPrefs.map((pr) => pr.ruleType === 'wallet' ? 'wallet' : 'change'));
+            if (ruleTypes.size >= 2) {
+              const winIdx = Math.random() < 0.5 ? 0 : 1;
+              finalSettings.ruleType = winIdx === 0 ? 'change' : 'wallet';
+              rouletteConflicts.push({
+                key: 'ruleType',
+                title: '会計ルール（最小ルール）',
+                optALabel: '🪙 お釣り枚数最小',
+                optBLabel: '👛 財布の小銭最小',
+                winnerIndex: winIdx,
+                winnerLabel: winIdx === 0 ? '🪙 お釣り枚数最小' : '👛 財布の小銭最小'
+              });
+            }
+            const genModes = new Set(humanPrefs.map((pr) => pr.priceGenMode === 'random' ? 'random' : 'clean'));
+            if (genModes.size >= 2) {
+              const winIdx = Math.random() < 0.5 ? 0 : 1;
+              finalSettings.priceGenMode = winIdx === 0 ? 'clean' : 'random';
+              rouletteConflicts.push({
+                key: 'priceGenMode',
+                title: '金額の出題方式',
+                optALabel: '✨ お釣りがきれい出る',
+                optBLabel: '🎲 完全ランダム生成',
+                winnerIndex: winIdx,
+                winnerLabel: winIdx === 0 ? '✨ お釣りがきれい出る' : '🎲 完全ランダム生成'
+              });
+            }
+            if (finalSettings.vsRule === 'jammer') {
+              const itemFlags = new Set(humanPrefs.map((pr) => pr.itemsEnabled !== false));
+              if (itemFlags.size >= 2) {
+                const winIdx = Math.random() < 0.5 ? 0 : 1;
+                finalSettings.itemsEnabled = (winIdx === 0);
+                rouletteConflicts.push({
+                  key: 'itemsEnabled',
+                  title: '🎁 アイテム設定',
+                  optALabel: '🎁 アイテムあり',
+                  optBLabel: '🚫 アイテムなし',
+                  winnerIndex: winIdx,
+                  winnerLabel: winIdx === 0 ? '🎁 アイテムあり' : '🚫 アイテムなし'
+                });
+              }
+            }
+          }
+        }
+
         const seed = Math.floor(Math.random() * 2147483640) + 1;
         this.roomRef.update({
           status: 'playing',
           anyRule: false,
           settings: finalSettings,
+          rouletteConflicts,
           seed,
           startedAt: Date.now(),
           winner: null,
@@ -7883,9 +7980,10 @@
 
         const s = { ...this.getDefaultSettings(), ...(roomData.settings || {}) };
         const diff = s.difficulty || 'NORMAL';
-        const diffMult = diff === 'LUNATIC' ? 100 : (diff === 'EX' ? 10 : (diff === 'HARD' ? 1.5 : 1.0));
+        const diffMult = s.vsRule === 'jammer' ? 1.0 : (diff === 'LUNATIC' ? 100 : (diff === 'EX' ? 10 : (diff === 'HARD' ? 1.5 : 1.0)));
         const matchDurMs = s.vsRule === 'race' ? 180000 : (s.vsRule === 'jammer' ? 60000 : ((diff === 'HARD' || diff === 'EX') ? 45000 : 60000));
-        const playStartMs = Date.now() + 5750; // VSイントロ演出(2.85秒)＋3秒カウントダウン完了後
+        const rouletteCount = Array.isArray(roomData && roomData.rouletteConflicts) ? roomData.rouletteConflicts.length : 0;
+        const playStartMs = Date.now() + 5750 + rouletteCount * 3200; // ルーレット＋VSイントロ＋3秒カウントダウン完了後
 
         this.botStates = {};
         this.botLastJammerSeqs = {};
@@ -8540,7 +8638,10 @@
         this.vsKoDefeated = false;
         this.vsItemCharges = 0;
         this.vsItemPerfectProgress = 0;
+        this.vsHealUsesLeft = 3;
+        this.vsStunUsesLeft = 3;
         this.vsStunTimeLeft = 0;
+        this.vsRouletteTimers = [];
         this.isTutorial = false;
         this.difficulty = 'NORMAL';
         this.lunaticTaxRate = 8;
@@ -10026,6 +10127,16 @@
         }
         this.retryCooldownRemaining = 0;
 
+        if (Array.isArray(this.vsRouletteTimers)) {
+          this.vsRouletteTimers.forEach((t) => clearTimeout(t));
+        }
+        this.vsRouletteTimers = [];
+        const rlOv = document.getElementById('vs-roulette-overlay');
+        if (rlOv) {
+          rlOv.classList.add('hidden');
+          rlOv.classList.remove('flex');
+          rlOv.innerHTML = '';
+        }
         if (Array.isArray(this.vsIntroTimers)) {
           this.vsIntroTimers.forEach((t) => clearTimeout(t));
         }
@@ -10373,6 +10484,8 @@
         this.vsKoDefeated = false;
         this.vsItemCharges = 0;
         this.vsItemPerfectProgress = 0;
+        this.vsHealUsesLeft = 3;
+        this.vsStunUsesLeft = 3;
         this.vsStunTimeLeft = 0;
         this.updateStunOverlay();
         this.mistakeLogs = [];
@@ -10398,21 +10511,133 @@
         const vsBar = document.getElementById('vs-opponent-bar');
         if (vsBar) vsBar.classList.remove('hidden');
 
-        this.playVersusStartIntro(roomData, () => {
+        const startIntroAndCountdown = () => {
           if (!this.isVersusRun) return;
-          this._launchGameplayWithCountdown();
-          if (s.vsRule === 'race') {
-            this.maxTime = 180.0;
-            this.timeLeft = 180.0;
-          } else if (s.vsRule === 'jammer') {
-            this.maxTime = 60.0;
-            this.timeLeft = 60.0;
+          this.playVersusStartIntro(roomData, () => {
+            if (!this.isVersusRun) return;
+            this._launchGameplayWithCountdown();
+            if (s.vsRule === 'race') {
+              this.maxTime = 180.0;
+              this.timeLeft = 180.0;
+            } else if (s.vsRule === 'jammer') {
+              this.maxTime = 60.0;
+              this.timeLeft = 60.0;
+            }
+            const barEl = document.getElementById('vs-opponent-bar');
+            if (barEl) barEl.classList.remove('hidden');
+            this.updateVersusHpBar();
+            this.updateTopHUD();
+          });
+        };
+
+        const conflicts = Array.isArray(roomData && roomData.rouletteConflicts) ? roomData.rouletteConflicts : [];
+        if (conflicts.length > 0) {
+          this.playVersusRouletteSequence(conflicts, startIntroAndCountdown);
+        } else {
+          startIntroAndCountdown();
+        }
+      }
+
+      playVersusRouletteSequence(conflicts, onComplete) {
+        const overlay = document.getElementById('vs-roulette-overlay');
+        if (!overlay || !Array.isArray(conflicts) || conflicts.length === 0) {
+          if (typeof onComplete === 'function') onComplete();
+          return;
+        }
+        if (Array.isArray(this.vsRouletteTimers)) {
+          this.vsRouletteTimers.forEach((t) => clearTimeout(t));
+        }
+        this.vsRouletteTimers = [];
+
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+
+        const runOne = (idx) => {
+          if (!this.isVersusRun) {
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+            overlay.innerHTML = '';
+            return;
           }
-          const barEl = document.getElementById('vs-opponent-bar');
-          if (barEl) barEl.classList.remove('hidden');
-          this.updateVersusHpBar();
-          this.updateTopHUD();
-        });
+          if (idx >= conflicts.length) {
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+            overlay.innerHTML = '';
+            if (typeof onComplete === 'function') onComplete();
+            return;
+          }
+
+          const c = conflicts[idx];
+          overlay.innerHTML = `
+            <div class="max-w-md w-full bg-slate-900/95 border-2 border-amber-400 rounded-3xl p-5 shadow-[0_0_50px_rgba(251,191,36,0.35)] text-center animate-pop">
+              <div class="inline-block bg-gradient-to-r from-amber-400 to-fuchsia-500 text-slate-950 text-[11px] font-black px-3 py-0.5 rounded-full mb-2">
+                🎰 RULE ROULETTE (${idx + 1} / ${conflicts.length})
+              </div>
+              <div class="text-xs font-bold text-slate-300 mb-1">希望ルールが分かれました！ランダム抽選！</div>
+              <h3 class="text-xl sm:text-2xl font-black text-white mb-4">${escapeHtml(c.title)}</h3>
+              <div class="grid grid-cols-2 gap-3 mb-4">
+                <div id="vs-rl-opt-0" class="rounded-2xl border-2 border-slate-600 bg-slate-800/90 px-2.5 py-4 text-xs sm:text-sm font-black text-slate-200 transition-all duration-75">
+                  ${escapeHtml(c.optALabel)}
+                </div>
+                <div id="vs-rl-opt-1" class="rounded-2xl border-2 border-slate-600 bg-slate-800/90 px-2.5 py-4 text-xs sm:text-sm font-black text-slate-200 transition-all duration-75">
+                  ${escapeHtml(c.optBLabel)}
+                </div>
+              </div>
+              <div id="vs-rl-result-banner" class="min-h-[28px] text-sm sm:text-base font-black text-amber-300 tracking-wide">
+                🔄 抽選中...
+              </div>
+            </div>
+          `;
+
+          const el0 = document.getElementById('vs-rl-opt-0');
+          const el1 = document.getElementById('vs-rl-opt-1');
+          const resBanner = document.getElementById('vs-rl-result-banner');
+
+          const winner = c.winnerIndex === 1 ? 1 : 0;
+          const totalTicks = winner === 0 ? 15 : 16;
+          const delays = [55, 55, 60, 65, 70, 80, 90, 105, 120, 140, 165, 195, 225, 255, 290, 320];
+
+          const highlightCard = (activeIdx, decided = false) => {
+            [el0, el1].forEach((el, i) => {
+              if (!el) return;
+              if (i === activeIdx) {
+                el.className = decided
+                  ? 'rounded-2xl border-4 border-amber-300 bg-gradient-to-b from-amber-400 to-orange-500 text-slate-950 px-2.5 py-4 text-xs sm:text-sm font-black scale-105 shadow-[0_0_30px_rgba(251,191,36,0.9)] transition-all duration-150'
+                  : 'rounded-2xl border-2 border-cyan-300 bg-cyan-500/30 text-white px-2.5 py-4 text-xs sm:text-sm font-black scale-105 shadow-[0_0_18px_rgba(56,189,248,0.75)] transition-all duration-75';
+              } else {
+                el.className = decided
+                  ? 'rounded-2xl border-2 border-slate-700 bg-slate-900/60 text-slate-500 px-2.5 py-4 text-xs sm:text-sm font-bold opacity-50 transition-all duration-150'
+                  : 'rounded-2xl border-2 border-slate-700 bg-slate-800/80 text-slate-400 px-2.5 py-4 text-xs sm:text-sm font-bold transition-all duration-75';
+              }
+            });
+          };
+
+          let elapsed = 0;
+          for (let step = 0; step < totalTicks; step++) {
+            const cur = step % 2;
+            const isLast = (step === totalTicks - 1);
+            const tid = setTimeout(() => {
+              if (!this.isVersusRun) return;
+              if (isLast) {
+                highlightCard(winner, true);
+                sound.playRouletteDecide();
+                this.vibrate([45, 30, 75]);
+                if (resBanner) {
+                  resBanner.innerHTML = `✨ 決定!! <span class="text-white underline">${escapeHtml(c.winnerLabel)}</span> ✨`;
+                }
+                const nextTid = setTimeout(() => runOne(idx + 1), 950);
+                this.vsRouletteTimers.push(nextTid);
+              } else {
+                highlightCard(cur, false);
+                sound.playRouletteTick(step);
+              }
+            }, elapsed);
+            this.vsRouletteTimers.push(tid);
+            elapsed += delays[step] || 220;
+          }
+        };
+
+        runOne(0);
       }
 
       playVersusStartIntro(roomData, onComplete) {
@@ -10603,8 +10828,7 @@
       }
 
       getVersusItemCost() {
-        const mult = this.difficulty === 'LUNATIC' ? 100 : (this.difficulty === 'EX' ? 10 : (this.difficulty === 'HARD' ? 1.5 : 1.0));
-        return Math.round(3000 * mult);
+        return 20000;
       }
 
       updateStunOverlay() {
@@ -10624,6 +10848,8 @@
         const btnStun = document.getElementById('btn-vs-item-stun');
         const healSub = document.getElementById('vs-item-heal-sub');
         const stunSub = document.getElementById('vs-item-stun-sub');
+        const healUsesEl = document.getElementById('vs-item-heal-uses');
+        const stunUsesEl = document.getElementById('vs-item-stun-uses');
         if (!btnHeal || !btnStun) return;
 
         if (!this.isVersusJammerItemsEnabled()) {
@@ -10635,32 +10861,48 @@
         btnHeal.classList.remove('hidden');
         btnStun.classList.remove('hidden');
 
+        const healLeft = Math.max(0, this.vsHealUsesLeft || 0);
+        const stunLeft = Math.max(0, this.vsStunUsesLeft || 0);
+        if (healUsesEl) healUsesEl.textContent = `残${healLeft}`;
+        if (stunUsesEl) stunUsesEl.textContent = `残${stunLeft}`;
+
         const cost = this.getVersusItemCost();
-        const costLabel = cost >= 10000 ? `${Math.round(cost / 1000)}k pt` : `${cost.toLocaleString()}pt`;
+        const costLabel = '20,000pt';
         const canAfford = (this.score || 0) >= cost;
         const hasCharge = (this.vsItemCharges || 0) >= 1;
         const notStunned = (this.vsStunTimeLeft || 0) <= 0;
         const canUseBase = this.state === 'PLAYING' && hasCharge && canAfford && notStunned;
 
-        const canHeal = canUseBase && (this.vsHp || 0) < (this.vsMaxHp || 1000);
-        const canStun = canUseBase;
+        const canHeal = canUseBase && healLeft > 0 && (this.vsHp || 0) < (this.vsMaxHp || 1000);
+        const canStun = canUseBase && stunLeft > 0;
 
         btnHeal.disabled = !canHeal;
         btnStun.disabled = !canStun;
 
-        const remPerfect = Math.max(1, 2 - (this.vsItemPerfectProgress || 0));
-        if (hasCharge) {
-          if (healSub) {
-            healSub.textContent = !canAfford
-              ? `要${costLabel}`
-              : ((this.vsHp || 0) >= (this.vsMaxHp || 1000) ? 'HP満タン' : `+100 (${costLabel})`);
+        const remPerfect = Math.max(1, 3 - (this.vsItemPerfectProgress || 0));
+        if (healSub) {
+          if (healLeft <= 0) {
+            healSub.textContent = '使用上限';
+          } else if (!hasCharge) {
+            healSub.textContent = `あと${remPerfect}回神`;
+          } else if (!canAfford) {
+            healSub.textContent = `要${costLabel}`;
+          } else if ((this.vsHp || 0) >= (this.vsMaxHp || 1000)) {
+            healSub.textContent = 'HP満タン';
+          } else {
+            healSub.textContent = `+100 (${costLabel})`;
           }
-          if (stunSub) {
-            stunSub.textContent = !canAfford ? `要${costLabel}` : `100+2s (${costLabel})`;
+        }
+        if (stunSub) {
+          if (stunLeft <= 0) {
+            stunSub.textContent = '使用上限';
+          } else if (!hasCharge) {
+            stunSub.textContent = `あと${remPerfect}回神`;
+          } else if (!canAfford) {
+            stunSub.textContent = `要${costLabel}`;
+          } else {
+            stunSub.textContent = `100+2s (${costLabel})`;
           }
-        } else {
-          if (healSub) healSub.textContent = `あと${remPerfect}回神`;
-          if (stunSub) stunSub.textContent = `あと${remPerfect}回神`;
         }
       }
 
@@ -10674,10 +10916,15 @@
         }
 
         if (type === 'heal') {
+          if ((this.vsHealUsesLeft || 0) <= 0) {
+            sound.playBadBuzzer();
+            return;
+          }
           if ((this.vsHp || 0) >= (this.vsMaxHp || 1000)) {
             sound.playReturn();
             return;
           }
+          this.vsHealUsesLeft -= 1;
           this.vsItemCharges = 0;
           this.vsItemPerfectProgress = 0;
           this.score = Math.max(0, this.score - cost);
@@ -10688,15 +10935,20 @@
           this.vibrate(45);
           this.updateTopHUD();
           this.updateVersusHpBar(0, healed);
-          this.showVersusJammerToast(`💚 回復アイテム発動！ HP +${healed}（-${cost.toLocaleString()}pt）`, false);
+          this.showVersusJammerToast(`💚 回復アイテム発動！ HP +${healed}（残${this.vsHealUsesLeft}回）`, false);
           if (this.versus) this.versus.syncMyProgress(false, false);
         } else if (type === 'stun') {
+          if ((this.vsStunUsesLeft || 0) <= 0) {
+            sound.playBadBuzzer();
+            return;
+          }
           if (!this.versus) return;
           const ok = this.versus.sendStunItemAttack();
           if (!ok) {
             sound.playBadBuzzer();
             return;
           }
+          this.vsStunUsesLeft -= 1;
           this.vsItemCharges = 0;
           this.vsItemPerfectProgress = 0;
           this.score = Math.max(0, this.score - cost);
@@ -11796,8 +12048,9 @@
           return;
         }
 
-        const modeMultiplier = isLunatic ? 100.0 : (isEx ? 10.0 : (isHard ? 1.5 : 1.0));
-        const noChangeMult = this.showChangeDisplay ? 1.0 : 1.25;
+        const isJammerNormScore = this.isVersusJammerMode();
+        const modeMultiplier = isJammerNormScore ? 1.0 : (isLunatic ? 100.0 : (isEx ? 10.0 : (isHard ? 1.5 : 1.0)));
+        const noChangeMult = isJammerNormScore ? 1.0 : (this.showChangeDisplay ? 1.0 : 1.25);
         const isExOrLun = isEx || isLunatic;
         const defaultZoneSec = isExOrLun ? 5.0 : 10.0;
         let earnedScore = 0;
@@ -11828,8 +12081,8 @@
           }
           const zoneMult = this.scene3D.isZoneActive ? 2.5 : 1.0;
 
-          const comboMult = Math.min(4.8, 1 + (this.combo - 1) * (isExOrLun ? 0.5 : 0.35));
-          const basePt = isLunatic ? 2750 : (isEx ? 2420 : 1760);
+          const comboMult = Math.min(4.8, 1 + (this.combo - 1) * ((!isJammerNormScore && isExOrLun) ? 0.5 : 0.35));
+          const basePt = isJammerNormScore ? 1760 : (isLunatic ? 2750 : (isEx ? 2420 : 1760));
           earnedScore = Math.round((basePt + Math.max(0, netDiff) * 275) * comboMult * modeMultiplier * noChangeMult * zoneMult);
 
           if (isBillBonus) {
@@ -11839,9 +12092,13 @@
           }
           this.score += earnedScore;
           if (this.isVersusJammerMode() && this.versus) {
-            if (this.isVersusJammerItemsEnabled() && (this.vsItemCharges || 0) < 1) {
+            if (
+              this.isVersusJammerItemsEnabled() &&
+              (this.vsItemCharges || 0) < 1 &&
+              ((this.vsHealUsesLeft || 0) > 0 || (this.vsStunUsesLeft || 0) > 0)
+            ) {
               this.vsItemPerfectProgress = (this.vsItemPerfectProgress || 0) + 1;
-              if (this.vsItemPerfectProgress >= 2) {
+              if (this.vsItemPerfectProgress >= 3) {
                 this.vsItemPerfectProgress = 0;
                 this.vsItemCharges = 1;
               }
@@ -11938,7 +12195,7 @@
           } else {
             this.zoneCharge = 0;
           }
-          earnedScore = (isHard || isLunatic) ? -400 : -200;
+          earnedScore = (!isJammerNormScore && (isHard || isLunatic)) ? -400 : -200;
           this.score = Math.max(0, this.score + earnedScore);
 
           if (!this.isVersusJammerMode() && (isHard || isLunatic)) {
