@@ -297,6 +297,23 @@
     .money-svg-shadow {
       filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55));
     }
+    .key-hint-badge {
+      position: absolute;
+      top: -6px;
+      left: -4px;
+      z-index: 12;
+      padding: 1px 5px;
+      border-radius: 6px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1.5px solid rgba(148, 163, 184, 0.85);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.85);
+      color: #f8fafc;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1.15;
+      pointer-events: none;
+    }
     .custom-scroll::-webkit-scrollbar {
       width: 6px;
     }
@@ -807,6 +824,9 @@
           <button id="btn-title-dopa" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-fuchsia-500/60 text-[10px] sm:text-[11px] font-black px-2 py-1 rounded-xl text-fuchsia-300 flex items-center gap-1" title="虹色・パチンコ音・星目演出（プレイ影響なし）">
             <span>🌈</span><span class="dopa-label-text">ドパガキ OFF</span>
           </button>
+          <button id="btn-title-keyconfig" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-sky-400/70 text-[10px] sm:text-[11px] font-black px-2 py-1 rounded-xl text-sky-300 flex items-center gap-1" title="PCキーボード操作のキー設定変更">
+            <span>⌨️</span><span>キー設定</span>
+          </button>
         </div>
       </div>
 
@@ -1103,11 +1123,16 @@
         </button>
       </div>
 
-      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
-        <span class="text-[11px] text-slate-400">💡 トレイ上の3Dコイン・紙幣を直接タップして財布に戻せます</span>
-        <button id="btn-mode-open-ranking" class="btn-3d bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/50 text-xs font-extrabold px-3 py-1.5 rounded-xl">
-          🏆 ランキングボードを見る
-        </button>
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800">
+        <span class="text-[11px] text-slate-400">💡 PCキーボード操作対応（1-3 / Q-Y / Enter）</span>
+        <div class="flex items-center gap-1.5">
+          <button id="btn-mode-keyconfig" class="btn-3d bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-400/60 text-xs font-extrabold px-2.5 py-1.5 rounded-xl">
+            ⌨️ キー設定
+          </button>
+          <button id="btn-mode-open-ranking" class="btn-3d bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/50 text-xs font-extrabold px-3 py-1.5 rounded-xl">
+            🏆 ランキングボードを見る
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -1795,6 +1820,11 @@
               📳
             </button>
 
+            <!-- PC Key Config Button -->
+            <button id="btn-hud-keyconfig" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-sky-400/70 w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center text-xs shadow shrink-0" title="PCキー設定変更">
+              ⌨️
+            </button>
+
             <button id="btn-hud-mode" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-extrabold text-[9px] sm:text-[11px] px-1.5 h-6 sm:h-7 rounded-lg flex items-center justify-center gap-0.5 shadow shrink-0" title="モード選択へ戻る">
               <span>🎮</span>
               <span class="hidden md:inline">モード</span>
@@ -1949,13 +1979,15 @@
 
         <!-- Action Buttons Row -->
         <div class="flex items-center gap-2 sm:gap-3">
-          <button id="btn-reset-tray" class="btn-3d bg-slate-700 hover:bg-slate-600 active:bg-slate-800 text-slate-100 font-extrabold text-xs sm:text-base py-2.5 sm:py-3 px-3.5 sm:px-5 rounded-2xl border-b-4 border-slate-900 shadow-lg flex items-center justify-center gap-1 shrink-0">
+          <button id="btn-reset-tray" class="btn-3d bg-slate-700 hover:bg-slate-600 active:bg-slate-800 text-slate-100 font-extrabold text-xs sm:text-base py-2.5 sm:py-3 px-3.5 sm:px-5 rounded-2xl border-b-4 border-slate-900 shadow-lg flex items-center justify-center gap-1.5 shrink-0">
             <span>↩️</span>
             <span>全戻し</span>
+            <span id="key-hint-reset" class="hidden sm:inline-block font-digital text-[10px] font-black px-1.5 py-0.5 rounded bg-slate-900/90 text-slate-200 border border-slate-500 leading-none">BS</span>
           </button>
 
           <button id="btn-checkout" class="btn-3d flex-1 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-base sm:text-xl py-2.5 sm:py-3 px-4 rounded-2xl border-b-4 border-amber-800 shadow-xl flex items-center justify-center gap-2">
             <span>🔔 お会計！（決定）</span>
+            <span id="key-hint-checkout" class="hidden sm:inline-block font-digital text-xs font-black px-2 py-0.5 rounded-md bg-slate-950/85 text-amber-300 border border-amber-300/70 leading-none">Enter</span>
           </button>
         </div>
       </div>
@@ -2437,6 +2469,40 @@
   </div>
 
   <!-- =========================================================================
+       MODAL: PC KEYBOARD CONFIG (#modal-key-config)
+       ========================================================================= -->
+  <div id="modal-key-config" class="fixed inset-0 z-[80] hidden items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md" style="z-index: 80;">
+    <div class="max-w-lg w-full bg-slate-900/95 border-2 border-sky-400 rounded-3xl p-4 sm:p-6 shadow-2xl max-h-[94vh] overflow-y-auto custom-scroll text-left">
+      <div class="flex items-center justify-between mb-2">
+        <div>
+          <span class="text-[10px] font-black text-sky-400 tracking-wider uppercase">PC KEYBOARD SETTINGS</span>
+          <h3 class="text-lg sm:text-2xl font-black text-white">⌨️ PCキー設定変更</h3>
+        </div>
+        <button id="btn-close-keyconfig" type="button" class="btn-3d bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-extrabold px-3 py-1.5 rounded-xl">
+          ✕ 閉じる
+        </button>
+      </div>
+
+      <p id="keyconfig-status-msg" class="text-xs text-slate-300 bg-slate-950/85 border border-slate-700 rounded-xl px-3 py-2 mb-3 leading-snug">
+        変更したい項目のボタンをクリックしてから、割り当てたいキーを直接押してください。（<span class="text-amber-300 font-bold">Esc</span> で入力キャンセル）
+      </p>
+
+      <div id="keyconfig-list" class="space-y-1.5 mb-4">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-800">
+        <button id="btn-reset-keyconfig" type="button" class="btn-3d bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/60 text-xs font-extrabold px-3 py-2 rounded-xl">
+          🔄 初期設定に戻す
+        </button>
+        <button id="btn-done-keyconfig" type="button" class="btn-3d bg-gradient-to-r from-sky-400 to-cyan-400 hover:from-sky-300 hover:to-cyan-300 text-slate-950 font-black text-xs sm:text-sm px-5 py-2 rounded-xl border-b-4 border-sky-800 shadow">
+          ✅ 完了
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
        MAIN GAME SCRIPT
        ========================================================================= -->
   <script>
@@ -2538,6 +2604,90 @@
     const RANKING_KEY_LUNATIC_10_10          = 'pittariman_ranking_lunatic_10p_10s';
     const RANKING_KEY_LUNATIC_10_15          = 'pittariman_ranking_lunatic_10p_15s';
     const PLAYER_NAME_STORAGE_KEY            = 'pittariman_player_name_v3';
+    const KEY_CONFIG_STORAGE_KEY             = 'pittariman_key_config_v1';
+
+    const DEFAULT_KEY_BINDINGS = {
+      '10000': 'Digit1',
+      '5000': 'Digit2',
+      '1000': 'Digit3',
+      '500': 'KeyQ',
+      '100': 'KeyW',
+      '50': 'KeyE',
+      '10': 'KeyR',
+      '5': 'KeyT',
+      '1': 'KeyY',
+      'checkout': 'Enter',
+      'reset': 'Backspace'
+    };
+
+    const KEY_CONFIG_ITEMS = [
+      { action: '10000', label: '💴 10,000円札', group: '紙幣' },
+      { action: '5000',  label: '💴 5,000円札',  group: '紙幣' },
+      { action: '1000',  label: '💴 1,000円札',  group: '紙幣' },
+      { action: '500',   label: '🪙 500円玉',    group: '硬貨' },
+      { action: '100',   label: '🪙 100円玉',    group: '硬貨' },
+      { action: '50',    label: '🪙 50円玉',     group: '硬貨' },
+      { action: '10',    label: '🪙 10円玉',     group: '硬貨' },
+      { action: '5',     label: '🪙 5円玉',      group: '硬貨' },
+      { action: '1',     label: '🪙 1円玉',      group: '硬貨' },
+      { action: 'checkout', label: '🔔 お会計！（決定）', group: '操作' },
+      { action: 'reset',    label: '↩️ 全戻し',           group: '操作' }
+    ];
+
+    function normalizeKeyEventCode(e) {
+      if (!e) return '';
+      if (e.code && e.code !== 'Unidentified') {
+        if (e.code === 'NumpadEnter') return 'Enter';
+        return e.code;
+      }
+      if (!e.key || e.key === 'Unidentified') return '';
+      if (e.key === ' ') return 'Space';
+      if (e.key.length === 1) {
+        const up = e.key.toUpperCase();
+        if (up >= 'A' && up <= 'Z') return 'Key' + up;
+        if (up >= '0' && up <= '9') return 'Digit' + up;
+      }
+      return e.key;
+    }
+
+    function formatKeyCodeLabel(code) {
+      if (!code) return '---';
+      if (code.startsWith('Key') && code.length === 4) return code.slice(3);
+      if (code.startsWith('Digit') && code.length === 6) return code.slice(5);
+      if (code.startsWith('Numpad')) {
+        const rest = code.slice(6);
+        if (rest === 'Enter') return 'Enter';
+        return 'Num' + rest;
+      }
+      const map = {
+        Enter: 'Enter',
+        Space: 'Space',
+        Backspace: 'BS',
+        Delete: 'Del',
+        Tab: 'Tab',
+        ShiftLeft: 'LShift',
+        ShiftRight: 'RShift',
+        ControlLeft: 'LCtrl',
+        ControlRight: 'RCtrl',
+        AltLeft: 'LAlt',
+        AltRight: 'RAlt',
+        ArrowUp: '↑',
+        ArrowDown: '↓',
+        ArrowLeft: '←',
+        ArrowRight: '→',
+        Minus: '-',
+        Equal: '=',
+        BracketLeft: '[',
+        BracketRight: ']',
+        Semicolon: ';',
+        Quote: "'",
+        Comma: ',',
+        Period: '.',
+        Slash: '/',
+        Backslash: '\\'
+      };
+      return map[code] || code;
+    }
     const PLAYER_HIGH_SCORES_KEY             = 'pittariman_player_highscores_v1';
     const PLAYER_LUNATIC_HIGH_SCORES_KEY     = 'pittariman_player_lunatic_highscores_v1';
     const CUMULATIVE_SCORE_KEY               = 'pittariman_cumulative_score_v1';
@@ -8122,8 +8272,13 @@
         this.turnElapsed = 0;
         this.hesitationHintShown = false;
 
+        this.keyBindings = this.loadKeyBindings();
+        this.listeningKeyAction = null;
+
         this.versus = new VersusManager(this);
         this.bindUIEvents();
+        this.bindKeyboardEvents();
+        this.syncKeyHintsUI();
         this.syncChangeToggleUI();
         this.syncHelperToggleUI();
         this.syncDopagakiUI();
@@ -8512,6 +8667,35 @@
           });
         }
 
+        ['btn-title-keyconfig', 'btn-mode-keyconfig', 'btn-hud-keyconfig'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.addEventListener('click', () => {
+              sound.init();
+              sound.playClick();
+              this.openKeyConfigModal();
+            });
+          }
+        });
+
+        ['btn-close-keyconfig', 'btn-done-keyconfig'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.addEventListener('click', () => {
+              sound.playClick();
+              this.closeKeyConfigModal();
+            });
+          }
+        });
+
+        const btnResetKey = document.getElementById('btn-reset-keyconfig');
+        if (btnResetKey) {
+          btnResetKey.addEventListener('click', () => {
+            sound.playReturn();
+            this.resetKeyBindings();
+          });
+        }
+
         document.getElementById('btn-hud-title').addEventListener('click', () => {
           sound.playReturn();
           this.returnToTitleScreen();
@@ -8609,6 +8793,232 @@
             this.startRankingPlay(this.difficulty, this.playerName, this.lunaticTurnLimit, this.lunaticTaxRate);
           } else {
             this.startFreePlay(this.difficulty);
+          }
+        });
+      }
+
+
+      loadKeyBindings() {
+        const base = { ...DEFAULT_KEY_BINDINGS };
+        try {
+          const raw = localStorage.getItem(KEY_CONFIG_STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed === 'object') {
+              for (const k of Object.keys(DEFAULT_KEY_BINDINGS)) {
+                if (typeof parsed[k] === 'string' && parsed[k].trim()) {
+                  base[k] = parsed[k].trim();
+                }
+              }
+            }
+          }
+        } catch (e) {}
+        return base;
+      }
+
+      saveKeyBindings() {
+        try {
+          localStorage.setItem(KEY_CONFIG_STORAGE_KEY, JSON.stringify(this.keyBindings));
+        } catch (e) {}
+      }
+
+      resetKeyBindings() {
+        this.listeningKeyAction = null;
+        this.keyBindings = { ...DEFAULT_KEY_BINDINGS };
+        this.saveKeyBindings();
+        this.syncKeyHintsUI();
+        this.renderKeyConfigModal();
+        const msgEl = document.getElementById('keyconfig-status-msg');
+        if (msgEl) {
+          msgEl.innerHTML = '✅ <span class="text-emerald-300 font-black">初期設定に戻しました！</span>（1-3: 紙幣 / Q-Y: 硬貨 / Enter: お会計 / BS: 全戻し）';
+        }
+      }
+
+      isKeyConfigModalOpen() {
+        const modal = document.getElementById('modal-key-config');
+        return Boolean(modal && !modal.classList.contains('hidden'));
+      }
+
+      openKeyConfigModal() {
+        this.listeningKeyAction = null;
+        const modal = document.getElementById('modal-key-config');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        const msgEl = document.getElementById('keyconfig-status-msg');
+        if (msgEl) {
+          msgEl.innerHTML = '変更したい項目のボタンをクリックしてから、割り当てたいキーを直接押してください。（<span class="text-amber-300 font-bold">Esc</span> で入力キャンセル）';
+        }
+        this.renderKeyConfigModal();
+      }
+
+      closeKeyConfigModal() {
+        this.listeningKeyAction = null;
+        const modal = document.getElementById('modal-key-config');
+        if (!modal) return;
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        this.syncKeyHintsUI();
+      }
+
+      renderKeyConfigModal() {
+        const listEl = document.getElementById('keyconfig-list');
+        if (!listEl) return;
+        listEl.innerHTML = '';
+
+        KEY_CONFIG_ITEMS.forEach((item) => {
+          const isListening = this.listeningKeyAction === item.action;
+          const code = this.keyBindings[item.action] || '';
+          const keyLabel = formatKeyCodeLabel(code);
+
+          const row = document.createElement('div');
+          row.className = `flex items-center justify-between gap-2 px-3 py-2 rounded-xl border ${
+            isListening
+              ? 'bg-amber-500/20 border-amber-400 shadow'
+              : 'bg-slate-800/90 border-slate-700'
+          }`;
+
+          const left = document.createElement('div');
+          left.className = 'flex items-center gap-2 min-w-0';
+          left.innerHTML = `
+            <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-slate-950/90 text-slate-400 border border-slate-700 shrink-0">${item.group}</span>
+            <span class="text-xs sm:text-sm font-black text-white truncate">${item.label}</span>
+          `;
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = isListening
+            ? 'btn-3d shrink-0 min-w-[138px] px-3 py-1.5 rounded-xl font-black text-xs bg-amber-400 text-slate-950 border-2 border-white animate-pulse shadow'
+            : 'btn-3d shrink-0 min-w-[100px] px-3 py-1.5 rounded-xl font-digital font-black text-xs sm:text-sm bg-slate-950 hover:bg-slate-700 text-sky-300 border-2 border-sky-400/70 shadow';
+          btn.textContent = isListening ? '⌨️ キーを押して...' : keyLabel;
+          btn.addEventListener('click', () => {
+            sound.playClick();
+            this.listeningKeyAction = (this.listeningKeyAction === item.action) ? null : item.action;
+            const msgEl = document.getElementById('keyconfig-status-msg');
+            if (msgEl) {
+              if (this.listeningKeyAction) {
+                msgEl.innerHTML = `⌨️ <span class="text-amber-300 font-black">${escapeHtml(item.label)}</span> に割り当てるキーを押してください…（<span class="text-slate-200 font-bold">Esc</span> でキャンセル）`;
+              } else {
+                msgEl.innerHTML = '変更したい項目のボタンをクリックしてから、割り当てたいキーを直接押してください。（<span class="text-amber-300 font-bold">Esc</span> で入力キャンセル）';
+              }
+            }
+            this.renderKeyConfigModal();
+          });
+
+          row.appendChild(left);
+          row.appendChild(btn);
+          listEl.appendChild(row);
+        });
+      }
+
+      syncKeyHintsUI() {
+        const checkoutHint = document.getElementById('key-hint-checkout');
+        if (checkoutHint) {
+          checkoutHint.textContent = formatKeyCodeLabel(this.keyBindings.checkout);
+        }
+        const resetHint = document.getElementById('key-hint-reset');
+        if (resetHint) {
+          resetHint.textContent = formatKeyCodeLabel(this.keyBindings.reset);
+        }
+        if (this.state === 'PLAYING' || this.state === 'COUNTDOWN' || this.state === 'JUDGING') {
+          this.renderWalletUI();
+        }
+      }
+
+      bindKeyboardEvents() {
+        window.addEventListener('keydown', (e) => {
+          // 1. キー設定モーダルが開いているときの処理
+          if (this.isKeyConfigModalOpen()) {
+            if (this.listeningKeyAction) {
+              e.preventDefault();
+              e.stopPropagation();
+              if (e.code === 'Escape' || e.key === 'Escape') {
+                sound.playReturn();
+                this.listeningKeyAction = null;
+                const msgEl = document.getElementById('keyconfig-status-msg');
+                if (msgEl) msgEl.textContent = 'キャンセルしました。変更したい項目を選んでください。';
+                this.renderKeyConfigModal();
+                return;
+              }
+              const newCode = normalizeKeyEventCode(e);
+              if (!newCode) return;
+
+              const targetAction = this.listeningKeyAction;
+              const prevCode = this.keyBindings[targetAction];
+              // 既に別の項目に割り当てられているキーならスワップして重複防止
+              let swappedAction = null;
+              for (const [act, assignedCode] of Object.entries(this.keyBindings)) {
+                if (act !== targetAction && assignedCode === newCode) {
+                  swappedAction = act;
+                  break;
+                }
+              }
+              if (swappedAction) {
+                this.keyBindings[swappedAction] = prevCode;
+              }
+              this.keyBindings[targetAction] = newCode;
+              this.listeningKeyAction = null;
+              this.saveKeyBindings();
+              this.syncKeyHintsUI();
+              sound.playCoinIn(500);
+
+              const targetItem = KEY_CONFIG_ITEMS.find(x => x.action === targetAction);
+              const msgEl = document.getElementById('keyconfig-status-msg');
+              if (msgEl && targetItem) {
+                if (swappedAction) {
+                  const swapItem = KEY_CONFIG_ITEMS.find(x => x.action === swappedAction);
+                  msgEl.innerHTML = `✅ <span class="text-emerald-300 font-black">${escapeHtml(targetItem.label)}</span> を <span class="font-digital text-amber-300 font-black">[${escapeHtml(formatKeyCodeLabel(newCode))}]</span> に変更しました！（${escapeHtml(swapItem ? swapItem.label : swappedAction)} と入れ替え）`;
+                } else {
+                  msgEl.innerHTML = `✅ <span class="text-emerald-300 font-black">${escapeHtml(targetItem.label)}</span> を <span class="font-digital text-amber-300 font-black">[${escapeHtml(formatKeyCodeLabel(newCode))}]</span> に変更しました！`;
+                }
+              }
+              this.renderKeyConfigModal();
+              return;
+            }
+            if (e.code === 'Escape' || e.key === 'Escape') {
+              e.preventDefault();
+              sound.playClick();
+              this.closeKeyConfigModal();
+            }
+            return;
+          }
+
+          // 2. ゲームプレイ中のPCキー操作
+          if (this.state !== 'PLAYING') return;
+          if (e.repeat || e.isComposing || e.ctrlKey || e.metaKey || e.altKey) return;
+
+          const activeEl = document.activeElement;
+          if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT' || activeEl.isContentEditable)) {
+            return;
+          }
+
+          const code = normalizeKeyEventCode(e);
+          if (!code) return;
+
+          let matchedAction = null;
+          for (const [act, assignedCode] of Object.entries(this.keyBindings)) {
+            if (assignedCode === code) {
+              matchedAction = act;
+              break;
+            }
+          }
+          if (!matchedAction) return;
+
+          e.preventDefault();
+          // フォーカス中ボタンのEnter/Space二重発火を防止
+          if (activeEl && typeof activeEl.blur === 'function' && activeEl.tagName === 'BUTTON') {
+            activeEl.blur();
+          }
+
+          if (matchedAction === 'checkout') {
+            this.handleCheckout();
+          } else if (matchedAction === 'reset') {
+            this.returnAllTrayToWallet();
+          } else {
+            const denom = Number(matchedAction);
+            if (ALL_DENOMS.includes(denom)) {
+              this.putMoneyOnTray(denom);
+            }
           }
         });
       }
@@ -11497,7 +11907,9 @@
               : 'cursor-not-allowed'
           } ${isHighlight ? 'tutorial-highlight ring-2 ring-amber-300' : (isHelperGlow ? 'helper-guide-highlight ring-2 ring-emerald-400' : '')}`;
 
+          const billKeyLabel = escapeHtml(formatKeyCodeLabel(this.keyBindings[String(d)]));
           addBtn.innerHTML = `
+            <span class="key-hint-badge hidden sm:inline-flex">${billKeyLabel}</span>
             ${this.getBillIllustrationSVG(d, count <= 0)}
             ${this.getWalletCountBadgeHTML(count, 'corner')}
           `;
@@ -11537,7 +11949,9 @@
               : 'cursor-not-allowed'
           } ${isHighlight ? 'tutorial-highlight ring-2 ring-amber-300' : (isHelperGlow ? 'helper-guide-highlight ring-2 ring-emerald-400' : '')}`;
 
+          const coinKeyLabel = escapeHtml(formatKeyCodeLabel(this.keyBindings[String(d)]));
           btn.innerHTML = `
+            <span class="key-hint-badge hidden sm:inline-flex">${coinKeyLabel}</span>
             ${this.getCoinIllustrationSVG(d, count <= 0)}
             ${this.getWalletCountBadgeHTML(count, 'below')}
           `;
