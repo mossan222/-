@@ -446,6 +446,35 @@
       box-shadow: 0 0 28px rgba(56, 189, 248, 0.95), 0 0 48px rgba(250, 204, 21, 0.85);
       animation: lightningBannerPop 1.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+    /* === VERSUS JAMMER ATTACK FX === */
+    @keyframes vsJammerFlash {
+      0% { opacity: 0.72; }
+      100% { opacity: 0; }
+    }
+    @keyframes vsJammerToast {
+      0% { transform: translate(-50%, -18px) scale(1.25); opacity: 0; }
+      18% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+      82% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -14px) scale(0.95); opacity: 0; }
+    }
+    .vs-jammer-flash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, rgba(244,63,94,0.12) 25%, rgba(225,29,72,0.62) 100%);
+      pointer-events: none;
+      animation: vsJammerFlash 0.55s ease-out forwards;
+    }
+    .vs-jammer-toast {
+      position: fixed;
+      left: 50%;
+      top: 23%;
+      pointer-events: none;
+      white-space: nowrap;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-weight: 900;
+      animation: vsJammerToast 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
   </style>
 </head>
 <body class="text-white select-none">
@@ -489,6 +518,7 @@
   <!-- DOPAGAKI RAINBOW LED FRAME & FX OVERLAY (pointer-events-none: zero gameplay impact) -->
   <div id="dopa-rainbow-frame" aria-hidden="true"></div>
   <div id="dopa-fx-layer" class="fixed inset-0 z-30 pointer-events-none overflow-hidden" aria-hidden="true"></div>
+  <div id="vs-fx-layer" class="fixed inset-0 z-60 pointer-events-none overflow-hidden" aria-hidden="true"></div>
 
   <!-- =========================================================================
        SCREEN 1: TITLE SCREEN (#screen-title)
@@ -588,16 +618,20 @@
       </div>
 
       <!-- Main Action Buttons -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-        <button id="btn-title-tutorial" class="btn-3d col-span-1 bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-400 hover:to-indigo-400 text-white font-black text-xs sm:text-sm py-3 px-3 rounded-2xl border-b-4 border-indigo-900 shadow-lg flex items-center justify-center gap-1">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <button id="btn-title-tutorial" class="btn-3d col-span-1 bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-400 hover:to-indigo-400 text-white font-black text-xs sm:text-sm py-3 px-2.5 rounded-2xl border-b-4 border-indigo-900 shadow-lg flex items-center justify-center gap-1">
           <span>🔰</span>
           <span>チュートリアル</span>
         </button>
-        <button id="btn-title-ranking" class="btn-3d col-span-1 bg-slate-800 hover:bg-slate-700 text-amber-300 font-extrabold text-xs sm:text-sm py-3 px-3 rounded-2xl border-2 border-amber-500/50 shadow-lg flex items-center justify-center gap-1">
+        <button id="btn-title-ranking" class="btn-3d col-span-1 bg-slate-800 hover:bg-slate-700 text-amber-300 font-extrabold text-xs sm:text-sm py-3 px-2.5 rounded-2xl border-2 border-amber-500/50 shadow-lg flex items-center justify-center gap-1">
           <span>🏆</span>
           <span>ランキング</span>
         </button>
-        <button id="btn-title-start" class="btn-3d col-span-2 sm:col-span-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black text-base sm:text-lg py-3.5 px-4 rounded-2xl border-b-4 border-emerald-800 shadow-xl flex items-center justify-center gap-1">
+        <button id="btn-title-versus" class="btn-3d col-span-1 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 hover:from-violet-400 hover:to-pink-400 text-white font-black text-xs sm:text-sm py-3 px-2.5 rounded-2xl border-b-4 border-fuchsia-900 shadow-lg flex items-center justify-center gap-1">
+          <span>⚔️</span>
+          <span>オンライン対戦</span>
+        </button>
+        <button id="btn-title-start" class="btn-3d col-span-1 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black text-sm sm:text-base py-3 px-3 rounded-2xl border-b-4 border-emerald-800 shadow-xl flex items-center justify-center gap-1">
           <span>🛒</span>
           <span>スタート！</span>
         </button>
@@ -773,6 +807,26 @@
             </div>
           </div>
           <span class="text-amber-400 font-black text-lg sm:text-xl group-hover:translate-x-1 transition-transform shrink-0">▶</span>
+        </button>
+
+        <!-- 4. REALTIME VERSUS MODE (ONLINE) -->
+        <button id="btn-select-versus" class="btn-3d w-full text-left bg-gradient-to-r from-violet-950/95 via-fuchsia-950/75 to-slate-800/90 hover:from-violet-900/95 border-2 border-fuchsia-400/90 rounded-2xl p-3 sm:p-3.5 shadow-lg flex items-center justify-between gap-3 group">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-fuchsia-500/20 border border-fuchsia-400 flex items-center justify-center text-xl sm:text-2xl shrink-0">
+              ⚔️
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-sm sm:text-lg font-black text-fuchsia-300">リアルタイム対戦 (VS ONLINE)</span>
+                <span class="text-[10px] font-black bg-fuchsia-400 text-slate-950 px-2 py-0.5 rounded-full">ランキング影響なし</span>
+              </div>
+              <p class="text-[11px] sm:text-xs text-slate-300 mt-0.5 leading-snug">
+                <span class="text-cyan-300 font-bold">ルームコード対戦</span>＆<span class="text-amber-300 font-bold">ランダムマッチ</span>対応！<br>
+                「スコア対決」「💣お邪魔あり対決」「⚡先取スピード勝負」の3ルールから選んでバトル！
+              </p>
+            </div>
+          </div>
+          <span class="text-fuchsia-400 font-black text-lg sm:text-xl group-hover:translate-x-1 transition-transform shrink-0">▶</span>
         </button>
       </div>
 
@@ -1419,6 +1473,23 @@
         </div>
       </div>
 
+      <!-- VERSUS OPPONENT REAL-TIME BAR (Shown only during Online Versus Mode) -->
+      <div id="vs-opponent-bar" class="hidden mt-1 bg-gradient-to-r from-violet-950/95 via-slate-900/95 to-fuchsia-950/95 border-2 border-fuchsia-400/80 rounded-xl px-2.5 py-1 flex items-center justify-between gap-2 shadow-lg">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span class="text-xs sm:text-sm font-black px-1.5 py-0.5 rounded bg-fuchsia-500 text-white shrink-0 leading-none">VS</span>
+          <span id="vs-opp-name" class="text-[11px] sm:text-xs font-black text-white truncate max-w-[90px] sm:max-w-[140px]">対戦相手</span>
+          <span id="vs-rule-pill" class="text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded-full bg-slate-800 text-cyan-300 border border-cyan-400/50 shrink-0 leading-none">スコア対決</span>
+        </div>
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+          <span id="vs-lead-badge" class="text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 leading-none">互角</span>
+          <div class="text-right leading-none">
+            <span class="text-[8px] sm:text-[9px] text-fuchsia-300 font-bold mr-1">相手</span>
+            <span id="vs-opp-score" class="font-digital text-xs sm:text-base font-black text-amber-300">0</span>
+            <span id="vs-opp-sub" class="text-[9px] sm:text-[10px] text-slate-300 font-bold ml-1">0人</span>
+          </div>
+        </div>
+      </div>
+
       <!-- ULTRA-COMPACT POS REGISTER BAR -->
       <div id="pos-panel" class="mt-1 lcd-panel rounded-xl px-2 py-1 sm:px-3.5 sm:py-1 flex items-center justify-between gap-1.5 relative">
         <!-- Billing Price (Shows Tax-Excluded Base Price in LUNATIC Mode!) -->
@@ -1663,6 +1734,265 @@
   </div>
 
   <!-- =========================================================================
+       SCREEN 5: VERSUS LOBBY (#screen-versus-lobby)
+       ========================================================================= -->
+  <div id="screen-versus-lobby" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-md">
+    <div class="max-w-lg w-full bg-slate-900/95 border-2 border-fuchsia-400 rounded-3xl p-4 sm:p-6 shadow-2xl max-h-[94vh] overflow-y-auto custom-scroll">
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <span class="text-[10px] font-black text-fuchsia-400 tracking-wider uppercase">ONLINE VERSUS LOBBY</span>
+          <h2 class="text-lg sm:text-2xl font-black text-white">⚔️ リアルタイム対戦ロビー</h2>
+        </div>
+        <button id="btn-vs-lobby-back" class="btn-3d bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-extrabold px-3 py-1.5 rounded-xl">
+          ◀ 戻る
+        </button>
+      </div>
+
+      <div class="bg-slate-950/90 border border-fuchsia-500/40 rounded-2xl px-3 py-2 mb-3 flex items-center justify-between gap-2 text-xs">
+        <span id="vs-online-status" class="font-black text-emerald-300">🌐 オンライン対戦 接続OK</span>
+        <span class="text-[10px] font-bold text-slate-400">※ランキングには影響しません</span>
+      </div>
+
+      <!-- Player Name Input -->
+      <div class="mb-3.5 text-left">
+        <label for="input-vs-name" class="block text-xs font-bold text-fuchsia-300 mb-1">対戦で表示する名前（最大10文字）</label>
+        <input
+          id="input-vs-name"
+          type="text"
+          maxlength="10"
+          placeholder="名無しの会計士"
+          class="w-full bg-slate-800 border-2 border-slate-600 focus:border-fuchsia-400 rounded-xl px-3.5 py-2.5 text-sm sm:text-base font-extrabold text-white outline-none transition-colors"
+        />
+      </div>
+
+      <!-- Section 1: Random Match -->
+      <div class="bg-gradient-to-r from-violet-950/85 to-slate-800/90 border-2 border-violet-400/70 rounded-2xl p-3.5 mb-3 text-left">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-sm sm:text-base font-black text-violet-300">🎲 ランダムマッチ（自動対戦）</div>
+          <span class="text-[10px] font-black bg-violet-400 text-slate-950 px-2 py-0.5 rounded-full">すぐ対戦</span>
+        </div>
+        <div class="text-[11px] text-slate-300 mb-2">希望の対戦ルールを選んで待機中の相手と自動マッチング！</div>
+        <div class="grid grid-cols-3 gap-1.5 mb-2.5">
+          <button id="btn-vs-rand-rule-score" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-violet-500 text-slate-950 border-white">
+            🏆 スコア対決
+          </button>
+          <button id="btn-vs-rand-rule-jammer" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
+            💣 お邪魔あり
+          </button>
+          <button id="btn-vs-rand-rule-race" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
+            ⚡ 7人先取
+          </button>
+        </div>
+        <button id="btn-vs-random-start" class="btn-3d w-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 hover:from-violet-400 hover:to-pink-400 text-white font-black text-sm sm:text-base py-2.5 rounded-xl border-b-4 border-fuchsia-900 shadow-lg">
+          🎲 ランダムマッチを探す！
+        </button>
+        <div id="vs-random-searching" class="hidden mt-2 bg-slate-950/90 border border-fuchsia-400/70 rounded-xl px-3 py-2 flex items-center justify-between gap-2">
+          <span class="text-xs font-black text-fuchsia-300 animate-pulse">🔍 対戦相手を探しています...</span>
+          <button id="btn-vs-random-cancel" class="btn-3d bg-rose-600 hover:bg-rose-500 text-white text-[11px] font-black px-2.5 py-1 rounded-lg">
+            キャンセル
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 2: Room Code Match -->
+      <div class="bg-gradient-to-r from-cyan-950/80 to-slate-800/90 border-2 border-cyan-400/70 rounded-2xl p-3.5 text-left">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-sm sm:text-base font-black text-cyan-300">🔑 ルームコード対戦（友達と対戦）</div>
+          <span class="text-[10px] font-black bg-cyan-400 text-slate-950 px-2 py-0.5 rounded-full">ルール自由設定</span>
+        </div>
+        <button id="btn-vs-create-room" class="btn-3d w-full bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-black text-sm sm:text-base py-2.5 rounded-xl border-b-4 border-sky-800 shadow-lg mb-3">
+          🏠 新しいルームを作る（ホスト）
+        </button>
+        <div class="flex items-center gap-2">
+          <input
+            id="input-vs-room-code"
+            type="text"
+            inputmode="numeric"
+            maxlength="4"
+            placeholder="4桁コード (例: 4829)"
+            class="flex-1 bg-slate-900 border-2 border-slate-600 focus:border-cyan-400 rounded-xl px-3 py-2 text-center font-digital text-base sm:text-lg font-black text-white tracking-widest outline-none"
+          />
+          <button id="btn-vs-join-room" class="btn-3d bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-black text-xs sm:text-sm px-4 py-2.5 rounded-xl border-b-4 border-emerald-800 shrink-0">
+            🚪 入室する
+          </button>
+        </div>
+        <p id="vs-lobby-error" class="hidden text-xs font-bold text-rose-400 mt-2"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       SCREEN 6: VERSUS WAITING ROOM & SETTINGS (#screen-versus-room)
+       ========================================================================= -->
+  <div id="screen-versus-room" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-md">
+    <div class="max-w-lg w-full bg-slate-900/95 border-2 border-cyan-400 rounded-3xl p-4 sm:p-5 shadow-2xl max-h-[95vh] overflow-y-auto custom-scroll">
+      <div class="flex items-center justify-between mb-2">
+        <div>
+          <span class="text-[10px] font-black text-cyan-300 tracking-wider uppercase">VERSUS BATTLE ROOM</span>
+          <h2 class="text-lg sm:text-2xl font-black text-white">⚔️ 対戦ルーム待機中</h2>
+        </div>
+        <button id="btn-vs-room-leave" class="btn-3d bg-rose-700 hover:bg-rose-600 text-white text-xs font-black px-3 py-1.5 rounded-xl">
+          退出する
+        </button>
+      </div>
+
+      <!-- Room Code Banner -->
+      <div class="bg-slate-950 border-2 border-amber-400/70 rounded-2xl px-3.5 py-2.5 mb-3 flex items-center justify-between gap-2">
+        <div class="text-left">
+          <div class="text-[10px] font-black text-amber-300">ルームコード（友達に共有）</div>
+          <div id="vs-room-code-display" class="font-digital text-3xl sm:text-4xl font-black text-white tracking-[0.25em] leading-none mt-0.5">0000</div>
+        </div>
+        <button id="btn-vs-copy-code" class="btn-3d bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-3 py-2 rounded-xl border-b-4 border-amber-700">
+          📋 コピー
+        </button>
+      </div>
+
+      <!-- Players Box -->
+      <div class="grid grid-cols-2 gap-2 mb-3">
+        <div class="bg-slate-800/90 border-2 border-cyan-400/70 rounded-2xl p-2.5 text-center">
+          <div class="text-[10px] font-black text-cyan-300">HOST (1P)</div>
+          <div id="vs-room-host-name" class="text-sm sm:text-base font-black text-white truncate mt-0.5">---</div>
+          <div id="vs-room-host-status" class="text-[10px] font-bold text-emerald-300 mt-0.5">● 接続中</div>
+        </div>
+        <div class="bg-slate-800/90 border-2 border-fuchsia-400/70 rounded-2xl p-2.5 text-center">
+          <div class="text-[10px] font-black text-fuchsia-300">GUEST (2P)</div>
+          <div id="vs-room-guest-name" class="text-sm sm:text-base font-black text-slate-400 truncate mt-0.5">待機中...</div>
+          <div id="vs-room-guest-status" class="text-[10px] font-bold text-slate-400 mt-0.5">相手の入室待ち</div>
+        </div>
+      </div>
+
+      <!-- Room Settings (Editable by Host, Read-only for Guest) -->
+      <div class="bg-slate-950/90 border border-slate-700 rounded-2xl p-3 mb-3 text-left space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-black text-amber-300">⚙️ 対戦ルール設定</span>
+          <span id="vs-settings-role-hint" class="text-[10px] font-bold text-slate-400">ホストが変更できます</span>
+        </div>
+
+        <!-- 1. Battle Rule -->
+        <div>
+          <div class="text-[10px] font-bold text-slate-400 mb-1">勝敗ルール</div>
+          <div class="grid grid-cols-3 gap-1.5">
+            <button data-vs-set="vsRule" data-vs-val="score" class="vs-opt-btn btn-3d py-1.5 px-1 rounded-xl text-[10px] sm:text-xs font-black border-2">🏆 スコア対決</button>
+            <button data-vs-set="vsRule" data-vs-val="jammer" class="vs-opt-btn btn-3d py-1.5 px-1 rounded-xl text-[10px] sm:text-xs font-black border-2">💣 お邪魔あり</button>
+            <button data-vs-set="vsRule" data-vs-val="race" class="vs-opt-btn btn-3d py-1.5 px-1 rounded-xl text-[10px] sm:text-xs font-black border-2">⚡ 先取勝負</button>
+          </div>
+          <p id="vs-rule-explain" class="text-[10px] text-slate-300 mt-1 leading-snug"></p>
+        </div>
+
+        <!-- 1b. Race Target (Only when race selected) -->
+        <div id="vs-race-target-row" class="hidden">
+          <div class="text-[10px] font-bold text-slate-400 mb-1">先取PERFECT目標人数</div>
+          <div class="grid grid-cols-3 gap-1.5">
+            <button data-vs-set="raceTarget" data-vs-val="5" class="vs-opt-btn btn-3d py-1 px-1 rounded-xl text-[11px] font-black border-2">5人先取</button>
+            <button data-vs-set="raceTarget" data-vs-val="7" class="vs-opt-btn btn-3d py-1 px-1 rounded-xl text-[11px] font-black border-2">7人先取</button>
+            <button data-vs-set="raceTarget" data-vs-val="10" class="vs-opt-btn btn-3d py-1 px-1 rounded-xl text-[11px] font-black border-2">10人先取</button>
+          </div>
+        </div>
+
+        <!-- 2. Accounting Rule -->
+        <div>
+          <div class="text-[10px] font-bold text-slate-400 mb-1">会計ルール</div>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button data-vs-set="ruleType" data-vs-val="wallet" class="vs-opt-btn btn-3d py-1.5 px-2 rounded-xl text-[11px] font-black border-2">👛 財布の小銭最小</button>
+            <button data-vs-set="ruleType" data-vs-val="change" class="vs-opt-btn btn-3d py-1.5 px-2 rounded-xl text-[11px] font-black border-2">🪙 お釣り枚数最小</button>
+          </div>
+        </div>
+
+        <!-- 3. Difficulty -->
+        <div>
+          <div class="text-[10px] font-bold text-slate-400 mb-1">難易度（対戦では全難易度開放！）</div>
+          <div class="grid grid-cols-4 gap-1.5">
+            <button data-vs-set="difficulty" data-vs-val="NORMAL" class="vs-opt-btn btn-3d py-1.5 px-1 rounded-xl text-[10px] sm:text-xs font-black border-2">🍀 NORMAL</button>
+            <button data-vs-set="difficulty" data-vs-val="HARD" class="vs-opt-btn btn-3d py-1.5 px-1 rounded-xl text-[10px] sm:text-xs font-black border-2">🔥 HARD</button>
+            <button data-vs-set="difficulty" data-vs-val="EX" class="vs-opt-btn btn-3d py-1.5 px-1 rounded-xl text-[10px] sm:text-xs font-black border-2">💀 EX</button>
+            <button data-vs-set="difficulty" data-vs-val="LUNATIC" class="vs-opt-btn btn-3d py-1.5 px-1 rounded-xl text-[10px] sm:text-xs font-black border-2">🌙 LUNATIC</button>
+          </div>
+        </div>
+
+        <!-- 3b. Lunatic Tax Rate (Only when LUNATIC) -->
+        <div id="vs-lunatic-tax-row" class="hidden">
+          <div class="text-[10px] font-bold text-slate-400 mb-1">🌙 ルナティック消費税率</div>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button data-vs-set="lunaticTaxRate" data-vs-val="8" class="vs-opt-btn btn-3d py-1 px-2 rounded-xl text-[11px] font-black border-2">消費税 8% (×1.08)</button>
+            <button data-vs-set="lunaticTaxRate" data-vs-val="10" class="vs-opt-btn btn-3d py-1 px-2 rounded-xl text-[11px] font-black border-2">消費税 10% (×1.10)</button>
+          </div>
+        </div>
+
+        <!-- 4. Show Change -->
+        <div>
+          <div class="text-[10px] font-bold text-slate-400 mb-1">POSお釣り表示</div>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button data-vs-set="showChange" data-vs-val="true" class="vs-opt-btn btn-3d py-1.5 px-2 rounded-xl text-[11px] font-black border-2">👁️ お釣り表示あり</button>
+            <button data-vs-set="showChange" data-vs-val="false" class="vs-opt-btn btn-3d py-1.5 px-2 rounded-xl text-[11px] font-black border-2">🙈 お釣り非表示（暗算）</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start / Wait Button -->
+      <button id="btn-vs-start-match" disabled class="btn-3d w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-black text-base sm:text-lg py-3 rounded-2xl border-b-4 border-emerald-800 shadow-xl disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed">
+        ⏳ 対戦相手の入室を待っています...
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       SCREEN 7: VERSUS RESULT SCREEN (#screen-versus-result)
+       ========================================================================= -->
+  <div id="screen-versus-result" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md">
+    <div class="max-w-lg w-full bg-slate-900/95 border-2 border-fuchsia-400 rounded-3xl p-4 sm:p-6 shadow-2xl text-center max-h-[94vh] overflow-y-auto custom-scroll">
+      <div class="inline-block bg-fuchsia-500/25 border border-fuchsia-400 text-fuchsia-200 text-[10px] sm:text-xs font-black px-3 py-0.5 rounded-full mb-2">
+        ⚔️ ONLINE VERSUS RESULT（ランキング影響なし）
+      </div>
+
+      <div id="vs-res-banner" class="text-3xl sm:text-5xl font-black tracking-wider text-amber-300 drop-shadow mb-1">
+        🏆 YOU WIN!!
+      </div>
+      <p id="vs-res-reason" class="text-xs sm:text-sm font-bold text-slate-300 mb-4">
+        スコア対決で勝利しました！
+      </p>
+
+      <!-- Comparison Cards -->
+      <div class="grid grid-cols-2 gap-2.5 mb-4 text-left">
+        <div id="vs-res-me-card" class="bg-slate-800/95 border-2 border-cyan-400 rounded-2xl p-3">
+          <div class="text-[10px] font-black text-cyan-300">YOU（あなた）</div>
+          <div id="vs-res-me-name" class="text-sm sm:text-base font-black text-white truncate">---</div>
+          <div id="vs-res-me-score" class="font-digital text-xl sm:text-2xl font-black text-amber-300 mt-1">0 pt</div>
+          <div id="vs-res-me-stats" class="text-[10px] sm:text-xs text-slate-300 font-bold mt-1 space-y-0.5">
+            <div>PERFECT: 0回 / 処理: 0人</div>
+            <div>最大コンボ: 0連鎖</div>
+          </div>
+        </div>
+
+        <div id="vs-res-opp-card" class="bg-slate-800/95 border-2 border-fuchsia-400 rounded-2xl p-3">
+          <div class="text-[10px] font-black text-fuchsia-300">RIVAL（対戦相手）</div>
+          <div id="vs-res-opp-name" class="text-sm sm:text-base font-black text-white truncate">---</div>
+          <div id="vs-res-opp-score" class="font-digital text-xl sm:text-2xl font-black text-amber-300 mt-1">0 pt</div>
+          <div id="vs-res-opp-stats" class="text-[10px] sm:text-xs text-slate-300 font-bold mt-1 space-y-0.5">
+            <div>PERFECT: 0回 / 処理: 0人</div>
+            <div>最大コンボ: 0連鎖</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-[11px] font-bold text-slate-400 bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-2 mb-4">
+        ※リアルタイム対戦モードのスコアはランキングおよび自己ベスト・解放条件には影響しません。
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+        <button id="btn-vs-res-title" class="btn-3d bg-slate-800 hover:bg-slate-700 text-slate-200 font-extrabold text-xs sm:text-sm py-2.5 rounded-2xl border-b-4 border-slate-950">
+          🏠 タイトルへ
+        </button>
+        <button id="btn-vs-res-lobby" class="btn-3d bg-slate-700 hover:bg-slate-600 text-fuchsia-300 font-extrabold text-xs sm:text-sm py-2.5 rounded-2xl border-b-4 border-slate-900">
+          ⚔️ ロビーへ
+        </button>
+        <button id="btn-vs-res-rematch" class="btn-3d col-span-2 sm:col-span-1 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 font-black text-sm py-2.5 rounded-2xl border-b-4 border-emerald-800 shadow-lg">
+          🔄 ルームで再戦
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
        MAIN GAME SCRIPT
        ========================================================================= -->
   <script>
@@ -1829,7 +2159,10 @@
       'modal-ranking',
       'modal-tutorial-clear',
       'screen-game',
-      'screen-result'
+      'screen-result',
+      'screen-versus-lobby',
+      'screen-versus-room',
+      'screen-versus-result'
     ];
 
     function switchScreen(activeId) {
@@ -3992,6 +4325,11 @@
         const posPanel = document.getElementById('pos-panel');
         const tutBanner = document.getElementById('tutorial-banner');
         const lunBanner = document.getElementById('lunatic-banner');
+        const vsBar = document.getElementById('vs-opponent-bar');
+        if (vsBar && !vsBar.classList.contains('hidden')) {
+          const vsRect = vsBar.getBoundingClientRect();
+          if (vsRect.bottom > topBarBottom) topBarBottom = vsRect.bottom;
+        }
         let topBarBottom = 90;
         if (posPanel) {
           const posRect = posPanel.getBoundingClientRect();
@@ -4656,11 +4994,29 @@
       return tbl;
     })();
 
+    let activeSeededRng = null;
+    function setSeededRng(seed) {
+      let a = (Number(seed) || 1) >>> 0;
+      activeSeededRng = function () {
+        a |= 0;
+        a = (a + 0x6D2B79F5) | 0;
+        let t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    function clearSeededRng() {
+      activeSeededRng = null;
+    }
+    function gameRandom() {
+      return activeSeededRng ? activeSeededRng() : Math.random();
+    }
+
     function randomIntInclusive(min, max) {
       const lo = Math.ceil(min);
       const hi = Math.floor(max);
       if (hi <= lo) return lo;
-      return lo + Math.floor(Math.random() * (hi - lo + 1));
+      return lo + Math.floor(gameRandom() * (hi - lo + 1));
     }
 
     function precomputeWalletForPriceGen(wallet) {
@@ -4838,11 +5194,11 @@
         return { basePrice: randomIntInclusive(10, 99) * 10, isFullRandom: false };
       }
       // 40% 完全ランダム（要件30%以上）、60% 本物の値札っぽい下2桁
-      if (Math.random() < 0.40) {
+      if (gameRandom() < 0.40) {
         return { basePrice: randomIntInclusive(100, 3999), isFullRandom: true };
       }
       const hundreds = randomIntInclusive(1, 39) * 100;
-      const r = Math.random();
+      const r = gameRandom();
       let basePrice;
       if (r < 0.25) {
         basePrice = hundreds + randomIntInclusive(0, 9) * 10;     // ○○0
@@ -5000,6 +5356,888 @@
     };
 
     /*************************************************************************
+     * 7.5. Firebase Realtime Database リアルタイム対戦管理クラス (VersusManager)
+     * ※ランキング・自己ベスト・解放条件には一切影響しません
+     *************************************************************************/
+    class VersusManager {
+      constructor(game) {
+        this.game = game;
+        this.myUid = 'p_' + Math.random().toString(36).slice(2, 9) + '_' + Date.now().toString(36);
+        this.roomCode = null;
+        this.myRole = null; // 'host' | 'guest'
+        this.roomRef = null;
+        this.roomListener = null;
+        this.queueRef = null;
+        this.queueRoomCode = null;
+        this.isRandomSearching = false;
+        this.selectedRandomRule = 'score';
+        this.lastRoomData = null;
+        this.matchLaunched = false;
+        this.resultShown = false;
+        this.lastJammerSeq = 0;
+        this.finishWaitTimeout = null;
+        this.jammerSentCount = 0;
+
+        this.bindLobbyAndRoomEvents();
+      }
+
+      getDb() {
+        return RankingManager.db;
+      }
+
+      isReadyOnline() {
+        return Boolean(RankingManager.db && RankingManager.isOnline);
+      }
+
+      getDefaultSettings(vsRule = 'score') {
+        return {
+          vsRule: vsRule,
+          raceTarget: 7,
+          ruleType: this.game.ruleType || 'wallet',
+          difficulty: 'NORMAL',
+          lunaticTaxRate: 8,
+          showChange: true
+        };
+      }
+
+      bindLobbyAndRoomEvents() {
+        const setRandRule = (rule) => {
+          this.selectedRandomRule = rule;
+          const map = {
+            score: 'btn-vs-rand-rule-score',
+            jammer: 'btn-vs-rand-rule-jammer',
+            race: 'btn-vs-rand-rule-race'
+          };
+          Object.entries(map).forEach(([k, id]) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.className = k === rule
+              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-violet-500 text-slate-950 border-white shadow'
+              : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
+          });
+        };
+
+        document.getElementById('btn-vs-rand-rule-score').addEventListener('click', () => { sound.playClick(); setRandRule('score'); });
+        document.getElementById('btn-vs-rand-rule-jammer').addEventListener('click', () => { sound.playClick(); setRandRule('jammer'); });
+        document.getElementById('btn-vs-rand-rule-race').addEventListener('click', () => { sound.playClick(); setRandRule('race'); });
+
+        document.getElementById('btn-vs-lobby-back').addEventListener('click', () => {
+          sound.playClick();
+          this.cancelRandomSearch();
+          this.game.openModeSelectScreen();
+        });
+
+        document.getElementById('btn-vs-random-start').addEventListener('click', () => {
+          sound.init();
+          sound.startBGM();
+          sound.playClick();
+          this.startRandomMatch();
+        });
+
+        document.getElementById('btn-vs-random-cancel').addEventListener('click', () => {
+          sound.playReturn();
+          this.cancelRandomSearch();
+        });
+
+        document.getElementById('btn-vs-create-room').addEventListener('click', () => {
+          sound.init();
+          sound.startBGM();
+          sound.playClick();
+          this.createPrivateRoom();
+        });
+
+        document.getElementById('btn-vs-join-room').addEventListener('click', () => {
+          sound.init();
+          sound.startBGM();
+          sound.playClick();
+          const code = (document.getElementById('input-vs-room-code').value || '').trim();
+          this.joinRoomByCode(code, false);
+        });
+
+        document.getElementById('input-vs-room-code').addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            const code = (document.getElementById('input-vs-room-code').value || '').trim();
+            this.joinRoomByCode(code, false);
+          }
+        });
+
+        document.getElementById('btn-vs-room-leave').addEventListener('click', () => {
+          sound.playReturn();
+          this.leaveRoom();
+          this.openLobby();
+        });
+
+        document.getElementById('btn-vs-copy-code').addEventListener('click', () => {
+          sound.playClick();
+          if (this.roomCode && navigator.clipboard) {
+            navigator.clipboard.writeText(this.roomCode).catch(() => {});
+            const btn = document.getElementById('btn-vs-copy-code');
+            if (btn) {
+              btn.textContent = '✅ コピー済!';
+              setTimeout(() => { btn.textContent = '📋 コピー'; }, 1200);
+            }
+          }
+        });
+
+        document.querySelectorAll('.vs-opt-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            if (this.myRole !== 'host' || !this.roomRef) return;
+            sound.playClick();
+            const key = btn.getAttribute('data-vs-set');
+            let val = btn.getAttribute('data-vs-val');
+            if (key === 'raceTarget' || key === 'lunaticTaxRate') val = Number(val);
+            if (key === 'showChange') val = (val === 'true');
+            this.roomRef.child('settings/' + key).set(val).catch(() => {});
+          });
+        });
+
+        document.getElementById('btn-vs-start-match').addEventListener('click', () => {
+          if (this.myRole !== 'host' || !this.roomRef) return;
+          sound.playClick();
+          this.hostStartMatch();
+        });
+
+        document.getElementById('btn-vs-res-title').addEventListener('click', () => {
+          sound.playReturn();
+          this.leaveRoom();
+          this.game.returnToTitleScreen();
+        });
+
+        document.getElementById('btn-vs-res-lobby').addEventListener('click', () => {
+          sound.playClick();
+          this.leaveRoom();
+          this.openLobby();
+        });
+
+        document.getElementById('btn-vs-res-rematch').addEventListener('click', () => {
+          sound.playClick();
+          this.requestRematch();
+        });
+      }
+
+      openLobby() {
+        this.game.clearActiveTimers();
+        this.game.state = 'MODE_SELECT';
+        this.game.isVersusRun = false;
+        clearSeededRng();
+        this.game.scene3D.setTitleMode(true);
+        document.getElementById('ui-judgment-overlay').classList.add('hidden');
+        document.getElementById('vs-opponent-bar').classList.add('hidden');
+
+        const nameInput = document.getElementById('input-vs-name');
+        if (nameInput) nameInput.value = RankingManager.getSavedPlayerName() || this.game.playerName || '';
+        const errEl = document.getElementById('vs-lobby-error');
+        if (errEl) errEl.classList.add('hidden');
+        this.updateOnlineStatusBadge();
+        switchScreen('screen-versus-lobby');
+      }
+
+      updateOnlineStatusBadge() {
+        const el = document.getElementById('vs-online-status');
+        if (!el) return;
+        if (RankingManager.db && RankingManager.isOnline) {
+          el.textContent = '🌐 オンライン対戦 接続OK';
+          el.className = 'font-black text-emerald-300';
+        } else if (RankingManager.isFirebaseConfigured()) {
+          el.textContent = '⏳ オンラインサーバー接続中...';
+          el.className = 'font-black text-amber-300';
+        } else {
+          el.textContent = '❌ オフライン（Firebase未接続のため利用不可）';
+          el.className = 'font-black text-rose-400';
+        }
+      }
+
+      showLobbyError(msg) {
+        const el = document.getElementById('vs-lobby-error');
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.remove('hidden');
+      }
+
+      getEnteredPlayerName() {
+        const input = document.getElementById('input-vs-name');
+        const name = RankingManager.normalizeName(input ? input.value : this.game.playerName);
+        this.game.playerName = name;
+        RankingManager.setSavedPlayerName(name);
+        return name;
+      }
+
+      generate4DigitCode() {
+        return String(1000 + Math.floor(Math.random() * 9000));
+      }
+
+      makeEmptyPlayer(name) {
+        return {
+          uid: this.myUid,
+          name: name,
+          connected: true,
+          score: 0,
+          combo: 0,
+          maxCombo: 0,
+          perfectCount: 0,
+          served: 0,
+          finished: false,
+          failedSuddenDeath: false,
+          jammerSentCount: 0
+        };
+      }
+
+      async createPrivateRoom(isRandom = false, forcedVsRule = null) {
+        const db = this.getDb();
+        if (!db) {
+          this.showLobbyError('Firebaseに接続できていません。ネット環境を確認してください。');
+          return null;
+        }
+        this.cancelRandomSearch();
+        this.leaveRoom();
+
+        const name = this.getEnteredPlayerName();
+        const code = this.generate4DigitCode();
+        const ref = db.ref('rooms/' + code);
+        const settings = this.getDefaultSettings(forcedVsRule || 'score');
+        const roomData = {
+          code,
+          isRandom: Boolean(isRandom),
+          createdAt: Date.now(),
+          status: 'waiting',
+          seed: 0,
+          startedAt: 0,
+          settings,
+          winner: null,
+          players: {
+            host: this.makeEmptyPlayer(name)
+          },
+          jammers: {
+            toHost: { seq: 0, c1: 0, c10: 0, fromCombo: 0 },
+            toGuest: { seq: 0, c1: 0, c10: 0, fromCombo: 0 }
+          }
+        };
+
+        try {
+          await ref.set(roomData);
+          this.attachRoom(code, 'host', ref);
+          if (!isRandom) {
+            switchScreen('screen-versus-room');
+          }
+          return code;
+        } catch (err) {
+          console.warn('createRoom error:', err);
+          this.showLobbyError('ルーム作成に失敗しました。Firebaseのルール設定を確認してください。');
+          return null;
+        }
+      }
+
+      async joinRoomByCode(code, isRandom = false) {
+        const db = this.getDb();
+        if (!db) {
+          this.showLobbyError('Firebaseに接続できていません。');
+          return false;
+        }
+        const cleanCode = String(code || '').trim();
+        if (!/^\d{4}$/.test(cleanCode)) {
+          this.showLobbyError('4桁の数字ルームコードを入力してください。');
+          return false;
+        }
+        const name = this.getEnteredPlayerName();
+        const ref = db.ref('rooms/' + cleanCode);
+
+        try {
+          const snap = await ref.once('value');
+          const data = snap.val();
+          if (!data) {
+            if (!isRandom) this.showLobbyError(`ルーム「${cleanCode}」が見つかりませんでした。`);
+            return false;
+          }
+          if (data.status !== 'waiting') {
+            if (!isRandom) this.showLobbyError('このルームはすでに対戦中または終了しています。');
+            return false;
+          }
+          if (data.players && data.players.guest && data.players.guest.connected) {
+            if (!isRandom) this.showLobbyError('このルームは満員です。');
+            return false;
+          }
+          if (data.players && data.players.host && data.players.host.uid === this.myUid) {
+            return false;
+          }
+
+          const guestObj = this.makeEmptyPlayer(name);
+          const txRes = await ref.child('players/guest').transaction((cur) => {
+            if (cur && cur.connected) return;
+            return guestObj;
+          });
+          if (!txRes.committed) {
+            if (!isRandom) this.showLobbyError('他のプレイヤーが先に入室しました。');
+            return false;
+          }
+
+          this.attachRoom(cleanCode, 'guest', ref);
+          if (!isRandom) {
+            switchScreen('screen-versus-room');
+          }
+          return true;
+        } catch (err) {
+          console.warn('joinRoom error:', err);
+          if (!isRandom) this.showLobbyError('入室に失敗しました。通信状況を確認してください。');
+          return false;
+        }
+      }
+
+      async startRandomMatch() {
+        const db = this.getDb();
+        if (!db) {
+          this.showLobbyError('Firebaseに接続できていません。');
+          return;
+        }
+        this.cancelRandomSearch();
+        this.leaveRoom();
+        this.getEnteredPlayerName();
+
+        const rule = this.selectedRandomRule || 'score';
+        const qRef = db.ref('versus_queue/' + rule);
+        this.queueRef = qRef;
+        this.isRandomSearching = true;
+        document.getElementById('vs-random-searching').classList.remove('hidden');
+        document.getElementById('btn-vs-random-start').disabled = true;
+
+        let matchedCode = null;
+        try {
+          const tx = await qRef.transaction((cur) => {
+            const now = Date.now();
+            if (cur && cur.code && cur.uid !== this.myUid && (now - (cur.createdAt || 0)) < 120000) {
+              matchedCode = cur.code;
+              return null; // キューから取り出す
+            }
+            return cur;
+          });
+
+          if (matchedCode) {
+            const ok = await this.joinRoomByCode(matchedCode, true);
+            if (ok) {
+              this.isRandomSearching = false;
+              document.getElementById('vs-random-searching').classList.add('hidden');
+              document.getElementById('btn-vs-random-start').disabled = false;
+              switchScreen('screen-versus-room');
+              return;
+            }
+          }
+
+          // 待機相手がいない場合は自分が待機ルームを作成してキューに登録
+          const newCode = await this.createPrivateRoom(true, rule);
+          if (!newCode) {
+            this.cancelRandomSearch();
+            return;
+          }
+          this.queueRoomCode = newCode;
+          await qRef.set({ code: newCode, uid: this.myUid, createdAt: Date.now() });
+          qRef.onDisconnect().remove();
+        } catch (err) {
+          console.warn('startRandomMatch error:', err);
+          this.cancelRandomSearch();
+          this.showLobbyError('ランダムマッチの接続に失敗しました。');
+        }
+      }
+
+      cancelRandomSearch() {
+        this.isRandomSearching = false;
+        const searchBox = document.getElementById('vs-random-searching');
+        if (searchBox) searchBox.classList.add('hidden');
+        const startBtn = document.getElementById('btn-vs-random-start');
+        if (startBtn) startBtn.disabled = false;
+
+        if (this.queueRef && this.queueRoomCode) {
+          const targetCode = this.queueRoomCode;
+          this.queueRef.transaction((cur) => (cur && cur.code === targetCode ? null : cur)).catch(() => {});
+          this.queueRef.onDisconnect().cancel().catch(() => {});
+        }
+        this.queueRef = null;
+        this.queueRoomCode = null;
+        if (this.roomCode && this.lastRoomData && this.lastRoomData.isRandom && this.lastRoomData.status === 'waiting') {
+          this.leaveRoom();
+        }
+      }
+
+      attachRoom(code, role, ref) {
+        this.detachRoomListeners();
+        this.roomCode = code;
+        this.myRole = role;
+        this.roomRef = ref;
+        this.matchLaunched = false;
+        this.resultShown = false;
+        this.lastJammerSeq = 0;
+        this.jammerSentCount = 0;
+
+        // 切断時の自動クリーンアップ設定
+        const myConnRef = ref.child(`players/${role}/connected`);
+        myConnRef.set(true).catch(() => {});
+        myConnRef.onDisconnect().set(false);
+        if (role === 'host') {
+          // 待機中にホストが切断した場合にゴミ部屋を残さないよう、退出時にも削除する
+        }
+
+        this.roomListener = (snap) => {
+          const data = snap.val();
+          if (!data) {
+            if (this.roomCode) {
+              this.detachRoomListeners();
+              if (this.game.isVersusRun) {
+                this.game.clearActiveTimers();
+                this.game.isVersusRun = false;
+                clearSeededRng();
+              }
+              this.openLobby();
+              this.showLobbyError('ホストがルームを閉じました。');
+            }
+            return;
+          }
+          this.lastRoomData = data;
+          this.handleRoomUpdate(data);
+        };
+        ref.on('value', this.roomListener);
+      }
+
+      detachRoomListeners() {
+        if (this.finishWaitTimeout) {
+          clearTimeout(this.finishWaitTimeout);
+          this.finishWaitTimeout = null;
+        }
+        if (this.roomRef && this.roomListener) {
+          this.roomRef.off('value', this.roomListener);
+        }
+        this.roomListener = null;
+      }
+
+      leaveRoom() {
+        if (this.queueRef && this.queueRoomCode) {
+          const targetCode = this.queueRoomCode;
+          this.queueRef.transaction((cur) => (cur && cur.code === targetCode ? null : cur)).catch(() => {});
+          this.queueRef.onDisconnect().cancel().catch(() => {});
+          this.queueRef = null;
+          this.queueRoomCode = null;
+        }
+        const ref = this.roomRef;
+        const role = this.myRole;
+        const wasWaiting = this.lastRoomData && this.lastRoomData.status === 'waiting';
+        this.detachRoomListeners();
+        if (ref && role) {
+          ref.child(`players/${role}/connected`).onDisconnect().cancel().catch(() => {});
+          if (role === 'host' && wasWaiting) {
+            ref.remove().catch(() => {});
+          } else {
+            ref.child(`players/${role}/connected`).set(false).catch(() => {});
+          }
+        }
+        this.roomCode = null;
+        this.myRole = null;
+        this.roomRef = null;
+        this.lastRoomData = null;
+        this.matchLaunched = false;
+        this.resultShown = false;
+        this.isRandomSearching = false;
+      }
+
+      handleRoomUpdate(data) {
+        const host = data.players && data.players.host ? data.players.host : null;
+        const guest = data.players && data.players.guest ? data.players.guest : null;
+        const oppRole = this.myRole === 'host' ? 'guest' : 'host';
+        const me = data.players ? data.players[this.myRole] : null;
+        const opp = data.players ? data.players[oppRole] : null;
+
+        // ランダムマッチでゲストが入室したら自動的に開始する（ホスト側）
+        if (data.isRandom && data.status === 'waiting' && this.myRole === 'host' && guest && guest.connected) {
+          if (this.isRandomSearching) {
+            this.isRandomSearching = false;
+            document.getElementById('vs-random-searching').classList.add('hidden');
+            document.getElementById('btn-vs-random-start').disabled = false;
+            if (this.queueRef) {
+              this.queueRef.onDisconnect().cancel().catch(() => {});
+              this.queueRef.remove().catch(() => {});
+              this.queueRef = null;
+              this.queueRoomCode = null;
+            }
+          }
+          this.hostStartMatch();
+          return;
+        }
+
+        if (data.status === 'waiting') {
+          this.matchLaunched = false;
+          this.resultShown = false;
+          if (!this.isRandomSearching) {
+            this.renderRoomUI(data, host, guest);
+          }
+          return;
+        }
+
+        if (data.status === 'playing') {
+          if (!this.matchLaunched) {
+            this.matchLaunched = true;
+            this.resultShown = false;
+            this.lastJammerSeq = 0;
+            this.jammerSentCount = 0;
+            this.game.startVersusPlay(data);
+          }
+
+          // 相手HUD更新
+          this.updateOpponentHUD(data, me, opp);
+
+          // お邪魔受信チェック
+          if (data.settings && data.settings.vsRule === 'jammer' && data.jammers) {
+            const myJammerKey = this.myRole === 'host' ? 'toHost' : 'toGuest';
+            const jam = data.jammers[myJammerKey];
+            if (jam && jam.seq > this.lastJammerSeq) {
+              this.lastJammerSeq = jam.seq;
+              if ((jam.c1 || 0) > 0 || (jam.c10 || 0) > 0) {
+                this.game.receiveVersusJammer(jam.c1 || 0, jam.c10 || 0, jam.fromCombo || 1);
+              }
+            }
+          }
+
+          // 相手の切断チェック
+          if (opp && opp.connected === false && !data.winner) {
+            this.claimWinner(this.myRole, '対戦相手が切断したため不戦勝となりました！');
+            return;
+          }
+
+          // 勝者確定通知のチェック
+          if (data.winner && !this.resultShown) {
+            this.showVersusResult(data);
+            return;
+          }
+
+          // 両者が終了したら勝敗決定
+          if (me && opp && me.finished && opp.finished && !data.winner) {
+            this.resolveScoreWinner(data);
+          }
+          return;
+        }
+
+        if (data.status === 'finished' && !this.resultShown) {
+          this.showVersusResult(data);
+        }
+      }
+
+      renderRoomUI(data, host, guest) {
+        const codeEl = document.getElementById('vs-room-code-display');
+        if (codeEl) codeEl.textContent = data.code || '----';
+
+        const hostName = document.getElementById('vs-room-host-name');
+        const hostSt = document.getElementById('vs-room-host-status');
+        if (hostName) hostName.textContent = host ? host.name : '---';
+        if (hostSt) hostSt.textContent = host && host.connected ? '● 準備OK' : 'オフライン';
+
+        const guestName = document.getElementById('vs-room-guest-name');
+        const guestSt = document.getElementById('vs-room-guest-status');
+        const guestReady = Boolean(guest && guest.connected);
+        if (guestName) {
+          guestName.textContent = guestReady ? guest.name : '待機中...';
+          guestName.className = guestReady ? 'text-sm sm:text-base font-black text-white truncate mt-0.5' : 'text-sm sm:text-base font-black text-slate-400 truncate mt-0.5';
+        }
+        if (guestSt) {
+          guestSt.textContent = guestReady ? '● 準備OK' : '相手の入室待ち';
+          guestSt.className = guestReady ? 'text-[10px] font-bold text-emerald-300 mt-0.5' : 'text-[10px] font-bold text-slate-400 mt-0.5';
+        }
+
+        const s = data.settings || this.getDefaultSettings();
+        const isHost = this.myRole === 'host';
+        const roleHint = document.getElementById('vs-settings-role-hint');
+        if (roleHint) roleHint.textContent = isHost ? 'あなたがホストです（設定変更可）' : 'ホストの設定を確認中';
+
+        document.querySelectorAll('.vs-opt-btn').forEach((btn) => {
+          const key = btn.getAttribute('data-vs-set');
+          const val = btn.getAttribute('data-vs-val');
+          const active = String(s[key]) === String(val);
+          btn.disabled = !isHost;
+          btn.className = `vs-opt-btn btn-3d py-1.5 px-1.5 rounded-xl text-[10px] sm:text-xs font-black border-2 transition-colors ${
+            active
+              ? 'bg-cyan-400 text-slate-950 border-white shadow'
+              : 'bg-slate-800 text-slate-300 border-slate-700'
+          } ${!isHost ? 'opacity-85 cursor-default' : ''}`;
+        });
+
+        const raceRow = document.getElementById('vs-race-target-row');
+        if (raceRow) raceRow.classList.toggle('hidden', s.vsRule !== 'race');
+        const lunRow = document.getElementById('vs-lunatic-tax-row');
+        if (lunRow) lunRow.classList.toggle('hidden', s.difficulty !== 'LUNATIC');
+
+        const expEl = document.getElementById('vs-rule-explain');
+        if (expEl) {
+          if (s.vsRule === 'jammer') {
+            expEl.textContent = '💣 PERFECTやコンボを決めるたび、相手の財布に1円・10円玉を送り込むお邪魔バトル！終了時のスコアが高い方が勝ち！';
+          } else if (s.vsRule === 'race') {
+            expEl.textContent = `⚡ 先に ${s.raceTarget || 7}人 PERFECTを達成したプレイヤーが即勝利する超スピード勝負！`;
+          } else {
+            expEl.textContent = '🏆 同じ問題・同じ財布で同時スタート！制限時間終了時のスコアが高い方が勝ち！';
+          }
+        }
+
+        const startBtn = document.getElementById('btn-vs-start-match');
+        if (startBtn) {
+          if (isHost) {
+            startBtn.disabled = !guestReady;
+            startBtn.textContent = guestReady ? '🚀 対戦スタート！' : '⏳ 対戦相手の入室を待っています...';
+          } else {
+            startBtn.disabled = true;
+            startBtn.textContent = '⏳ ホストが対戦を開始するのを待っています...';
+          }
+        }
+      }
+
+      hostStartMatch() {
+        if (!this.roomRef || !this.lastRoomData) return;
+        const hostName = this.lastRoomData.players && this.lastRoomData.players.host ? this.lastRoomData.players.host.name : this.game.playerName;
+        const guestName = this.lastRoomData.players && this.lastRoomData.players.guest ? this.lastRoomData.players.guest.name : 'ゲスト';
+        const hostUid = this.lastRoomData.players && this.lastRoomData.players.host ? this.lastRoomData.players.host.uid : this.myUid;
+        const guestUid = this.lastRoomData.players && this.lastRoomData.players.guest ? this.lastRoomData.players.guest.uid : 'guest';
+
+        const seed = Math.floor(Math.random() * 2147483640) + 1;
+        this.roomRef.update({
+          status: 'playing',
+          seed,
+          startedAt: Date.now(),
+          winner: null,
+          'players/host': { ...this.makeEmptyPlayer(hostName), uid: hostUid },
+          'players/guest': { ...this.makeEmptyPlayer(guestName), uid: guestUid },
+          jammers: {
+            toHost: { seq: 0, c1: 0, c10: 0, fromCombo: 0 },
+            toGuest: { seq: 0, c1: 0, c10: 0, fromCombo: 0 }
+          }
+        }).catch(() => {});
+      }
+
+      updateOpponentHUD(data, me, opp) {
+        const bar = document.getElementById('vs-opponent-bar');
+        if (!bar) return;
+        const s = data.settings || this.getDefaultSettings();
+
+        const oppNameEl = document.getElementById('vs-opp-name');
+        const rulePillEl = document.getElementById('vs-rule-pill');
+        const leadBadge = document.getElementById('vs-lead-badge');
+        const oppScoreEl = document.getElementById('vs-opp-score');
+        const oppSubEl = document.getElementById('vs-opp-sub');
+
+        if (oppNameEl) oppNameEl.textContent = opp ? opp.name : '対戦相手';
+        if (rulePillEl) {
+          rulePillEl.textContent = s.vsRule === 'jammer'
+            ? '💣お邪魔対決'
+            : (s.vsRule === 'race' ? `⚡${s.raceTarget || 7}人先取` : '🏆スコア対決');
+        }
+
+        const myScore = this.game.score || 0;
+        const oppScore = opp ? (opp.score || 0) : 0;
+        const oppPerfect = opp ? (opp.perfectCount || 0) : 0;
+        const oppServed = opp ? (opp.served || 0) : 0;
+        const oppCombo = opp ? (opp.combo || 0) : 0;
+
+        if (s.vsRule === 'race') {
+          const target = s.raceTarget || 7;
+          if (oppScoreEl) oppScoreEl.textContent = `${oppPerfect}/${target}神`;
+          if (oppSubEl) oppSubEl.textContent = oppCombo >= 2 ? `(${oppCombo}連鎖)` : `${oppScore.toLocaleString()}pt`;
+          const myP = this.game.perfectCount || 0;
+          if (leadBadge) {
+            if (myP > oppPerfect) {
+              leadBadge.textContent = `リード (${myP}/${target})`;
+              leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-emerald-400 text-slate-950 leading-none';
+            } else if (myP < oppPerfect) {
+              leadBadge.textContent = `追撃 (${myP}/${target})`;
+              leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-rose-500 text-white leading-none';
+            } else {
+              leadBadge.textContent = `互角 (${myP}/${target})`;
+              leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 leading-none';
+            }
+          }
+        } else {
+          if (oppScoreEl) oppScoreEl.textContent = `${oppScore.toLocaleString()}pt`;
+          if (oppSubEl) oppSubEl.textContent = oppCombo >= 2 ? `${oppServed}人(${oppCombo}連)` : `${oppServed}人`;
+          if (leadBadge) {
+            if (myScore > oppScore) {
+              leadBadge.textContent = `+${(myScore - oppScore).toLocaleString()} リード`;
+              leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-emerald-400 text-slate-950 leading-none';
+            } else if (myScore < oppScore) {
+              leadBadge.textContent = `-${(oppScore - myScore).toLocaleString()} ビハインド`;
+              leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-rose-500 text-white leading-none';
+            } else {
+              leadBadge.textContent = '互角';
+              leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 leading-none';
+            }
+          }
+        }
+      }
+
+      syncMyProgress(finished = false, failedSuddenDeath = false) {
+        if (!this.roomRef || !this.myRole) return;
+        const served = Math.max(0, this.game.customerIndex - (finished ? 1 : 0));
+        this.roomRef.child('players/' + this.myRole).update({
+          score: this.game.score || 0,
+          combo: this.game.combo || 0,
+          maxCombo: this.game.maxCombo || 0,
+          perfectCount: this.game.perfectCount || 0,
+          served: served,
+          finished: Boolean(finished),
+          failedSuddenDeath: Boolean(failedSuddenDeath),
+          jammerSentCount: this.jammerSentCount || 0
+        }).catch(() => {});
+
+        if (this.lastRoomData) {
+          const s = this.lastRoomData.settings || this.getDefaultSettings();
+          // 先取ルール達成チェック
+          if (s.vsRule === 'race' && (this.game.perfectCount || 0) >= (s.raceTarget || 7)) {
+            this.claimWinner(this.myRole, `⚡ 先に ${s.raceTarget || 7}人 PERFECTを達成！`);
+            return;
+          }
+          // EX/LUNATIC サドンデス脱落チェック
+          if (failedSuddenDeath) {
+            const oppRole = this.myRole === 'host' ? 'guest' : 'host';
+            this.claimWinner(oppRole, `💀 ${this.game.playerName} がサドンデスで脱落！`);
+            return;
+          }
+        }
+
+        if (finished && !this.finishWaitTimeout) {
+          this.finishWaitTimeout = setTimeout(() => {
+            this.finishWaitTimeout = null;
+            if (!this.resultShown && this.lastRoomData) {
+              this.resolveScoreWinner(this.lastRoomData);
+            }
+          }, 3500);
+        }
+      }
+
+      sendJammerToOpponent(comboCount) {
+        if (!this.roomRef || !this.myRole || !this.lastRoomData) return;
+        const s = this.lastRoomData.settings || {};
+        if (s.vsRule !== 'jammer') return;
+
+        let c1 = 2;
+        let c10 = 0;
+        if (comboCount >= 5) {
+          c1 = 4; c10 = 2;
+        } else if (comboCount >= 3) {
+          c1 = 3; c10 = 1;
+        }
+        this.jammerSentCount += (c1 + c10);
+
+        const targetKey = this.myRole === 'host' ? 'toGuest' : 'toHost';
+        this.roomRef.child('jammers/' + targetKey).transaction((cur) => {
+          const nextSeq = (cur && typeof cur.seq === 'number' ? cur.seq : 0) + 1;
+          return { seq: nextSeq, c1, c10, fromCombo: comboCount };
+        }).catch(() => {});
+
+        this.game.showVersusJammerToast(`🚀 相手へお邪魔送信！ 1円×${c1}${c10 > 0 ? `・10円×${c10}` : ''}`, false);
+      }
+
+      claimWinner(winnerRole, reason) {
+        if (!this.roomRef) return;
+        this.roomRef.child('winner').transaction((cur) => {
+          if (cur) return;
+          return { role: winnerRole, reason };
+        }).then((res) => {
+          if (res && res.committed && this.roomRef) {
+            this.roomRef.child('status').set('finished').catch(() => {});
+          }
+        }).catch(() => {});
+      }
+
+      resolveScoreWinner(data) {
+        if (!data || !data.players || data.winner) return;
+        const h = data.players.host || { score: 0, perfectCount: 0 };
+        const g = data.players.guest || { score: 0, perfectCount: 0 };
+        let winRole = 'draw';
+        let reason = '同点引き分け！見事な名勝負でした！';
+        if ((h.score || 0) > (g.score || 0)) {
+          winRole = 'host';
+          reason = `スコア差 +${((h.score || 0) - (g.score || 0)).toLocaleString()}pt で決着！`;
+        } else if ((g.score || 0) > (h.score || 0)) {
+          winRole = 'guest';
+          reason = `スコア差 +${((g.score || 0) - (h.score || 0)).toLocaleString()}pt で決着！`;
+        }
+        this.claimWinner(winRole, reason);
+      }
+
+      showVersusResult(data) {
+        if (this.resultShown) return;
+        this.resultShown = true;
+        if (this.finishWaitTimeout) {
+          clearTimeout(this.finishWaitTimeout);
+          this.finishWaitTimeout = null;
+        }
+
+        this.game.clearActiveTimers();
+        this.game.state = 'RESULT';
+        this.game.isVersusRun = false;
+        clearSeededRng();
+        this.game.trayList = [];
+        this.game.exitZoneMode();
+        this.game.scene3D.clearAllTrayItems(false);
+        this.game.scene3D.setTitleMode(true);
+        document.getElementById('ui-judgment-overlay').classList.add('hidden');
+        document.getElementById('vs-opponent-bar').classList.add('hidden');
+        document.getElementById('lunatic-banner').classList.add('hidden');
+
+        const oppRole = this.myRole === 'host' ? 'guest' : 'host';
+        const me = (data.players && data.players[this.myRole]) || { name: this.game.playerName, score: this.game.score, perfectCount: this.game.perfectCount, served: Math.max(0, this.game.customerIndex - 1), maxCombo: this.game.maxCombo, jammerSentCount: this.jammerSentCount };
+        const opp = (data.players && data.players[oppRole]) || { name: '対戦相手', score: 0, perfectCount: 0, served: 0, maxCombo: 0, jammerSentCount: 0 };
+        const w = data.winner || { role: 'draw', reason: '対戦終了' };
+
+        const bannerEl = document.getElementById('vs-res-banner');
+        const reasonEl = document.getElementById('vs-res-reason');
+        if (w.role === this.myRole) {
+          bannerEl.textContent = '🏆 YOU WIN!!';
+          bannerEl.className = 'text-3xl sm:text-5xl font-black tracking-wider text-amber-300 drop-shadow mb-1';
+          sound.playPerfectFanfare();
+        } else if (w.role === 'draw') {
+          bannerEl.textContent = '🤝 DRAW!!';
+          bannerEl.className = 'text-3xl sm:text-5xl font-black tracking-wider text-cyan-300 drop-shadow mb-1';
+          sound.playGood();
+        } else {
+          bannerEl.textContent = '😢 YOU LOSE...';
+          bannerEl.className = 'text-3xl sm:text-5xl font-black tracking-wider text-rose-400 drop-shadow mb-1';
+          sound.playBadBuzzer();
+        }
+        if (reasonEl) reasonEl.textContent = w.reason || '';
+
+        const isJammer = data.settings && data.settings.vsRule === 'jammer';
+        const fillCard = (prefix, p) => {
+          const nEl = document.getElementById(`vs-res-${prefix}-name`);
+          const sEl = document.getElementById(`vs-res-${prefix}-score`);
+          const stEl = document.getElementById(`vs-res-${prefix}-stats`);
+          if (nEl) nEl.textContent = p.name || '---';
+          if (sEl) sEl.textContent = `${Number(p.score || 0).toLocaleString()} pt`;
+          if (stEl) {
+            stEl.innerHTML = `
+              <div>PERFECT: ${p.perfectCount || 0}回 ／ 処理: ${p.served || 0}人</div>
+              <div>最大コンボ: ${p.maxCombo || 0}連鎖${isJammer ? ` ／ お邪魔: ${p.jammerSentCount || 0}枚` : ''}</div>
+            `;
+          }
+        };
+        fillCard('me', me);
+        fillCard('opp', opp);
+
+        const rematchBtn = document.getElementById('btn-vs-res-rematch');
+        if (rematchBtn) {
+          const canRematch = Boolean(this.roomRef && opp && opp.connected !== false);
+          rematchBtn.disabled = !canRematch;
+          rematchBtn.classList.toggle('opacity-50', !canRematch);
+        }
+
+        switchScreen('screen-versus-result');
+      }
+
+      requestRematch() {
+        if (!this.roomRef) {
+          this.openLobby();
+          return;
+        }
+        this.matchLaunched = false;
+        this.resultShown = false;
+        if (this.myRole === 'host') {
+          this.roomRef.update({ status: 'waiting', winner: null }).catch(() => {});
+        }
+        switchScreen('screen-versus-room');
+      }
+    }
+
+    /*************************************************************************
      * 8. ゲーム進行・モード・お釣り表示・カウントダウン管理クラス
      *************************************************************************/
     class PittariGame {
@@ -5007,6 +6245,8 @@
         this.scene3D = scene3D;
         this.state = 'TITLE'; // TITLE | MODE_SELECT | COUNTDOWN | PLAYING | JUDGING | RESULT
         this.isRankingRun = false;
+        this.isVersusRun = false;
+        this.vsSettings = null;
         this.isTutorial = false;
         this.difficulty = 'NORMAL';
         this.lunaticTaxRate = 8;
@@ -5060,6 +6300,7 @@
         this.turnElapsed = 0;
         this.hesitationHintShown = false;
 
+        this.versus = new VersusManager(this);
         this.bindUIEvents();
         this.syncChangeToggleUI();
         this.syncHelperToggleUI();
@@ -5109,6 +6350,13 @@
           sound.startBGM();
           sound.playClick();
           this.openStandaloneRankingModal('screen-title');
+        });
+
+        document.getElementById('btn-title-versus').addEventListener('click', () => {
+          sound.init();
+          sound.startBGM();
+          sound.playClick();
+          this.versus.openLobby();
         });
 
         document.getElementById('btn-mode-back-title').addEventListener('click', () => {
@@ -5176,6 +6424,13 @@
           sound.startBGM();
           sound.playClick();
           this.openNameInputModal();
+        });
+
+        document.getElementById('btn-select-versus').addEventListener('click', () => {
+          sound.init();
+          sound.startBGM();
+          sound.playClick();
+          this.versus.openLobby();
         });
 
         document.getElementById('btn-mode-open-ranking').addEventListener('click', () => {
@@ -5358,7 +6613,7 @@
         });
 
         document.getElementById('btn-hud-change-toggle').addEventListener('click', () => {
-          if (this.isRankingRun) {
+          if (this.isRankingRun || this.isVersusRun) {
             sound.playClick();
             return;
           }
@@ -5372,6 +6627,10 @@
         const btnHudHelper = document.getElementById('btn-hud-helper-toggle');
         if (btnHudHelper) {
           btnHudHelper.addEventListener('click', () => {
+            if (this.isVersusRun) {
+              sound.playClick();
+              return;
+            }
             sound.playClick();
             this.aiHelperEnabled = !this.aiHelperEnabled;
             this.syncHelperToggleUI();
@@ -6008,6 +7267,14 @@
 
       returnToTitleScreen() {
         this.clearActiveTimers();
+        if (this.isVersusRun || (this.versus && this.versus.roomCode)) {
+          this.versus.leaveRoom();
+        }
+        this.isVersusRun = false;
+        this.vsSettings = null;
+        clearSeededRng();
+        const vsBar = document.getElementById('vs-opponent-bar');
+        if (vsBar) vsBar.classList.add('hidden');
         this.state = 'TITLE';
         this.isTutorial = false;
         this.trayList = [];
@@ -6024,6 +7291,14 @@
 
       openModeSelectScreen() {
         this.clearActiveTimers();
+        if (this.isVersusRun || (this.versus && this.versus.roomCode)) {
+          this.versus.leaveRoom();
+        }
+        this.isVersusRun = false;
+        this.vsSettings = null;
+        clearSeededRng();
+        const vsBar = document.getElementById('vs-opponent-bar');
+        if (vsBar) vsBar.classList.add('hidden');
         this.state = 'MODE_SELECT';
         this.isTutorial = false;
         this.trayList = [];
@@ -6274,6 +7549,9 @@
         }
         this.isTutorial = false;
         this.isRankingRun = false;
+        this.isVersusRun = false;
+        this.vsSettings = null;
+        clearSeededRng();
         this.difficulty = difficulty;
         this.showChangeDisplay = this.freePlayShowChange;
         this._launchGameplayWithCountdown();
@@ -6290,6 +7568,9 @@
         }
         this.isTutorial = false;
         this.isRankingRun = true;
+        this.isVersusRun = false;
+        this.vsSettings = null;
+        clearSeededRng();
         this.difficulty = difficulty;
         if (lunaticLimit === 10 || lunaticLimit === 15) {
           this.lunaticTurnLimit = lunaticLimit;
@@ -6301,6 +7582,78 @@
         // ランキングモードはお釣り表示を統一（暗算固定）し、フリープレイでお釣り表示あり/なしを選択させる
         this.showChangeDisplay = false;
         this._launchGameplayWithCountdown();
+      }
+
+      startVersusPlay(roomData) {
+        const s = (roomData && roomData.settings) || this.versus.getDefaultSettings();
+        this.isTutorial = false;
+        this.isRankingRun = false; // ランキングには一切影響させない
+        this.isVersusRun = true;
+        this.vsSettings = s;
+        this.ruleType = s.ruleType === 'change' ? 'change' : 'wallet';
+        this.difficulty = s.difficulty || 'NORMAL';
+        this.lunaticTaxRate = s.lunaticTaxRate === 10 ? 10 : 8;
+        this.lunaticTurnLimit = 15;
+        this.showChangeDisplay = Boolean(s.showChange);
+        this.aiHelperEnabled = false;
+        this.syncHelperToggleUI();
+
+        // 両プレイヤー共通のシードで乱数を初期化
+        setSeededRng(roomData.seed || 12345);
+        this._launchGameplayWithCountdown();
+
+        // 先取勝負の場合は制限時間を長め（180秒）に設定
+        if (s.vsRule === 'race') {
+          this.maxTime = 180.0;
+          this.timeLeft = 180.0;
+        }
+        const vsBar = document.getElementById('vs-opponent-bar');
+        if (vsBar) vsBar.classList.remove('hidden');
+        this.updateTopHUD();
+      }
+
+      receiveVersusJammer(c1, c10, fromCombo) {
+        if (!this.isVersusRun || this.state === 'RESULT') return;
+        this.wallet[1] = (this.wallet[1] || 0) + (c1 || 0);
+        this.wallet[10] = (this.wallet[10] || 0) + (c10 || 0);
+
+        // 現在の問題に対する最適解を即座に再計算（財布が増えたため）
+        if (this.state === 'PLAYING') {
+          this.bestSolution = findBestPayment(this.currentPrice, this.wallet, this.ruleType);
+          this.updatePOSDisplay();
+          this.renderWalletUI();
+        }
+        sound.playBadBuzzer();
+        const parts = [];
+        if (c1 > 0) parts.push(`1円×${c1}`);
+        if (c10 > 0) parts.push(`10円×${c10}`);
+        this.showVersusJammerToast(`💣 お邪魔襲来！ ${parts.join('・')} が財布に追加！`, true);
+        const posPanel = document.getElementById('pos-panel');
+        if (posPanel) {
+          posPanel.classList.remove('animate-shake');
+          void posPanel.offsetWidth;
+          posPanel.classList.add('animate-shake');
+        }
+      }
+
+      showVersusJammerToast(text, isIncoming = true) {
+        const layer = document.getElementById('vs-fx-layer');
+        if (!layer) return;
+        if (isIncoming) {
+          const flash = document.createElement('div');
+          flash.className = 'vs-jammer-flash';
+          layer.appendChild(flash);
+          setTimeout(() => flash.remove(), 580);
+        }
+        const toast = document.createElement('div');
+        toast.className = `vs-jammer-toast text-xs sm:text-base border-2 shadow-2xl ${
+          isIncoming
+            ? 'bg-rose-950/95 border-rose-400 text-rose-200'
+            : 'bg-cyan-950/95 border-cyan-300 text-cyan-200'
+        }`;
+        toast.textContent = text;
+        layer.appendChild(toast);
+        setTimeout(() => toast.remove(), 1380);
       }
 
       _launchGameplayWithCountdown() {
@@ -6350,8 +7703,17 @@
           lunaticBanner.classList.add('hidden');
         }
 
+        const vsBarEl = document.getElementById('vs-opponent-bar');
+        if (vsBarEl) {
+          if (this.isVersusRun) vsBarEl.classList.remove('hidden');
+          else vsBarEl.classList.add('hidden');
+        }
+
         const badgeEl = document.getElementById('ui-mode-badge');
-        if (this.isRankingRun) {
+        if (this.isVersusRun) {
+          badgeEl.textContent = `⚔️ VS (${this.difficulty})`;
+          badgeEl.className = 'text-[9px] sm:text-[11px] font-black px-2 py-0.5 rounded-lg bg-fuchsia-500 text-white';
+        } else if (this.isRankingRun) {
           const diffStr = isLunatic ? '🌙LUNATIC' : (isEx ? '💀EX' : (isHard ? 'HARD' : 'NORMAL'));
           badgeEl.textContent = isLunatic
             ? `🏆 ${this.playerName} (🌙LUNATIC/${taxRate}%/${this.lunaticTurnLimit}秒)`
@@ -6534,21 +7896,21 @@
 
         if (!isFirstTurn) {
           if (this.wallet[1000] < 2) this.wallet[1000] += 2;
-          if (this.wallet[5000] < 1 && Math.random() < 0.65) this.wallet[5000] = 1;
-          if ((this.difficulty === 'HARD' || this.difficulty === 'EX' || isLunatic) && this.wallet[10000] < 1 && Math.random() < 0.6) {
+          if (this.wallet[5000] < 1 && gameRandom() < 0.65) this.wallet[5000] = 1;
+          if ((this.difficulty === 'HARD' || this.difficulty === 'EX' || isLunatic) && this.wallet[10000] < 1 && gameRandom() < 0.6) {
             this.wallet[10000] = 1;
           }
 
           if ((this.wallet[100] + this.wallet[50]) < 2) {
-            this.wallet[100] += 1 + Math.floor(Math.random() * 2);
-            if (Math.random() < 0.7) this.wallet[50] += 1;
+            this.wallet[100] += 1 + Math.floor(gameRandom() * 2);
+            if (gameRandom() < 0.7) this.wallet[50] += 1;
           }
           if ((this.wallet[10] + this.wallet[5]) < 2) {
-            this.wallet[10] += 2 + Math.floor(Math.random() * 2);
-            if (Math.random() < 0.7) this.wallet[5] += 1;
+            this.wallet[10] += 2 + Math.floor(gameRandom() * 2);
+            if (gameRandom() < 0.7) this.wallet[5] += 1;
           }
           if (this.wallet[1] < 2) {
-            this.wallet[1] += 2 + Math.floor(Math.random() * 3);
+            this.wallet[1] += 2 + Math.floor(gameRandom() * 3);
           }
         }
 
@@ -6612,9 +7974,9 @@
         const curExactRate = stats.total >= 4 ? stats.exact / stats.total : 0.24;
         const cur500Rate = stats.total >= 4 ? stats.only500 / stats.total : 0.07;
 
-        const wantExact = config.allowWantExact && curExactRate < 0.26 && Math.random() < config.exactPreferProb;
-        const preferEasyCoins = !wantExact && config.easyCoinsProb > 0 && Math.random() < config.easyCoinsProb;
-        const wantMoreCoins = !wantExact && config.moreCoinsProb > 0 && Math.random() < config.moreCoinsProb;
+        const wantExact = config.allowWantExact && curExactRate < 0.26 && gameRandom() < config.exactPreferProb;
+        const preferEasyCoins = !wantExact && config.easyCoinsProb > 0 && gameRandom() < config.easyCoinsProb;
+        const wantMoreCoins = !wantExact && config.moreCoinsProb > 0 && gameRandom() < config.moreCoinsProb;
         const avoidOnly500 = cur500Rate > 0.12;
         const avoidExact = curExactRate > 0.28;
 
@@ -7096,6 +8458,9 @@
             billBonusInfo = { savedBills: billSavedCount, bonusPt: billBonusPt };
           }
           this.score += earnedScore;
+          if (this.isVersusRun && this.versus) {
+            this.versus.sendJammerToOpponent(this.combo);
+          }
 
           const bonusSec = isHard ? 1.5 : (isExOrLun ? 2.5 : 0);
           if (bonusSec > 0) {
@@ -7218,6 +8583,9 @@
         this.scene3D.clearAllTrayItems(true);
         this.updateTopHUD();
         this.renderWalletUI();
+        if (this.isVersusRun && this.versus) {
+          this.versus.syncMyProgress(false, false);
+        }
 
         this.showJudgmentFeedback(grade, changeAmount, changeInfo, coinsBefore, coinsAfter, earnedScore, billBonusInfo);
 
@@ -7902,6 +9270,13 @@
       }
 
       endGame() {
+        if (this.isVersusRun && this.versus) {
+          this.clearActiveTimers();
+          this.state = 'RESULT';
+          sound.playRegisterCheckout();
+          this.versus.syncMyProgress(true, Boolean(this.exSuddenDeathFailed));
+          return;
+        }
         this.clearActiveTimers();
         this.state = 'RESULT';
         sound.playRegisterCheckout();
@@ -8088,6 +9463,7 @@
       // Firebaseで他のプレイヤーのスコアが更新された際に画面上のランキングをリアルタイム再描画
       RankingManager.addSyncListener(() => {
         game.updateUnlockAndCumulativeUI();
+        if (game.versus) game.versus.updateOnlineStatusBadge();
         const modalRanking = document.getElementById('modal-ranking');
         if (modalRanking && !modalRanking.classList.contains('hidden')) {
           RankingManager.renderListToContainer('standalone-ranking-list', game.getActiveModalRankingCategory(), null);
