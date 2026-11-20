@@ -4326,14 +4326,14 @@
         const tutBanner = document.getElementById('tutorial-banner');
         const lunBanner = document.getElementById('lunatic-banner');
         const vsBar = document.getElementById('vs-opponent-bar');
-        if (vsBar && !vsBar.classList.contains('hidden')) {
-          const vsRect = vsBar.getBoundingClientRect();
-          if (vsRect.bottom > topBarBottom) topBarBottom = vsRect.bottom;
-        }
         let topBarBottom = 90;
         if (posPanel) {
           const posRect = posPanel.getBoundingClientRect();
           if (posRect.bottom > 0) topBarBottom = posRect.bottom;
+        }
+        if (vsBar && !vsBar.classList.contains('hidden')) {
+          const vsRect = vsBar.getBoundingClientRect();
+          if (vsRect.bottom > topBarBottom) topBarBottom = vsRect.bottom;
         }
         if (tutBanner && !tutBanner.classList.contains('hidden')) {
           const tutRect = tutBanner.getBoundingClientRect();
