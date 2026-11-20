@@ -5746,8 +5746,8 @@
         }
         if (!isRandom) {
           this.cancelRandomSearch();
+          this.leaveRoom();
         }
-        this.leaveRoom();
 
         const name = this.getEnteredPlayerName();
         const code = this.generate4DigitCode();
@@ -5881,14 +5881,24 @@
             }
           }
 
+          if (!this.isRandomSearching) return;
+
           // 待機相手がいない場合は自分が待機ルームを作成してキューに登録
           const newCode = await this.createPrivateRoom(true, rule, genMode);
           if (!newCode) {
             this.cancelRandomSearch();
             return;
           }
+          if (!this.isRandomSearching) {
+            this.leaveRoom();
+            return;
+          }
           this.queueRoomCode = newCode;
           await qRef.set({ code: newCode, uid: this.myUid, createdAt: Date.now() });
+          if (!this.isRandomSearching) {
+            this.cancelRandomSearch();
+            return;
+          }
           qRef.onDisconnect().remove();
         } catch (err) {
           console.warn('startRandomMatch error:', err);
@@ -6004,16 +6014,16 @@
 
         // ランダムマッチでゲストが入室したら自動的に開始する（ホスト側）
         if (data.isRandom && data.status === 'waiting' && this.myRole === 'host' && guest && guest.connected) {
-          if (this.isRandomSearching) {
-            this.isRandomSearching = false;
-            document.getElementById('vs-random-searching').classList.add('hidden');
-            document.getElementById('btn-vs-random-start').disabled = false;
-            if (this.queueRef) {
-              this.queueRef.onDisconnect().cancel().catch(() => {});
-              this.queueRef.remove().catch(() => {});
-              this.queueRef = null;
-              this.queueRoomCode = null;
-            }
+          this.isRandomSearching = false;
+          const searchBox = document.getElementById('vs-random-searching');
+          if (searchBox) searchBox.classList.add('hidden');
+          const startBtn = document.getElementById('btn-vs-random-start');
+          if (startBtn) startBtn.disabled = false;
+          if (this.queueRef) {
+            this.queueRef.onDisconnect().cancel().catch(() => {});
+            this.queueRef.remove().catch(() => {});
+            this.queueRef = null;
+            this.queueRoomCode = null;
           }
           this.hostStartMatch();
           return;
