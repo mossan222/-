@@ -2201,7 +2201,7 @@
             </button>
           </div>
           <div class="flex items-center justify-between gap-2 text-[11px] font-extrabold">
-            <span id="vs-random-members-count" class="text-cyan-300">参加中: 1 / 4人</span>
+            <span id="vs-random-members-count" class="text-cyan-300">参加中: 1 / 2人</span>
             <span id="vs-random-bot-countdown" class="font-digital text-amber-300">残りをbotで埋めるまで 20.0秒</span>
           </div>
         </div>
@@ -6742,7 +6742,7 @@
 
         // マッチング開始時の人数バリデーション
         let anyCount = (this.randomSizeMode === 'any');
-        let targetCount = 4; // 「何人でも」で自分がホスト作成する際のデフォルト枠（他プレイヤーの指定があればそちらに合わせる）
+        let targetCount = 2; // 「何人でも」で自分がホスト作成する際のデフォルト枠（他プレイヤーの指定があればそちらに合わせる）
         if (!anyCount) {
           const inp = document.getElementById('input-vs-rand-players');
           const res = this.normalizeAndValidatePlayerCount(inp ? inp.value : '', false);
@@ -10013,9 +10013,6 @@
           // ルナティックは本体価格（税抜）を生成し、税込8%（小数点以下切り捨て）を実際の請求金額とする
           this.basePrice = this.generateLunaticBasePrice(isFirstTurn);
           this.currentPrice = calcTaxIncludedPrice(this.basePrice, this.lunaticTaxRate);
-        } else if (isFirstTurn && this.difficulty === 'NORMAL') {
-          this.basePrice = 680;
-          this.currentPrice = 680;
         } else {
           const p = this.generateSmartPuzzlePrice();
           this.basePrice = p;
@@ -11769,3 +11766,5 @@
   </script>
 </body>
 </html>
+
+
