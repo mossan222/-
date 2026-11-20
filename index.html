@@ -244,10 +244,40 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: transform 0.08s ease, opacity 0.15s ease;
+      transition: transform 0.08s ease, opacity 0.15s ease, filter 0.15s ease;
     }
     .coin-btn:active:not(:disabled) {
       transform: scale(0.92);
+    }
+    .bill-illust-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border-radius: 0.65rem;
+      transition: transform 0.08s ease, opacity 0.15s ease, filter 0.15s ease;
+    }
+    .bill-illust-btn:active:not(:disabled) {
+      transform: translateY(2px) scale(0.96);
+    }
+    .wallet-count-badge {
+      position: absolute;
+      top: -6px;
+      right: -5px;
+      z-index: 10;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 1px;
+      padding: 1px 6px;
+      border-radius: 9999px;
+      border-width: 2px;
+      line-height: 1.05;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.75);
+      pointer-events: none;
+    }
+    .money-svg-shadow {
+      filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55));
     }
     .custom-scroll::-webkit-scrollbar {
       width: 6px;
@@ -1655,15 +1685,15 @@
     <footer class="w-full max-w-3xl mx-auto pointer-events-auto">
       <div class="wallet-card rounded-t-3xl px-2.5 pt-2 pb-2.5 sm:px-4 sm:pt-2.5 sm:pb-3.5">
         <!-- Bills Row (10000, 5000, 1000) -->
-        <div class="flex items-center justify-between gap-1.5 sm:gap-2.5 mb-1.5">
+        <div class="flex items-center justify-between gap-1.5 sm:gap-2.5 mb-2 pt-1">
           <div class="text-[10px] sm:text-xs font-extrabold text-amber-300/90 px-1 shrink-0 leading-tight">
             👛 財布<br><span class="text-[9px] text-slate-400 font-normal">3Dコインもタップ可</span>
           </div>
-          <div id="wallet-bills-grid" class="flex-1 grid grid-cols-3 gap-1.5 sm:gap-2.5"></div>
+          <div id="wallet-bills-grid" class="flex-1 grid grid-cols-3 gap-2 sm:gap-3"></div>
         </div>
 
         <!-- Coins Row (500, 100, 50, 10, 5, 1) -->
-        <div id="wallet-coins-grid" class="grid grid-cols-6 gap-1 sm:gap-2 mb-2"></div>
+        <div id="wallet-coins-grid" class="grid grid-cols-6 gap-1.5 sm:gap-2.5 pt-1 mb-2"></div>
 
         <!-- Action Buttons Row -->
         <div class="flex items-center gap-2 sm:gap-3">
@@ -1851,67 +1881,31 @@
 
       <!-- Section 1: Random Match -->
       <div class="bg-gradient-to-r from-violet-950/85 to-slate-800/90 border-2 border-violet-400/70 rounded-2xl p-3.5 mb-3 text-left">
-        <div class="flex items-center justify-between mb-1.5">
+        <div class="flex items-center justify-between mb-2">
           <div class="text-sm sm:text-base font-black text-violet-300">🎲 ランダムマッチ（自動対戦）</div>
-          <span class="text-[10px] font-black bg-violet-400 text-slate-950 px-2 py-0.5 rounded-full">2人の希望から抽選</span>
+          <span class="text-[10px] font-black bg-violet-400 text-slate-950 px-2 py-0.5 rounded-full">すぐ対戦</span>
         </div>
-        <div class="text-[11px] text-slate-300 mb-2.5 leading-snug">
-          あなたの希望ルール・難易度を選択！マッチングした2人が選んだ内容から<strong class="text-amber-300">ランダムに抽選されたルール</strong>で対戦します！
+        <div class="text-[11px] text-slate-300 mb-2">希望の対戦ルールを選んで待機中の相手と自動マッチング！</div>
+        <div class="grid grid-cols-3 gap-1.5 mb-2">
+          <button id="btn-vs-rand-rule-score" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-violet-500 text-slate-950 border-white">
+            🏆 スコア対決
+          </button>
+          <button id="btn-vs-rand-rule-jammer" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
+            💣 お邪魔あり
+          </button>
+          <button id="btn-vs-rand-rule-race" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
+            ⚡ 7人先取
+          </button>
         </div>
-
-        <div class="space-y-2 mb-3">
-          <div>
-            <div class="text-[10px] font-bold text-slate-400 mb-1">希望の勝敗ルール</div>
-            <div class="grid grid-cols-3 gap-1.5">
-              <button type="button" data-vs-rand-set="vsRule" data-vs-rand-val="score" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">🏆 スコア対決</button>
-              <button type="button" data-vs-rand-set="vsRule" data-vs-rand-val="jammer" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">💣 お邪魔あり</button>
-              <button type="button" data-vs-rand-set="vsRule" data-vs-rand-val="race" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">⚡ 7人先取</button>
-            </div>
-          </div>
-
-          <div>
-            <div class="text-[10px] font-bold text-slate-400 mb-1">希望の会計ルール</div>
-            <div class="grid grid-cols-2 gap-1.5">
-              <button type="button" data-vs-rand-set="ruleType" data-vs-rand-val="wallet" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">👛 財布の小銭最小</button>
-              <button type="button" data-vs-rand-set="ruleType" data-vs-rand-val="change" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">🪙 お釣り枚数最小</button>
-            </div>
-          </div>
-
-          <div>
-            <div class="text-[10px] font-bold text-slate-400 mb-1">希望の難易度（全難易度選択OK）</div>
-            <div class="grid grid-cols-4 gap-1.5">
-              <button type="button" data-vs-rand-set="difficulty" data-vs-rand-val="NORMAL" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">🍀 NORMAL</button>
-              <button type="button" data-vs-rand-set="difficulty" data-vs-rand-val="HARD" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">🔥 HARD</button>
-              <button type="button" data-vs-rand-set="difficulty" data-vs-rand-val="EX" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">💀 EX</button>
-              <button type="button" data-vs-rand-set="difficulty" data-vs-rand-val="LUNATIC" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">🌙 LUNATIC</button>
-            </div>
-          </div>
-
-          <div id="vs-rand-lunatic-tax-row" class="hidden">
-            <div class="text-[10px] font-bold text-slate-400 mb-1">🌙 ルナティック消費税率</div>
-            <div class="grid grid-cols-2 gap-1.5">
-              <button type="button" data-vs-rand-set="lunaticTaxRate" data-vs-rand-val="8" class="vs-rand-opt-btn btn-3d py-1 px-2 rounded-xl font-black text-[10px] sm:text-xs border-2">消費税 8% (×1.08)</button>
-              <button type="button" data-vs-rand-set="lunaticTaxRate" data-vs-rand-val="10" class="vs-rand-opt-btn btn-3d py-1 px-2 rounded-xl font-black text-[10px] sm:text-xs border-2">消費税 10% (×1.10)</button>
-            </div>
-          </div>
-
-          <div>
-            <div class="text-[10px] font-bold text-slate-400 mb-1">希望の金額の出題方式</div>
-            <div class="grid grid-cols-2 gap-1.5">
-              <button type="button" data-vs-rand-set="priceGenMode" data-vs-rand-val="clean" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">✨ 割とお釣りがきれい出るモード</button>
-              <button type="button" data-vs-rand-set="priceGenMode" data-vs-rand-val="random" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">🎲 完全ランダム生成</button>
-            </div>
-          </div>
-
-          <div>
-            <div class="text-[10px] font-bold text-slate-400 mb-1">希望のPOSお釣り表示</div>
-            <div class="grid grid-cols-2 gap-1.5">
-              <button type="button" data-vs-rand-set="showChange" data-vs-rand-val="true" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">👁️ お釣り表示あり</button>
-              <button type="button" data-vs-rand-set="showChange" data-vs-rand-val="false" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">🙈 お釣り非表示（暗算）</button>
-            </div>
-          </div>
+        <div class="text-[10px] font-bold text-slate-400 mb-1">金額の出題方式</div>
+        <div class="grid grid-cols-2 gap-1.5 mb-2.5">
+          <button id="btn-vs-rand-gen-clean" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-emerald-400 text-slate-950 border-white shadow">
+            ✨ 割とお釣りがきれい出るモード
+          </button>
+          <button id="btn-vs-rand-gen-random" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
+            🎲 完全ランダム生成
+          </button>
         </div>
-
         <button id="btn-vs-random-start" class="btn-3d w-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 hover:from-violet-400 hover:to-pink-400 text-white font-black text-sm sm:text-base py-2.5 rounded-xl border-b-4 border-fuchsia-900 shadow-lg">
           🎲 ランダムマッチを探す！
         </button>
@@ -2123,8 +2117,8 @@
         <button id="btn-vs-res-lobby" class="btn-3d bg-slate-700 hover:bg-slate-600 text-fuchsia-300 font-extrabold text-xs sm:text-sm py-2.5 rounded-2xl border-b-4 border-slate-900">
           ⚔️ ロビーへ
         </button>
-        <button id="btn-vs-res-rematch" class="btn-3d col-span-2 sm:col-span-1 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 font-black text-sm py-2.5 rounded-2xl border-b-4 border-emerald-800 shadow-lg disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed">
-          🔄 もう一度やる
+        <button id="btn-vs-res-rematch" class="btn-3d col-span-2 sm:col-span-1 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 font-black text-sm py-2.5 rounded-2xl border-b-4 border-emerald-800 shadow-lg">
+          🔄 ルームで再戦
         </button>
       </div>
     </div>
@@ -5541,26 +5535,16 @@
         this.queueRef = null;
         this.queueRoomCode = null;
         this.isRandomSearching = false;
-        this.randomPrefs = {
-          vsRule: 'score',
-          raceTarget: 7,
-          ruleType: this.game.ruleType || 'wallet',
-          difficulty: 'NORMAL',
-          lunaticTaxRate: 8,
-          priceGenMode: 'clean',
-          showChange: true
-        };
+        this.selectedRandomRule = 'score';
+        this.selectedRandomGenMode = 'clean';
         this.lastRoomData = null;
         this.matchLaunched = false;
         this.resultShown = false;
         this.lastJammerSeq = 0;
         this.finishWaitTimeout = null;
-        this.rematchCooldownInterval = null;
-        this.rematchCooldownRemaining = 0;
         this.jammerSentCount = 0;
 
         this.bindLobbyAndRoomEvents();
-        this.renderRandomPrefsUI();
       }
 
       getDb() {
@@ -5583,65 +5567,44 @@
         };
       }
 
-      renderRandomPrefsUI() {
-        const p = this.randomPrefs;
-        document.querySelectorAll('.vs-rand-opt-btn').forEach((btn) => {
-          const key = btn.getAttribute('data-vs-rand-set');
-          const val = btn.getAttribute('data-vs-rand-val');
-          const active = String(p[key]) === String(val);
-          btn.disabled = this.isRandomSearching;
-          btn.className = `vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2 transition-colors ${
-            active
-              ? 'bg-violet-400 text-slate-950 border-white shadow'
-              : 'bg-slate-800 text-slate-300 border-slate-600 hover:bg-slate-700'
-          } ${this.isRandomSearching ? 'opacity-60 cursor-not-allowed' : ''}`;
-        });
-        const lunRow = document.getElementById('vs-rand-lunatic-tax-row');
-        if (lunRow) lunRow.classList.toggle('hidden', p.difficulty !== 'LUNATIC');
-      }
-
-      pickRandomSettingsFromTwo(hostPref, guestPref) {
-        const hp = { ...this.getDefaultSettings(), ...(hostPref || {}) };
-        const gp = { ...this.getDefaultSettings(), ...(guestPref || hp) };
-        const pick = (a, b) => (Math.random() < 0.5 ? a : b);
-
-        const difficulty = pick(hp.difficulty, gp.difficulty);
-        let lunaticTaxRate = 8;
-        if (difficulty === 'LUNATIC') {
-          if (hp.difficulty === 'LUNATIC' && gp.difficulty !== 'LUNATIC') {
-            lunaticTaxRate = hp.lunaticTaxRate === 10 ? 10 : 8;
-          } else if (gp.difficulty === 'LUNATIC' && hp.difficulty !== 'LUNATIC') {
-            lunaticTaxRate = gp.lunaticTaxRate === 10 ? 10 : 8;
-          } else {
-            lunaticTaxRate = pick(hp.lunaticTaxRate === 10 ? 10 : 8, gp.lunaticTaxRate === 10 ? 10 : 8);
-          }
-        }
-
-        return {
-          vsRule: pick(hp.vsRule, gp.vsRule),
-          raceTarget: 7,
-          ruleType: pick(hp.ruleType, gp.ruleType),
-          difficulty,
-          lunaticTaxRate,
-          priceGenMode: pick(hp.priceGenMode, gp.priceGenMode),
-          showChange: pick(Boolean(hp.showChange), Boolean(gp.showChange)),
-          isRandomDrawn: true
-        };
-      }
-
       bindLobbyAndRoomEvents() {
-        document.querySelectorAll('.vs-rand-opt-btn').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            if (this.isRandomSearching) return;
-            sound.playClick();
-            const key = btn.getAttribute('data-vs-rand-set');
-            let val = btn.getAttribute('data-vs-rand-val');
-            if (key === 'raceTarget' || key === 'lunaticTaxRate') val = Number(val);
-            if (key === 'showChange') val = (val === 'true');
-            this.randomPrefs[key] = val;
-            this.renderRandomPrefsUI();
+        const setRandRule = (rule) => {
+          this.selectedRandomRule = rule;
+          const map = {
+            score: 'btn-vs-rand-rule-score',
+            jammer: 'btn-vs-rand-rule-jammer',
+            race: 'btn-vs-rand-rule-race'
+          };
+          Object.entries(map).forEach(([k, id]) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.className = k === rule
+              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-violet-500 text-slate-950 border-white shadow'
+              : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
           });
-        });
+        };
+
+        document.getElementById('btn-vs-rand-rule-score').addEventListener('click', () => { sound.playClick(); setRandRule('score'); });
+        document.getElementById('btn-vs-rand-rule-jammer').addEventListener('click', () => { sound.playClick(); setRandRule('jammer'); });
+        document.getElementById('btn-vs-rand-rule-race').addEventListener('click', () => { sound.playClick(); setRandRule('race'); });
+
+        const setRandGenMode = (mode) => {
+          this.selectedRandomGenMode = mode === 'random' ? 'random' : 'clean';
+          const btnClean = document.getElementById('btn-vs-rand-gen-clean');
+          const btnRandom = document.getElementById('btn-vs-rand-gen-random');
+          if (btnClean) {
+            btnClean.className = this.selectedRandomGenMode === 'clean'
+              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-emerald-400 text-slate-950 border-white shadow'
+              : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
+          }
+          if (btnRandom) {
+            btnRandom.className = this.selectedRandomGenMode === 'random'
+              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-fuchsia-400 text-slate-950 border-white shadow'
+              : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
+          }
+        };
+        document.getElementById('btn-vs-rand-gen-clean').addEventListener('click', () => { sound.playClick(); setRandGenMode('clean'); });
+        document.getElementById('btn-vs-rand-gen-random').addEventListener('click', () => { sound.playClick(); setRandGenMode('random'); });
 
         document.getElementById('btn-vs-lobby-back').addEventListener('click', () => {
           sound.playClick();
@@ -5733,16 +5696,13 @@
         });
 
         document.getElementById('btn-vs-res-rematch').addEventListener('click', () => {
-          if (this.rematchCooldownRemaining > 0) return;
           sound.playClick();
           this.requestRematch();
         });
       }
 
       openLobby() {
-        this.clearRematchCooldown();
         this.game.clearActiveTimers();
-        this.renderRandomPrefsUI();
         this.game.state = 'MODE_SELECT';
         this.game.isVersusRun = false;
         clearSeededRng();
@@ -5792,8 +5752,8 @@
         return String(1000 + Math.floor(Math.random() * 9000));
       }
 
-      makeEmptyPlayer(name, pref = null) {
-        const obj = {
+      makeEmptyPlayer(name) {
+        return {
           uid: this.myUid,
           name: name,
           connected: true,
@@ -5806,11 +5766,9 @@
           failedSuddenDeath: false,
           jammerSentCount: 0
         };
-        if (pref) obj.pref = { ...pref };
-        return obj;
       }
 
-      async createPrivateRoom(isRandom = false, forcedPrefs = null) {
+      async createPrivateRoom(isRandom = false, forcedVsRule = null, forcedGenMode = null) {
         const db = this.getDb();
         if (!db) {
           this.showLobbyError('Firebaseに接続できていません。ネット環境を確認してください。');
@@ -5824,8 +5782,7 @@
         const name = this.getEnteredPlayerName();
         const code = this.generate4DigitCode();
         const ref = db.ref('rooms/' + code);
-        const hostPrefs = isRandom ? { ...this.getDefaultSettings(), ...(forcedPrefs || this.randomPrefs) } : null;
-        const settings = isRandom ? { ...hostPrefs } : this.getDefaultSettings('score', 'clean');
+        const settings = this.getDefaultSettings(forcedVsRule || 'score', forcedGenMode || 'clean');
         const roomData = {
           code,
           isRandom: Boolean(isRandom),
@@ -5836,7 +5793,7 @@
           settings,
           winner: null,
           players: {
-            host: this.makeEmptyPlayer(name, hostPrefs)
+            host: this.makeEmptyPlayer(name)
           },
           jammers: {
             toHost: { seq: 0, c1: 0, c10: 0, fromCombo: 0 },
@@ -5858,7 +5815,7 @@
         }
       }
 
-      async joinRoomByCode(code, isRandom = false, guestPrefs = null) {
+      async joinRoomByCode(code, isRandom = false) {
         const db = this.getDb();
         if (!db) {
           this.showLobbyError('Firebaseに接続できていません。');
@@ -5891,8 +5848,7 @@
             return false;
           }
 
-          const gPref = isRandom ? { ...this.getDefaultSettings(), ...(guestPrefs || this.randomPrefs) } : null;
-          const guestObj = this.makeEmptyPlayer(name, gPref);
+          const guestObj = this.makeEmptyPlayer(name);
           const txRes = await ref.child('players/guest').transaction((cur) => {
             if (cur && cur.connected) return;
             return guestObj;
@@ -5924,14 +5880,14 @@
         this.leaveRoom();
         this.getEnteredPlayerName();
 
-        const myPrefs = { ...this.getDefaultSettings(), ...this.randomPrefs };
-        // 全ルール共通キューでマッチングし、成立時に2人の希望からランダム抽選する
-        const qRef = db.ref('versus_queue/random_all');
+        const rule = this.selectedRandomRule || 'score';
+        const genMode = this.selectedRandomGenMode === 'random' ? 'random' : 'clean';
+        const queueKey = genMode === 'random' ? `${rule}_random` : rule;
+        const qRef = db.ref('versus_queue/' + queueKey);
         this.queueRef = qRef;
         this.isRandomSearching = true;
         document.getElementById('vs-random-searching').classList.remove('hidden');
         document.getElementById('btn-vs-random-start').disabled = true;
-        this.renderRandomPrefsUI();
 
         let matchedCode = null;
         try {
@@ -5945,12 +5901,11 @@
           });
 
           if (matchedCode) {
-            const ok = await this.joinRoomByCode(matchedCode, true, myPrefs);
+            const ok = await this.joinRoomByCode(matchedCode, true);
             if (ok) {
               this.isRandomSearching = false;
               document.getElementById('vs-random-searching').classList.add('hidden');
               document.getElementById('btn-vs-random-start').disabled = false;
-              this.renderRandomPrefsUI();
               switchScreen('screen-versus-room');
               return;
             }
@@ -5959,7 +5914,7 @@
           if (!this.isRandomSearching) return;
 
           // 待機相手がいない場合は自分が待機ルームを作成してキューに登録
-          const newCode = await this.createPrivateRoom(true, myPrefs);
+          const newCode = await this.createPrivateRoom(true, rule, genMode);
           if (!newCode) {
             this.cancelRandomSearch();
             return;
@@ -5988,7 +5943,6 @@
         if (searchBox) searchBox.classList.add('hidden');
         const startBtn = document.getElementById('btn-vs-random-start');
         if (startBtn) startBtn.disabled = false;
-        this.renderRandomPrefsUI();
 
         if (this.queueRef && this.queueRoomCode) {
           const targetCode = this.queueRoomCode;
@@ -6041,46 +5995,7 @@
         ref.on('value', this.roomListener);
       }
 
-      clearRematchCooldown() {
-        if (this.rematchCooldownInterval) {
-          clearInterval(this.rematchCooldownInterval);
-          this.rematchCooldownInterval = null;
-        }
-        this.rematchCooldownRemaining = 0;
-      }
-
-      startRematchCooldown(canRematch) {
-        this.clearRematchCooldown();
-        const rematchBtn = document.getElementById('btn-vs-res-rematch');
-        if (!rematchBtn) return;
-
-        if (!canRematch) {
-          rematchBtn.disabled = true;
-          rematchBtn.textContent = '🔄 もう一度やる';
-          return;
-        }
-
-        this.rematchCooldownRemaining = 2.0;
-        rematchBtn.disabled = true;
-        rematchBtn.textContent = `⏳ もう一度やる (${this.rematchCooldownRemaining.toFixed(1)}s)`;
-
-        this.rematchCooldownInterval = setInterval(() => {
-          this.rematchCooldownRemaining = Math.max(0, +(this.rematchCooldownRemaining - 0.1).toFixed(1));
-          if (this.rematchCooldownRemaining <= 0) {
-            this.clearRematchCooldown();
-            const oppRole = this.myRole === 'host' ? 'guest' : 'host';
-            const opp = this.lastRoomData && this.lastRoomData.players ? this.lastRoomData.players[oppRole] : null;
-            const stillCanRematch = Boolean(this.roomRef && opp && opp.connected !== false);
-            rematchBtn.disabled = !stillCanRematch;
-            rematchBtn.textContent = '🔄 もう一度やる';
-          } else {
-            rematchBtn.textContent = `⏳ もう一度やる (${this.rematchCooldownRemaining.toFixed(1)}s)`;
-          }
-        }, 100);
-      }
-
       detachRoomListeners() {
-        this.clearRematchCooldown();
         if (this.finishWaitTimeout) {
           clearTimeout(this.finishWaitTimeout);
           this.finishWaitTimeout = null;
@@ -6127,22 +6042,20 @@
         const me = data.players ? data.players[this.myRole] : null;
         const opp = data.players ? data.players[oppRole] : null;
 
-        // ランダムマッチでゲストが入室したら2人の希望からルールを抽選して自動的に開始する（ホスト側）
+        // ランダムマッチでゲストが入室したら自動的に開始する（ホスト側）
         if (data.isRandom && data.status === 'waiting' && this.myRole === 'host' && guest && guest.connected) {
           this.isRandomSearching = false;
           const searchBox = document.getElementById('vs-random-searching');
           if (searchBox) searchBox.classList.add('hidden');
           const startBtn = document.getElementById('btn-vs-random-start');
           if (startBtn) startBtn.disabled = false;
-          this.renderRandomPrefsUI();
           if (this.queueRef) {
             this.queueRef.onDisconnect().cancel().catch(() => {});
             this.queueRef.remove().catch(() => {});
             this.queueRef = null;
             this.queueRoomCode = null;
           }
-          const drawnSettings = this.pickRandomSettingsFromTwo(host && host.pref, guest && guest.pref);
-          this.hostStartMatch(drawnSettings);
+          this.hostStartMatch();
           return;
         }
 
@@ -6269,32 +6182,26 @@
         }
       }
 
-      hostStartMatch(overrideSettings = null) {
+      hostStartMatch() {
         if (!this.roomRef || !this.lastRoomData) return;
-        const hostObj = this.lastRoomData.players && this.lastRoomData.players.host ? this.lastRoomData.players.host : null;
-        const guestObj = this.lastRoomData.players && this.lastRoomData.players.guest ? this.lastRoomData.players.guest : null;
-        const hostName = hostObj ? hostObj.name : this.game.playerName;
-        const guestName = guestObj ? guestObj.name : 'ゲスト';
-        const hostUid = hostObj ? hostObj.uid : this.myUid;
-        const guestUid = guestObj ? guestObj.uid : 'guest';
+        const hostName = this.lastRoomData.players && this.lastRoomData.players.host ? this.lastRoomData.players.host.name : this.game.playerName;
+        const guestName = this.lastRoomData.players && this.lastRoomData.players.guest ? this.lastRoomData.players.guest.name : 'ゲスト';
+        const hostUid = this.lastRoomData.players && this.lastRoomData.players.host ? this.lastRoomData.players.host.uid : this.myUid;
+        const guestUid = this.lastRoomData.players && this.lastRoomData.players.guest ? this.lastRoomData.players.guest.uid : 'guest';
 
         const seed = Math.floor(Math.random() * 2147483640) + 1;
-        const payload = {
+        this.roomRef.update({
           status: 'playing',
           seed,
           startedAt: Date.now(),
           winner: null,
-          'players/host': { ...this.makeEmptyPlayer(hostName, hostObj && hostObj.pref ? hostObj.pref : null), uid: hostUid },
-          'players/guest': { ...this.makeEmptyPlayer(guestName, guestObj && guestObj.pref ? guestObj.pref : null), uid: guestUid },
+          'players/host': { ...this.makeEmptyPlayer(hostName), uid: hostUid },
+          'players/guest': { ...this.makeEmptyPlayer(guestName), uid: guestUid },
           jammers: {
             toHost: { seq: 0, c1: 0, c10: 0, fromCombo: 0 },
             toGuest: { seq: 0, c1: 0, c10: 0, fromCombo: 0 }
           }
-        };
-        if (overrideSettings) {
-          payload.settings = overrideSettings;
-        }
-        this.roomRef.update(payload).catch(() => {});
+        }).catch(() => {});
       }
 
       updateOpponentHUD(data, me, opp) {
@@ -6505,15 +6412,17 @@
         fillCard('me', me);
         fillCard('opp', opp);
 
-        const canRematch = Boolean(this.roomRef && opp && opp.connected !== false);
-        this.startRematchCooldown(canRematch);
+        const rematchBtn = document.getElementById('btn-vs-res-rematch');
+        if (rematchBtn) {
+          const canRematch = Boolean(this.roomRef && opp && opp.connected !== false);
+          rematchBtn.disabled = !canRematch;
+          rematchBtn.classList.toggle('opacity-50', !canRematch);
+        }
 
         switchScreen('screen-versus-result');
       }
 
       requestRematch() {
-        if (this.rematchCooldownRemaining > 0) return;
-        this.clearRematchCooldown();
         if (!this.roomRef) {
           this.openLobby();
           return;
@@ -8197,16 +8106,7 @@
         cdOverlay.classList.remove('hidden');
         cdOverlay.classList.add('flex');
 
-        if (this.isVersusRun && this.vsSettings) {
-          const vs = this.vsSettings;
-          const vsRuleLabel = vs.vsRule === 'jammer' ? '💣お邪魔あり' : (vs.vsRule === 'race' ? `⚡${vs.raceTarget || 7}人先取` : '🏆スコア対決');
-          const accLabel = this.ruleType === 'change' ? '🪙お釣り最小' : '👛財布最小';
-          const diffLabel = isLunatic ? `🌙LUNATIC(${taxRate}%)` : (isEx ? '💀EX' : (isHard ? '🔥HARD' : '🍀NORMAL'));
-          const genLabel = this.priceGenMode === 'random' ? '🎲完全ランダム' : '✨きれい出る';
-          const chLabel = this.showChangeDisplay ? '👁️お釣り表示あり' : '🙈暗算';
-          cdSubLabel.textContent = vs.isRandomDrawn ? '🎲 2人の希望から抽選されたルール！' : '⚔️ ONLINE VERSUS BATTLE';
-          cdRuleHint.innerHTML = `<span class="text-amber-300 font-black">${vsRuleLabel}</span> ／ ${accLabel} ／ <span class="text-cyan-300 font-black">${diffLabel}</span> ／ ${genLabel} ／ ${chLabel}`;
-        } else if (isLunatic) {
+        if (isLunatic) {
           cdSubLabel.textContent = `🌙 LUNATIC MODE (TAX ${taxRate}%)`;
           cdRuleHint.innerHTML = `表示は<span class="text-amber-300 font-bold">本体価格（税抜）</span>のみ！<span class="text-rose-300 font-bold">×${taxMultStr}（小数点以下切り捨て）</span>の税込金額で会計しよう！`;
         } else if (isEx) {
@@ -9453,6 +9353,107 @@
         return { denoms: needed, checkout: allMatched && this.getTrayTotal() >= this.currentPrice };
       }
 
+      getWalletCountBadgeHTML(count) {
+        let badgeStyle;
+        if (count <= 0) {
+          badgeStyle = 'bg-slate-800 text-slate-300 border-slate-500';
+        } else if (count >= 4) {
+          badgeStyle = 'bg-rose-600 text-white border-amber-200';
+        } else {
+          badgeStyle = 'bg-slate-950 text-amber-300 border-amber-400';
+        }
+        return `
+          <span class="wallet-count-badge ${badgeStyle}">
+            <span class="text-[9px] sm:text-[10px] font-bold opacity-85">×</span>
+            <span class="font-digital text-[12px] sm:text-sm font-black">${count}</span>
+          </span>
+        `;
+      }
+
+      getBillIllustrationSVG(denom) {
+        const themes = {
+          10000: { bg1: '#f6e7c8', bg2: '#d5b17a', border: '#6b4423', text: '#4a2c11', accent: '#9a6534', label: '10000', sub: '壱万円' },
+          5000:  { bg1: '#f0e4f9', bg2: '#c5a8de', border: '#4c2f6e', text: '#351c52', accent: '#754ca0', label: '5000',  sub: '五千円' },
+          1000:  { bg1: '#dff2f8', bg2: '#98cadc', border: '#1b506e', text: '#0f364d', accent: '#2b78a1', label: '1000',  sub: '千円' }
+        };
+        const t = themes[denom] || themes[1000];
+        const gid = `billGrad_${denom}`;
+        return `
+          <svg viewBox="0 0 120 56" class="w-full h-10 sm:h-12 block money-svg-shadow" aria-hidden="true">
+            <defs>
+              <linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="${t.bg1}"/>
+                <stop offset="52%" stop-color="#fffdf8"/>
+                <stop offset="100%" stop-color="${t.bg2}"/>
+              </linearGradient>
+            </defs>
+            <rect x="1.5" y="1.5" width="117" height="53" rx="6" fill="url(#${gid})" stroke="${t.border}" stroke-width="2.5"/>
+            <rect x="5" y="5" width="110" height="46" rx="3.5" fill="none" stroke="${t.accent}" stroke-width="1" stroke-dasharray="3 1.5" opacity="0.7"/>
+            <!-- 透かし楕円（左） -->
+            <ellipse cx="22" cy="28" rx="11" ry="15" fill="rgba(255,255,255,0.65)" stroke="${t.accent}" stroke-width="1" opacity="0.85"/>
+            <!-- 肖像シルエット風メダリオン（右） -->
+            <ellipse cx="97" cy="29" rx="12" ry="16" fill="${t.accent}" opacity="0.16" stroke="${t.border}" stroke-width="1"/>
+            <circle cx="97" cy="24" r="5" fill="${t.border}" opacity="0.32"/>
+            <path d="M89 39 C89 33, 105 33, 105 39" fill="${t.border}" opacity="0.32"/>
+            <!-- 赤い印鑑 -->
+            <circle cx="38" cy="40" r="4.2" fill="#dc2626" opacity="0.85"/>
+            <!-- 金額表示 -->
+            <text x="58" y="29" text-anchor="middle" fill="${t.text}" font-family="'Share Tech Mono', monospace" font-weight="900" font-size="${denom === 10000 ? 21 : 23}" letter-spacing="-0.5">¥${t.label}</text>
+            <text x="61" y="44" text-anchor="middle" fill="${t.border}" font-family="'M PLUS Rounded 1c', sans-serif" font-weight="900" font-size="9.5">${t.sub}</text>
+          </svg>
+        `;
+      }
+
+      getCoinIllustrationSVG(denom) {
+        const themes = {
+          500: { outer1: '#fff6cc', outer2: '#d4a946', inner1: '#f8f2d8', inner2: '#dfc26b', rim: '#8f6919', text: '#3b2805', hole: false, bicolor: true },
+          100: { outer1: '#ffffff', outer2: '#94a3b8', inner1: '#f1f5f9', inner2: '#cbd5e1', rim: '#475569', text: '#0f172a', hole: false, bicolor: false },
+          50:  { outer1: '#ffffff', outer2: '#9ca3af', inner1: '#f3f4f6', inner2: '#d1d5db', rim: '#4b5563', text: '#111827', hole: true,  bicolor: false },
+          10:  { outer1: '#f4b07e', outer2: '#9a461c', inner1: '#df8850', inner2: '#a84f22', rim: '#5c260b', text: '#fff7ed', hole: false, bicolor: false },
+          5:   { outer1: '#fef08a', outer2: '#b88612', inner1: '#facc15', inner2: '#ca8a04', rim: '#713f12', text: '#3b1d04', hole: true,  bicolor: false },
+          1:   { outer1: '#ffffff', outer2: '#cbd5e1', inner1: '#f8fafc', inner2: '#e2e8f0', rim: '#64748b', text: '#1e293b', hole: false, bicolor: false }
+        };
+        const t = themes[denom] || themes[100];
+        const gOuter = `coinOut_${denom}`;
+        const gInner = `coinIn_${denom}`;
+        const textStroke = denom === 10 ? 'rgba(67,20,7,0.75)' : 'rgba(255,255,255,0.55)';
+
+        return `
+          <svg viewBox="0 0 64 64" class="w-11 h-11 sm:w-14 sm:h-14 block money-svg-shadow" aria-hidden="true">
+            <defs>
+              <radialGradient id="${gOuter}" cx="30%" cy="28%" r="72%">
+                <stop offset="0%" stop-color="${t.outer1}"/>
+                <stop offset="72%" stop-color="${t.inner2}"/>
+                <stop offset="100%" stop-color="${t.outer2}"/>
+              </radialGradient>
+              <radialGradient id="${gInner}" cx="32%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="${t.inner1}"/>
+                <stop offset="100%" stop-color="${t.inner2}"/>
+              </radialGradient>
+            </defs>
+            <!-- コイン外枠 -->
+            <circle cx="32" cy="32" r="29.5" fill="url(#${gOuter})" stroke="${t.rim}" stroke-width="2.5"/>
+            <!-- バイカラー内円 / 装飾リング -->
+            ${t.bicolor
+              ? `<circle cx="32" cy="32" r="21.5" fill="url(#${gInner})" stroke="${t.rim}" stroke-width="1.2" opacity="0.92"/>`
+              : `<circle cx="32" cy="32" r="25" fill="none" stroke="${t.rim}" stroke-width="1.2" stroke-dasharray="2.5 2" opacity="0.55"/>`
+            }
+            <!-- キラッとした金属光沢ハイライト -->
+            <path d="M13 21 A22 22 0 0 1 39 11" fill="none" stroke="rgba(255,255,255,0.72)" stroke-width="2.4" stroke-linecap="round"/>
+            ${t.hole ? `
+              <!-- 穴あき硬貨（50円・5円） -->
+              <circle cx="32" cy="32" r="8.5" fill="#16120e" stroke="${t.rim}" stroke-width="2"/>
+              <text x="32" y="19.5" text-anchor="middle" fill="${t.text}" stroke="${textStroke}" stroke-width="0.6" font-family="'M PLUS Rounded 1c', sans-serif" font-weight="900" font-size="14.5">${denom}</text>
+              <text x="32" y="54" text-anchor="middle" fill="${t.text}" font-family="'M PLUS Rounded 1c', sans-serif" font-weight="900" font-size="10.5">円</text>
+            ` : `
+              <!-- 通常硬貨（500・100・10・1円） -->
+              <text x="32" y="36.5" text-anchor="middle" fill="${t.text}" stroke="${textStroke}" stroke-width="0.7" font-family="'M PLUS Rounded 1c', sans-serif" font-weight="900" font-size="${denom === 500 || denom === 100 ? 18 : 21}" letter-spacing="-0.5">${denom}</text>
+              <text x="32" y="51.5" text-anchor="middle" fill="${t.text}" font-family="'M PLUS Rounded 1c', sans-serif" font-weight="900" font-size="9.5" opacity="0.9">円</text>
+            `}
+          </svg>
+        `;
+      }
+
       renderWalletUI() {
         const trayCounts = this.getTrayCountsByDenom();
         const tutTargets = this.getTutorialHighlightTargets();
@@ -9478,32 +9479,27 @@
           const isHelperGlow = !this.isTutorial && this.aiHelperEnabled && helperTargets.denoms.has(d) && count > 0;
 
           const wrap = document.createElement('div');
-          wrap.className = 'flex items-center gap-0.5 sm:gap-1 min-w-0';
+          wrap.className = 'flex items-center gap-1 min-w-0';
 
           const addBtn = document.createElement('button');
           addBtn.disabled = count <= 0;
-          const billTheme = d === 10000
-            ? 'from-amber-200 to-amber-300 text-amber-950 border-amber-700'
-            : (d === 5000
-              ? 'from-purple-200 to-purple-300 text-purple-950 border-purple-700'
-              : 'from-cyan-200 to-sky-300 text-sky-950 border-sky-700');
-
-          addBtn.className = `btn-3d flex-1 min-w-0 overflow-hidden py-1.5 sm:py-2 px-1 sm:px-1.5 rounded-xl font-black border-b-4 shadow flex items-center justify-between transition-opacity ${
+          addBtn.setAttribute('aria-label', `${d.toLocaleString()}円札 所持数${count}枚`);
+          addBtn.className = `bill-illust-btn flex-1 min-w-0 ${
             count > 0
-              ? `bg-gradient-to-b ${billTheme}`
-              : 'bg-slate-800 text-slate-500 border-slate-900 opacity-45 cursor-not-allowed'
+              ? 'cursor-pointer hover:brightness-110'
+              : 'grayscale opacity-55 cursor-not-allowed'
           } ${isHighlight ? 'tutorial-highlight ring-2 ring-amber-300' : (isHelperGlow ? 'helper-guide-highlight ring-2 ring-emerald-400' : '')}`;
 
           addBtn.innerHTML = `
-            <span class="font-digital text-[11px] sm:text-base tracking-tighter truncate">¥${d.toLocaleString()}</span>
-            <span class="bg-black/20 px-1 py-0.5 rounded text-[9px] sm:text-xs font-extrabold shrink-0">×${count}</span>
+            ${this.getBillIllustrationSVG(d)}
+            ${this.getWalletCountBadgeHTML(count)}
           `;
           addBtn.addEventListener('click', () => this.putMoneyOnTray(d));
           wrap.appendChild(addBtn);
 
           if (inTray > 0) {
             const subBtn = document.createElement('button');
-            subBtn.className = 'btn-3d bg-rose-600 hover:bg-rose-500 text-white text-[9px] sm:text-[10px] font-black px-1 sm:px-1.5 py-1.5 sm:py-2 rounded-lg border-b-2 border-rose-900 shadow shrink-0';
+            subBtn.className = 'btn-3d bg-rose-600 hover:bg-rose-500 text-white text-[9px] sm:text-[10px] font-black px-1.5 py-2 rounded-lg border-b-2 border-rose-900 shadow shrink-0';
             subBtn.title = 'トレイから1枚戻す';
             subBtn.textContent = `-${inTray}`;
             subBtn.addEventListener('click', () => this.removeDenomFromTray(d));
@@ -9516,15 +9512,6 @@
         const coinsGrid = document.getElementById('wallet-coins-grid');
         coinsGrid.innerHTML = '';
 
-        const coinStyles = {
-          500: 'from-yellow-200 via-amber-300 to-yellow-500 text-amber-950 border-amber-700',
-          100: 'from-slate-100 via-slate-300 to-slate-400 text-slate-900 border-slate-600',
-          50:  'from-gray-100 via-gray-300 to-gray-400 text-gray-900 border-gray-600',
-          10:  'from-orange-300 via-amber-600 to-orange-800 text-white border-amber-950',
-          5:   'from-yellow-300 via-amber-400 to-yellow-600 text-amber-950 border-amber-800',
-          1:   'from-zinc-100 via-zinc-200 to-zinc-300 text-zinc-800 border-zinc-500'
-        };
-
         for (const d of COIN_DENOMS) {
           const count = this.wallet[d] || 0;
           const inTray = trayCounts[d] || 0;
@@ -9536,15 +9523,16 @@
 
           const btn = document.createElement('button');
           btn.disabled = count <= 0;
-          btn.className = `coin-btn w-full py-1.5 sm:py-2 rounded-2xl border-b-4 shadow-md font-black ${
+          btn.setAttribute('aria-label', `${d}円玉 所持数${count}枚`);
+          btn.className = `coin-btn rounded-full p-0.5 ${
             count > 0
-              ? `bg-gradient-to-b ${coinStyles[d]}`
-              : 'bg-slate-800 text-slate-600 border-slate-900 opacity-40 cursor-not-allowed'
+              ? 'cursor-pointer hover:brightness-110'
+              : 'grayscale opacity-55 cursor-not-allowed'
           } ${isHighlight ? 'tutorial-highlight ring-2 ring-amber-300' : (isHelperGlow ? 'helper-guide-highlight ring-2 ring-emerald-400' : '')}`;
 
           btn.innerHTML = `
-            <span class="font-digital text-xs sm:text-base leading-none">${d}円</span>
-            <span class="mt-0.5 text-[10px] sm:text-xs font-extrabold bg-black/20 px-1.5 rounded-full leading-tight">×${count}</span>
+            ${this.getCoinIllustrationSVG(d)}
+            ${this.getWalletCountBadgeHTML(count)}
           `;
           btn.addEventListener('click', () => this.putMoneyOnTray(d));
           col.appendChild(btn);
