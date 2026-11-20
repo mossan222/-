@@ -2225,7 +2225,8 @@
         const key = RankingManager.getKey(cat);
         const list = [...RankingManager.load(cat)];
         const existingIdx = list.findIndex(item => RankingManager.normalizeName(item.name) === cleanName);
-        const nowStr = new Date().toLocaleDateString('ja-JP');
+        const nowMs = Date.now();
+        const nowStr = RankingManager.formatDateTime(nowMs);
 
         let resultObj;
         let entryToSync = null;
@@ -2234,14 +2235,15 @@
           const existing = list[existingIdx];
           if (score > existing.score) {
             const updatedEntry = {
-              id: 'run_' + Date.now(),
+              id: 'run_' + nowMs,
               name: cleanName,
               score: score,
               perfectRate: perfectRate,
               customers: customers,
               mode: difficulty || 'NORMAL',
               category: cat,
-              date: nowStr
+              date: nowStr,
+              timestamp: nowMs
             };
             list[existingIdx] = updatedEntry;
             const top10 = RankingManager.deduplicateAndSort(list);
@@ -2271,14 +2273,15 @@
           }
         } else {
           const newEntry = {
-            id: 'run_' + Date.now(),
+            id: 'run_' + nowMs,
             name: cleanName,
             score: score,
             perfectRate: perfectRate,
             customers: customers,
             mode: difficulty || 'NORMAL',
             category: cat,
-            date: nowStr
+            date: nowStr,
+            timestamp: nowMs
           };
           list.push(newEntry);
           const top10 = RankingManager.deduplicateAndSort(list);
@@ -2388,6 +2391,35 @@
         return RankingManager.getPlayerMaxScore(name) >= EX_UNLOCK_SCORE;
       }
 
+      static formatDateTime(ms) {
+        const d = new Date(ms);
+        if (isNaN(d.getTime())) return '';
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const hh = String(d.getHours()).padStart(2, '0');
+        const mm = String(d.getMinutes()).padStart(2, '0');
+        return `${y}/${m}/${day} ${hh}:${mm}`;
+      }
+
+      static getEntryDateTimeLabel(item) {
+        if (!item) return '';
+        if (typeof item.date === 'string' && item.date.includes(':')) {
+          return item.date;
+        }
+        if (typeof item.timestamp === 'number' && !isNaN(item.timestamp)) {
+          return RankingManager.formatDateTime(item.timestamp);
+        }
+        // 既存データ（id: 'run_<ms>'）からも記録日時を自動復元して表示
+        if (typeof item.id === 'string' && item.id.startsWith('run_')) {
+          const ts = Number(item.id.slice(4));
+          if (!isNaN(ts) && ts > 1000000000000) {
+            return RankingManager.formatDateTime(ts);
+          }
+        }
+        return item.date ? String(item.date) : '';
+      }
+
       static renderListToContainer(containerId, categoryKey = 'wallet', highlightId = null) {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -2416,14 +2448,20 @@
               : (modeStr === 'HARD'
                 ? 'bg-rose-500/30 text-rose-300 border-rose-500/40'
                 : 'bg-emerald-500/30 text-emerald-300 border-emerald-500/40'));
+          const dateTimeStr = RankingManager.getEntryDateTimeLabel(item);
 
           row.innerHTML = `
-            <div class="flex items-center gap-2 truncate">
-              <span class="w-7 text-center font-black ${rank <= 3 ? 'text-base' : 'text-xs text-slate-400'}">${medal}</span>
-              <span class="truncate max-w-[105px] sm:max-w-[155px] ${isHighlighted ? 'text-amber-300' : 'text-white'}">${escapeHtml(item.name)}</span>
-              <span class="text-[9px] px-1.5 py-0.2 rounded border ${modeBadgeColor}">${modeStr}</span>
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <span class="w-7 text-center font-black shrink-0 ${rank <= 3 ? 'text-base' : 'text-xs text-slate-400'}">${medal}</span>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span class="truncate ${isHighlighted ? 'text-amber-300' : 'text-white'}">${escapeHtml(item.name)}</span>
+                  <span class="text-[9px] px-1.5 py-0.2 rounded border shrink-0 ${modeBadgeColor}">${modeStr}</span>
+                </div>
+                ${dateTimeStr ? `<div class="text-[9px] sm:text-[10px] text-slate-400 font-digital leading-tight mt-0.5">🕒 ${escapeHtml(dateTimeStr)}</div>` : ''}
+              </div>
             </div>
-            <div class="flex items-center gap-3 shrink-0">
+            <div class="flex items-center gap-2.5 shrink-0 ml-2">
               <span class="text-[10px] text-emerald-300 hidden sm:inline">神率 ${item.perfectRate ?? 0}%</span>
               <span class="font-digital text-sm sm:text-base font-bold text-amber-300">${Number(item.score).toLocaleString()} pt</span>
             </div>
