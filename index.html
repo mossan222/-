@@ -1965,27 +1965,49 @@
 
     <!-- BOTTOM WALLET & ACTION CONTROLS -->
     <footer class="w-full max-w-3xl mx-auto pointer-events-auto">
-      <!-- VERSUS JAMMER MODE HP BAR (Positioned right above the wallet panel) -->
-      <div id="vs-hp-bar-wrap" class="hidden px-3 sm:px-6 mb-1.5 pointer-events-none">
-        <div id="vs-hp-bar-card" class="max-w-md mx-auto bg-slate-950/90 backdrop-blur-md border-2 border-emerald-400/80 rounded-2xl px-3 py-1.5 shadow-[0_4px_18px_rgba(0,0,0,0.75)] relative">
-          <div class="flex items-center justify-between gap-2 mb-1 leading-none">
-            <div class="flex items-center gap-1.5">
-              <span class="text-xs sm:text-sm">❤️</span>
-              <span class="text-[10px] sm:text-xs font-black text-white tracking-wider">YOUR HP</span>
-              <span id="vs-hp-zone-atk-badge" class="hidden text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded-full bg-gradient-to-r from-fuchsia-500 to-amber-400 text-slate-950 animate-pulse">⚡ 攻撃力×1.5</span>
+      <!-- VERSUS JAMMER MODE HP BAR + LEFT(HEAL) / RIGHT(STUN) ITEM BUTTONS -->
+      <div id="vs-hp-bar-wrap" class="hidden px-2 sm:px-4 mb-1.5 pointer-events-none">
+        <div class="max-w-2xl mx-auto flex items-stretch justify-center gap-1.5 sm:gap-2">
+          <!-- Left: Heal Item Button (+300 HP) -->
+          <button id="btn-vs-item-heal" type="button" disabled class="hidden pointer-events-auto btn-3d shrink-0 w-[86px] sm:w-[116px] bg-gradient-to-b from-emerald-500 to-teal-700 hover:from-emerald-400 hover:to-teal-600 text-white rounded-2xl border-2 border-emerald-300 px-1.5 py-1 shadow-lg flex flex-col items-center justify-center leading-tight disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed relative">
+            <span id="key-hint-item-heal" class="hidden sm:inline-block absolute -top-2 -left-1.5 font-digital text-[9px] font-black px-1.5 py-0.5 rounded bg-slate-950 text-emerald-300 border border-emerald-400 leading-none">G</span>
+            <div class="text-[11px] sm:text-xs font-black flex items-center gap-0.5"><span>💚</span><span>回復</span></div>
+            <div id="vs-item-heal-sub" class="text-[9px] sm:text-[10px] font-extrabold text-emerald-100 mt-0.5">あと2回</div>
+          </button>
+
+          <!-- Center: HP Bar -->
+          <div id="vs-hp-bar-card" class="flex-1 min-w-0 max-w-md bg-slate-950/90 backdrop-blur-md border-2 border-emerald-400/80 rounded-2xl px-2.5 sm:px-3 py-1.5 shadow-[0_4px_18px_rgba(0,0,0,0.75)] relative flex flex-col justify-center">
+            <div class="flex items-center justify-between gap-1.5 mb-1 leading-none">
+              <div class="flex items-center gap-1 min-w-0">
+                <span class="text-xs sm:text-sm shrink-0">❤️</span>
+                <span class="text-[10px] sm:text-xs font-black text-white tracking-wider shrink-0">HP</span>
+                <span id="vs-hp-zone-atk-badge" class="hidden text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded-full bg-gradient-to-r from-fuchsia-500 to-amber-400 text-slate-950 animate-pulse shrink-0">⚡×1.5</span>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <span id="vs-hp-dmg-popup" class="font-digital text-[11px] sm:text-xs font-black text-rose-400"></span>
+                <span id="vs-hp-text" class="font-digital text-xs sm:text-sm font-black text-emerald-300">1000 / 1000</span>
+              </div>
             </div>
-            <div class="flex items-center gap-1.5">
-              <span id="vs-hp-dmg-popup" class="font-digital text-[11px] sm:text-xs font-black text-rose-400"></span>
-              <span id="vs-hp-text" class="font-digital text-xs sm:text-sm font-black text-emerald-300">1000 / 1000</span>
+            <div class="w-full h-2.5 sm:h-3 bg-slate-800/95 rounded-full overflow-hidden border border-slate-700">
+              <div id="vs-hp-fill" class="h-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 rounded-full transition-all duration-200" style="width: 100%;"></div>
             </div>
           </div>
-          <div class="w-full h-2.5 sm:h-3 bg-slate-800/95 rounded-full overflow-hidden border border-slate-700">
-            <div id="vs-hp-fill" class="h-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 rounded-full transition-all duration-200" style="width: 100%;"></div>
-          </div>
+
+          <!-- Right: Stun Item Button (100 DMG + 2s Stun) -->
+          <button id="btn-vs-item-stun" type="button" disabled class="hidden pointer-events-auto btn-3d shrink-0 w-[86px] sm:w-[116px] bg-gradient-to-b from-amber-400 to-orange-600 hover:from-amber-300 hover:to-orange-500 text-slate-950 rounded-2xl border-2 border-yellow-200 px-1.5 py-1 shadow-lg flex flex-col items-center justify-center leading-tight disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed relative">
+            <span id="key-hint-item-stun" class="hidden sm:inline-block absolute -top-2 -right-1.5 font-digital text-[9px] font-black px-1.5 py-0.5 rounded bg-slate-950 text-amber-300 border border-amber-400 leading-none">H</span>
+            <div class="text-[11px] sm:text-xs font-black flex items-center gap-0.5"><span>⚡</span><span>スタン</span></div>
+            <div id="vs-item-stun-sub" class="text-[9px] sm:text-[10px] font-extrabold text-slate-900 mt-0.5">あと2回</div>
+          </button>
         </div>
       </div>
 
-      <div class="wallet-card rounded-t-3xl px-2.5 pt-2 pb-2.5 sm:px-4 sm:pt-2.5 sm:pb-3.5">
+      <div class="wallet-card rounded-t-3xl px-2.5 pt-2 pb-2.5 sm:px-4 sm:pt-2.5 sm:pb-3.5 relative overflow-hidden">
+        <!-- STUNNED LOCK OVERLAY (2s paralysis) -->
+        <div id="vs-stun-overlay" class="hidden absolute inset-0 z-30 bg-amber-950/80 backdrop-blur-[2px] border-t-2 border-yellow-300 flex flex-col items-center justify-center text-center pointer-events-auto">
+          <div class="text-xl sm:text-2xl font-black text-yellow-300 drop-shadow animate-pulse">⚡ 痺れて動けない!! ⚡</div>
+          <div id="vs-stun-timer-text" class="font-digital text-sm sm:text-base font-black text-white mt-0.5">操作復帰まで 2.0s</div>
+        </div>
         <!-- Bills Row (10000, 5000, 1000) -->
         <div class="flex items-center justify-between gap-1.5 sm:gap-2.5 mb-2 pt-1">
           <div class="text-[10px] sm:text-xs font-extrabold text-amber-300/90 px-1 shrink-0 leading-tight">
@@ -2225,6 +2247,15 @@
             🎲 完全ランダム生成
           </button>
         </div>
+        <div class="text-[10px] font-bold text-slate-400 mb-1">🎁 アイテム（HPお邪魔モード用：回復・スタン）</div>
+        <div class="grid grid-cols-2 gap-1.5 mb-2.5">
+          <button id="btn-vs-rand-items-on" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-amber-400 text-slate-950 border-white shadow">
+            🎁 アイテムあり
+          </button>
+          <button id="btn-vs-rand-items-off" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
+            🚫 アイテムなし
+          </button>
+        </div>
         <!-- 希望対戦人数（何人でも / 人数を入力 2〜10人） -->
         <div class="mb-2.5">
           <div class="text-[10px] font-bold text-slate-400 mb-1">希望する対戦人数（2〜10人）</div>
@@ -2379,6 +2410,15 @@
             <button data-vs-set="raceTarget" data-vs-val="5" class="vs-opt-btn btn-3d py-1 px-1 rounded-xl text-[11px] font-black border-2">5人先取</button>
             <button data-vs-set="raceTarget" data-vs-val="7" class="vs-opt-btn btn-3d py-1 px-1 rounded-xl text-[11px] font-black border-2">7人先取</button>
             <button data-vs-set="raceTarget" data-vs-val="10" class="vs-opt-btn btn-3d py-1 px-1 rounded-xl text-[11px] font-black border-2">10人先取</button>
+          </div>
+        </div>
+
+        <!-- 1c. Jammer Items ON/OFF (Only when jammer selected) -->
+        <div id="vs-jammer-items-row" class="hidden">
+          <div class="text-[10px] font-bold text-slate-400 mb-1">🎁 アイテム（回復+300 / スタン100DMG+2秒痺れ）</div>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button data-vs-set="itemsEnabled" data-vs-val="true" class="vs-opt-btn btn-3d py-1 px-2 rounded-xl text-[11px] font-black border-2">🎁 アイテムあり</button>
+            <button data-vs-set="itemsEnabled" data-vs-val="false" class="vs-opt-btn btn-3d py-1 px-2 rounded-xl text-[11px] font-black border-2">🚫 アイテムなし</button>
           </div>
         </div>
 
@@ -2624,7 +2664,7 @@
     const RANKING_KEY_LUNATIC_10_10          = 'pittariman_ranking_lunatic_10p_10s';
     const RANKING_KEY_LUNATIC_10_15          = 'pittariman_ranking_lunatic_10p_15s';
     const PLAYER_NAME_STORAGE_KEY            = 'pittariman_player_name_v3';
-    const KEY_CONFIG_STORAGE_KEY             = 'pittariman_key_config_v2';
+    const KEY_CONFIG_STORAGE_KEY             = 'pittariman_key_config_v3';
 
     const DEFAULT_KEY_BINDINGS = {
       '10000': 'KeyW',
@@ -2646,7 +2686,9 @@
       'ret_5': 'KeyM',
       'ret_1': 'Comma',
       'checkout': 'Space',
-      'reset': 'KeyB'
+      'reset': 'KeyB',
+      'item_heal': 'KeyG',
+      'item_stun': 'KeyH'
     };
 
     const KEY_CONFIG_ITEMS = [
@@ -2669,7 +2711,9 @@
       { action: 'ret_5',     label: '↩️ 5円玉を戻す',      group: 'お金戻し' },
       { action: 'ret_1',     label: '↩️ 1円玉を戻す',      group: 'お金戻し' },
       { action: 'checkout',  label: '🔔 お会計！（決定）', group: '操作' },
-      { action: 'reset',     label: '↩️ 全戻し',           group: '操作' }
+      { action: 'reset',     label: '↩️ 全戻し',           group: '操作' },
+      { action: 'item_heal', label: '💚 回復アイテム (+300HP)', group: '対戦アイテム' },
+      { action: 'item_stun', label: '⚡ スタンアイテム (100DMG+2秒痺れ)', group: '対戦アイテム' }
     ];
 
     function normalizeKeyEventCode(e) {
@@ -6396,6 +6440,7 @@
         this.selectedRandomRule = 'score';
         this.selectedRandomRuleType = 'change';
         this.selectedRandomGenMode = 'clean';
+        this.selectedRandomItems = true;
         this.randomSizeMode = 'any'; // 'any' | 'custom'
         this.lastRoomData = null;
         this.matchLaunched = false;
@@ -6446,7 +6491,7 @@
         return Boolean(RankingManager.db && RankingManager.isOnline);
       }
 
-      getDefaultSettings(vsRule = 'score', priceGenMode = 'clean', maxPlayers = 4, ruleType = null) {
+      getDefaultSettings(vsRule = 'score', priceGenMode = 'clean', maxPlayers = 4, ruleType = null, itemsEnabled = true) {
         const clamped = Math.max(2, Math.min(10, Number(maxPlayers) || 4));
         const resolvedRuleType = (ruleType === 'change' || ruleType === 'wallet')
           ? ruleType
@@ -6459,6 +6504,7 @@
           priceGenMode: priceGenMode === 'random' ? 'random' : 'clean',
           lunaticTaxRate: 8,
           showChange: true,
+          itemsEnabled: itemsEnabled !== false,
           maxPlayers: clamped
         };
       }
@@ -6563,6 +6609,26 @@
 
         document.getElementById('btn-vs-rand-gen-clean').addEventListener('click', () => { sound.playClick(); setRandGenMode('clean'); });
         document.getElementById('btn-vs-rand-gen-random').addEventListener('click', () => { sound.playClick(); setRandGenMode('random'); });
+
+        const setRandItems = (enabled) => {
+          this.selectedRandomItems = Boolean(enabled);
+          const btnOn = document.getElementById('btn-vs-rand-items-on');
+          const btnOff = document.getElementById('btn-vs-rand-items-off');
+          if (btnOn) {
+            btnOn.className = this.selectedRandomItems
+              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-amber-400 text-slate-950 border-white shadow'
+              : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
+          }
+          if (btnOff) {
+            btnOff.className = !this.selectedRandomItems
+              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-rose-500 text-white border-white shadow'
+              : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
+          }
+        };
+        const btnRandItemsOn = document.getElementById('btn-vs-rand-items-on');
+        const btnRandItemsOff = document.getElementById('btn-vs-rand-items-off');
+        if (btnRandItemsOn) btnRandItemsOn.addEventListener('click', () => { sound.playClick(); setRandItems(true); });
+        if (btnRandItemsOff) btnRandItemsOff.addEventListener('click', () => { sound.playClick(); setRandItems(false); });
 
         // ランダムマッチ希望人数（何人でも / 人数を入力）
         const setRandSizeMode = (mode) => {
@@ -6682,7 +6748,7 @@
             const key = btn.getAttribute('data-vs-set');
             let val = btn.getAttribute('data-vs-val');
             if (key === 'raceTarget' || key === 'lunaticTaxRate' || key === 'maxPlayers') val = Number(val);
-            if (key === 'showChange') val = (val === 'true');
+            if (key === 'showChange' || key === 'itemsEnabled') val = (val === 'true');
             if (key === 'maxPlayers') {
               const humans = this.getConnectedHumanEntries(this.lastRoomData).length;
               if (val < Math.max(2, humans)) {
@@ -6811,8 +6877,8 @@
 
       calcJammerAttackDamage(comboCount = 1, isZoneActive = false, isFromBot = false) {
         const c = Math.max(1, Number(comboCount) || 1);
-        const base = isFromBot ? 52 : 65;
-        const comboMult = 1 + (c - 1) * (isFromBot ? 0.18 : 0.22);
+        const base = isFromBot ? 28 : 65;
+        const comboMult = 1 + (c - 1) * (isFromBot ? 0.12 : 0.22);
         const zoneMult = isZoneActive ? 1.5 : 1.0;
         return Math.round(base * comboMult * zoneMult);
       }
@@ -6926,7 +6992,7 @@
         this.lastGlobalBotJammerAt = 0;
       }
 
-      async createPrivateRoom(isRandom = false, forcedVsRule = null, forcedGenMode = null, maxPlayers = 4, anyCount = false, anyRule = false, forcedRuleType = null) {
+      async createPrivateRoom(isRandom = false, forcedVsRule = null, forcedGenMode = null, maxPlayers = 4, anyCount = false, anyRule = false, forcedRuleType = null, forcedItemsEnabled = true) {
         const db = this.getDb();
         if (!db) {
           this.showLobbyError('Firebaseに接続できていません。ネット環境を確認してください。');
@@ -6941,7 +7007,7 @@
         const code = this.generate4DigitCode();
         const ref = db.ref('rooms/' + code);
         const initialRule = anyRule ? 'score' : (forcedVsRule || 'score');
-        const settings = this.getDefaultSettings(initialRule, forcedGenMode || 'clean', maxPlayers, forcedRuleType);
+        const settings = this.getDefaultSettings(initialRule, forcedGenMode || 'clean', maxPlayers, forcedRuleType, forcedItemsEnabled);
         const now = Date.now();
         const roomData = {
           code,
@@ -6976,7 +7042,7 @@
         }
       }
 
-      async joinRoomByCode(code, isRandom = false, desiredCount = null, isAnyCount = true, desiredRule = 'any', desiredGenMode = null, desiredRuleType = null) {
+      async joinRoomByCode(code, isRandom = false, desiredCount = null, isAnyCount = true, desiredRule = 'any', desiredGenMode = null, desiredRuleType = null, desiredItemsEnabled = null) {
         const db = this.getDb();
         if (!db) {
           this.showLobbyError('Firebaseに接続できていません。');
@@ -7055,6 +7121,13 @@
                   data.anyRule = false;
                 } else if ((s.vsRule || 'score') !== desiredRule) {
                   failReason = '対戦モードが一致しません。';
+                  return;
+                }
+              }
+              if (desiredItemsEnabled !== null && ((s.vsRule || 'score') === 'jammer' || desiredRule === 'jammer')) {
+                const roomItems = s.itemsEnabled !== false;
+                if (roomItems !== Boolean(desiredItemsEnabled)) {
+                  failReason = 'アイテム設定が一致しません。';
                   return;
                 }
               }
@@ -7148,6 +7221,7 @@
         const isAnyRule = (rule === 'any');
         const acctRule = this.selectedRandomRuleType === 'wallet' ? 'wallet' : 'change';
         const genMode = this.selectedRandomGenMode === 'random' ? 'random' : 'clean';
+        const itemsEnabled = this.selectedRandomItems !== false;
         const queueKey = `multi_pool_${genMode}_${acctRule}`;
         const qRef = db.ref('versus_queue/' + queueKey);
         this.queueRef = qRef;
@@ -7172,6 +7246,10 @@
                 const candAnyRule = Boolean(e.anyRule);
                 if (!candAnyRule && e.vsRule !== rule) return false;
               }
+              if (rule === 'jammer' || e.vsRule === 'jammer') {
+                const candItems = e.itemsEnabled !== false;
+                if (candItems !== itemsEnabled) return false;
+              }
               // 人数一致チェック
               if (anyCount) return true;
               if (e.anyCount) return curH < targetCount;
@@ -7181,7 +7259,7 @@
 
           for (const cand of candidates) {
             if (!this.isRandomSearching) return;
-            const ok = await this.joinRoomByCode(cand.code, true, targetCount, anyCount, rule, genMode, acctRule);
+            const ok = await this.joinRoomByCode(cand.code, true, targetCount, anyCount, rule, genMode, acctRule, itemsEnabled);
             if (ok) {
               this.queueRoomCode = cand.code;
               // キュー情報を最新化
@@ -7202,7 +7280,7 @@
           if (!this.isRandomSearching) return;
 
           // 該当待機ルームがないため新規ランダムルームを作成してキュー登録
-          const newCode = await this.createPrivateRoom(true, isAnyRule ? 'score' : rule, genMode, targetCount, anyCount, isAnyRule, acctRule);
+          const newCode = await this.createPrivateRoom(true, isAnyRule ? 'score' : rule, genMode, targetCount, anyCount, isAnyRule, acctRule, itemsEnabled);
           if (!newCode) {
             this.cancelRandomSearch();
             return;
@@ -7218,6 +7296,7 @@
             isAnyRule,
             acctRule,
             genMode,
+            itemsEnabled,
             targetCount,
             anyCount,
             createdAt: myCreatedAt
@@ -7229,6 +7308,7 @@
             anyRule: isAnyRule,
             ruleType: acctRule,
             priceGenMode: genMode,
+            itemsEnabled: itemsEnabled,
             maxPlayers: targetCount,
             anyCount: anyCount,
             currentHumans: 1,
@@ -7328,7 +7408,7 @@
               const oldRoomCode = this.roomCode;
               const qRef = this.queueRef;
 
-              const ok = await this.joinRoomByCode(cand.code, true, opts.targetCount, opts.anyCount, opts.rule, opts.genMode, opts.acctRule);
+              const ok = await this.joinRoomByCode(cand.code, true, opts.targetCount, opts.anyCount, opts.rule, opts.genMode, opts.acctRule, opts.itemsEnabled);
               if (ok) {
                 // 自分の古い仮ルームとキューを削除して合流完了！
                 if (oldRoomCode && oldRoomCode !== cand.code) {
@@ -7567,14 +7647,16 @@
               if (totalDmg > this.lastReceivedDamage) {
                 this.lastReceivedDamage = totalDmg;
               }
-              if ((jam.c1 || 0) > 0 || (jam.c10 || 0) > 0 || deltaDmg > 0) {
+              const stunSec = Number(jam.stunSec || 0);
+              if ((jam.c1 || 0) > 0 || (jam.c10 || 0) > 0 || deltaDmg > 0 || stunSec > 0) {
                 this.game.receiveVersusJammer(
                   jam.c1 || 0,
                   jam.c10 || 0,
                   jam.fromCombo || 1,
                   jam.fromName || 'ライバル',
                   deltaDmg,
-                  Boolean(jam.isZone)
+                  Boolean(jam.isZone),
+                  stunSec
                 );
               }
             }
@@ -7689,6 +7771,8 @@
 
         const raceRow = document.getElementById('vs-race-target-row');
         if (raceRow) raceRow.classList.toggle('hidden', s.vsRule !== 'race');
+        const itemsRow = document.getElementById('vs-jammer-items-row');
+        if (itemsRow) itemsRow.classList.toggle('hidden', s.vsRule !== 'jammer');
         const lunRow = document.getElementById('vs-lunatic-tax-row');
         if (lunRow) lunRow.classList.toggle('hidden', s.difficulty !== 'LUNATIC');
 
@@ -7748,14 +7832,14 @@
           const existing = data.players ? data.players[slot] : null;
           if (existing && !existing.isBot && existing.connected !== false) {
             nextPlayers[slot] = this.makeEmptyPlayer(existing.name, false, existing.uid);
-            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, damage: 0, totalDamage: 0, isZone: false, fromCombo: 0, fromName: '' };
+            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, damage: 0, totalDamage: 0, isZone: false, stunSec: 0, fromCombo: 0, fromName: '' };
           } else if (fillWithBots) {
             const bName = this.BOT_NAMES[botIdx % this.BOT_NAMES.length];
             botIdx++;
             const uniqueName = usedBotNames.has(bName) ? `${bName}#${botIdx}` : bName;
             usedBotNames.add(uniqueName);
             nextPlayers[slot] = this.makeEmptyPlayer(uniqueName, true, `bot_${slot}_${Date.now()}`);
-            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, damage: 0, totalDamage: 0, isZone: false, fromCombo: 0, fromName: '' };
+            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, damage: 0, totalDamage: 0, isZone: false, stunSec: 0, fromCombo: 0, fromName: '' };
           }
         }
 
@@ -7807,10 +7891,13 @@
         this.botLastJammerSeqs = {};
         this.lastGlobalBotJammerAt = playStartMs + 3500; // 開始直後はお邪魔を飛ばさない
         botEntries.forEach(({ slot, player }, idx) => {
-          const paceBase = 2900 + (idx % 4) * 550 + Math.random() * 950;
-          const perfRate = (diff === 'EX' || diff === 'LUNATIC')
-            ? (0.90 + Math.random() * 0.08)
-            : (0.72 + Math.random() * 0.18);
+          const isJammerHp = s.vsRule === 'jammer';
+          const paceBase = isJammerHp
+            ? (4400 + (idx % 4) * 650 + Math.random() * 1100)
+            : (2900 + (idx % 4) * 550 + Math.random() * 950);
+          const perfRate = isJammerHp
+            ? ((diff === 'EX' || diff === 'LUNATIC') ? (0.74 + Math.random() * 0.10) : (0.56 + Math.random() * 0.16))
+            : ((diff === 'EX' || diff === 'LUNATIC') ? (0.90 + Math.random() * 0.08) : (0.72 + Math.random() * 0.18));
           this.botStates[slot] = {
             slot,
             name: player.name,
@@ -7867,6 +7954,9 @@
                   st.jammerHitCount += (jam.c1 || 0) + (jam.c10 || 0);
                   st.nextActionAt = Math.max(st.nextActionAt, now) + 1200 + Math.random() * 800;
                   updates[`players/${st.slot}/jammerHitCount`] = st.jammerHitCount;
+                }
+                if ((jam.stunSec || 0) > 0) {
+                  st.nextActionAt = Math.max(st.nextActionAt, now) + Math.round(jam.stunSec * 1000);
                 }
                 if (deltaDmg > 0) {
                   st.hp = Math.max(0, (typeof st.hp === 'number' ? st.hp : this.VS_JAMMER_MAX_HP) - deltaDmg);
@@ -8011,7 +8101,7 @@
 
         list.sort((a, b) => {
           if (s.vsRule === 'jammer') {
-            if (b.hp !== a.hp) return b.hp - a.hp;
+            return b.hp - a.hp; // HP制ではスコアは勝敗・順位に一切影響させない
           } else if (s.vsRule === 'race') {
             if (b.perfectCount !== a.perfectCount) return b.perfectCount - a.perfectCount;
           }
@@ -8223,6 +8313,7 @@
             damage,
             totalDamage: prevTotalDmg + damage,
             isZone: Boolean(isZoneActive),
+            stunSec: 0,
             fromCombo: comboCount,
             fromName: fromName || 'ライバル'
           };
@@ -8246,6 +8337,43 @@
         this.sendJammerFromSlot(this.mySlot, this.game.playerName, comboCount, false, isZoneActive, withCoins);
       }
 
+      sendStunItemAttack() {
+        if (!this.roomRef || !this.lastRoomData || !this.mySlot) return false;
+        const s = this.lastRoomData.settings || {};
+        if (s.vsRule !== 'jammer') return false;
+
+        const candidates = this.getActiveParticipants(this.lastRoomData)
+          .filter(({ slot, player }) => {
+            const hpVal = typeof player.hp === 'number' ? player.hp : this.VS_JAMMER_MAX_HP;
+            return slot !== this.mySlot && !player.finished && !player.koDefeated && hpVal > 0;
+          });
+        if (candidates.length === 0) return false;
+
+        const target = candidates[Math.floor(Math.random() * candidates.length)];
+        const stunDmg = 100;
+        const stunSec = 2.0;
+
+        this.roomRef.child('jammers/' + target.slot).transaction((cur) => {
+          const nextSeq = (cur && typeof cur.seq === 'number' ? cur.seq : 0) + 1;
+          const prevTotalDmg = (cur && typeof cur.totalDamage === 'number') ? cur.totalDamage : 0;
+          return {
+            seq: nextSeq,
+            c1: 0,
+            c10: 0,
+            damage: stunDmg,
+            totalDamage: prevTotalDmg + stunDmg,
+            isZone: false,
+            stunSec: stunSec,
+            fromCombo: this.game.combo || 1,
+            fromName: this.game.playerName || 'ライバル'
+          };
+        }).catch(() => {});
+
+        this.damageDealtTotal += stunDmg;
+        this.game.showVersusJammerToast(`⚡ スタン発動!! ${target.player.name || '相手'} に 100 DMG ＆ 2秒痺れ!!`, false);
+        return true;
+      }
+
       claimWinner(winnerSlot, reason) {
         if (!this.roomRef) return;
         this.roomRef.child('winner').transaction((cur) => {
@@ -8267,10 +8395,8 @@
         const second = standings[1];
 
         if (s.vsRule === 'jammer') {
-          if (second && top.hp === second.hp && top.score === second.score) {
-            this.claimWinner('draw', `同HP（❤️${top.hp}）・同点で引き分け！白熱のバトルでした！`);
-          } else if (second && top.hp === second.hp) {
-            this.claimWinner(top.slot, `🏆 同HP（❤️${top.hp}）のスコア差で ${top.name} が勝利！`);
+          if (second && top.hp === second.hp) {
+            this.claimWinner('draw', `同HP（❤️${top.hp}）で引き分け！白熱のバトルでした！`);
           } else {
             const hpDiff = second ? `（2位とHP +${top.hp - second.hp} 差）` : '';
             this.claimWinner(top.slot, `🏆 ${top.name} が残りHP ❤️${top.hp} で勝利！${hpDiff}`);
@@ -8412,6 +8538,9 @@
         this.vsHp = 1000;
         this.vsMaxHp = 1000;
         this.vsKoDefeated = false;
+        this.vsItemCharges = 0;
+        this.vsItemPerfectProgress = 0;
+        this.vsStunTimeLeft = 0;
         this.isTutorial = false;
         this.difficulty = 'NORMAL';
         this.lunaticTaxRate = 8;
@@ -8917,6 +9046,21 @@
           this.handleCheckout();
         });
 
+        const btnHeal = document.getElementById('btn-vs-item-heal');
+        if (btnHeal) {
+          btnHeal.addEventListener('click', () => {
+            if (this.state !== 'PLAYING') return;
+            this.useVersusItem('heal');
+          });
+        }
+        const btnStun = document.getElementById('btn-vs-item-stun');
+        if (btnStun) {
+          btnStun.addEventListener('click', () => {
+            if (this.state !== 'PLAYING') return;
+            this.useVersusItem('stun');
+          });
+        }
+
         document.getElementById('tab-res-gen-clean').addEventListener('click', () => {
           sound.playClick();
           this.setResultRankingTab(null, null, 'clean');
@@ -9031,7 +9175,7 @@
         this.renderKeyConfigModal();
         const msgEl = document.getElementById('keyconfig-status-msg');
         if (msgEl) {
-          msgEl.innerHTML = '✅ <span class="text-emerald-300 font-black">初期設定に戻しました！</span>（出し: W-L / 戻し: U-, / 会計: Space / 全戻し: B）';
+          msgEl.innerHTML = '✅ <span class="text-emerald-300 font-black">初期設定に戻しました！</span>（出し: W-L / 戻し: U-, / 会計: Space / 全戻し: B / 回復: G / スタン: H）';
         }
       }
 
@@ -9120,6 +9264,14 @@
         const resetHint = document.getElementById('key-hint-reset');
         if (resetHint) {
           resetHint.textContent = formatKeyCodeLabel(this.keyBindings.reset);
+        }
+        const healHint = document.getElementById('key-hint-item-heal');
+        if (healHint) {
+          healHint.textContent = formatKeyCodeLabel(this.keyBindings.item_heal);
+        }
+        const stunHint = document.getElementById('key-hint-item-stun');
+        if (stunHint) {
+          stunHint.textContent = formatKeyCodeLabel(this.keyBindings.item_stun);
         }
         if (this.state === 'PLAYING' || this.state === 'COUNTDOWN' || this.state === 'JUDGING') {
           this.renderWalletUI();
@@ -9211,10 +9363,15 @@
             activeEl.blur();
           }
 
+          if (this.vsStunTimeLeft > 0) return;
           if (matchedAction === 'checkout') {
             this.handleCheckout();
           } else if (matchedAction === 'reset') {
             this.returnAllTrayToWallet();
+          } else if (matchedAction === 'item_heal') {
+            this.useVersusItem('heal');
+          } else if (matchedAction === 'item_stun') {
+            this.useVersusItem('stun');
           } else if (matchedAction.startsWith('ret_')) {
             const denom = Number(matchedAction.slice(4));
             if (ALL_DENOMS.includes(denom)) {
@@ -10214,6 +10371,10 @@
         this.vsMaxHp = this.versus ? this.versus.VS_JAMMER_MAX_HP : 1000;
         this.vsHp = this.vsMaxHp;
         this.vsKoDefeated = false;
+        this.vsItemCharges = 0;
+        this.vsItemPerfectProgress = 0;
+        this.vsStunTimeLeft = 0;
+        this.updateStunOverlay();
         this.mistakeLogs = [];
         this.ruleType = s.ruleType === 'change' ? 'change' : 'wallet';
         this.difficulty = s.difficulty || 'NORMAL';
@@ -10437,7 +10598,116 @@
         return Boolean(this.isVersusRun && this.vsSettings && this.vsSettings.vsRule === 'jammer');
       }
 
-      updateVersusHpBar(lastDamage = 0) {
+      isVersusJammerItemsEnabled() {
+        return Boolean(this.isVersusJammerMode() && this.vsSettings && this.vsSettings.itemsEnabled !== false);
+      }
+
+      getVersusItemCost() {
+        const mult = this.difficulty === 'LUNATIC' ? 100 : (this.difficulty === 'EX' ? 10 : (this.difficulty === 'HARD' ? 1.5 : 1.0));
+        return Math.round(3000 * mult);
+      }
+
+      updateStunOverlay() {
+        const overlay = document.getElementById('vs-stun-overlay');
+        const timerText = document.getElementById('vs-stun-timer-text');
+        if (!overlay) return;
+        if (this.vsStunTimeLeft > 0 && this.state === 'PLAYING') {
+          overlay.classList.remove('hidden');
+          if (timerText) timerText.textContent = `操作復帰まで ${this.vsStunTimeLeft.toFixed(1)}s`;
+        } else {
+          overlay.classList.add('hidden');
+        }
+      }
+
+      updateVersusItemButtons() {
+        const btnHeal = document.getElementById('btn-vs-item-heal');
+        const btnStun = document.getElementById('btn-vs-item-stun');
+        const healSub = document.getElementById('vs-item-heal-sub');
+        const stunSub = document.getElementById('vs-item-stun-sub');
+        if (!btnHeal || !btnStun) return;
+
+        if (!this.isVersusJammerItemsEnabled()) {
+          btnHeal.classList.add('hidden');
+          btnStun.classList.add('hidden');
+          return;
+        }
+
+        btnHeal.classList.remove('hidden');
+        btnStun.classList.remove('hidden');
+
+        const cost = this.getVersusItemCost();
+        const costLabel = cost >= 10000 ? `${Math.round(cost / 1000)}k pt` : `${cost.toLocaleString()}pt`;
+        const canAfford = (this.score || 0) >= cost;
+        const hasCharge = (this.vsItemCharges || 0) >= 1;
+        const notStunned = (this.vsStunTimeLeft || 0) <= 0;
+        const canUseBase = this.state === 'PLAYING' && hasCharge && canAfford && notStunned;
+
+        const canHeal = canUseBase && (this.vsHp || 0) < (this.vsMaxHp || 1000);
+        const canStun = canUseBase;
+
+        btnHeal.disabled = !canHeal;
+        btnStun.disabled = !canStun;
+
+        const remPerfect = Math.max(1, 2 - (this.vsItemPerfectProgress || 0));
+        if (hasCharge) {
+          const stockTxt = this.vsItemCharges > 1 ? `×${this.vsItemCharges} ` : '';
+          if (healSub) {
+            healSub.textContent = !canAfford
+              ? `要${costLabel}`
+              : ((this.vsHp || 0) >= (this.vsMaxHp || 1000) ? 'HP満タン' : `${stockTxt}+300 (${costLabel})`);
+          }
+          if (stunSub) {
+            stunSub.textContent = !canAfford ? `要${costLabel}` : `${stockTxt}100+2s (${costLabel})`;
+          }
+        } else {
+          if (healSub) healSub.textContent = `あと${remPerfect}回神`;
+          if (stunSub) stunSub.textContent = `あと${remPerfect}回神`;
+        }
+      }
+
+      useVersusItem(type) {
+        if (this.state !== 'PLAYING' || !this.isVersusJammerItemsEnabled()) return;
+        if (this.vsStunTimeLeft > 0) return;
+        const cost = this.getVersusItemCost();
+        if ((this.vsItemCharges || 0) < 1 || (this.score || 0) < cost) {
+          sound.playBadBuzzer();
+          return;
+        }
+
+        if (type === 'heal') {
+          if ((this.vsHp || 0) >= (this.vsMaxHp || 1000)) {
+            sound.playReturn();
+            return;
+          }
+          this.vsItemCharges -= 1;
+          this.score = Math.max(0, this.score - cost);
+          const beforeHp = this.vsHp || 0;
+          this.vsHp = Math.min(this.vsMaxHp || 1000, beforeHp + 300);
+          const healed = this.vsHp - beforeHp;
+          sound.playPerfectFanfare();
+          this.vibrate(45);
+          this.updateTopHUD();
+          this.updateVersusHpBar(0, healed);
+          this.showVersusJammerToast(`💚 回復アイテム発動！ HP +${healed}（-${cost.toLocaleString()}pt）`, false);
+          if (this.versus) this.versus.syncMyProgress(false, false);
+        } else if (type === 'stun') {
+          if (!this.versus) return;
+          const ok = this.versus.sendStunItemAttack();
+          if (!ok) {
+            sound.playBadBuzzer();
+            return;
+          }
+          this.vsItemCharges -= 1;
+          this.score = Math.max(0, this.score - cost);
+          sound.playLightningBonusSE();
+          this.vibrate([40, 25, 60]);
+          this.updateTopHUD();
+          this.updateVersusHpBar();
+          if (this.versus) this.versus.syncMyProgress(false, false);
+        }
+      }
+
+      updateVersusHpBar(lastDamage = 0, lastHeal = 0) {
         const wrap = document.getElementById('vs-hp-bar-wrap');
         if (!wrap) return;
         if (!this.isVersusJammerMode()) {
@@ -10481,6 +10751,7 @@
           zoneAtkBadge.classList.toggle('hidden', !(this.scene3D && this.scene3D.isZoneActive));
         }
         if (lastDamage > 0 && dmgPopup) {
+          dmgPopup.className = 'font-digital text-[11px] sm:text-xs font-black text-rose-400';
           dmgPopup.textContent = `-${lastDamage}`;
           if (hpCard) {
             hpCard.classList.remove('animate-shake');
@@ -10491,13 +10762,22 @@
           this._hpDmgPopupTimer = setTimeout(() => {
             if (dmgPopup) dmgPopup.textContent = '';
           }, 1100);
+        } else if (lastHeal > 0 && dmgPopup) {
+          dmgPopup.className = 'font-digital text-[11px] sm:text-xs font-black text-emerald-300';
+          dmgPopup.textContent = `+${lastHeal}`;
+          clearTimeout(this._hpDmgPopupTimer);
+          this._hpDmgPopupTimer = setTimeout(() => {
+            if (dmgPopup) dmgPopup.textContent = '';
+          }, 1100);
         }
+        this.updateVersusItemButtons();
       }
 
-      receiveVersusJammer(c1, c10, fromCombo, fromName = 'ライバル', damage = 0, isZoneAttack = false) {
+      receiveVersusJammer(c1, c10, fromCombo, fromName = 'ライバル', damage = 0, isZoneAttack = false, stunSec = 0) {
         if (!this.isVersusRun || this.state === 'RESULT') return;
         const hasCoins = (c1 || 0) > 0 || (c10 || 0) > 0;
         const dmg = Math.max(0, Math.round(Number(damage) || 0));
+        const stunDur = Math.max(0, Number(stunSec) || 0);
 
         if (hasCoins) {
           this.wallet[1] = (this.wallet[1] || 0) + (c1 || 0);
@@ -10544,6 +10824,13 @@
             posPanel.classList.add('animate-shake');
           }
           this.triggerVersusDamageFX(fromName, parts.join('・'), c1 || 0, c10 || 0, dmg, isZoneAttack);
+        } else if (stunDur > 0) {
+          this.vsStunTimeLeft = Math.max(this.vsStunTimeLeft || 0, stunDur);
+          this.updateStunOverlay();
+          sound.playLightningBonusSE();
+          this.vibrate([100, 40, 120, 40, 100]);
+          this.setClerkComment('bad', `ビリビリッ⚡ ${fromName}さんのスタン攻撃！${stunDur.toFixed(0)}秒間動けません💦`);
+          this.showVersusJammerToast(`⚡ ${fromName} のスタン攻撃!! HP -${dmg} ＆ ${stunDur.toFixed(0)}秒痺れ!!`, true);
         } else if (dmg > 0) {
           const zoneLabel = isZoneAttack ? '⚡ZONE強化 ' : '';
           this.showVersusJammerToast(`💥 ${fromName} の${zoneLabel}攻撃！ HP -${dmg}`, true);
@@ -10687,6 +10974,8 @@
         this.mistakeLogs = [];
         this.lowTimeWarned = false;
         this.trayList = [];
+        this.vsStunTimeLeft = 0;
+        this.updateStunOverlay();
         this.syncRuleToggleUI();
         this.updateVersusHpBar();
 
@@ -11187,7 +11476,7 @@
       }
 
       putMoneyOnTray(denom) {
-        if (this.state !== 'PLAYING') return;
+        if (this.state !== 'PLAYING' || this.vsStunTimeLeft > 0) return;
         if ((this.wallet[denom] || 0) <= 0) return;
 
         this.wallet[denom]--;
@@ -11237,7 +11526,7 @@
       }
 
       removeSpecificItemFromTray(id) {
-        if (this.state !== 'PLAYING') return;
+        if (this.state !== 'PLAYING' || this.vsStunTimeLeft > 0) return;
         const idx = this.trayList.findIndex(it => it.id === id);
         if (idx === -1) return;
 
@@ -11252,7 +11541,7 @@
       }
 
       removeDenomFromTray(denom) {
-        if (this.state !== 'PLAYING') return;
+        if (this.state !== 'PLAYING' || this.vsStunTimeLeft > 0) return;
         for (let i = this.trayList.length - 1; i >= 0; i--) {
           if (this.trayList[i].denom === denom) {
             this.removeSpecificItemFromTray(this.trayList[i].id);
@@ -11262,6 +11551,7 @@
       }
 
       returnAllTrayToWallet() {
+        if (this.vsStunTimeLeft > 0) return;
         if (this.trayList.length === 0) return;
         for (const item of this.trayList) {
           this.wallet[item.denom]++;
@@ -11286,6 +11576,7 @@
       }
 
       handleCheckout() {
+        if (this.vsStunTimeLeft > 0) return;
         const paidTotal = this.getTrayTotal();
         const isHard = this.difficulty === 'HARD';
         const isEx = this.difficulty === 'EX';
@@ -11546,6 +11837,13 @@
           }
           this.score += earnedScore;
           if (this.isVersusJammerMode() && this.versus) {
+            if (this.isVersusJammerItemsEnabled()) {
+              this.vsItemPerfectProgress = (this.vsItemPerfectProgress || 0) + 1;
+              if (this.vsItemPerfectProgress >= 2) {
+                this.vsItemPerfectProgress = 0;
+                this.vsItemCharges = Math.min(3, (this.vsItemCharges || 0) + 1);
+              }
+            }
             const withCoins = this.perfectCount > 0 && this.perfectCount % 3 === 0;
             this.versus.sendJammerToOpponent(this.combo, Boolean(this.scene3D.isZoneActive), withCoins);
             this.updateVersusHpBar();
@@ -12343,6 +12641,14 @@
 
       update(dt) {
         if (this.state !== 'PLAYING' || this.isTutorial) return;
+
+        if (this.vsStunTimeLeft > 0) {
+          this.vsStunTimeLeft = Math.max(0, this.vsStunTimeLeft - dt);
+          this.updateStunOverlay();
+          if (this.vsStunTimeLeft <= 0) {
+            this.updateVersusItemButtons();
+          }
+        }
 
         this.timeLeft -= dt;
         this.turnElapsed += dt;
