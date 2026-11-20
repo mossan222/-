@@ -1134,7 +1134,7 @@
         <button id="btn-rank-diff-back" class="btn-3d bg-slate-700 hover:bg-slate-600 text-slate-200 font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl border-b-4 border-slate-900">
           ◀ ルール選択に戻る
         </button>
-        <span class="text-[11px] text-amber-300/90 font-bold">選択すると3カウント後に始まります！</span>
+        <span class="text-[11px] text-amber-300/90 font-bold">次は金額の出題方式を選択します</span>
       </div>
     </div>
   </div>
@@ -1271,7 +1271,71 @@
         <button id="btn-lunatic-time-back" class="btn-3d bg-slate-700 hover:bg-slate-600 text-slate-200 font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl border-b-4 border-slate-900">
           ◀ 消費税選択に戻る
         </button>
-        <span class="text-[11px] text-rose-300/90 font-bold">選択すると3カウント後に始まります！</span>
+        <span class="text-[11px] text-rose-300/90 font-bold">次は金額の出題方式を選択します</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: PRICE GENERATION MODE SELECT (#modal-price-gen-select)
+       ========================================================================= -->
+  <div id="modal-price-gen-select" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+    <div class="max-w-lg w-full bg-slate-900 border-2 border-amber-400 rounded-3xl p-4 sm:p-6 shadow-2xl max-h-[94vh] overflow-y-auto custom-scroll">
+      <div class="text-center mb-4">
+        <div id="price-gen-step-badge" class="inline-block bg-amber-400/20 border border-amber-400/60 text-amber-300 text-[11px] font-black px-3 py-0.5 rounded-full mb-1">
+          SELECT PRICE GENERATION MODE
+        </div>
+        <h3 class="text-xl sm:text-2xl font-black text-white">金額の出題方式を選択</h3>
+        <p id="price-gen-subtitle" class="text-xs sm:text-sm text-slate-300 mt-1">
+          どちらの金額生成ロジックでプレイしますか？（ランキングも別部門です）
+        </p>
+      </div>
+
+      <div class="space-y-3 mb-5">
+        <!-- Option 1: Clean Change Mode (f.html logic, Default, Syncs with existing ranking) -->
+        <button id="btn-choose-gen-clean" class="btn-3d w-full text-left bg-gradient-to-r from-emerald-950/95 via-slate-800/95 to-slate-800/95 hover:from-emerald-900 border-2 border-emerald-400 rounded-2xl p-4 shadow-lg flex items-center justify-between gap-3 group">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400 flex items-center justify-center text-2xl shrink-0">
+              ✨
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-base sm:text-lg font-black text-emerald-300">割とお釣りがきれい出るモード</span>
+                <span class="text-[10px] font-black bg-emerald-400 text-slate-950 px-2 py-0.5 rounded-full">デフォルト・従来ランキング</span>
+              </div>
+              <p class="text-xs text-slate-300 mt-0.5 leading-snug">
+                500円玉や100円玉などにお釣りがまとまりやすい定番パズル出題！これまでのランキングと同期されます。
+              </p>
+            </div>
+          </div>
+          <span class="text-emerald-400 font-black text-xl group-hover:translate-x-1 transition-transform shrink-0">🚀</span>
+        </button>
+
+        <!-- Option 2: Full Random Mode (l.html logic, Independent ranking) -->
+        <button id="btn-choose-gen-random" class="btn-3d w-full text-left bg-gradient-to-r from-fuchsia-950/95 via-slate-800/95 to-slate-800/95 hover:from-fuchsia-900 border-2 border-fuchsia-400 rounded-2xl p-4 shadow-lg flex items-center justify-between gap-3 group">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-fuchsia-500/20 border border-fuchsia-400 flex items-center justify-center text-2xl shrink-0">
+              🎲
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-base sm:text-lg font-black text-fuchsia-300">完全ランダム生成</span>
+                <span class="text-[10px] font-black bg-fuchsia-400 text-slate-950 px-2 py-0.5 rounded-full">新ロジック・専用ランキング</span>
+              </div>
+              <p class="text-xs text-slate-300 mt-0.5 leading-snug">
+                財布から逆算しない完全ランダム出題！パターン読みが効かないガチ暗算向けモードです。
+              </p>
+            </div>
+          </div>
+          <span class="text-fuchsia-400 font-black text-xl group-hover:translate-x-1 transition-transform shrink-0">🚀</span>
+        </button>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <button id="btn-price-gen-back" class="btn-3d bg-slate-700 hover:bg-slate-600 text-slate-200 font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl border-b-4 border-slate-900">
+          ◀ 戻る
+        </button>
+        <span class="text-[11px] text-amber-300/90 font-bold">選ぶと3カウント後に始まります！</span>
       </div>
     </div>
   </div>
@@ -1296,6 +1360,16 @@
         </div>
         <button id="btn-close-ranking-modal" class="btn-3d bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-extrabold px-3 py-1.5 rounded-xl">
           ✕ 閉じる
+        </button>
+      </div>
+
+      <!-- Top-Level Price Generation Mode Tabs -->
+      <div class="grid grid-cols-2 gap-1.5 mb-2 bg-slate-950 p-1 rounded-2xl border-2 border-amber-500/40">
+        <button id="tab-modal-gen-clean" class="btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-emerald-400 text-slate-950 shadow">
+          ✨ 割とお釣りがきれい出るモード
+        </button>
+        <button id="tab-modal-gen-random" class="btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700">
+          🎲 完全ランダム生成
         </button>
       </div>
 
@@ -1681,6 +1755,16 @@
           <span id="res-player-name-Tag" class="text-[11px] text-slate-400 font-bold"></span>
         </div>
 
+        <!-- Top-Level Price Generation Mode Tabs in Result Screen -->
+        <div class="grid grid-cols-2 gap-1 mb-1.5 bg-slate-900 p-1 rounded-xl border border-amber-500/40">
+          <button id="tab-res-gen-clean" class="btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-emerald-400 text-slate-950">
+            ✨ 割とお釣りがきれい出るモード
+          </button>
+          <button id="tab-res-gen-random" class="btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300">
+            🎲 完全ランダム生成
+          </button>
+        </div>
+
         <!-- Rule Tabs in Result Screen -->
         <div class="grid grid-cols-3 gap-1 mb-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
           <button id="tab-res-rule-wallet" class="btn-3d py-0.5 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-cyan-500 text-slate-950">
@@ -1915,6 +1999,15 @@
           <div class="grid grid-cols-2 gap-1.5">
             <button data-vs-set="lunaticTaxRate" data-vs-val="8" class="vs-opt-btn btn-3d py-1 px-2 rounded-xl text-[11px] font-black border-2">消費税 8% (×1.08)</button>
             <button data-vs-set="lunaticTaxRate" data-vs-val="10" class="vs-opt-btn btn-3d py-1 px-2 rounded-xl text-[11px] font-black border-2">消費税 10% (×1.10)</button>
+          </div>
+        </div>
+
+        <!-- 3c. Price Generation Mode -->
+        <div>
+          <div class="text-[10px] font-bold text-slate-400 mb-1">金額生成モード</div>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button data-vs-set="priceGenMode" data-vs-val="clean" class="vs-opt-btn btn-3d py-1.5 px-2 rounded-xl text-[10px] sm:text-[11px] font-black border-2">✨ 割とお釣りがきれい出る</button>
+            <button data-vs-set="priceGenMode" data-vs-val="random" class="vs-opt-btn btn-3d py-1.5 px-2 rounded-xl text-[10px] sm:text-[11px] font-black border-2">🎲 完全ランダム生成</button>
           </div>
         </div>
 
@@ -2156,6 +2249,7 @@
       'modal-ranking-difficulty',
       'modal-lunatic-tax',
       'modal-lunatic-time',
+      'modal-price-gen-select',
       'modal-ranking',
       'modal-tutorial-clear',
       'screen-game',
@@ -2194,14 +2288,24 @@
     class RankingManager {
       static db = null;
       static isOnline = false;
-      static ALL_CATEGORIES = ['wallet', 'change', 'lunatic_8_10', 'lunatic_8_15', 'lunatic_10_10', 'lunatic_10_15'];
+      static BASE_CATEGORIES = ['wallet', 'change', 'lunatic_8_10', 'lunatic_8_15', 'lunatic_10_10', 'lunatic_10_15'];
+      static ALL_CATEGORIES = [
+        'wallet', 'change', 'lunatic_8_10', 'lunatic_8_15', 'lunatic_10_10', 'lunatic_10_15',
+        'random_wallet', 'random_change', 'random_lunatic_8_10', 'random_lunatic_8_15', 'random_lunatic_10_10', 'random_lunatic_10_15'
+      ];
       static caches = {
         wallet: null,
         change: null,
         lunatic_8_10: null,
         lunatic_8_15: null,
         lunatic_10_10: null,
-        lunatic_10_15: null
+        lunatic_10_15: null,
+        random_wallet: null,
+        random_change: null,
+        random_lunatic_8_10: null,
+        random_lunatic_8_15: null,
+        random_lunatic_10_10: null,
+        random_lunatic_10_15: null
       };
       static sourceBuckets = {
         wallet: {},
@@ -2224,6 +2328,11 @@
         return `lunatic_${rate}_${limit}`;
       }
 
+      static withGenMode(baseCategory = 'wallet', genMode = 'clean') {
+        const base = String(baseCategory || 'wallet').replace(/^random_/, '');
+        return genMode === 'random' ? `random_${base}` : base;
+      }
+
       // Firebase Realtime Database のキーに使用できない文字 (., #, $, [, ], /) を安全な文字列へ変換
       static toSafeDbKey(name) {
         const clean = RankingManager.normalizeName(name);
@@ -2243,6 +2352,9 @@
 
       static getKey(categoryKey = 'wallet') {
         const cat = RankingManager.normalizeCategory(categoryKey);
+        if (cat.startsWith('random_')) {
+          return 'pittariman_ranking_' + cat + '_v1';
+        }
         switch (cat) {
           case 'change': return RANKING_KEY_CHANGE_UNIFIED;
           case 'lunatic_8_10': return RANKING_KEY_LUNATIC_8_10;
@@ -2253,9 +2365,12 @@
         }
       }
 
-      // 書き込み先 Firebase パス（既存データと互換性を保ちつつ統合）
+      // 書き込み先 Firebase パス（既存データと互換性を保ちつつ統合＋完全ランダム用パス）
       static getDbPath(categoryKey = 'wallet') {
         const cat = RankingManager.normalizeCategory(categoryKey);
+        if (cat.startsWith('random_')) {
+          return 'rankings/' + cat;
+        }
         switch (cat) {
           case 'change': return 'rankings/change_min_no_change';
           case 'lunatic_8_10': return 'rankings/lunatic_10s';
@@ -2276,6 +2391,7 @@
 
       static getDefaultList(categoryKey = 'wallet') {
         const cat = RankingManager.normalizeCategory(categoryKey);
+        if (cat.startsWith('random_')) return [];
         switch (cat) {
           case 'change': return [...DEFAULT_RANKINGS_CHANGE_MIN_WITH_CHANGE, ...DEFAULT_RANKINGS_CHANGE_MIN_NO_CHANGE];
           case 'lunatic_8_10': return DEFAULT_RANKINGS_LUNATIC_8_10;
@@ -2360,11 +2476,17 @@
               RankingManager.db.ref(primaryPath).on('value', (snapshot) => {
                 const val = snapshot.val();
                 if (!val) {
-                  const seed = {};
-                  defaults.forEach((item) => {
-                    seed[RankingManager.toSafeDbKey(item.name)] = item;
-                  });
-                  RankingManager.db.ref(primaryPath).set(seed);
+                  if (defaults.length > 0) {
+                    const seed = {};
+                    defaults.forEach((item) => {
+                      seed[RankingManager.toSafeDbKey(item.name)] = item;
+                    });
+                    RankingManager.db.ref(primaryPath).set(seed);
+                  } else {
+                    RankingManager.caches[cat] = [];
+                    try { localStorage.setItem(localKey, '[]'); } catch (e) {}
+                    RankingManager.notifyListeners();
+                  }
                   return;
                 }
                 const rawList = Object.values(val);
@@ -2693,7 +2815,7 @@
         const map = RankingManager.loadPlayerHighScoresMap(false);
         let maxScore = Number(map[cleanName] || 0);
 
-        ['wallet', 'change'].forEach((cat) => {
+        ['wallet', 'change', 'random_wallet', 'random_change'].forEach((cat) => {
           const list = RankingManager.load(cat);
           for (const item of list) {
             if (RankingManager.normalizeName(item.name) === cleanName && item.mode !== 'LUNATIC' && item.score > maxScore) {
@@ -2709,7 +2831,7 @@
         const map = RankingManager.loadPlayerHighScoresMap(true);
         let maxScore = Number(map[cleanName] || 0);
 
-        ['lunatic_8_10', 'lunatic_8_15', 'lunatic_10_10', 'lunatic_10_15'].forEach((cat) => {
+        ['lunatic_8_10', 'lunatic_8_15', 'lunatic_10_10', 'lunatic_10_15', 'random_lunatic_8_10', 'random_lunatic_8_15', 'random_lunatic_10_10', 'random_lunatic_10_15'].forEach((cat) => {
           const list = RankingManager.load(cat);
           for (const item of list) {
             if (RankingManager.normalizeName(item.name) === cleanName && item.score > maxScore) {
@@ -2758,6 +2880,10 @@
         if (!container) return;
         const list = RankingManager.load(categoryKey);
         container.innerHTML = '';
+        if (!list || list.length === 0) {
+          container.innerHTML = '<div class="text-center py-6 text-xs sm:text-sm font-bold text-slate-400">まだ記録がありません。最初の1位を目指そう！</div>';
+          return;
+        }
 
         list.forEach((item, idx) => {
           const rank = idx + 1;
@@ -5395,6 +5521,7 @@
           raceTarget: 7,
           ruleType: this.game.ruleType || 'wallet',
           difficulty: 'NORMAL',
+          priceGenMode: 'clean',
           lunaticTaxRate: 8,
           showChange: true
         };
@@ -6262,11 +6389,16 @@
 
         // ルールコンセプト: 'wallet' (財布の小銭枚数最小ルール) | 'change' (お釣りの枚数最小ルール)
         this.ruleType = 'wallet';
+        // 金額生成モード: 'clean' (割とお釣りがきれい出るモード: デフォルト) | 'random' (完全ランダム生成)
+        this.priceGenMode = 'clean';
         this.pendingRuleContext = null; // { flow: 'FREE', difficulty: 'NORMAL'|'HARD' } or { flow: 'RANKING' }
+        this.pendingPriceGenContext = null;
         this.mistakeLogs = [];
 
+        this.modalRankingTabGenMode = 'clean';
         this.modalRankingTabRuleType = 'wallet';
         this.modalRankingTabLunaticKey = 'lunatic_8_10';
+        this.resultRankingTabGenMode = 'clean';
         this.resultRankingTabRuleType = 'wallet';
         this.resultRankingTabLunaticKey = 'lunatic_8_10';
         this.lastHighlightEntryId = null;
@@ -6502,14 +6634,14 @@
           sound.init();
           sound.startBGM();
           sound.playClick();
-          this.startRankingPlay('NORMAL', this.playerName);
+          this.openPriceGenSelectModal({ flow: 'RANKING', difficulty: 'NORMAL' });
         });
 
         document.getElementById('btn-rank-diff-hard').addEventListener('click', () => {
           sound.init();
           sound.startBGM();
           sound.playClick();
-          this.startRankingPlay('HARD', this.playerName);
+          this.openPriceGenSelectModal({ flow: 'RANKING', difficulty: 'HARD' });
         });
 
         document.getElementById('btn-rank-diff-ex').addEventListener('click', () => {
@@ -6520,7 +6652,7 @@
           sound.init();
           sound.startBGM();
           sound.playClick();
-          this.startRankingPlay('EX', this.playerName);
+          this.openPriceGenSelectModal({ flow: 'RANKING', difficulty: 'EX' });
         });
 
         document.getElementById('btn-rank-diff-lunatic').addEventListener('click', () => {
@@ -6555,14 +6687,40 @@
           sound.init();
           sound.startBGM();
           sound.playClick();
-          this.startRankingPlay('LUNATIC', this.playerName, 10, this.lunaticTaxRate);
+          this.openPriceGenSelectModal({ flow: 'RANKING_LUNATIC', difficulty: 'LUNATIC', lunaticLimit: 10, lunaticTaxRate: this.lunaticTaxRate });
         });
 
         document.getElementById('btn-lunatic-time-15').addEventListener('click', () => {
           sound.init();
           sound.startBGM();
           sound.playClick();
-          this.startRankingPlay('LUNATIC', this.playerName, 15, this.lunaticTaxRate);
+          this.openPriceGenSelectModal({ flow: 'RANKING_LUNATIC', difficulty: 'LUNATIC', lunaticLimit: 15, lunaticTaxRate: this.lunaticTaxRate });
+        });
+
+        document.getElementById('btn-choose-gen-clean').addEventListener('click', () => {
+          sound.init();
+          sound.startBGM();
+          sound.playClick();
+          this.confirmPriceGenSelection('clean');
+        });
+
+        document.getElementById('btn-choose-gen-random').addEventListener('click', () => {
+          sound.init();
+          sound.startBGM();
+          sound.playClick();
+          this.confirmPriceGenSelection('random');
+        });
+
+        document.getElementById('btn-price-gen-back').addEventListener('click', () => {
+          sound.playClick();
+          const ctx = this.pendingPriceGenContext || {};
+          if (ctx.flow === 'RANKING_LUNATIC') {
+            switchScreen('modal-lunatic-time');
+          } else if (ctx.flow === 'RANKING') {
+            switchScreen('modal-ranking-difficulty');
+          } else {
+            switchScreen('modal-rule-select');
+          }
         });
 
         document.getElementById('btn-lunatic-time-back').addEventListener('click', () => {
@@ -6570,6 +6728,14 @@
           this.openLunaticTaxModal();
         });
 
+        document.getElementById('tab-modal-gen-clean').addEventListener('click', () => {
+          sound.playClick();
+          this.setModalRankingTab(null, null, 'clean');
+        });
+        document.getElementById('tab-modal-gen-random').addEventListener('click', () => {
+          sound.playClick();
+          this.setModalRankingTab(null, null, 'random');
+        });
         document.getElementById('tab-modal-rule-wallet').addEventListener('click', () => {
           sound.playClick();
           this.setModalRankingTab('wallet');
@@ -6666,6 +6832,14 @@
           this.handleCheckout();
         });
 
+        document.getElementById('tab-res-gen-clean').addEventListener('click', () => {
+          sound.playClick();
+          this.setResultRankingTab(null, null, 'clean');
+        });
+        document.getElementById('tab-res-gen-random').addEventListener('click', () => {
+          sound.playClick();
+          this.setResultRankingTab(null, null, 'random');
+        });
         document.getElementById('tab-res-rule-wallet').addEventListener('click', () => {
           sound.playClick();
           this.setResultRankingTab('wallet');
@@ -6895,7 +7069,7 @@
           if (badge) badge.textContent = `FREE PLAY (${context.difficulty}) - RULE SELECT`;
           if (sub) sub.textContent = 'お釣り表示の有無と、遊ぶルールを選択してください！';
           if (freeChangeBox) freeChangeBox.classList.remove('hidden');
-          if (nextHint) nextHint.textContent = 'ルールを選ぶと3カウント後に始まります';
+          if (nextHint) nextHint.textContent = '次は金額の出題方式を選択します';
           this.syncChangeToggleUI();
         }
         switchScreen('modal-rule-select');
@@ -6907,6 +7081,33 @@
         const ctx = this.pendingRuleContext || { flow: 'FREE', difficulty: 'NORMAL' };
         if (ctx.flow === 'RANKING') {
           this.openRankingDifficultyModal();
+        } else {
+          this.openPriceGenSelectModal({ flow: 'FREE', difficulty: ctx.difficulty || 'NORMAL' });
+        }
+      }
+
+      openPriceGenSelectModal(context) {
+        this.pendingPriceGenContext = context;
+        const badge = document.getElementById('price-gen-step-badge');
+        const sub = document.getElementById('price-gen-subtitle');
+        const diff = context.difficulty || 'NORMAL';
+        if (context.flow === 'RANKING' || context.flow === 'RANKING_LUNATIC') {
+          if (badge) badge.textContent = `RANKING (${diff}) - PRICE GENERATION`;
+          if (sub) sub.textContent = `挑戦者「${this.playerName}」さん：出題方式を選んでスタート！（ランキングも別部門です）`;
+        } else {
+          if (badge) badge.textContent = `FREE PLAY (${diff}) - PRICE GENERATION`;
+          if (sub) sub.textContent = `難易度 ${diff}：どちらの出題方式でプレイしますか？`;
+        }
+        switchScreen('modal-price-gen-select');
+      }
+
+      confirmPriceGenSelection(genMode) {
+        this.priceGenMode = genMode === 'random' ? 'random' : 'clean';
+        const ctx = this.pendingPriceGenContext || { flow: 'FREE', difficulty: 'NORMAL' };
+        if (ctx.flow === 'RANKING_LUNATIC') {
+          this.startRankingPlay('LUNATIC', this.playerName, ctx.lunaticLimit || 15, ctx.lunaticTaxRate || 8);
+        } else if (ctx.flow === 'RANKING') {
+          this.startRankingPlay(ctx.difficulty || 'NORMAL', this.playerName);
         } else {
           this.startFreePlay(ctx.difficulty || 'NORMAL');
         }
@@ -7129,22 +7330,37 @@
       }
 
       getActiveModalRankingCategory() {
-        return this.modalRankingTabRuleType === 'lunatic'
+        const base = this.modalRankingTabRuleType === 'lunatic'
           ? (this.modalRankingTabLunaticKey || 'lunatic_8_10')
           : (this.modalRankingTabRuleType === 'change' ? 'change' : 'wallet');
+        return RankingManager.withGenMode(base, this.modalRankingTabGenMode || 'clean');
       }
 
       getActiveResultRankingCategory() {
-        return this.resultRankingTabRuleType === 'lunatic'
+        const base = this.resultRankingTabRuleType === 'lunatic'
           ? (this.resultRankingTabLunaticKey || 'lunatic_8_10')
           : (this.resultRankingTabRuleType === 'change' ? 'change' : 'wallet');
+        return RankingManager.withGenMode(base, this.resultRankingTabGenMode || 'clean');
       }
 
-      setModalRankingTab(ruleType = 'wallet', lunaticKey = null) {
+      setModalRankingTab(ruleType = null, lunaticKey = null, genMode = null) {
         if (ruleType) this.modalRankingTabRuleType = ruleType;
         if (lunaticKey) this.modalRankingTabLunaticKey = lunaticKey;
+        if (genMode) this.modalRankingTabGenMode = genMode;
+        const activeGen = this.modalRankingTabGenMode || 'clean';
         const activeRule = this.modalRankingTabRuleType || 'wallet';
         const activeLunKey = this.modalRankingTabLunaticKey || 'lunatic_8_10';
+
+        const tabGenC = document.getElementById('tab-modal-gen-clean');
+        const tabGenR = document.getElementById('tab-modal-gen-random');
+        if (tabGenC && tabGenR) {
+          tabGenC.className = activeGen === 'clean'
+            ? 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-emerald-400 text-slate-950 shadow'
+            : 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+          tabGenR.className = activeGen === 'random'
+            ? 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-fuchsia-400 text-slate-950 shadow'
+            : 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700';
+        }
 
         const tabRuleW = document.getElementById('tab-modal-rule-wallet');
         const tabRuleC = document.getElementById('tab-modal-rule-change');
@@ -7188,11 +7404,24 @@
         RankingManager.renderListToContainer('standalone-ranking-list', this.getActiveModalRankingCategory(), null);
       }
 
-      setResultRankingTab(ruleType = 'wallet', lunaticKey = null) {
+      setResultRankingTab(ruleType = null, lunaticKey = null, genMode = null) {
         if (ruleType) this.resultRankingTabRuleType = ruleType;
         if (lunaticKey) this.resultRankingTabLunaticKey = lunaticKey;
+        if (genMode) this.resultRankingTabGenMode = genMode;
+        const activeGen = this.resultRankingTabGenMode || 'clean';
         const activeRule = this.resultRankingTabRuleType || 'wallet';
         const activeLunKey = this.resultRankingTabLunaticKey || 'lunatic_8_10';
+
+        const tabGenC = document.getElementById('tab-res-gen-clean');
+        const tabGenR = document.getElementById('tab-res-gen-random');
+        if (tabGenC && tabGenR) {
+          tabGenC.className = activeGen === 'clean'
+            ? 'btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-emerald-400 text-slate-950'
+            : 'btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+          tabGenR.className = activeGen === 'random'
+            ? 'btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-fuchsia-400 text-slate-950'
+            : 'btn-3d py-1 px-1.5 rounded-lg font-black text-[10px] sm:text-xs transition-colors bg-slate-800 text-slate-300';
+        }
 
         const tabRuleW = document.getElementById('tab-res-rule-wallet');
         const tabRuleC = document.getElementById('tab-res-rule-change');
@@ -7234,9 +7463,10 @@
         });
 
         const activeCategory = this.getActiveResultRankingCategory();
-        const savedCategory = this.difficulty === 'LUNATIC'
+        const savedBase = this.difficulty === 'LUNATIC'
           ? RankingManager.getLunaticCategoryKey(this.lunaticTaxRate, this.lunaticTurnLimit)
           : (this.ruleType === 'change' ? 'change' : 'wallet');
+        const savedCategory = RankingManager.withGenMode(savedBase, this.priceGenMode || 'clean');
         const highlightId = (this.isRankingRun && activeCategory === savedCategory)
           ? this.lastHighlightEntryId
           : null;
@@ -7369,7 +7599,7 @@
 
       openStandaloneRankingModal(fromScreenId) {
         this.prevScreenBeforeRanking = fromScreenId;
-        this.setModalRankingTab(this.ruleType === 'change' ? 'change' : 'wallet');
+        this.setModalRankingTab(this.ruleType === 'change' ? 'change' : 'wallet', null, this.priceGenMode || 'clean');
         switchScreen('modal-ranking');
       }
 
@@ -7592,6 +7822,7 @@
         this.vsSettings = s;
         this.ruleType = s.ruleType === 'change' ? 'change' : 'wallet';
         this.difficulty = s.difficulty || 'NORMAL';
+        this.priceGenMode = s.priceGenMode === 'random' ? 'random' : 'clean';
         this.lunaticTaxRate = s.lunaticTaxRate === 10 ? 10 : 8;
         this.lunaticTurnLimit = 15;
         this.showChangeDisplay = Boolean(s.showChange);
@@ -7710,8 +7941,9 @@
         }
 
         const badgeEl = document.getElementById('ui-mode-badge');
+        const genTag = this.priceGenMode === 'random' ? '🎲完全ランダム' : '✨きれい出る';
         if (this.isVersusRun) {
-          badgeEl.textContent = `⚔️ VS (${this.difficulty})`;
+          badgeEl.textContent = `⚔️ VS (${this.difficulty}/${genTag})`;
           badgeEl.className = 'text-[9px] sm:text-[11px] font-black px-2 py-0.5 rounded-lg bg-fuchsia-500 text-white';
         } else if (this.isRankingRun) {
           const diffStr = isLunatic ? '🌙LUNATIC' : (isEx ? '💀EX' : (isHard ? 'HARD' : 'NORMAL'));
@@ -8056,47 +8288,127 @@
       }
 
       generateLunaticBasePrice(isFirstTurn = false) {
-        const taxRate = this.lunaticTaxRate === 10 ? 10 : 8;
-        return this._selectValidatedPrice({
-          allowWantExact: !isFirstTurn,
-          exactPreferProb: 0.10,
-          easyCoinsProb: 0,
-          moreCoinsProb: 0,
-          sampleRaw: () => sampleLunaticBasePriceCandidate(isFirstTurn).basePrice,
-          toCheckPrice: (bp) => calcTaxIncludedPrice(bp, taxRate),
-          sampleFallbackA: (wt) => {
-            const maxBp = Math.max(100, Math.min(3999, Math.floor((wt * 100) / (100 + taxRate))));
-            if (isFirstTurn) {
-              const maxTens = Math.max(10, Math.min(99, Math.floor(maxBp / 10)));
-              return randomIntInclusive(10, maxTens) * 10;
+        if (this.priceGenMode === 'random') {
+          const taxRate = this.lunaticTaxRate === 10 ? 10 : 8;
+          return this._selectValidatedPrice({
+            allowWantExact: !isFirstTurn,
+            exactPreferProb: 0.10,
+            easyCoinsProb: 0,
+            moreCoinsProb: 0,
+            sampleRaw: () => sampleLunaticBasePriceCandidate(isFirstTurn).basePrice,
+            toCheckPrice: (bp) => calcTaxIncludedPrice(bp, taxRate),
+            sampleFallbackA: (wt) => {
+              const maxBp = Math.max(100, Math.min(3999, Math.floor((wt * 100) / (100 + taxRate))));
+              if (isFirstTurn) {
+                const maxTens = Math.max(10, Math.min(99, Math.floor(maxBp / 10)));
+                return randomIntInclusive(10, maxTens) * 10;
+              }
+              return randomIntInclusive(Math.min(100, maxBp), maxBp);
             }
-            return randomIntInclusive(Math.min(100, maxBp), maxBp);
-          }
-        });
+          });
+        }
+        // デフォルト（割とお釣りがきれい出るモード：f.htmlロジック）
+        if (isFirstTurn) {
+          return 600;
+        }
+        const candidates = [
+          120, 150, 180, 250, 298, 320, 350, 398, 450, 480,
+          520, 550, 598, 620, 650, 680, 720, 750, 780, 798,
+          820, 850, 880, 920, 950, 980, 1050, 1180, 1250, 1380,
+          1480, 1580, 1680, 1850, 1980, 2150, 2480, 2980, 3250
+        ];
+        if (gameRandom() < 0.65) {
+          return candidates[Math.floor(gameRandom() * candidates.length)];
+        }
+        const randomBase = 115 + Math.floor(gameRandom() * 280) * 10 + (gameRandom() < 0.35 ? 5 : (gameRandom() < 0.25 ? 8 : 0));
+        return randomBase;
       }
 
       generateSmartPuzzlePrice() {
         const isEx = this.difficulty === 'EX';
         const isHard = this.difficulty === 'HARD' || isEx || (this.isRankingRun && this.customerIndex >= 6);
 
-        const minPrice = isEx ? 1123 : 115;
-        const maxPrice = isEx
-          ? ((this.wallet[10000] || 0) > 0 ? 7999 : 5000)
-          : (isHard ? 2999 : 1999);
+        if (this.priceGenMode === 'random') {
+          // 完全ランダム生成（l.htmlロジック）
+          const minPrice = isEx ? 1123 : 115;
+          const maxPrice = isEx
+            ? ((this.wallet[10000] || 0) > 0 ? 7999 : 5000)
+            : (isHard ? 2999 : 1999);
 
-        return this._selectValidatedPrice({
-          allowWantExact: true,
-          exactPreferProb: 0.14,
-          easyCoinsProb: isHard ? 0 : 0.35,
-          moreCoinsProb: isHard ? 0.25 : 0,
-          sampleRaw: () => randomIntInclusive(minPrice, maxPrice),
-          toCheckPrice: (p) => p,
-          sampleFallbackA: (wt) => {
-            const hi = Math.max(1, Math.min(maxPrice, wt));
-            const lo = Math.min(minPrice, hi);
-            return randomIntInclusive(lo, hi);
+          return this._selectValidatedPrice({
+            allowWantExact: true,
+            exactPreferProb: 0.14,
+            easyCoinsProb: isHard ? 0 : 0.35,
+            moreCoinsProb: isHard ? 0.25 : 0,
+            sampleRaw: () => randomIntInclusive(minPrice, maxPrice),
+            toCheckPrice: (p) => p,
+            sampleFallbackA: (wt) => {
+              const hi = Math.max(1, Math.min(maxPrice, wt));
+              const lo = Math.min(minPrice, hi);
+              return randomIntInclusive(lo, hi);
+            }
+          });
+        }
+
+        // デフォルト（割とお釣りがきれい出るモード：f.htmlロジック）
+        const availableCoins = [];
+        for (const d of [100, 50, 10, 5, 1]) {
+          for (let i = 0; i < Math.min(this.wallet[d], 3); i++) {
+            availableCoins.push(d);
           }
-        });
+        }
+
+        for (let i = availableCoins.length - 1; i > 0; i--) {
+          const j = Math.floor(gameRandom() * (i + 1));
+          [availableCoins[i], availableCoins[j]] = [availableCoins[j], availableCoins[i]];
+        }
+
+        const pickCount = Math.min(
+          availableCoins.length,
+          isEx ? (3 + Math.floor(gameRandom() * 4)) : (isHard ? (3 + Math.floor(gameRandom() * 3)) : (2 + Math.floor(gameRandom() * 3)))
+        );
+        let subsetSum = 0;
+        for (let i = 0; i < pickCount; i++) {
+          subsetSum += availableCoins[i];
+        }
+
+        if (subsetSum <= 0 || subsetSum >= 500) {
+          subsetSum = (this.wallet[100] > 0 ? 100 : 0) + (this.wallet[10] > 0 ? 10 * Math.min(2, this.wallet[10]) : 37);
+        }
+
+        if (isEx) {
+          const exRoll = gameRandom();
+          const highBillBase = (this.wallet[10000] > 0 && gameRandom() < 0.5)
+            ? (2000 + Math.floor(gameRandom() * 6) * 1000)
+            : (1000 + Math.floor(gameRandom() * 3) * 1000);
+
+          if (exRoll < 0.5) {
+            return Math.max(1123, highBillBase + 500 + (subsetSum % 480 || 173));
+          } else {
+            const targetChange = gameRandom() < 0.5 ? 500 : (1 + Math.floor(gameRandom() * 4)) * 100 + 50;
+            return Math.max(1234, highBillBase + 1000 + (subsetSum % 450) - targetChange);
+          }
+        }
+
+        const patternRoll = gameRandom();
+        let price = 680;
+
+        if (patternRoll < 0.48 && subsetSum < 490) {
+          const extraBill = isHard && this.wallet[5000] > 0 && gameRandom() < 0.4 ? 2000 : (gameRandom() < 0.35 && this.wallet[1000] >= 2 ? 1000 : 0);
+          price = extraBill + 500 + subsetSum;
+        } else if (patternRoll < 0.80) {
+          const targetChange = isHard && gameRandom() < 0.4 ? 50 : (1 + Math.floor(gameRandom() * 3)) * 100;
+          const subUnder = subsetSum % 100 || 28;
+          const base = isHard && gameRandom() < 0.35 ? 2000 : 1000;
+          price = base + subUnder - targetChange;
+        } else {
+          const include500 = this.wallet[500] > 0 && gameRandom() < 0.6 ? 500 : 0;
+          const baseBill = gameRandom() < 0.55 ? 1000 : 0;
+          price = baseBill + include500 + subsetSum;
+          if (price < 120) price += 500;
+        }
+
+        return Math.max(115, price);
       }
 
       putMoneyOnTray(denom) {
@@ -9375,15 +9687,19 @@
         const playerNameTag = document.getElementById('res-player-name-Tag');
         this.lastHighlightEntryId = null;
 
+        const activeGenMode = this.priceGenMode === 'random' ? 'random' : 'clean';
+        const genModeShortLabel = activeGenMode === 'random' ? '🎲完全ランダム' : '✨きれい出る';
+
         if (this.isRankingRun) {
           const isLunaticRank = this.difficulty === 'LUNATIC';
-          const targetCategoryKey = isLunaticRank
+          const targetBaseKey = isLunaticRank
             ? RankingManager.getLunaticCategoryKey(this.lunaticTaxRate, this.lunaticTurnLimit)
             : (this.ruleType === 'change' ? 'change' : 'wallet');
+          const targetCategoryKey = RankingManager.withGenMode(targetBaseKey, activeGenMode);
           const ruleLabel = this.ruleType === 'change' ? 'お釣り枚数最小' : '財布の小銭最小';
           const categoryLabel = isLunaticRank
-            ? `🌙ルナティック/税${lunTax}%/${this.lunaticTurnLimit}秒`
-            : `${ruleLabel}`;
+            ? `${genModeShortLabel}/🌙ルナティック/税${lunTax}%/${this.lunaticTurnLimit}秒`
+            : `${genModeShortLabel}/${ruleLabel}`;
 
           if (isLunaticMinNotMet) {
             playerNameTag.textContent = `登録名: ${this.playerName}（${categoryLabel}）※5人未満のため記録なし`;
@@ -9420,15 +9736,15 @@
           }
 
           if (isLunaticRank) {
-            this.setResultRankingTab('lunatic', targetCategoryKey);
+            this.setResultRankingTab('lunatic', targetBaseKey, activeGenMode);
           } else {
-            this.setResultRankingTab(targetCategoryKey);
+            this.setResultRankingTab(targetBaseKey, null, activeGenMode);
           }
         } else {
-          playerNameTag.textContent = 'フリープレイ（※ランキングモードで記録登録）';
+          playerNameTag.textContent = `フリープレイ（${genModeShortLabel} ※ランキングモードで記録登録）`;
           rankInBadge.textContent = 'フリープレイ完了';
           rankInBadge.className = 'text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300';
-          this.setResultRankingTab(this.ruleType === 'change' ? 'change' : 'wallet');
+          this.setResultRankingTab(this.ruleType === 'change' ? 'change' : 'wallet', null, activeGenMode);
         }
 
         const receiptDateEl = document.getElementById('res-receipt-date');
@@ -9471,9 +9787,10 @@
         const screenResult = document.getElementById('screen-result');
         if (screenResult && !screenResult.classList.contains('hidden')) {
           const activeCategory = game.getActiveResultRankingCategory();
-          const savedCategory = game.difficulty === 'LUNATIC'
+          const savedBase = game.difficulty === 'LUNATIC'
             ? RankingManager.getLunaticCategoryKey(game.lunaticTaxRate, game.lunaticTurnLimit)
             : (game.ruleType === 'change' ? 'change' : 'wallet');
+          const savedCategory = RankingManager.withGenMode(savedBase, game.priceGenMode || 'clean');
           const highlightId = (game.isRankingRun && activeCategory === savedCategory)
             ? game.lastHighlightEntryId
             : null;
