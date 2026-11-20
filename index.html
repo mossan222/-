@@ -494,9 +494,11 @@
       box-shadow: 0 0 28px rgba(56, 189, 248, 0.95), 0 0 48px rgba(250, 204, 21, 0.85);
       animation: lightningBannerPop 1.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    /* === VERSUS JAMMER ATTACK FX === */
+    /* === VERSUS JAMMER ATTACK & DAMAGE FX (ENHANCED) === */
     @keyframes vsJammerFlash {
-      0% { opacity: 0.72; }
+      0% { opacity: 0.88; }
+      25% { opacity: 0.45; }
+      45% { opacity: 0.75; }
       100% { opacity: 0; }
     }
     @keyframes vsJammerToast {
@@ -505,12 +507,142 @@
       82% { transform: translate(-50%, 0) scale(1); opacity: 1; }
       100% { transform: translate(-50%, -14px) scale(0.95); opacity: 0; }
     }
+    @keyframes vsScreenDamageShake {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      12% { transform: translate3d(-11px, 6px, 0) rotate(-0.9deg); }
+      24% { transform: translate3d(12px, -7px, 0) rotate(0.9deg); }
+      38% { transform: translate3d(-9px, -5px, 0) rotate(-0.6deg); }
+      52% { transform: translate3d(8px, 6px, 0) rotate(0.6deg); }
+      68% { transform: translate3d(-5px, 3px, 0) rotate(-0.3deg); }
+      84% { transform: translate3d(4px, -3px, 0) rotate(0.2deg); }
+    }
+    @keyframes vsDamageShockwave {
+      0% { transform: translate(-50%, -50%) scale(0.15); opacity: 0.95; border-width: 18px; }
+      100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0; border-width: 2px; }
+    }
+    @keyframes vsDamageCutinAnim {
+      0% { transform: translateY(-50%) skewY(-3deg) scale(1.25); opacity: 0; }
+      16% { transform: translateY(-50%) skewY(-3deg) scale(1); opacity: 1; }
+      78% { transform: translateY(-50%) skewY(-3deg) scale(1.02); opacity: 1; }
+      100% { transform: translateY(-50%) skewY(-3deg) scale(0.94); opacity: 0; }
+    }
+    @keyframes vsJammerCoinFall {
+      0% { transform: translateY(-40px) rotate(0deg) scale(0.85); opacity: 0; }
+      15% { opacity: 1; }
+      82% { opacity: 1; }
+      100% { transform: translateY(82vh) rotate(540deg) scale(1.1); opacity: 0; }
+    }
+    @keyframes vsSpecialFlash {
+      0% { opacity: 0.78; }
+      30% { opacity: 0.25; }
+      100% { opacity: 0; }
+    }
+    @keyframes vsSpecialSpeedLines {
+      0% { transform: translate(-50%, -50%) scale(0.75) rotate(0deg); opacity: 0.85; }
+      100% { transform: translate(-50%, -50%) scale(1.3) rotate(32deg); opacity: 0; }
+    }
+    @keyframes vsSpecialBandSlide {
+      0% { transform: translateY(-50%) skewY(-4deg) translateX(-110%); opacity: 0; }
+      16% { transform: translateY(-50%) skewY(-4deg) translateX(0%); opacity: 1; }
+      78% { transform: translateY(-50%) skewY(-4deg) translateX(0%); opacity: 1; }
+      100% { transform: translateY(-50%) skewY(-4deg) translateX(110%); opacity: 0; }
+    }
+    @keyframes vsSpecialTextSlam {
+      0% { transform: scale(1.85); opacity: 0; filter: blur(3px); }
+      22% { transform: scale(0.97); opacity: 1; filter: blur(0); }
+      80% { transform: scale(1.03); opacity: 1; }
+      100% { transform: scale(1.12); opacity: 0; }
+    }
+    .vs-screen-damage-shake {
+      animation: vsScreenDamageShake 0.48s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
     .vs-jammer-flash {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle, rgba(244,63,94,0.12) 25%, rgba(225,29,72,0.62) 100%);
+      background: radial-gradient(circle, rgba(244,63,94,0.18) 18%, rgba(225,29,72,0.78) 78%, rgba(127,29,29,0.92) 100%);
       pointer-events: none;
-      animation: vsJammerFlash 0.55s ease-out forwards;
+      animation: vsJammerFlash 0.65s ease-out forwards;
+    }
+    .vs-damage-shockwave {
+      position: fixed;
+      left: 50%;
+      top: 48%;
+      width: 56vmax;
+      height: 56vmax;
+      border-radius: 9999px;
+      border-style: solid;
+      border-color: #fb7185;
+      box-shadow: 0 0 38px 12px rgba(244, 63, 94, 0.85), inset 0 0 28px 6px rgba(251, 113, 133, 0.7);
+      pointer-events: none;
+      animation: vsDamageShockwave 0.62s cubic-bezier(0.12, 0.85, 0.25, 1) forwards;
+    }
+    .vs-damage-cutin {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 34%;
+      padding: 10px 16px;
+      background: linear-gradient(90deg, rgba(69,10,10,0.92) 0%, rgba(190,18,60,0.96) 50%, rgba(69,10,10,0.92) 100%);
+      border-top: 3px solid #fda4af;
+      border-bottom: 3px solid #fda4af;
+      box-shadow: 0 0 35px rgba(244, 63, 94, 0.95);
+      text-align: center;
+      pointer-events: none;
+      animation: vsDamageCutinAnim 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .vs-jammer-coin-drop {
+      position: fixed;
+      top: -36px;
+      pointer-events: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      font-weight: 900;
+      border: 2px solid rgba(255,255,255,0.85);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+      animation: vsJammerCoinFall var(--dur, 0.85s) cubic-bezier(0.32, 0, 0.67, 0) forwards;
+    }
+    .vs-special-flash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, rgba(255,255,255,0.92) 0%, rgba(56,189,248,0.45) 45%, rgba(168,85,247,0.22) 100%);
+      pointer-events: none;
+      animation: vsSpecialFlash 0.55s ease-out forwards;
+    }
+    .vs-special-speedlines {
+      position: fixed;
+      left: 50%;
+      top: 40%;
+      width: 145vmax;
+      height: 145vmax;
+      border-radius: 9999px;
+      background: repeating-conic-gradient(
+        from 0deg,
+        rgba(56, 189, 248, 0.35) 0deg 6deg,
+        transparent 6deg 14deg,
+        rgba(250, 204, 21, 0.32) 14deg 19deg,
+        transparent 19deg 28deg
+      );
+      pointer-events: none;
+      animation: vsSpecialSpeedLines 0.95s ease-out forwards;
+    }
+    .vs-special-band {
+      position: fixed;
+      left: -6%;
+      right: -6%;
+      top: 33%;
+      padding: 12px 20px;
+      border-top: 4px solid #fef08a;
+      border-bottom: 4px solid #38bdf8;
+      background: linear-gradient(90deg, rgba(15,23,42,0.95) 0%, rgba(30,58,138,0.96) 28%, rgba(126,34,206,0.96) 72%, rgba(15,23,42,0.95) 100%);
+      box-shadow: 0 0 42px rgba(56, 189, 248, 0.9), 0 0 65px rgba(217, 70, 239, 0.7);
+      text-align: center;
+      pointer-events: none;
+      animation: vsSpecialBandSlide 1.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .vs-special-title {
+      animation: vsSpecialTextSlam 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .vs-jammer-toast {
       position: fixed;
@@ -522,6 +654,87 @@
       border-radius: 9999px;
       font-weight: 900;
       animation: vsJammerToast 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    /* === VERSUS MATCH START INTRO MOTION (VIDEO-INSPIRED SPLIT + SHATTER) === */
+    @keyframes vsIntroBoltSlash {
+      0% { transform: translate(-50%, -50%) rotate(11deg) scaleY(0); opacity: 0; }
+      28% { transform: translate(-50%, -50%) rotate(11deg) scaleY(1.06); opacity: 1; }
+      100% { transform: translate(-50%, -50%) rotate(11deg) scaleY(1); opacity: 1; }
+    }
+    @keyframes vsIntroRightIn {
+      0% { transform: translateX(105%); opacity: 0; }
+      100% { transform: translateX(0%); opacity: 1; }
+    }
+    @keyframes vsIntroLeftIn {
+      0% { transform: translateX(-105%); opacity: 0; }
+      100% { transform: translateX(0%); opacity: 1; }
+    }
+    @keyframes vsIntroBadgeSlam {
+      0% { transform: translate(-50%, -50%) scale(2.8) rotate(-10deg); opacity: 0; filter: blur(6px); }
+      35% { transform: translate(-50%, -50%) scale(0.92) rotate(2deg); opacity: 1; filter: blur(0); }
+      65% { transform: translate(-50%, -50%) scale(1.04) rotate(-1deg); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+    }
+    @keyframes vsIntroNamePop {
+      0% { transform: scale(1.45) skewX(-10deg); opacity: 0; }
+      60% { transform: scale(0.96) skewX(-8deg); opacity: 1; }
+      100% { transform: scale(1) skewX(-8deg); opacity: 1; }
+    }
+    @keyframes vsIntroFlashPop {
+      0% { opacity: 0.92; }
+      100% { opacity: 0; }
+    }
+    @keyframes vsIntroShardFly {
+      0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translate3d(var(--tx), var(--ty), 0) rotate(var(--rot)) scale(1.18); opacity: 0; }
+    }
+    .vs-intro-right-pane {
+      clip-path: polygon(56% 0%, 100% 0%, 100% 100%, 44% 100%);
+      animation: vsIntroRightIn 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .vs-intro-left-pane {
+      clip-path: polygon(0% 0%, 56% 0%, 44% 100%, 0% 100%);
+      animation: vsIntroLeftIn 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .vs-intro-bolt {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 12px;
+      height: 135vh;
+      background: linear-gradient(180deg, #ffffff 0%, #38bdf8 30%, #60a5fa 50%, #38bdf8 70%, #ffffff 100%);
+      box-shadow: 0 0 24px 8px rgba(56, 189, 248, 0.95), 0 0 54px 16px rgba(37, 99, 235, 0.85);
+      transform-origin: center center;
+      animation: vsIntroBoltSlash 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      transition: background 0.25s ease, box-shadow 0.25s ease;
+    }
+    .vs-intro-bolt.gold-surge {
+      width: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #fef08a 25%, #f59e0b 50%, #fef08a 75%, #ffffff 100%);
+      box-shadow: 0 0 28px 10px rgba(250, 204, 21, 0.98), 0 0 68px 22px rgba(249, 115, 22, 0.9);
+    }
+    .vs-intro-center-badge {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      animation: vsIntroBadgeSlam 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .vs-intro-name-anim {
+      animation: vsIntroNamePop 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .vs-intro-flash {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(255,255,255,0.96) 0%, rgba(250,204,21,0.5) 45%, rgba(236,72,153,0.25) 100%);
+      pointer-events: none;
+      animation: vsIntroFlashPop 0.48s ease-out forwards;
+    }
+    .vs-intro-shard {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      animation: vsIntroShardFly 0.68s cubic-bezier(0.22, 0.8, 0.32, 1) forwards;
+      will-change: transform, opacity;
     }
   </style>
 </head>
@@ -561,12 +774,15 @@
   <div id="zone-shockwave-layer" class="fixed inset-0 z-50 hidden pointer-events-none items-center justify-center overflow-hidden"></div>
 
   <!-- BILL REDUCTION LIGHTNING BONUS FX OVERLAY (#lightning-fx-layer) -->
-  <div id="lightning-fx-layer" class="fixed inset-0 z-60 pointer-events-none overflow-hidden" aria-hidden="true"></div>
+  <div id="lightning-fx-layer" class="fixed inset-0 z-[65] pointer-events-none overflow-hidden" style="z-index: 65;" aria-hidden="true"></div>
 
   <!-- DOPAGAKI RAINBOW LED FRAME & FX OVERLAY (pointer-events-none: zero gameplay impact) -->
   <div id="dopa-rainbow-frame" aria-hidden="true"></div>
   <div id="dopa-fx-layer" class="fixed inset-0 z-30 pointer-events-none overflow-hidden" aria-hidden="true"></div>
-  <div id="vs-fx-layer" class="fixed inset-0 z-60 pointer-events-none overflow-hidden" aria-hidden="true"></div>
+  <div id="vs-fx-layer" class="fixed inset-0 z-[70] pointer-events-none overflow-hidden" style="z-index: 70;" aria-hidden="true"></div>
+
+  <!-- VERSUS MATCH START INTRO OVERLAY (#vs-intro-overlay) -->
+  <div id="vs-intro-overlay" class="fixed inset-0 z-[75] hidden overflow-hidden select-none" style="z-index: 75;"></div>
 
   <!-- =========================================================================
        SCREEN 1: TITLE SCREEN (#screen-title)
@@ -574,18 +790,21 @@
   <div id="screen-title" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
     <div class="max-w-lg w-full bg-slate-900/95 border-2 border-amber-400/80 rounded-3xl p-4 sm:p-6 shadow-2xl text-center relative max-h-[95vh] overflow-y-auto custom-scroll">
       <!-- Top Sound Controls on Title -->
-      <div class="flex items-center justify-between mb-2">
+      <div class="flex flex-wrap items-center justify-between gap-1.5 mb-2">
         <div class="inline-block bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 text-[10px] sm:text-xs font-black px-3 py-1 rounded-full shadow">
           3D暗算・小銭スッキリパズル
         </div>
-        <div class="flex items-center gap-1.5">
-          <button id="btn-title-bgm" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[11px] font-extrabold px-2.5 py-1 rounded-xl text-amber-300 flex items-center gap-1">
+        <div class="flex flex-wrap items-center gap-1">
+          <button id="btn-title-bgm" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[10px] sm:text-[11px] font-extrabold px-2 py-1 rounded-xl text-amber-300 flex items-center gap-1">
             <span>🎵</span><span class="bgm-label-text">BGM ON</span>
           </button>
-          <button id="btn-title-se" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[11px] font-extrabold px-2.5 py-1 rounded-xl text-emerald-300 flex items-center gap-1">
+          <button id="btn-title-se" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-[10px] sm:text-[11px] font-extrabold px-2 py-1 rounded-xl text-emerald-300 flex items-center gap-1">
             <span>🔊</span><span class="se-label-text">SE ON</span>
           </button>
-          <button id="btn-title-dopa" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-fuchsia-500/60 text-[11px] font-black px-2.5 py-1 rounded-xl text-fuchsia-300 flex items-center gap-1" title="虹色・パチンコ音・星目演出（プレイ影響なし）">
+          <button id="btn-title-vibe" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-cyan-500/60 text-[10px] sm:text-[11px] font-extrabold px-2 py-1 rounded-xl text-cyan-300 flex items-center gap-1" title="バイブレーション ON/OFF">
+            <span class="vibe-icon-text">📳</span><span class="vibe-label-text">バイブ ON</span>
+          </button>
+          <button id="btn-title-dopa" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-fuchsia-500/60 text-[10px] sm:text-[11px] font-black px-2 py-1 rounded-xl text-fuchsia-300 flex items-center gap-1" title="虹色・パチンコ音・星目演出（プレイ影響なし）">
             <span>🌈</span><span class="dopa-label-text">ドパガキ OFF</span>
           </button>
         </div>
@@ -772,10 +991,16 @@
             虹色ネオン・パチンコ確定音（キュイキュイ＆キュピーン）・店員の目が★・脳汁MAXエフェクト！
           </p>
         </div>
-        <button id="btn-mode-toggle-dopa" class="btn-3d shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-slate-900 border-fuchsia-500/70 text-fuchsia-300 flex items-center gap-1 shadow">
-          <span id="mode-dopa-icon">🌈</span>
-          <span id="mode-dopa-text">ドパガキ: OFF</span>
-        </button>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button id="btn-mode-toggle-vibe" class="btn-3d shrink-0 whitespace-nowrap px-2.5 py-1.5 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-cyan-500/20 border-cyan-400 text-cyan-200 flex items-center gap-1 shadow">
+            <span class="vibe-icon-text">📳</span>
+            <span class="vibe-label-text">バイブ ON</span>
+          </button>
+          <button id="btn-mode-toggle-dopa" class="btn-3d shrink-0 whitespace-nowrap px-3 py-1.5 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-slate-900 border-fuchsia-500/70 text-fuchsia-300 flex items-center gap-1 shadow">
+            <span id="mode-dopa-icon">🌈</span>
+            <span id="mode-dopa-text">ドパガキ: OFF</span>
+          </button>
+        </div>
       </div>
 
       <!-- Mode Cards -->
@@ -1565,6 +1790,11 @@
               🔊
             </button>
 
+            <!-- Vibration Toggle Button -->
+            <button id="btn-hud-vibe-toggle" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-cyan-400/70 w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center text-xs shadow shrink-0" title="バイブレーション ON/OFF">
+              📳
+            </button>
+
             <button id="btn-hud-mode" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-extrabold text-[9px] sm:text-[11px] px-1.5 h-6 sm:h-7 rounded-lg flex items-center justify-center gap-0.5 shadow shrink-0" title="モード選択へ戻る">
               <span>🎮</span>
               <span class="hidden md:inline">モード</span>
@@ -1595,21 +1825,25 @@
         </div>
       </div>
 
-      <!-- VERSUS OPPONENT REAL-TIME BAR (Shown only during Online Versus Mode) -->
-      <div id="vs-opponent-bar" class="hidden mt-1 bg-gradient-to-r from-violet-950/95 via-slate-900/95 to-fuchsia-950/95 border-2 border-fuchsia-400/80 rounded-xl px-2.5 py-1 flex items-center justify-between gap-2 shadow-lg">
-        <div class="flex items-center gap-1.5 min-w-0">
-          <span class="text-xs sm:text-sm font-black px-1.5 py-0.5 rounded bg-fuchsia-500 text-white shrink-0 leading-none">VS</span>
-          <span id="vs-opp-name" class="text-[11px] sm:text-xs font-black text-white truncate max-w-[90px] sm:max-w-[140px]">対戦相手</span>
-          <span id="vs-rule-pill" class="text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded-full bg-slate-800 text-cyan-300 border border-cyan-400/50 shrink-0 leading-none">スコア対決</span>
-        </div>
-        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-          <span id="vs-lead-badge" class="text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 leading-none">互角</span>
-          <div class="text-right leading-none">
-            <span class="text-[8px] sm:text-[9px] text-fuchsia-300 font-bold mr-1">相手</span>
-            <span id="vs-opp-score" class="font-digital text-xs sm:text-base font-black text-amber-300">0</span>
-            <span id="vs-opp-sub" class="text-[9px] sm:text-[10px] text-slate-300 font-bold ml-1">0人</span>
+      <!-- VERSUS OPPONENT REAL-TIME BAR (Shown only during Online Versus Mode / 2〜10人対応) -->
+      <div id="vs-opponent-bar" class="hidden mt-1 bg-gradient-to-r from-violet-950/95 via-slate-900/95 to-fuchsia-950/95 border-2 border-fuchsia-400/80 rounded-xl px-2.5 py-1 shadow-lg">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span id="vs-rank-badge" class="text-[10px] sm:text-xs font-black px-1.5 py-0.5 rounded bg-fuchsia-500 text-white shrink-0 leading-none">VS</span>
+            <span id="vs-opp-name" class="text-[11px] sm:text-xs font-black text-white truncate max-w-[100px] sm:max-w-[155px]">対戦相手</span>
+            <span id="vs-rule-pill" class="text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded-full bg-slate-800 text-cyan-300 border border-cyan-400/50 shrink-0 leading-none">スコア対決</span>
+          </div>
+          <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+            <span id="vs-lead-badge" class="text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 leading-none">互角</span>
+            <div class="text-right leading-none">
+              <span id="vs-opp-label" class="text-[8px] sm:text-[9px] text-fuchsia-300 font-bold mr-1">相手</span>
+              <span id="vs-opp-score" class="font-digital text-xs sm:text-base font-black text-amber-300">0</span>
+              <span id="vs-opp-sub" class="text-[9px] sm:text-[10px] text-slate-300 font-bold ml-1">0人</span>
+            </div>
           </div>
         </div>
+        <!-- 3人以上対戦時のリアルタイム上位ミニランキング帯 -->
+        <div id="vs-multi-mini-board" class="hidden mt-1 pt-1 border-t border-fuchsia-500/30 flex items-center gap-1.5 overflow-x-auto text-[9px] sm:text-[10px] leading-none"></div>
       </div>
 
       <!-- ULTRA-COMPACT POS REGISTER BAR -->
@@ -1882,7 +2116,9 @@
 
       <div class="bg-slate-950/90 border border-fuchsia-500/40 rounded-2xl px-3 py-2 mb-3 flex items-center justify-between gap-2 text-xs">
         <span id="vs-online-status" class="font-black text-emerald-300">🌐 オンライン対戦 接続OK</span>
-        <span class="text-[10px] font-bold text-slate-400">※ランキングには影響しません</span>
+        <button id="btn-vs-lobby-vibe" type="button" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-cyan-400/70 text-cyan-200 text-[10px] font-black px-2 py-0.5 rounded-lg flex items-center gap-1 shrink-0">
+          <span class="vibe-icon-text">📳</span><span class="vibe-label-text">バイブ ON</span>
+        </button>
       </div>
 
       <!-- Player Name Input -->
@@ -1903,8 +2139,11 @@
           <div class="text-sm sm:text-base font-black text-violet-300">🎲 ランダムマッチ（自動対戦）</div>
           <span class="text-[10px] font-black bg-violet-400 text-slate-950 px-2 py-0.5 rounded-full">すぐ対戦</span>
         </div>
-        <div class="text-[11px] text-slate-300 mb-2">希望の対戦ルールを選んで待機中の相手と自動マッチング！</div>
-        <div class="grid grid-cols-3 gap-1.5 mb-2">
+        <div class="text-[11px] text-slate-300 mb-2">希望の対戦モードを選択！（同じモード同士でマッチ／「どのモードでも」は全モードとマッチ）</div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-2">
+          <button id="btn-vs-rand-rule-any" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
+            🎲 どのモードでも
+          </button>
           <button id="btn-vs-rand-rule-score" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-violet-500 text-slate-950 border-white">
             🏆 スコア対決
           </button>
@@ -1924,15 +2163,49 @@
             🎲 完全ランダム生成
           </button>
         </div>
+        <!-- 希望対戦人数（何人でも / 人数を入力 2〜10人） -->
+        <div class="mb-2.5">
+          <div class="text-[10px] font-bold text-slate-400 mb-1">希望する対戦人数（2〜10人）</div>
+          <div class="grid grid-cols-2 gap-1.5 mb-1.5">
+            <button id="btn-vs-rand-size-any" type="button" class="btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-cyan-400 text-slate-950 border-white shadow">
+              👥 何人でも
+            </button>
+            <button id="btn-vs-rand-size-custom" type="button" class="btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
+              🔢 人数を入力 (2〜10)
+            </button>
+          </div>
+          <div id="vs-rand-size-input-wrap" class="hidden">
+            <div class="flex items-center gap-2">
+              <input
+                id="input-vs-rand-players"
+                type="text"
+                inputmode="numeric"
+                maxlength="6"
+                placeholder="2〜10の整数を入力 (例: 4)"
+                class="flex-1 bg-slate-900 border-2 border-slate-600 focus:border-cyan-400 rounded-xl px-3 py-1.5 text-sm font-black text-white outline-none transition-colors"
+              />
+              <span class="text-xs font-extrabold text-slate-300 shrink-0">人対戦</span>
+            </div>
+            <p id="vs-rand-player-error" class="hidden text-xs font-black text-rose-400 mt-1">⚠️ 対応してません</p>
+          </div>
+        </div>
+
         <button id="btn-vs-random-start" class="btn-3d w-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 hover:from-violet-400 hover:to-pink-400 text-white font-black text-sm sm:text-base py-2.5 rounded-xl border-b-4 border-fuchsia-900 shadow-lg">
           🎲 ランダムマッチを探す！
         </button>
-        <div id="vs-random-searching" class="hidden mt-2 bg-slate-950/90 border border-fuchsia-400/70 rounded-xl px-3 py-2 flex items-center justify-between gap-2">
-          <span class="text-xs font-black text-fuchsia-300 animate-pulse">🔍 対戦相手を探しています...</span>
-          <button id="btn-vs-random-cancel" class="btn-3d bg-rose-600 hover:bg-rose-500 text-white text-[11px] font-black px-2.5 py-1 rounded-lg">
-            キャンセル
-          </button>
+        <div id="vs-random-searching" class="hidden mt-2 bg-slate-950/90 border border-fuchsia-400/70 rounded-xl px-3 py-2 space-y-1.5">
+          <div class="flex items-center justify-between gap-2">
+            <span id="vs-random-search-status" class="text-xs font-black text-fuchsia-300 animate-pulse">🔍 対戦相手を探しています...</span>
+            <button id="btn-vs-random-cancel" class="btn-3d bg-rose-600 hover:bg-rose-500 text-white text-[11px] font-black px-2.5 py-1 rounded-lg shrink-0">
+              キャンセル
+            </button>
+          </div>
+          <div class="flex items-center justify-between gap-2 text-[11px] font-extrabold">
+            <span id="vs-random-members-count" class="text-cyan-300">参加中: 1 / 4人</span>
+            <span id="vs-random-bot-countdown" class="font-digital text-amber-300">残りをbotで埋めるまで 10.0秒</span>
+          </div>
         </div>
+        <p id="vs-random-error" class="hidden text-xs font-bold text-rose-400 mt-1.5"></p>
       </div>
 
       <!-- Section 2: Room Code Match -->
@@ -1988,18 +2261,19 @@
         </button>
       </div>
 
-      <!-- Players Box -->
-      <div class="grid grid-cols-2 gap-2 mb-3">
-        <div class="bg-slate-800/90 border-2 border-cyan-400/70 rounded-2xl p-2.5 text-center">
-          <div class="text-[10px] font-black text-cyan-300">HOST (1P)</div>
-          <div id="vs-room-host-name" class="text-sm sm:text-base font-black text-white truncate mt-0.5">---</div>
-          <div id="vs-room-host-status" class="text-[10px] font-bold text-emerald-300 mt-0.5">● 接続中</div>
+      <!-- Random Match Bot Auto-Fill Countdown Bar (Shown only in Random Match waiting room) -->
+      <div id="vs-room-bot-countdown-bar" class="hidden mb-2.5 bg-amber-950/80 border border-amber-400/80 rounded-xl px-3 py-1.5 flex items-center justify-between gap-2 text-xs font-black">
+        <span class="text-amber-200">🤖 自動マッチング待機中</span>
+        <span id="vs-room-bot-countdown-text" class="font-digital text-amber-300">残りをbotで埋めるまで 10.0秒</span>
+      </div>
+
+      <!-- Players Box (2〜10人対応) -->
+      <div class="mb-3">
+        <div class="flex items-center justify-between text-[11px] font-bold text-slate-300 mb-1">
+          <span>👥 参加プレイヤー</span>
+          <span id="vs-room-capacity-label" class="font-digital text-cyan-300">1 / 4人</span>
         </div>
-        <div class="bg-slate-800/90 border-2 border-fuchsia-400/70 rounded-2xl p-2.5 text-center">
-          <div class="text-[10px] font-black text-fuchsia-300">GUEST (2P)</div>
-          <div id="vs-room-guest-name" class="text-sm sm:text-base font-black text-slate-400 truncate mt-0.5">待機中...</div>
-          <div id="vs-room-guest-status" class="text-[10px] font-bold text-slate-400 mt-0.5">相手の入室待ち</div>
-        </div>
+        <div id="vs-room-players-grid" class="grid grid-cols-2 sm:grid-cols-5 gap-1.5"></div>
       </div>
 
       <!-- Room Settings (Editable by Host, Read-only for Guest) -->
@@ -2007,6 +2281,22 @@
         <div class="flex items-center justify-between">
           <span class="text-xs font-black text-amber-300">⚙️ 対戦ルール設定</span>
           <span id="vs-settings-role-hint" class="text-[10px] font-bold text-slate-400">ホストが変更できます</span>
+        </div>
+
+        <!-- 0. Max Players (2〜10人 / ホストのみ変更可) -->
+        <div>
+          <div class="text-[10px] font-bold text-slate-400 mb-1">対戦人数（2〜10人）</div>
+          <div class="grid grid-cols-5 sm:grid-cols-9 gap-1">
+            <button data-vs-set="maxPlayers" data-vs-val="2" class="vs-opt-btn btn-3d py-1 px-1 rounded-lg text-[11px] font-black border-2">2人</button>
+            <button data-vs-set="maxPlayers" data-vs-val="3" class="vs-opt-btn btn-3d py-1 px-1 rounded-lg text-[11px] font-black border-2">3人</button>
+            <button data-vs-set="maxPlayers" data-vs-val="4" class="vs-opt-btn btn-3d py-1 px-1 rounded-lg text-[11px] font-black border-2">4人</button>
+            <button data-vs-set="maxPlayers" data-vs-val="5" class="vs-opt-btn btn-3d py-1 px-1 rounded-lg text-[11px] font-black border-2">5人</button>
+            <button data-vs-set="maxPlayers" data-vs-val="6" class="vs-opt-btn btn-3d py-1 px-1 rounded-lg text-[11px] font-black border-2">6人</button>
+            <button data-vs-set="maxPlayers" data-vs-val="7" class="vs-opt-btn btn-3d py-1 px-1 rounded-lg text-[11px] font-black border-2">7人</button>
+            <button data-vs-set="maxPlayers" data-vs-val="8" class="vs-opt-btn btn-3d py-1 px-1 rounded-lg text-[11px] font-black border-2">8人</button>
+            <button data-vs-set="maxPlayers" data-vs-val="9" class="vs-opt-btn btn-3d py-1 px-1 rounded-lg text-[11px] font-black border-2">9人</button>
+            <button data-vs-set="maxPlayers" data-vs-val="10" class="vs-opt-btn btn-3d py-1 px-1 rounded-lg text-[11px] font-black border-2">10人</button>
+          </div>
         </div>
 
         <!-- 1. Battle Rule -->
@@ -2078,10 +2368,15 @@
         </div>
       </div>
 
-      <!-- Start / Wait Button -->
-      <button id="btn-vs-start-match" disabled class="btn-3d w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-black text-base sm:text-lg py-3 rounded-2xl border-b-4 border-emerald-800 shadow-xl disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed">
-        ⏳ 対戦相手の入室を待っています...
-      </button>
+      <!-- Start / Host-Only Bot Fill Start Buttons -->
+      <div class="space-y-2">
+        <button id="btn-vs-start-match" disabled class="btn-3d w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-black text-base sm:text-lg py-3 rounded-2xl border-b-4 border-emerald-800 shadow-xl disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed">
+          ⏳ 対戦相手の入室を待っています...
+        </button>
+        <button id="btn-vs-start-with-bots" class="hidden btn-3d w-full bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-300 hover:to-orange-300 text-slate-950 font-black text-sm sm:text-base py-2.5 rounded-2xl border-b-4 border-amber-800 shadow-lg">
+          🤖 残りをbotで埋めてスタート
+        </button>
+      </div>
     </div>
   </div>
 
@@ -2101,28 +2396,8 @@
         スコア対決で勝利しました！
       </p>
 
-      <!-- Comparison Cards -->
-      <div class="grid grid-cols-2 gap-2.5 mb-4 text-left">
-        <div id="vs-res-me-card" class="bg-slate-800/95 border-2 border-cyan-400 rounded-2xl p-3">
-          <div class="text-[10px] font-black text-cyan-300">YOU（あなた）</div>
-          <div id="vs-res-me-name" class="text-sm sm:text-base font-black text-white truncate">---</div>
-          <div id="vs-res-me-score" class="font-digital text-xl sm:text-2xl font-black text-amber-300 mt-1">0 pt</div>
-          <div id="vs-res-me-stats" class="text-[10px] sm:text-xs text-slate-300 font-bold mt-1 space-y-0.5">
-            <div>PERFECT: 0回 / 処理: 0人</div>
-            <div>最大コンボ: 0連鎖</div>
-          </div>
-        </div>
-
-        <div id="vs-res-opp-card" class="bg-slate-800/95 border-2 border-fuchsia-400 rounded-2xl p-3">
-          <div class="text-[10px] font-black text-fuchsia-300">RIVAL（対戦相手）</div>
-          <div id="vs-res-opp-name" class="text-sm sm:text-base font-black text-white truncate">---</div>
-          <div id="vs-res-opp-score" class="font-digital text-xl sm:text-2xl font-black text-amber-300 mt-1">0 pt</div>
-          <div id="vs-res-opp-stats" class="text-[10px] sm:text-xs text-slate-300 font-bold mt-1 space-y-0.5">
-            <div>PERFECT: 0回 / 処理: 0人</div>
-            <div>最大コンボ: 0連鎖</div>
-          </div>
-        </div>
-      </div>
+      <!-- Standings List (2〜10人対応) -->
+      <div id="vs-res-standings" class="custom-scroll max-h-60 overflow-y-auto space-y-1.5 mb-4 text-left pr-1"></div>
 
       <div class="text-[11px] font-bold text-slate-400 bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-2 mb-4">
         ※リアルタイム対戦モードのスコアはランキングおよび自己ベスト・解放条件には影響しません。
@@ -3630,6 +3905,191 @@
           osc.stop(chordTime + 0.65);
         });
       }
+
+      // お邪魔被弾ダメージSE（重い衝撃音＋警報＋コイン落下音）
+      playJammerDamageSE() {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        // 重低音インパクト
+        const sub = this.ctx.createOscillator();
+        const subG = this.ctx.createGain();
+        sub.type = 'sawtooth';
+        sub.frequency.setValueAtTime(140, now);
+        sub.frequency.exponentialRampToValueAtTime(36, now + 0.32);
+        subG.gain.setValueAtTime(0.28, now);
+        subG.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        sub.connect(subG);
+        subG.connect(this.ctx.destination);
+        sub.start(now);
+        sub.stop(now + 0.36);
+
+        // 警報ブザー2連
+        [0, 0.12].forEach((off) => {
+          const osc = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(420, now + off);
+          osc.frequency.linearRampToValueAtTime(240, now + off + 0.1);
+          g.gain.setValueAtTime(0.11, now + off);
+          g.gain.exponentialRampToValueAtTime(0.001, now + off + 0.11);
+          osc.connect(g);
+          g.connect(this.ctx.destination);
+          osc.start(now + off);
+          osc.stop(now + off + 0.12);
+        });
+
+        // ジャラジャラ小銭落下音
+        [0.08, 0.15, 0.23, 0.31].forEach((off, idx) => {
+          const osc = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(2600 + idx * 320, now + off);
+          g.gain.setValueAtTime(0.08, now + off);
+          g.gain.exponentialRampToValueAtTime(0.001, now + off + 0.12);
+          osc.connect(g);
+          g.connect(this.ctx.destination);
+          osc.start(now + off);
+          osc.stop(now + off + 0.13);
+        });
+      }
+
+      // お邪魔発動・必殺技カットインSE（シャキーン＋発射音）
+      playJammerSpecialAttackSE(combo = 1) {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const boost = combo >= 5 ? 1.25 : (combo >= 3 ? 1.12 : 1.0);
+
+        // 鋭いシャキーン上昇スイープ
+        const sweep = this.ctx.createOscillator();
+        const sGain = this.ctx.createGain();
+        sweep.type = 'sawtooth';
+        sweep.frequency.setValueAtTime(620 * boost, now);
+        sweep.frequency.exponentialRampToValueAtTime(2650 * boost, now + 0.14);
+        sweep.frequency.exponentialRampToValueAtTime(1480 * boost, now + 0.34);
+        sGain.gain.setValueAtTime(0.15, now);
+        sGain.gain.exponentialRampToValueAtTime(0.001, now + 0.36);
+        sweep.connect(sGain);
+        sGain.connect(this.ctx.destination);
+        sweep.start(now);
+        sweep.stop(now + 0.38);
+
+        // 必殺技インパクト和音
+        [523.25, 783.99, 1046.5, 1567.98].forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          const t = now + 0.06 + i * 0.028;
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(f * boost, t);
+          g.gain.setValueAtTime(0.12, t);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.36);
+          osc.connect(g);
+          g.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.38);
+        });
+      }
+
+      // オンライン対戦イントロ：稲妻切り裂きSE
+      playVersusIntroSlashSE() {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(1900, now);
+        osc.frequency.exponentialRampToValueAtTime(340, now + 0.22);
+        gain.gain.setValueAtTime(0.16, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      }
+
+      // オンライン対戦イントロ：中央「VS」インパクトSE
+      playVersusIntroClimaxSE() {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const sub = this.ctx.createOscillator();
+        const subG = this.ctx.createGain();
+        sub.type = 'sawtooth';
+        sub.frequency.setValueAtTime(185, now);
+        sub.frequency.exponentialRampToValueAtTime(42, now + 0.36);
+        subG.gain.setValueAtTime(0.26, now);
+        subG.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+        sub.connect(subG);
+        subG.connect(this.ctx.destination);
+        sub.start(now);
+        sub.stop(now + 0.40);
+
+        [440, 659.25, 880, 1318.5].forEach((f, idx) => {
+          const osc = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          const t = now + idx * 0.025;
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(f, t);
+          g.gain.setValueAtTime(0.12, t);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+          osc.connect(g);
+          g.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.48);
+        });
+      }
+
+      // オンライン対戦イントロ：ガラス破砕（パリーン！）SE
+      playVersusIntroShatterSE() {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        // 破砕ノイズ
+        const dur = 0.35;
+        const bufSize = Math.floor(this.ctx.sampleRate * dur);
+        const buf = this.ctx.createBuffer(1, bufSize, this.ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < bufSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufSize, 1.5);
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buf;
+        const hp = this.ctx.createBiquadFilter();
+        hp.type = 'highpass';
+        hp.frequency.setValueAtTime(2200, now);
+        const nGain = this.ctx.createGain();
+        nGain.gain.setValueAtTime(0.24, now);
+        nGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+        noise.connect(hp);
+        hp.connect(nGain);
+        nGain.connect(this.ctx.destination);
+        noise.start(now);
+
+        // キラキラガラス破片の金属高音
+        [3100, 4200, 5300, 6100, 3700].forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          const t = now + i * 0.022;
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(f, t);
+          osc.frequency.exponentialRampToValueAtTime(f * 0.72, t + 0.24);
+          g.gain.setValueAtTime(0.09, t);
+          g.gain.exponentialRampToValueAtTime(0.0008, t + 0.26);
+          osc.connect(g);
+          g.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.28);
+        });
+      }
     }
 
     const sound = new SoundManager();
@@ -3922,6 +4382,8 @@
         this.clerkAnimTimer = 0;
 
         this.cameraLookOffset = { x: 0, y: 0 };
+        this.damageShakeTimer = 0;
+        this.damageShakeIntensity = 0;
         this.baseCamPos = { x: 0.08, y: 6.8, z: 8.4 };
         this.baseLookAt = { x: 0.05, y: 1.05, z: -0.25 };
 
@@ -4111,6 +4573,37 @@
       setDopagakiMode(active) {
         this.isDopagakiMode = Boolean(active);
         this.syncSceneMood();
+      }
+
+      triggerDamageShake(intensity = 0.42, duration = 0.48) {
+        this.damageShakeIntensity = Math.max(this.damageShakeIntensity || 0, intensity);
+        this.damageShakeTimer = Math.max(this.damageShakeTimer || 0, duration);
+      }
+
+      spawnJammerCoinRain(c1 = 2, c10 = 1) {
+        const list = [];
+        for (let i = 0; i < Math.min(10, c1 + 2); i++) list.push(1);
+        for (let i = 0; i < Math.min(6, c10 + 1); i++) list.push(10);
+        list.forEach((d) => {
+          const mesh = this.createMoneyMesh(d);
+          mesh.position.set(
+            (Math.random() - 0.5) * 6.5,
+            5.8 + Math.random() * 3.5,
+            0.2 + (Math.random() - 0.5) * 3.2
+          );
+          mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+          mesh.scale.setScalar(0.95);
+          this.scene.add(mesh);
+          this.coinShowerItems.push({
+            mesh,
+            vx: (Math.random() - 0.5) * 2.2,
+            vy: -5.2 - Math.random() * 3.0,
+            vz: (Math.random() - 0.5) * 1.6,
+            rx: (Math.random() - 0.5) * 12,
+            ry: (Math.random() - 0.5) * 12,
+            life: 1.4
+          });
+        });
       }
 
       spawnCoinShower(comboCount = 5) {
@@ -4893,10 +5386,17 @@
         const targetCamY = this.baseCamPos.y + this.cameraLookOffset.y;
         const targetCamZ = this.baseCamPos.z;
 
-        this.camera.position.x += (targetCamX - this.camera.position.x) * 0.1;
-        this.camera.position.y += (targetCamY - this.camera.position.y) * 0.1;
+        let shakeX = 0, shakeY = 0;
+        if (this.damageShakeTimer > 0) {
+          this.damageShakeTimer = Math.max(0, this.damageShakeTimer - dt);
+          const mag = this.damageShakeIntensity * (this.damageShakeTimer / 0.48);
+          shakeX = (Math.random() - 0.5) * 2 * mag;
+          shakeY = (Math.random() - 0.5) * 2 * mag;
+        }
+        this.camera.position.x += (targetCamX - this.camera.position.x) * 0.1 + shakeX;
+        this.camera.position.y += (targetCamY - this.camera.position.y) * 0.1 + shakeY;
         this.camera.position.z += (targetCamZ - this.camera.position.z) * 0.1;
-        this.camera.lookAt(this.baseLookAt.x, this.baseLookAt.y, this.baseLookAt.z);
+        this.camera.lookAt(this.baseLookAt.x + shakeX * 0.4, this.baseLookAt.y + shakeY * 0.4, this.baseLookAt.z);
 
         this.updateClerkAnimation(dt, nowSec);
 
@@ -5547,7 +6047,8 @@
         this.game = game;
         this.myUid = 'p_' + Math.random().toString(36).slice(2, 9) + '_' + Date.now().toString(36);
         this.roomCode = null;
-        this.myRole = null; // 'host' | 'guest'
+        this.mySlot = null; // 'p1'..'p10' ('p1' is always host)
+        this.isHost = false;
         this.roomRef = null;
         this.roomListener = null;
         this.queueRef = null;
@@ -5555,12 +6056,37 @@
         this.isRandomSearching = false;
         this.selectedRandomRule = 'score';
         this.selectedRandomGenMode = 'clean';
+        this.randomSizeMode = 'any'; // 'any' | 'custom'
         this.lastRoomData = null;
         this.matchLaunched = false;
         this.resultShown = false;
         this.lastJammerSeq = 0;
         this.finishWaitTimeout = null;
         this.jammerSentCount = 0;
+        this.vsResultCooldownInterval = null;
+        this.vsResultCooldownRemaining = 0;
+        this.vsCanRematch = false;
+
+        // 10秒BOT補充タイマー＆BOTシミュレーション状態
+        this.botFillTimer = null;
+        this.botFillTriggered = false;
+        this.botSimTimer = null;
+        this.botStates = {};
+        this.botLastJammerSeqs = {};
+        this.lastGlobalBotJammerAt = 0;
+        this.lastHumanCount = 0;
+
+        this.BOT_NAMES = [
+          '🤖 暗算ロボ1号',
+          '🤖 レジAI・改',
+          '🤖 500円玉マスター',
+          '🤖 端数キラーBOT',
+          '🤖 ピッタリMK-II',
+          '🤖 小銭バスター',
+          '🤖 電卓サイボーグ',
+          '🤖 神会計CPU',
+          '🤖 釣銭ゼロ号'
+        ];
 
         this.bindLobbyAndRoomEvents();
       }
@@ -5573,7 +6099,8 @@
         return Boolean(RankingManager.db && RankingManager.isOnline);
       }
 
-      getDefaultSettings(vsRule = 'score', priceGenMode = 'clean') {
+      getDefaultSettings(vsRule = 'score', priceGenMode = 'clean', maxPlayers = 4) {
+        const clamped = Math.max(2, Math.min(10, Number(maxPlayers) || 4));
         return {
           vsRule: vsRule,
           raceTarget: 7,
@@ -5581,14 +6108,53 @@
           difficulty: 'NORMAL',
           priceGenMode: priceGenMode === 'random' ? 'random' : 'clean',
           lunaticTaxRate: 8,
-          showChange: true
+          showChange: true,
+          maxPlayers: clamped
         };
+      }
+
+      // 全角数字→半角数字の正規化＆2〜10の単一整数バリデーション
+      normalizeAndValidatePlayerCount(rawText, allowEmpty = false) {
+        const raw = String(rawText == null ? '' : rawText);
+        if (raw === '') {
+          return allowEmpty ? { valid: true, empty: true, value: null } : { valid: false, empty: true, value: null };
+        }
+        const norm = raw.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xFEE0));
+        if (!/^\d+$/.test(norm)) {
+          return { valid: false, empty: false, value: null };
+        }
+        const num = Number(norm);
+        if (!Number.isInteger(num) || num < 2 || num > 10) {
+          return { valid: false, empty: false, value: null };
+        }
+        return { valid: true, empty: false, value: num };
+      }
+
+      setRandomPlayerCountError(show, vibrate = false) {
+        const errEl = document.getElementById('vs-rand-player-error');
+        const inputEl = document.getElementById('input-vs-rand-players');
+        if (errEl) {
+          if (show) {
+            errEl.textContent = '⚠️ 対応してません';
+            errEl.classList.remove('hidden');
+          } else {
+            errEl.classList.add('hidden');
+          }
+        }
+        if (inputEl) {
+          inputEl.classList.toggle('border-rose-500', show);
+          inputEl.classList.toggle('border-slate-600', !show);
+        }
+        if (show && vibrate) {
+          this.game.vibrate(120);
+        }
       }
 
       bindLobbyAndRoomEvents() {
         const setRandRule = (rule) => {
           this.selectedRandomRule = rule;
           const map = {
+            any: 'btn-vs-rand-rule-any',
             score: 'btn-vs-rand-rule-score',
             jammer: 'btn-vs-rand-rule-jammer',
             race: 'btn-vs-rand-rule-race'
@@ -5597,11 +6163,15 @@
             const el = document.getElementById(id);
             if (!el) return;
             el.className = k === rule
-              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-violet-500 text-slate-950 border-white shadow'
+              ? (k === 'any'
+                ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-amber-400 text-slate-950 border-white shadow'
+                : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-violet-500 text-slate-950 border-white shadow')
               : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
           });
         };
 
+        const btnAnyRule = document.getElementById('btn-vs-rand-rule-any');
+        if (btnAnyRule) btnAnyRule.addEventListener('click', () => { sound.playClick(); setRandRule('any'); });
         document.getElementById('btn-vs-rand-rule-score').addEventListener('click', () => { sound.playClick(); setRandRule('score'); });
         document.getElementById('btn-vs-rand-rule-jammer').addEventListener('click', () => { sound.playClick(); setRandRule('jammer'); });
         document.getElementById('btn-vs-rand-rule-race').addEventListener('click', () => { sound.playClick(); setRandRule('race'); });
@@ -5623,6 +6193,58 @@
         };
         document.getElementById('btn-vs-rand-gen-clean').addEventListener('click', () => { sound.playClick(); setRandGenMode('clean'); });
         document.getElementById('btn-vs-rand-gen-random').addEventListener('click', () => { sound.playClick(); setRandGenMode('random'); });
+
+        // ランダムマッチ希望人数（何人でも / 人数を入力）
+        const setRandSizeMode = (mode) => {
+          this.randomSizeMode = mode === 'custom' ? 'custom' : 'any';
+          const btnAny = document.getElementById('btn-vs-rand-size-any');
+          const btnCustom = document.getElementById('btn-vs-rand-size-custom');
+          const wrap = document.getElementById('vs-rand-size-input-wrap');
+          if (btnAny) {
+            btnAny.className = this.randomSizeMode === 'any'
+              ? 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-cyan-400 text-slate-950 border-white shadow'
+              : 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
+          }
+          if (btnCustom) {
+            btnCustom.className = this.randomSizeMode === 'custom'
+              ? 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-cyan-400 text-slate-950 border-white shadow'
+              : 'btn-3d py-1.5 px-2 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
+          }
+          if (wrap) {
+            wrap.classList.toggle('hidden', this.randomSizeMode !== 'custom');
+          }
+          if (this.randomSizeMode === 'any') {
+            this.setRandomPlayerCountError(false, false);
+          } else {
+            const inp = document.getElementById('input-vs-rand-players');
+            if (inp) {
+              const check = this.normalizeAndValidatePlayerCount(inp.value, true);
+              this.setRandomPlayerCountError(!check.valid, false);
+              setTimeout(() => inp.focus(), 40);
+            }
+          }
+        };
+
+        const btnSizeAny = document.getElementById('btn-vs-rand-size-any');
+        const btnSizeCustom = document.getElementById('btn-vs-rand-size-custom');
+        if (btnSizeAny) btnSizeAny.addEventListener('click', () => { sound.playClick(); setRandSizeMode('any'); });
+        if (btnSizeCustom) btnSizeCustom.addEventListener('click', () => { sound.playClick(); setRandSizeMode('custom'); });
+
+        const randPlayersInput = document.getElementById('input-vs-rand-players');
+        if (randPlayersInput) {
+          randPlayersInput.addEventListener('input', () => {
+            if (this.randomSizeMode !== 'custom') {
+              this.setRandomPlayerCountError(false, false);
+              return;
+            }
+            const res = this.normalizeAndValidatePlayerCount(randPlayersInput.value, true);
+            if (!res.valid) {
+              this.setRandomPlayerCountError(true, true);
+            } else {
+              this.setRandomPlayerCountError(false, false);
+            }
+          });
+        }
 
         document.getElementById('btn-vs-lobby-back').addEventListener('click', () => {
           sound.playClick();
@@ -5685,35 +6307,54 @@
 
         document.querySelectorAll('.vs-opt-btn').forEach((btn) => {
           btn.addEventListener('click', () => {
-            if (this.myRole !== 'host' || !this.roomRef) return;
+            if (!this.isHost || !this.roomRef) return;
             sound.playClick();
             const key = btn.getAttribute('data-vs-set');
             let val = btn.getAttribute('data-vs-val');
-            if (key === 'raceTarget' || key === 'lunaticTaxRate') val = Number(val);
+            if (key === 'raceTarget' || key === 'lunaticTaxRate' || key === 'maxPlayers') val = Number(val);
             if (key === 'showChange') val = (val === 'true');
+            if (key === 'maxPlayers') {
+              const humans = this.getConnectedHumanEntries(this.lastRoomData).length;
+              if (val < Math.max(2, humans)) {
+                sound.playBadBuzzer();
+                return;
+              }
+            }
             this.roomRef.child('settings/' + key).set(val).catch(() => {});
           });
         });
 
         document.getElementById('btn-vs-start-match').addEventListener('click', () => {
-          if (this.myRole !== 'host' || !this.roomRef) return;
+          if (!this.isHost || !this.roomRef) return;
           sound.playClick();
-          this.hostStartMatch();
+          this.hostStartMatch(false);
         });
 
+        const btnStartWithBots = document.getElementById('btn-vs-start-with-bots');
+        if (btnStartWithBots) {
+          btnStartWithBots.addEventListener('click', () => {
+            if (!this.isHost || !this.roomRef) return;
+            sound.playClick();
+            this.hostStartMatch(true);
+          });
+        }
+
         document.getElementById('btn-vs-res-title').addEventListener('click', () => {
+          if (this.vsResultCooldownRemaining > 0) return;
           sound.playReturn();
           this.leaveRoom();
           this.game.returnToTitleScreen();
         });
 
         document.getElementById('btn-vs-res-lobby').addEventListener('click', () => {
+          if (this.vsResultCooldownRemaining > 0) return;
           sound.playClick();
           this.leaveRoom();
           this.openLobby();
         });
 
         document.getElementById('btn-vs-res-rematch').addEventListener('click', () => {
+          if (this.vsResultCooldownRemaining > 0) return;
           sound.playClick();
           this.requestRematch();
         });
@@ -5721,6 +6362,7 @@
 
       openLobby() {
         this.game.clearActiveTimers();
+        this.stopBotTimers();
         this.game.state = 'MODE_SELECT';
         this.game.isVersusRun = false;
         clearSeededRng();
@@ -5732,6 +6374,9 @@
         if (nameInput) nameInput.value = RankingManager.getSavedPlayerName() || this.game.playerName || '';
         const errEl = document.getElementById('vs-lobby-error');
         if (errEl) errEl.classList.add('hidden');
+        if (this.randomSizeMode === 'any') {
+          this.setRandomPlayerCountError(false, false);
+        }
         this.updateOnlineStatusBadge();
         switchScreen('screen-versus-lobby');
       }
@@ -5740,7 +6385,7 @@
         const el = document.getElementById('vs-online-status');
         if (!el) return;
         if (RankingManager.db && RankingManager.isOnline) {
-          el.textContent = '🌐 オンライン対戦 接続OK';
+          el.textContent = '🌐 オンライン対戦 接続OK（2〜10人対応）';
           el.className = 'font-black text-emerald-300';
         } else if (RankingManager.isFirebaseConfigured()) {
           el.textContent = '⏳ オンラインサーバー接続中...';
@@ -5770,10 +6415,11 @@
         return String(1000 + Math.floor(Math.random() * 9000));
       }
 
-      makeEmptyPlayer(name) {
+      makeEmptyPlayer(name, isBot = false, uidOverride = null) {
         return {
-          uid: this.myUid,
+          uid: uidOverride || this.myUid,
           name: name,
+          isBot: Boolean(isBot),
           connected: true,
           score: 0,
           combo: 0,
@@ -5782,11 +6428,116 @@
           served: 0,
           finished: false,
           failedSuddenDeath: false,
-          jammerSentCount: 0
+          jammerSentCount: 0,
+          jammerHitCount: 0
         };
       }
 
-      async createPrivateRoom(isRandom = false, forcedVsRule = null, forcedGenMode = null) {
+      getPlayerEntries(data) {
+        if (!data || !data.players) return [];
+        const entries = [];
+        for (let i = 1; i <= 10; i++) {
+          const slot = 'p' + i;
+          const p = data.players[slot];
+          if (p && p.name) {
+            entries.push({ slot, player: p });
+          }
+        }
+        return entries;
+      }
+
+      getConnectedHumanEntries(data) {
+        return this.getPlayerEntries(data).filter(({ player }) => !player.isBot && player.connected !== false);
+      }
+
+      getActiveParticipants(data) {
+        return this.getPlayerEntries(data).filter(({ player }) => player.isBot || player.connected !== false);
+      }
+
+      clearVersusResultCooldown() {
+        if (this.vsResultCooldownInterval) {
+          clearInterval(this.vsResultCooldownInterval);
+          this.vsResultCooldownInterval = null;
+        }
+        this.vsResultCooldownRemaining = 0;
+      }
+
+      startVersusResultCooldown(canRematch) {
+        this.clearVersusResultCooldown();
+        this.vsCanRematch = Boolean(canRematch);
+        const titleBtn = document.getElementById('btn-vs-res-title');
+        const lobbyBtn = document.getElementById('btn-vs-res-lobby');
+        const rematchBtn = document.getElementById('btn-vs-res-rematch');
+
+        this.vsResultCooldownRemaining = 2.0;
+        const applyCooldownState = () => {
+          const secStr = this.vsResultCooldownRemaining.toFixed(1);
+          if (titleBtn) {
+            titleBtn.disabled = true;
+            titleBtn.classList.add('opacity-50', 'grayscale', 'cursor-not-allowed');
+            titleBtn.textContent = `⏳ タイトル (${secStr}s)`;
+          }
+          if (lobbyBtn) {
+            lobbyBtn.disabled = true;
+            lobbyBtn.classList.add('opacity-50', 'grayscale', 'cursor-not-allowed');
+            lobbyBtn.textContent = `⏳ ロビー (${secStr}s)`;
+          }
+          if (rematchBtn) {
+            rematchBtn.disabled = true;
+            rematchBtn.classList.add('opacity-50', 'grayscale', 'cursor-not-allowed');
+            rematchBtn.textContent = `⏳ 再戦 (${secStr}s)`;
+          }
+        };
+        applyCooldownState();
+
+        this.vsResultCooldownInterval = setInterval(() => {
+          this.vsResultCooldownRemaining = Math.max(0, +(this.vsResultCooldownRemaining - 0.1).toFixed(1));
+          if (this.vsResultCooldownRemaining <= 0) {
+            this.clearVersusResultCooldown();
+            if (titleBtn) {
+              titleBtn.disabled = false;
+              titleBtn.classList.remove('opacity-50', 'grayscale', 'cursor-not-allowed');
+              titleBtn.textContent = '🏠 タイトルへ';
+            }
+            if (lobbyBtn) {
+              lobbyBtn.disabled = false;
+              lobbyBtn.classList.remove('opacity-50', 'grayscale', 'cursor-not-allowed');
+              lobbyBtn.textContent = '⚔️ ロビーへ';
+            }
+            if (rematchBtn) {
+              rematchBtn.textContent = '🔄 ルームで再戦';
+              if (this.vsCanRematch) {
+                rematchBtn.disabled = false;
+                rematchBtn.classList.remove('opacity-50', 'grayscale', 'cursor-not-allowed');
+              } else {
+                rematchBtn.disabled = true;
+                rematchBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                rematchBtn.classList.remove('grayscale');
+              }
+            }
+          } else {
+            applyCooldownState();
+          }
+        }, 100);
+      }
+
+      stopBotTimers() {
+        this.clearVersusResultCooldown();
+        if (this.botFillTimer) {
+          clearInterval(this.botFillTimer);
+          this.botFillTimer = null;
+        }
+        if (this.botSimTimer) {
+          clearInterval(this.botSimTimer);
+          this.botSimTimer = null;
+        }
+        this.botFillTriggered = false;
+        this.botStates = {};
+        this.botLastJammerSeqs = {};
+        this.lastGlobalBotJammerAt = 0;
+      }
+
+      async createPrivateRoom(isRandom = false, forcedVsRule = null, forcedGenMode = null, maxPlayers = 4, anyCount = false, anyRule = false) {
         const db = this.getDb();
         if (!db) {
           this.showLobbyError('Firebaseに接続できていません。ネット環境を確認してください。');
@@ -5800,28 +6551,31 @@
         const name = this.getEnteredPlayerName();
         const code = this.generate4DigitCode();
         const ref = db.ref('rooms/' + code);
-        const settings = this.getDefaultSettings(forcedVsRule || 'score', forcedGenMode || 'clean');
+        const initialRule = anyRule ? 'score' : (forcedVsRule || 'score');
+        const settings = this.getDefaultSettings(initialRule, forcedGenMode || 'clean', maxPlayers);
+        const now = Date.now();
         const roomData = {
           code,
           isRandom: Boolean(isRandom),
-          createdAt: Date.now(),
+          anyCount: Boolean(anyCount),
+          anyRule: Boolean(anyRule),
+          createdAt: now,
+          botFillDeadline: isRandom ? (now + 10000) : 0,
           status: 'waiting',
           seed: 0,
           startedAt: 0,
           settings,
           winner: null,
           players: {
-            host: this.makeEmptyPlayer(name)
+            p1: this.makeEmptyPlayer(name, false, this.myUid)
           },
-          jammers: {
-            toHost: { seq: 0, c1: 0, c10: 0, fromCombo: 0 },
-            toGuest: { seq: 0, c1: 0, c10: 0, fromCombo: 0 }
-          }
+          jammers: {}
         };
 
         try {
           await ref.set(roomData);
-          this.attachRoom(code, 'host', ref);
+          this.lastRoomData = roomData;
+          this.attachRoom(code, 'p1', true, ref);
           if (!isRandom) {
             switchScreen('screen-versus-room');
           }
@@ -5833,7 +6587,7 @@
         }
       }
 
-      async joinRoomByCode(code, isRandom = false) {
+      async joinRoomByCode(code, isRandom = false, desiredCount = null, isAnyCount = true, desiredRule = 'any', desiredGenMode = null) {
         const db = this.getDb();
         if (!db) {
           this.showLobbyError('Firebaseに接続できていません。');
@@ -5848,35 +6602,102 @@
         const ref = db.ref('rooms/' + cleanCode);
 
         try {
-          const snap = await ref.once('value');
-          const data = snap.val();
-          if (!data) {
-            if (!isRandom) this.showLobbyError(`ルーム「${cleanCode}」が見つかりませんでした。`);
-            return false;
-          }
-          if (data.status !== 'waiting') {
-            if (!isRandom) this.showLobbyError('このルームはすでに対戦中または終了しています。');
-            return false;
-          }
-          if (data.players && data.players.guest && data.players.guest.connected) {
-            if (!isRandom) this.showLobbyError('このルームは満員です。');
-            return false;
-          }
-          if (data.players && data.players.host && data.players.host.uid === this.myUid) {
-            return false;
-          }
+          let assignedSlot = null;
+          let failReason = null;
 
-          const guestObj = this.makeEmptyPlayer(name);
-          const txRes = await ref.child('players/guest').transaction((cur) => {
-            if (cur && cur.connected) return;
-            return guestObj;
+          const txRes = await ref.transaction((data) => {
+            if (!data) {
+              failReason = `ルーム「${cleanCode}」が見つかりませんでした。`;
+              return;
+            }
+            if (data.status !== 'waiting') {
+              failReason = 'このルームはすでに対戦中または終了しています。';
+              return;
+            }
+            if (!data.players) data.players = {};
+            const s = data.settings || this.getDefaultSettings();
+            let maxP = Math.max(2, Math.min(10, Number(s.maxPlayers) || 2));
+
+            // 既に参加済みの場合は弾く
+            for (let i = 1; i <= 10; i++) {
+              const p = data.players['p' + i];
+              if (p && p.uid === this.myUid && p.connected !== false) {
+                failReason = 'すでに入室しています。';
+                return;
+              }
+            }
+
+            // ランダムマッチのモード（勝敗ルール＋出題方式）＆希望人数 厳密互換チェック
+            let curHumans = 0;
+            for (let i = 1; i <= 10; i++) {
+              const p = data.players['p' + i];
+              if (p && !p.isBot && p.connected !== false) curHumans++;
+            }
+            if (isRandom) {
+              const roomGenMode = (s.priceGenMode === 'random') ? 'random' : 'clean';
+              if (desiredGenMode && roomGenMode !== desiredGenMode) {
+                failReason = '金額の出題方式が一致しません。';
+                return;
+              }
+              const wantAnyRule = (desiredRule === 'any' || !desiredRule);
+              const roomAnyRule = Boolean(data.anyRule);
+              if (!wantAnyRule) {
+                if (roomAnyRule) {
+                  // 「どのモードでも」待機部屋に入室した場合、その部屋のモードを確定させる
+                  data.settings = { ...(data.settings || s), vsRule: desiredRule };
+                  data.anyRule = false;
+                } else if ((s.vsRule || 'score') !== desiredRule) {
+                  failReason = '対戦モードが一致しません。';
+                  return;
+                }
+              }
+            }
+            if (isRandom && !isAnyCount && desiredCount) {
+              if (data.anyCount) {
+                if (curHumans >= desiredCount) {
+                  failReason = '希望人数を超えています。';
+                  return;
+                }
+                maxP = desiredCount;
+                data.settings = { ...(data.settings || s), maxPlayers: desiredCount };
+                data.anyCount = false;
+              } else if (maxP !== desiredCount) {
+                failReason = '希望人数が一致しません。';
+                return;
+              }
+            }
+
+            // 空きスロット（p2〜pMax）を探索
+            let freeSlot = null;
+            for (let i = 2; i <= maxP; i++) {
+              const slot = 'p' + i;
+              const existing = data.players[slot];
+              if (!existing || (!existing.isBot && existing.connected === false)) {
+                freeSlot = slot;
+                break;
+              }
+            }
+            if (!freeSlot) {
+              failReason = 'このルームは満員です。';
+              return;
+            }
+
+            assignedSlot = freeSlot;
+            data.players[freeSlot] = this.makeEmptyPlayer(name, false, this.myUid);
+
+            // ランダムマッチ中、新しいプレイヤーが入るたびに10秒BOT補充タイマーをリセット！
+            if (data.isRandom) {
+              data.botFillDeadline = Date.now() + 10000;
+            }
+            return data;
           });
-          if (!txRes.committed) {
-            if (!isRandom) this.showLobbyError('他のプレイヤーが先に入室しました。');
+
+          if (!txRes.committed || !assignedSlot) {
+            if (!isRandom) this.showLobbyError(failReason || '入室に失敗しました。');
             return false;
           }
 
-          this.attachRoom(cleanCode, 'guest', ref);
+          this.attachRoom(cleanCode, assignedSlot, false, ref);
           if (!isRandom) {
             switchScreen('screen-versus-room');
           }
@@ -5894,45 +6715,79 @@
           this.showLobbyError('Firebaseに接続できていません。');
           return;
         }
+
+        // マッチング開始時の人数バリデーション
+        let anyCount = (this.randomSizeMode === 'any');
+        let targetCount = 4; // 「何人でも」で自分がホスト作成する際のデフォルト枠（他プレイヤーの指定があればそちらに合わせる）
+        if (!anyCount) {
+          const inp = document.getElementById('input-vs-rand-players');
+          const res = this.normalizeAndValidatePlayerCount(inp ? inp.value : '', false);
+          if (!res.valid) {
+            sound.playBadBuzzer();
+            this.setRandomPlayerCountError(true, true);
+            return;
+          }
+          targetCount = res.value;
+          this.setRandomPlayerCountError(false, false);
+        }
+
         this.cancelRandomSearch();
         this.leaveRoom();
         this.getEnteredPlayerName();
 
         const rule = this.selectedRandomRule || 'score';
+        const isAnyRule = (rule === 'any');
         const genMode = this.selectedRandomGenMode === 'random' ? 'random' : 'clean';
-        const queueKey = genMode === 'random' ? `${rule}_random` : rule;
+        const queueKey = genMode === 'random' ? 'multi_pool_random' : 'multi_pool_clean';
         const qRef = db.ref('versus_queue/' + queueKey);
         this.queueRef = qRef;
         this.isRandomSearching = true;
+        const randErrEl = document.getElementById('vs-random-error');
+        if (randErrEl) randErrEl.classList.add('hidden');
         document.getElementById('vs-random-searching').classList.remove('hidden');
         document.getElementById('btn-vs-random-start').disabled = true;
 
-        let matchedCode = null;
         try {
-          const tx = await qRef.transaction((cur) => {
-            const now = Date.now();
-            if (cur && cur.code && cur.uid !== this.myUid && (now - (cur.createdAt || 0)) < 120000) {
-              matchedCode = cur.code;
-              return null; // キューから取り出す
-            }
-            return cur;
-          });
+          const snap = await qRef.once('value');
+          const entriesObj = snap.val() || {};
+          const now = Date.now();
+          const candidates = Object.values(entriesObj)
+            .filter((e) => e && e.code && e.hostUid !== this.myUid && (now - (e.createdAt || 0)) < 120000)
+            .filter((e) => {
+              const curH = Number(e.currentHumans || 1);
+              const maxP = Number(e.maxPlayers || 4);
+              if (curH >= maxP) return false;
+              // モード一致チェック（「どのモードでも」は例外として全モードとマッチ）
+              if (!isAnyRule) {
+                const candAnyRule = Boolean(e.anyRule);
+                if (!candAnyRule && e.vsRule !== rule) return false;
+              }
+              // 人数一致チェック
+              if (anyCount) return true;
+              if (e.anyCount) return curH < targetCount;
+              return maxP === targetCount;
+            })
+            .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
 
-          if (matchedCode) {
-            const ok = await this.joinRoomByCode(matchedCode, true);
+          for (const cand of candidates) {
+            if (!this.isRandomSearching) return;
+            const ok = await this.joinRoomByCode(cand.code, true, targetCount, anyCount, rule, genMode);
             if (ok) {
-              this.isRandomSearching = false;
-              document.getElementById('vs-random-searching').classList.add('hidden');
-              document.getElementById('btn-vs-random-start').disabled = false;
-              switchScreen('screen-versus-room');
+              this.queueRoomCode = cand.code;
+              // キュー情報を最新化
+              this.syncRandomQueueMeta();
+              this.startBotFillCountdownLoop();
               return;
+            } else {
+              // 古い・満員のキューは軽く掃除
+              qRef.child(cand.code).remove().catch(() => {});
             }
           }
 
           if (!this.isRandomSearching) return;
 
-          // 待機相手がいない場合は自分が待機ルームを作成してキューに登録
-          const newCode = await this.createPrivateRoom(true, rule, genMode);
+          // 該当待機ルームがないため新規ランダムルームを作成してキュー登録
+          const newCode = await this.createPrivateRoom(true, isAnyRule ? 'score' : rule, genMode, targetCount, anyCount, isAnyRule);
           if (!newCode) {
             this.cancelRandomSearch();
             return;
@@ -5942,30 +6797,112 @@
             return;
           }
           this.queueRoomCode = newCode;
-          await qRef.set({ code: newCode, uid: this.myUid, createdAt: Date.now() });
-          if (!this.isRandomSearching) {
-            this.cancelRandomSearch();
-            return;
-          }
-          qRef.onDisconnect().remove();
+          await qRef.child(newCode).set({
+            code: newCode,
+            hostUid: this.myUid,
+            vsRule: isAnyRule ? 'any' : rule,
+            anyRule: isAnyRule,
+            priceGenMode: genMode,
+            maxPlayers: targetCount,
+            anyCount: anyCount,
+            currentHumans: 1,
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+          });
+          qRef.child(newCode).onDisconnect().remove();
+          this.startBotFillCountdownLoop();
         } catch (err) {
           console.warn('startRandomMatch error:', err);
           this.cancelRandomSearch();
+          const randErrEl = document.getElementById('vs-random-error');
+          if (randErrEl) {
+            randErrEl.textContent = '⚠️ ランダムマッチの接続に失敗しました。少し待ってから再度お試しください。';
+            randErrEl.classList.remove('hidden');
+          }
           this.showLobbyError('ランダムマッチの接続に失敗しました。');
         }
       }
 
+      syncRandomQueueMeta() {
+        if (!this.queueRef || !this.roomCode || !this.lastRoomData) return;
+        const d = this.lastRoomData;
+        if (!d.isRandom || d.status !== 'waiting') {
+          this.queueRef.child(this.roomCode).remove().catch(() => {});
+          return;
+        }
+        const maxP = Number((d.settings && d.settings.maxPlayers) || 4);
+        const curH = this.getConnectedHumanEntries(d).length;
+        if (curH >= maxP) {
+          this.queueRef.child(this.roomCode).remove().catch(() => {});
+        } else {
+          this.queueRef.child(this.roomCode).update({
+            vsRule: d.anyRule ? 'any' : ((d.settings && d.settings.vsRule) || 'score'),
+            anyRule: Boolean(d.anyRule),
+            maxPlayers: maxP,
+            anyCount: Boolean(d.anyCount),
+            currentHumans: curH,
+            updatedAt: Date.now()
+          }).catch(() => {});
+        }
+      }
+
+      startBotFillCountdownLoop() {
+        if (this.botFillTimer) {
+          clearInterval(this.botFillTimer);
+          this.botFillTimer = null;
+        }
+        this.botFillTriggered = false;
+        this.botFillTimer = setInterval(() => {
+          const d = this.lastRoomData;
+          if (!d) return;
+          if (d.status !== 'waiting' || !d.isRandom) {
+            clearInterval(this.botFillTimer);
+            this.botFillTimer = null;
+            return;
+          }
+          const maxP = Number((d.settings && d.settings.maxPlayers) || 4);
+          const humans = this.getConnectedHumanEntries(d);
+          const deadline = Number(d.botFillDeadline || (Date.now() + 10000));
+          const remMs = Math.max(0, deadline - Date.now());
+          const remSec = (remMs / 1000).toFixed(1);
+
+          const lobbyCnt = document.getElementById('vs-random-members-count');
+          const lobbyCd = document.getElementById('vs-random-bot-countdown');
+          const lobbySt = document.getElementById('vs-random-search-status');
+          if (lobbyCnt) lobbyCnt.textContent = `参加中: ${humans.length} / ${maxP}人${d.anyCount ? ' (何人でも)' : ''}`;
+          if (lobbyCd) lobbyCd.textContent = `残りをbotで埋めるまで ${remSec}秒`;
+          if (lobbySt) lobbySt.textContent = humans.length >= 2 ? `🔥 ${humans.length}人集まりました！待機中...` : '🔍 対戦相手を探しています...';
+
+          const roomCdBar = document.getElementById('vs-room-bot-countdown-bar');
+          const roomCdTxt = document.getElementById('vs-room-bot-countdown-text');
+          if (roomCdBar) roomCdBar.classList.remove('hidden');
+          if (roomCdTxt) roomCdTxt.textContent = `残りをbotで埋めるまで ${remSec}秒`;
+
+          // 10秒経過したらBOTで空席を埋めて自動スタート
+          if (remMs <= 0 && !this.botFillTriggered) {
+            // ホスト（またはホスト切断時は最も若いスロットの人間）が開始をトリガー
+            const firstHumanSlot = humans.length > 0 ? humans[0].slot : null;
+            if (this.isHost || (firstHumanSlot && firstHumanSlot === this.mySlot)) {
+              this.botFillTriggered = true;
+              this.hostStartMatch(true);
+            }
+          }
+        }, 100);
+      }
+
       cancelRandomSearch() {
         this.isRandomSearching = false;
+        this.stopBotTimers();
         const searchBox = document.getElementById('vs-random-searching');
         if (searchBox) searchBox.classList.add('hidden');
         const startBtn = document.getElementById('btn-vs-random-start');
         if (startBtn) startBtn.disabled = false;
 
         if (this.queueRef && this.queueRoomCode) {
-          const targetCode = this.queueRoomCode;
-          this.queueRef.transaction((cur) => (cur && cur.code === targetCode ? null : cur)).catch(() => {});
-          this.queueRef.onDisconnect().cancel().catch(() => {});
+          if (this.isHost) {
+            this.queueRef.child(this.queueRoomCode).remove().catch(() => {});
+          }
+          this.queueRef.child(this.queueRoomCode).onDisconnect().cancel().catch(() => {});
         }
         this.queueRef = null;
         this.queueRoomCode = null;
@@ -5974,29 +6911,28 @@
         }
       }
 
-      attachRoom(code, role, ref) {
+      attachRoom(code, slot, isHost, ref) {
         this.detachRoomListeners();
         this.roomCode = code;
-        this.myRole = role;
+        this.mySlot = slot;
+        this.isHost = Boolean(isHost);
         this.roomRef = ref;
         this.matchLaunched = false;
         this.resultShown = false;
         this.lastJammerSeq = 0;
         this.jammerSentCount = 0;
+        this.lastHumanCount = 1;
 
-        // 切断時の自動クリーンアップ設定
-        const myConnRef = ref.child(`players/${role}/connected`);
+        const myConnRef = ref.child(`players/${slot}/connected`);
         myConnRef.set(true).catch(() => {});
         myConnRef.onDisconnect().set(false);
-        if (role === 'host') {
-          // 待機中にホストが切断した場合にゴミ部屋を残さないよう、退出時にも削除する
-        }
 
         this.roomListener = (snap) => {
           const data = snap.val();
           if (!data) {
             if (this.roomCode) {
               this.detachRoomListeners();
+              this.stopBotTimers();
               if (this.game.isVersusRun) {
                 this.game.clearActiveTimers();
                 this.game.isVersusRun = false;
@@ -6025,27 +6961,31 @@
       }
 
       leaveRoom() {
+        this.stopBotTimers();
         if (this.queueRef && this.queueRoomCode) {
-          const targetCode = this.queueRoomCode;
-          this.queueRef.transaction((cur) => (cur && cur.code === targetCode ? null : cur)).catch(() => {});
-          this.queueRef.onDisconnect().cancel().catch(() => {});
+          if (this.isHost) {
+            this.queueRef.child(this.queueRoomCode).remove().catch(() => {});
+          }
+          this.queueRef.child(this.queueRoomCode).onDisconnect().cancel().catch(() => {});
           this.queueRef = null;
           this.queueRoomCode = null;
         }
         const ref = this.roomRef;
-        const role = this.myRole;
+        const slot = this.mySlot;
+        const wasHost = this.isHost;
         const wasWaiting = this.lastRoomData && this.lastRoomData.status === 'waiting';
         this.detachRoomListeners();
-        if (ref && role) {
-          ref.child(`players/${role}/connected`).onDisconnect().cancel().catch(() => {});
-          if (role === 'host' && wasWaiting) {
+        if (ref && slot) {
+          ref.child(`players/${slot}/connected`).onDisconnect().cancel().catch(() => {});
+          if (wasHost && wasWaiting) {
             ref.remove().catch(() => {});
           } else {
-            ref.child(`players/${role}/connected`).set(false).catch(() => {});
+            ref.child(`players/${slot}/connected`).set(false).catch(() => {});
           }
         }
         this.roomCode = null;
-        this.myRole = null;
+        this.mySlot = null;
+        this.isHost = false;
         this.roomRef = null;
         this.lastRoomData = null;
         this.matchLaunched = false;
@@ -6054,34 +6994,30 @@
       }
 
       handleRoomUpdate(data) {
-        const host = data.players && data.players.host ? data.players.host : null;
-        const guest = data.players && data.players.guest ? data.players.guest : null;
-        const oppRole = this.myRole === 'host' ? 'guest' : 'host';
-        const me = data.players ? data.players[this.myRole] : null;
-        const opp = data.players ? data.players[oppRole] : null;
+        const humans = this.getConnectedHumanEntries(data);
+        const participants = this.getActiveParticipants(data);
+        const maxP = Math.max(2, Math.min(10, Number((data.settings && data.settings.maxPlayers) || 4)));
 
-        // ランダムマッチでゲストが入室したら自動的に開始する（ホスト側）
-        if (data.isRandom && data.status === 'waiting' && this.myRole === 'host' && guest && guest.connected) {
-          this.isRandomSearching = false;
-          const searchBox = document.getElementById('vs-random-searching');
-          if (searchBox) searchBox.classList.add('hidden');
-          const startBtn = document.getElementById('btn-vs-random-start');
-          if (startBtn) startBtn.disabled = false;
-          if (this.queueRef) {
-            this.queueRef.onDisconnect().cancel().catch(() => {});
-            this.queueRef.remove().catch(() => {});
-            this.queueRef = null;
-            this.queueRoomCode = null;
+        // ランダムマッチ待機中：定員に達したら即スタート！
+        if (data.isRandom && data.status === 'waiting') {
+          this.syncRandomQueueMeta();
+          if (humans.length >= maxP) {
+            const firstHumanSlot = humans.length > 0 ? humans[0].slot : null;
+            if (this.isHost || firstHumanSlot === this.mySlot) {
+              this.hostStartMatch(false);
+              return;
+            }
           }
-          this.hostStartMatch();
-          return;
+          if (!this.botFillTimer) {
+            this.startBotFillCountdownLoop();
+          }
         }
 
         if (data.status === 'waiting') {
           this.matchLaunched = false;
           this.resultShown = false;
           if (!this.isRandomSearching) {
-            this.renderRoomUI(data, host, guest);
+            this.renderRoomUI(data);
           }
           return;
         }
@@ -6092,38 +7028,54 @@
             this.resultShown = false;
             this.lastJammerSeq = 0;
             this.jammerSentCount = 0;
+            this.isRandomSearching = false;
+            if (this.botFillTimer) {
+              clearInterval(this.botFillTimer);
+              this.botFillTimer = null;
+            }
+            const searchBox = document.getElementById('vs-random-searching');
+            if (searchBox) searchBox.classList.add('hidden');
+            const startBtn = document.getElementById('btn-vs-random-start');
+            if (startBtn) startBtn.disabled = false;
+            if (this.queueRef && this.roomCode) {
+              this.queueRef.child(this.roomCode).remove().catch(() => {});
+            }
+
             this.game.startVersusPlay(data);
+            if (this.isHost) {
+              this.startBotSimulation(data);
+            }
           }
 
-          // 相手HUD更新
-          this.updateOpponentHUD(data, me, opp);
+          // HUD更新（2〜10人対応）
+          this.updateOpponentHUD(data);
 
-          // お邪魔受信チェック
-          if (data.settings && data.settings.vsRule === 'jammer' && data.jammers) {
-            const myJammerKey = this.myRole === 'host' ? 'toHost' : 'toGuest';
-            const jam = data.jammers[myJammerKey];
+          // 自分宛てのお邪魔受信チェック
+          if (data.settings && data.settings.vsRule === 'jammer' && data.jammers && this.mySlot) {
+            const jam = data.jammers[this.mySlot];
             if (jam && jam.seq > this.lastJammerSeq) {
               this.lastJammerSeq = jam.seq;
               if ((jam.c1 || 0) > 0 || (jam.c10 || 0) > 0) {
-                this.game.receiveVersusJammer(jam.c1 || 0, jam.c10 || 0, jam.fromCombo || 1);
+                this.game.receiveVersusJammer(jam.c1 || 0, jam.c10 || 0, jam.fromCombo || 1, jam.fromName || 'ライバル');
               }
             }
           }
 
-          // 相手の切断チェック
-          if (opp && opp.connected === false && !data.winner) {
-            this.claimWinner(this.myRole, '対戦相手が切断したため不戦勝となりました！');
-            return;
-          }
-
-          // 勝者確定通知のチェック
+          // 勝者確定チェック
           if (data.winner && !this.resultShown) {
             this.showVersusResult(data);
             return;
           }
 
-          // 両者が終了したら勝敗決定
-          if (me && opp && me.finished && opp.finished && !data.winner) {
+          // 自分以外の全員が切断した場合（人間1人・BOT0人のみになった場合）は不戦勝
+          if (participants.length <= 1 && !data.winner) {
+            this.claimWinner(this.mySlot, '他のプレイヤーが退出したため勝利となりました！');
+            return;
+          }
+
+          // 全参加者が終了したら勝敗決定
+          const allFinished = participants.length >= 2 && participants.every(({ player }) => Boolean(player.finished));
+          if (allFinished && !data.winner) {
             this.resolveScoreWinner(data);
           }
           return;
@@ -6134,42 +7086,69 @@
         }
       }
 
-      renderRoomUI(data, host, guest) {
+      renderRoomUI(data) {
         const codeEl = document.getElementById('vs-room-code-display');
         if (codeEl) codeEl.textContent = data.code || '----';
 
-        const hostName = document.getElementById('vs-room-host-name');
-        const hostSt = document.getElementById('vs-room-host-status');
-        if (hostName) hostName.textContent = host ? host.name : '---';
-        if (hostSt) hostSt.textContent = host && host.connected ? '● 準備OK' : 'オフライン';
-
-        const guestName = document.getElementById('vs-room-guest-name');
-        const guestSt = document.getElementById('vs-room-guest-status');
-        const guestReady = Boolean(guest && guest.connected);
-        if (guestName) {
-          guestName.textContent = guestReady ? guest.name : '待機中...';
-          guestName.className = guestReady ? 'text-sm sm:text-base font-black text-white truncate mt-0.5' : 'text-sm sm:text-base font-black text-slate-400 truncate mt-0.5';
-        }
-        if (guestSt) {
-          guestSt.textContent = guestReady ? '● 準備OK' : '相手の入室待ち';
-          guestSt.className = guestReady ? 'text-[10px] font-bold text-emerald-300 mt-0.5' : 'text-[10px] font-bold text-slate-400 mt-0.5';
-        }
-
         const s = { ...this.getDefaultSettings(), ...(data.settings || {}) };
-        const isHost = this.myRole === 'host';
+        const maxP = Math.max(2, Math.min(10, Number(s.maxPlayers) || 4));
+        const humans = this.getConnectedHumanEntries(data);
+        const capLabel = document.getElementById('vs-room-capacity-label');
+        if (capLabel) capLabel.textContent = `${humans.length} / ${maxP}人`;
+
+        const roomCdBar = document.getElementById('vs-room-bot-countdown-bar');
+        if (roomCdBar && !data.isRandom) {
+          roomCdBar.classList.add('hidden');
+        }
+
+        // 2〜10人スロットのグリッド描画
+        const grid = document.getElementById('vs-room-players-grid');
+        if (grid) {
+          grid.innerHTML = '';
+          for (let i = 1; i <= maxP; i++) {
+            const slot = 'p' + i;
+            const p = data.players ? data.players[slot] : null;
+            const occupied = Boolean(p && (p.isBot || p.connected !== false));
+            const isMe = slot === this.mySlot;
+            const card = document.createElement('div');
+            card.className = `rounded-xl p-2 text-center border-2 ${
+              occupied
+                ? (i === 1
+                  ? 'bg-cyan-950/60 border-cyan-400/80'
+                  : (p.isBot ? 'bg-amber-950/50 border-amber-400/70' : 'bg-fuchsia-950/55 border-fuchsia-400/80'))
+                : 'bg-slate-900/70 border-slate-700/70 border-dashed'
+            } ${isMe ? 'ring-2 ring-white/80' : ''}`;
+
+            const roleTag = i === 1 ? '👑 HOST' : (occupied && p.isBot ? '🤖 BOT' : `${i}P`);
+            const nameText = occupied ? escapeHtml(p.name) : '空き枠';
+            const statusText = occupied ? (isMe ? '● あなた' : '● 準備OK') : '待機中...';
+
+            card.innerHTML = `
+              <div class="text-[9px] font-black ${i === 1 ? 'text-cyan-300' : (occupied && p.isBot ? 'text-amber-300' : 'text-fuchsia-300')}">${roleTag}</div>
+              <div class="text-[11px] sm:text-xs font-black truncate mt-0.5 ${occupied ? 'text-white' : 'text-slate-500'}">${nameText}</div>
+              <div class="text-[9px] font-bold mt-0.5 ${occupied ? 'text-emerald-300' : 'text-slate-500'}">${statusText}</div>
+            `;
+            grid.appendChild(card);
+          }
+        }
+
         const roleHint = document.getElementById('vs-settings-role-hint');
-        if (roleHint) roleHint.textContent = isHost ? 'あなたがホストです（設定変更可）' : 'ホストの設定を確認中';
+        if (roleHint) roleHint.textContent = this.isHost ? 'あなたがホストです（設定変更可）' : 'ホストの設定を確認中';
 
         document.querySelectorAll('.vs-opt-btn').forEach((btn) => {
           const key = btn.getAttribute('data-vs-set');
           const val = btn.getAttribute('data-vs-val');
           const active = String(s[key]) === String(val);
-          btn.disabled = !isHost;
-          btn.className = `vs-opt-btn btn-3d py-1.5 px-1.5 rounded-xl text-[10px] sm:text-xs font-black border-2 transition-colors ${
+          let disabled = !this.isHost;
+          if (key === 'maxPlayers' && Number(val) < humans.length) {
+            disabled = true;
+          }
+          btn.disabled = disabled;
+          btn.className = `vs-opt-btn btn-3d py-1.5 px-1 rounded-xl text-[10px] sm:text-xs font-black border-2 transition-colors ${
             active
               ? 'bg-cyan-400 text-slate-950 border-white shadow'
               : 'bg-slate-800 text-slate-300 border-slate-700'
-          } ${!isHost ? 'opacity-85 cursor-default' : ''}`;
+          } ${disabled ? 'opacity-50 cursor-default' : ''}`;
         });
 
         const raceRow = document.getElementById('vs-race-target-row');
@@ -6180,80 +7159,341 @@
         const expEl = document.getElementById('vs-rule-explain');
         if (expEl) {
           if (s.vsRule === 'jammer') {
-            expEl.textContent = '💣 PERFECTやコンボを決めるたび、相手の財布に1円・10円玉を送り込むお邪魔バトル！終了時のスコアが高い方が勝ち！';
+            expEl.textContent = '💣 3回PERFECTごとに必殺カットイン発動！他プレイヤーの財布に1円・10円玉を送り込むお邪魔バトル！';
           } else if (s.vsRule === 'race') {
             expEl.textContent = `⚡ 先に ${s.raceTarget || 7}人 PERFECTを達成したプレイヤーが即勝利する超スピード勝負！`;
           } else {
-            expEl.textContent = '🏆 同じ問題・同じ財布で同時スタート！制限時間終了時のスコアが高い方が勝ち！';
+            expEl.textContent = '🏆 全員同じ問題・同じ財布で同時スタート！制限時間終了時のスコア1位が優勝！';
           }
         }
 
         const startBtn = document.getElementById('btn-vs-start-match');
+        const botBtn = document.getElementById('btn-vs-start-with-bots');
+        const emptySlots = Math.max(0, maxP - humans.length);
+
         if (startBtn) {
-          if (isHost) {
-            startBtn.disabled = !guestReady;
-            startBtn.textContent = guestReady ? '🚀 対戦スタート！' : '⏳ 対戦相手の入室を待っています...';
+          if (this.isHost) {
+            const canStartHumans = humans.length >= 2;
+            startBtn.disabled = !canStartHumans;
+            startBtn.textContent = humans.length >= maxP
+              ? `🚀 ${maxP}人で対戦スタート！`
+              : (canStartHumans ? `🚀 現在の ${humans.length}人で対戦スタート！` : '⏳ 他のプレイヤー入室待ち（または下でBOT対戦）');
           } else {
             startBtn.disabled = true;
             startBtn.textContent = '⏳ ホストが対戦を開始するのを待っています...';
           }
         }
+
+        // ホスト専用「残りをbotで埋めてスタート」ボタン
+        if (botBtn) {
+          if (this.isHost && emptySlots > 0) {
+            botBtn.classList.remove('hidden');
+            botBtn.disabled = false;
+            botBtn.textContent = `🤖 残りをbotで埋めてスタート（BOT ${emptySlots}人追加 → 計${maxP}人）`;
+          } else {
+            botBtn.classList.add('hidden');
+          }
+        }
       }
 
-      hostStartMatch() {
+      hostStartMatch(fillWithBots = false) {
         if (!this.roomRef || !this.lastRoomData) return;
-        const hostName = this.lastRoomData.players && this.lastRoomData.players.host ? this.lastRoomData.players.host.name : this.game.playerName;
-        const guestName = this.lastRoomData.players && this.lastRoomData.players.guest ? this.lastRoomData.players.guest.name : 'ゲスト';
-        const hostUid = this.lastRoomData.players && this.lastRoomData.players.host ? this.lastRoomData.players.host.uid : this.myUid;
-        const guestUid = this.lastRoomData.players && this.lastRoomData.players.guest ? this.lastRoomData.players.guest.uid : 'guest';
+        const data = this.lastRoomData;
+        const s = { ...this.getDefaultSettings(), ...(data.settings || {}) };
+        const maxP = Math.max(2, Math.min(10, Number(s.maxPlayers) || 4));
+
+        const nextPlayers = {};
+        const nextJammers = {};
+        const usedBotNames = new Set();
+        let botIdx = 0;
+
+        for (let i = 1; i <= maxP; i++) {
+          const slot = 'p' + i;
+          const existing = data.players ? data.players[slot] : null;
+          if (existing && !existing.isBot && existing.connected !== false) {
+            nextPlayers[slot] = this.makeEmptyPlayer(existing.name, false, existing.uid);
+            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, fromCombo: 0, fromName: '' };
+          } else if (fillWithBots) {
+            const bName = this.BOT_NAMES[botIdx % this.BOT_NAMES.length];
+            botIdx++;
+            const uniqueName = usedBotNames.has(bName) ? `${bName}#${botIdx}` : bName;
+            usedBotNames.add(uniqueName);
+            nextPlayers[slot] = this.makeEmptyPlayer(uniqueName, true, `bot_${slot}_${Date.now()}`);
+            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, fromCombo: 0, fromName: '' };
+          }
+        }
+
+        if (Object.keys(nextPlayers).length < 2) {
+          return;
+        }
+
+        if (this.queueRef && this.roomCode) {
+          this.queueRef.child(this.roomCode).remove().catch(() => {});
+        }
+
+        const finalSettings = { ...s };
+        if (data.anyRule) {
+          const rulePool = ['score', 'jammer', 'race'];
+          finalSettings.vsRule = rulePool[Math.floor(Math.random() * rulePool.length)];
+        }
 
         const seed = Math.floor(Math.random() * 2147483640) + 1;
         this.roomRef.update({
           status: 'playing',
+          anyRule: false,
+          settings: finalSettings,
           seed,
           startedAt: Date.now(),
           winner: null,
-          'players/host': { ...this.makeEmptyPlayer(hostName), uid: hostUid },
-          'players/guest': { ...this.makeEmptyPlayer(guestName), uid: guestUid },
-          jammers: {
-            toHost: { seq: 0, c1: 0, c10: 0, fromCombo: 0 },
-            toGuest: { seq: 0, c1: 0, c10: 0, fromCombo: 0 }
-          }
+          players: nextPlayers,
+          jammers: nextJammers
         }).catch(() => {});
       }
 
-      updateOpponentHUD(data, me, opp) {
+      // =====================================================================
+      // BOT 本格対戦シミュレーション（ホスト駆動・Firebase同期）
+      // =====================================================================
+      startBotSimulation(roomData) {
+        if (this.botSimTimer) {
+          clearInterval(this.botSimTimer);
+          this.botSimTimer = null;
+        }
+        const botEntries = this.getPlayerEntries(roomData).filter(({ player }) => player.isBot);
+        if (botEntries.length === 0) return;
+
+        const s = { ...this.getDefaultSettings(), ...(roomData.settings || {}) };
+        const diff = s.difficulty || 'NORMAL';
+        const diffMult = diff === 'LUNATIC' ? 100 : (diff === 'EX' ? 10 : (diff === 'HARD' ? 1.5 : 1.0));
+        const matchDurMs = s.vsRule === 'race' ? 180000 : ((diff === 'HARD' || diff === 'EX') ? 45000 : 60000);
+        const playStartMs = Date.now() + 5750; // VSイントロ演出(2.85秒)＋3秒カウントダウン完了後
+
+        this.botStates = {};
+        this.botLastJammerSeqs = {};
+        this.lastGlobalBotJammerAt = playStartMs + 3500; // 開始直後はお邪魔を飛ばさない
+        botEntries.forEach(({ slot, player }, idx) => {
+          const paceBase = 2900 + (idx % 4) * 550 + Math.random() * 950;
+          const perfRate = (diff === 'EX' || diff === 'LUNATIC')
+            ? (0.90 + Math.random() * 0.08)
+            : (0.72 + Math.random() * 0.18);
+          this.botStates[slot] = {
+            slot,
+            name: player.name,
+            score: 0,
+            combo: 0,
+            maxCombo: 0,
+            perfectCount: 0,
+            served: 0,
+            finished: false,
+            failedSuddenDeath: false,
+            jammerSentCount: 0,
+            jammerHitCount: 0,
+            paceBase,
+            perfRate,
+            nextActionAt: playStartMs + 1600 + Math.random() * 2400,
+            nextJammerAt: playStartMs + 7500 + idx * 1800 + Math.random() * 4500
+          };
+          this.botLastJammerSeqs[slot] = 0;
+        });
+
+        this.botSimTimer = setInterval(() => {
+          if (!this.roomRef || !this.lastRoomData || this.lastRoomData.status !== 'playing' || this.lastRoomData.winner) {
+            clearInterval(this.botSimTimer);
+            this.botSimTimer = null;
+            return;
+          }
+
+          const now = Date.now();
+          if (now < playStartMs) return;
+
+          const elapsed = now - playStartMs;
+          const timeUp = elapsed >= matchDurMs;
+          const updates = {};
+          let dirty = false;
+
+          for (const st of Object.values(this.botStates)) {
+            if (st.finished) continue;
+
+            // BOTへのお邪魔被弾チェック（被弾すると回答が遅れる＆ヒット数加算）
+            if (s.vsRule === 'jammer' && this.lastRoomData.jammers && this.lastRoomData.jammers[st.slot]) {
+              const jam = this.lastRoomData.jammers[st.slot];
+              if (jam.seq > (this.botLastJammerSeqs[st.slot] || 0)) {
+                this.botLastJammerSeqs[st.slot] = jam.seq;
+                st.jammerHitCount += (jam.c1 || 0) + (jam.c10 || 0);
+                st.nextActionAt = Math.max(st.nextActionAt, now) + 1400 + Math.random() * 900;
+                updates[`players/${st.slot}/jammerHitCount`] = st.jammerHitCount;
+                dirty = true;
+              }
+            }
+
+            if (timeUp) {
+              st.finished = true;
+              updates[`players/${st.slot}/finished`] = true;
+              dirty = true;
+              continue;
+            }
+
+            if (now >= st.nextActionAt) {
+              st.served += 1;
+              const isPerfect = Math.random() < st.perfRate;
+              if (isPerfect) {
+                st.perfectCount += 1;
+                st.combo += 1;
+                if (st.combo > st.maxCombo) st.maxCombo = st.combo;
+                const basePt = 1100 + Math.floor(Math.random() * 450) + st.combo * 180;
+                st.score += Math.round(basePt * diffMult);
+
+                // お邪魔モード時はプレイヤーと同じく3回PERFECTごと（＋全体クールダウン7.5秒以上）でBOTがお邪魔発動
+                if (
+                  s.vsRule === 'jammer' &&
+                  st.perfectCount > 0 &&
+                  st.perfectCount % 3 === 0 &&
+                  now >= (st.nextJammerAt || 0) &&
+                  (now - (this.lastGlobalBotJammerAt || 0)) >= 7500
+                ) {
+                  this.lastGlobalBotJammerAt = now;
+                  st.nextJammerAt = now + 10000 + Math.random() * 5000;
+                  this.sendJammerFromSlot(st.slot, st.name, st.combo, true);
+                  const sentCoins = st.combo >= 5 ? 4 : (st.combo >= 3 ? 3 : 2);
+                  st.jammerSentCount += sentCoins;
+                }
+
+                // 先取ルール達成チェック
+                if (s.vsRule === 'race' && st.perfectCount >= (s.raceTarget || 7)) {
+                  st.finished = true;
+                  updates[`players/${st.slot}`] = {
+                    uid: `bot_${st.slot}`,
+                    name: st.name,
+                    isBot: true,
+                    connected: true,
+                    score: st.score,
+                    combo: st.combo,
+                    maxCombo: st.maxCombo,
+                    perfectCount: st.perfectCount,
+                    served: st.served,
+                    finished: true,
+                    failedSuddenDeath: false,
+                    jammerSentCount: st.jammerSentCount,
+                    jammerHitCount: st.jammerHitCount
+                  };
+                  this.roomRef.update(updates).catch(() => {});
+                  this.claimWinner(st.slot, `⚡ ${st.name} が先に ${s.raceTarget || 7}人 PERFECTを達成！`);
+                  return;
+                }
+              } else {
+                st.combo = 0;
+                if (diff === 'EX' || diff === 'LUNATIC') {
+                  st.finished = true;
+                  st.failedSuddenDeath = true;
+                } else {
+                  st.score += Math.round((320 + Math.floor(Math.random() * 200)) * diffMult);
+                }
+              }
+
+              st.nextActionAt = now + st.paceBase * (0.75 + Math.random() * 0.55);
+              updates[`players/${st.slot}`] = {
+                uid: `bot_${st.slot}`,
+                name: st.name,
+                isBot: true,
+                connected: true,
+                score: st.score,
+                combo: st.combo,
+                maxCombo: st.maxCombo,
+                perfectCount: st.perfectCount,
+                served: st.served,
+                finished: st.finished,
+                failedSuddenDeath: st.failedSuddenDeath,
+                jammerSentCount: st.jammerSentCount,
+                jammerHitCount: st.jammerHitCount
+              };
+              dirty = true;
+            }
+          }
+
+          if (dirty) {
+            this.roomRef.update(updates).catch(() => {});
+          }
+        }, 250);
+      }
+
+      getSortedStandings(data) {
+        const s = { ...this.getDefaultSettings(), ...(data && data.settings ? data.settings : {}) };
+        const list = this.getActiveParticipants(data).map(({ slot, player }) => {
+          const isMe = slot === this.mySlot;
+          return {
+            slot,
+            isMe,
+            isBot: Boolean(player.isBot),
+            name: player.name || slot,
+            score: isMe ? Math.max(player.score || 0, this.game.score || 0) : (player.score || 0),
+            perfectCount: isMe ? Math.max(player.perfectCount || 0, this.game.perfectCount || 0) : (player.perfectCount || 0),
+            combo: isMe ? (this.game.combo || 0) : (player.combo || 0),
+            maxCombo: isMe ? Math.max(player.maxCombo || 0, this.game.maxCombo || 0) : (player.maxCombo || 0),
+            served: isMe ? Math.max(player.served || 0, Math.max(0, this.game.customerIndex - 1)) : (player.served || 0),
+            jammerSentCount: isMe ? Math.max(player.jammerSentCount || 0, this.jammerSentCount || 0) : (player.jammerSentCount || 0),
+            jammerHitCount: player.jammerHitCount || 0,
+            failedSuddenDeath: Boolean(player.failedSuddenDeath)
+          };
+        });
+
+        list.sort((a, b) => {
+          if (s.vsRule === 'race') {
+            if (b.perfectCount !== a.perfectCount) return b.perfectCount - a.perfectCount;
+          }
+          if (b.score !== a.score) return b.score - a.score;
+          return b.perfectCount - a.perfectCount;
+        });
+        return list;
+      }
+
+      updateOpponentHUD(data) {
         const bar = document.getElementById('vs-opponent-bar');
         if (!bar) return;
         const s = { ...this.getDefaultSettings(), ...(data.settings || {}) };
+        const standings = this.getSortedStandings(data);
+        const totalP = standings.length;
+        const myRankIdx = standings.findIndex((x) => x.isMe);
+        const myRank = myRankIdx !== -1 ? myRankIdx + 1 : 1;
+        const meObj = myRankIdx !== -1 ? standings[myRankIdx] : null;
+        const rival = standings.find((x) => !x.isMe) || null;
 
+        const rankBadge = document.getElementById('vs-rank-badge');
         const oppNameEl = document.getElementById('vs-opp-name');
         const rulePillEl = document.getElementById('vs-rule-pill');
         const leadBadge = document.getElementById('vs-lead-badge');
+        const oppLabelEl = document.getElementById('vs-opp-label');
         const oppScoreEl = document.getElementById('vs-opp-score');
         const oppSubEl = document.getElementById('vs-opp-sub');
+        const miniBoard = document.getElementById('vs-multi-mini-board');
 
-        if (oppNameEl) oppNameEl.textContent = opp ? opp.name : '対戦相手';
+        if (rankBadge) {
+          rankBadge.textContent = totalP > 2 ? `${myRank}位/${totalP}人` : 'VS';
+          rankBadge.className = myRank === 1
+            ? 'text-[10px] sm:text-xs font-black px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 shrink-0 leading-none'
+            : 'text-[10px] sm:text-xs font-black px-1.5 py-0.5 rounded bg-fuchsia-500 text-white shrink-0 leading-none';
+        }
         if (rulePillEl) {
           rulePillEl.textContent = s.vsRule === 'jammer'
             ? '💣お邪魔対決'
             : (s.vsRule === 'race' ? `⚡${s.raceTarget || 7}人先取` : '🏆スコア対決');
         }
 
-        const myScore = this.game.score || 0;
-        const oppScore = opp ? (opp.score || 0) : 0;
-        const oppPerfect = opp ? (opp.perfectCount || 0) : 0;
-        const oppServed = opp ? (opp.served || 0) : 0;
-        const oppCombo = opp ? (opp.combo || 0) : 0;
+        // 注目ライバル（1位なら2位、2位以下なら1位）
+        const focusTarget = (myRank === 1 ? standings[1] : standings[0]) || rival;
+        if (oppNameEl) oppNameEl.textContent = focusTarget ? focusTarget.name : '対戦相手';
+        if (oppLabelEl) oppLabelEl.textContent = myRank === 1 ? '2位' : '1位';
+
+        const myScore = meObj ? meObj.score : (this.game.score || 0);
+        const oppScore = focusTarget ? focusTarget.score : 0;
+        const oppPerfect = focusTarget ? focusTarget.perfectCount : 0;
 
         if (s.vsRule === 'race') {
           const target = s.raceTarget || 7;
           if (oppScoreEl) oppScoreEl.textContent = `${oppPerfect}/${target}神`;
-          if (oppSubEl) oppSubEl.textContent = oppCombo >= 2 ? `(${oppCombo}連鎖)` : `${oppScore.toLocaleString()}pt`;
-          const myP = this.game.perfectCount || 0;
+          if (oppSubEl) oppSubEl.textContent = `${oppScore.toLocaleString()}pt`;
+          const myP = meObj ? meObj.perfectCount : (this.game.perfectCount || 0);
           if (leadBadge) {
             if (myP > oppPerfect) {
-              leadBadge.textContent = `リード (${myP}/${target})`;
+              leadBadge.textContent = `首位 (${myP}/${target})`;
               leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-emerald-400 text-slate-950 leading-none';
             } else if (myP < oppPerfect) {
               leadBadge.textContent = `追撃 (${myP}/${target})`;
@@ -6265,13 +7505,13 @@
           }
         } else {
           if (oppScoreEl) oppScoreEl.textContent = `${oppScore.toLocaleString()}pt`;
-          if (oppSubEl) oppSubEl.textContent = oppCombo >= 2 ? `${oppServed}人(${oppCombo}連)` : `${oppServed}人`;
+          if (oppSubEl) oppSubEl.textContent = focusTarget && focusTarget.combo >= 2 ? `${focusTarget.combo}連` : `${focusTarget ? focusTarget.served : 0}人`;
           if (leadBadge) {
             if (myScore > oppScore) {
               leadBadge.textContent = `+${(myScore - oppScore).toLocaleString()} リード`;
               leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-emerald-400 text-slate-950 leading-none';
             } else if (myScore < oppScore) {
-              leadBadge.textContent = `-${(oppScore - myScore).toLocaleString()} ビハインド`;
+              leadBadge.textContent = `-${(oppScore - myScore).toLocaleString()} 差`;
               leadBadge.className = 'text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-rose-500 text-white leading-none';
             } else {
               leadBadge.textContent = '互角';
@@ -6279,12 +7519,26 @@
             }
           }
         }
+
+        // 3人以上のときは上位4名＋自分のミニランキング帯を表示
+        if (miniBoard) {
+          if (totalP > 2) {
+            miniBoard.classList.remove('hidden');
+            miniBoard.innerHTML = standings.slice(0, 4).map((p, idx) => {
+              const medal = idx === 0 ? '🥇' : (idx === 1 ? '🥈' : (idx === 2 ? '🥉' : `${idx + 1}位`));
+              const valStr = s.vsRule === 'race' ? `${p.perfectCount}神` : `${p.score.toLocaleString()}`;
+              return `<span class="shrink-0 px-1.5 py-0.5 rounded ${p.isMe ? 'bg-cyan-400 text-slate-950 font-black' : 'bg-slate-800/90 text-slate-200 font-bold'}">${medal}${escapeHtml(p.name.slice(0, 6))} ${valStr}</span>`;
+            }).join('');
+          } else {
+            miniBoard.classList.add('hidden');
+          }
+        }
       }
 
       syncMyProgress(finished = false, failedSuddenDeath = false) {
-        if (!this.roomRef || !this.myRole) return;
+        if (!this.roomRef || !this.mySlot) return;
         const served = Math.max(0, this.game.customerIndex - (finished ? 1 : 0));
-        this.roomRef.child('players/' + this.myRole).update({
+        this.roomRef.child('players/' + this.mySlot).update({
           score: this.game.score || 0,
           combo: this.game.combo || 0,
           maxCombo: this.game.maxCombo || 0,
@@ -6297,16 +7551,18 @@
 
         if (this.lastRoomData) {
           const s = this.lastRoomData.settings || this.getDefaultSettings();
-          // 先取ルール達成チェック
           if (s.vsRule === 'race' && (this.game.perfectCount || 0) >= (s.raceTarget || 7)) {
-            this.claimWinner(this.myRole, `⚡ 先に ${s.raceTarget || 7}人 PERFECTを達成！`);
+            this.claimWinner(this.mySlot, `⚡ ${this.game.playerName} が先に ${s.raceTarget || 7}人 PERFECTを達成！`);
             return;
           }
-          // EX/LUNATIC サドンデス脱落チェック
-          if (failedSuddenDeath) {
-            const oppRole = this.myRole === 'host' ? 'guest' : 'host';
-            this.claimWinner(oppRole, `💀 ${this.game.playerName} がサドンデスで脱落！`);
-            return;
+          // 2人対戦時のサドンデス即決着（3人以上では他の生存者が続行し、全員終了時に順位決定）
+          const active = this.getActiveParticipants(this.lastRoomData);
+          if (failedSuddenDeath && active.length === 2) {
+            const other = active.find((x) => x.slot !== this.mySlot);
+            if (other) {
+              this.claimWinner(other.slot, `💀 ${this.game.playerName} がサドンデスで脱落！`);
+              return;
+            }
           }
         }
 
@@ -6320,34 +7576,55 @@
         }
       }
 
-      sendJammerToOpponent(comboCount) {
-        if (!this.roomRef || !this.myRole || !this.lastRoomData) return;
+      sendJammerFromSlot(fromSlot, fromName, comboCount, isFromBot = false) {
+        if (!this.roomRef || !this.lastRoomData) return;
         const s = this.lastRoomData.settings || {};
         if (s.vsRule !== 'jammer') return;
 
+        // 自分以外の生存中プレイヤーからターゲットを選出
+        const candidates = this.getActiveParticipants(this.lastRoomData)
+          .filter(({ slot, player }) => slot !== fromSlot && !player.finished);
+        if (candidates.length === 0) return;
+
+        const target = candidates[Math.floor(Math.random() * candidates.length)];
+
         let c1 = 2;
         let c10 = 0;
-        if (comboCount >= 5) {
-          c1 = 4; c10 = 2;
-        } else if (comboCount >= 3) {
-          c1 = 3; c10 = 1;
+        if (isFromBot) {
+          if (comboCount >= 5) {
+            c1 = 3; c10 = 1;
+          } else if (comboCount >= 3) {
+            c1 = 2; c10 = 1;
+          }
+        } else {
+          if (comboCount >= 5) {
+            c1 = 4; c10 = 2;
+          } else if (comboCount >= 3) {
+            c1 = 3; c10 = 1;
+          }
         }
-        this.jammerSentCount += (c1 + c10);
 
-        const targetKey = this.myRole === 'host' ? 'toGuest' : 'toHost';
-        this.roomRef.child('jammers/' + targetKey).transaction((cur) => {
+        this.roomRef.child('jammers/' + target.slot).transaction((cur) => {
           const nextSeq = (cur && typeof cur.seq === 'number' ? cur.seq : 0) + 1;
-          return { seq: nextSeq, c1, c10, fromCombo: comboCount };
+          return { seq: nextSeq, c1, c10, fromCombo: comboCount, fromName: fromName || 'ライバル' };
         }).catch(() => {});
 
-        this.game.showVersusJammerToast(`🚀 相手へお邪魔送信！ 1円×${c1}${c10 > 0 ? `・10円×${c10}` : ''}`, false);
+        if (!isFromBot) {
+          this.jammerSentCount += (c1 + c10);
+          this.game.triggerVersusSpecialAttackFX(comboCount, c1, c10, target.player.name || '相手');
+        }
       }
 
-      claimWinner(winnerRole, reason) {
+      sendJammerToOpponent(comboCount) {
+        if (!this.mySlot) return;
+        this.sendJammerFromSlot(this.mySlot, this.game.playerName, comboCount, false);
+      }
+
+      claimWinner(winnerSlot, reason) {
         if (!this.roomRef) return;
         this.roomRef.child('winner').transaction((cur) => {
           if (cur) return;
-          return { role: winnerRole, reason };
+          return { slot: winnerSlot, reason };
         }).then((res) => {
           if (res && res.committed && this.roomRef) {
             this.roomRef.child('status').set('finished').catch(() => {});
@@ -6357,23 +7634,22 @@
 
       resolveScoreWinner(data) {
         if (!data || !data.players || data.winner) return;
-        const h = data.players.host || { score: 0, perfectCount: 0 };
-        const g = data.players.guest || { score: 0, perfectCount: 0 };
-        let winRole = 'draw';
-        let reason = '同点引き分け！見事な名勝負でした！';
-        if ((h.score || 0) > (g.score || 0)) {
-          winRole = 'host';
-          reason = `スコア差 +${((h.score || 0) - (g.score || 0)).toLocaleString()}pt で決着！`;
-        } else if ((g.score || 0) > (h.score || 0)) {
-          winRole = 'guest';
-          reason = `スコア差 +${((g.score || 0) - (h.score || 0)).toLocaleString()}pt で決着！`;
+        const standings = this.getSortedStandings(data);
+        if (standings.length === 0) return;
+        const top = standings[0];
+        const second = standings[1];
+        if (second && top.score === second.score && top.perfectCount === second.perfectCount) {
+          this.claimWinner('draw', '同点引き分け！白熱の名勝負でした！');
+        } else {
+          const diffStr = second ? `（2位と +${(top.score - second.score).toLocaleString()}pt 差）` : '';
+          this.claimWinner(top.slot, `🏆 ${top.name} が優勝！${diffStr}`);
         }
-        this.claimWinner(winRole, reason);
       }
 
       showVersusResult(data) {
         if (this.resultShown) return;
         this.resultShown = true;
+        this.stopBotTimers();
         if (this.finishWaitTimeout) {
           clearTimeout(this.finishWaitTimeout);
           this.finishWaitTimeout = null;
@@ -6391,53 +7667,68 @@
         document.getElementById('vs-opponent-bar').classList.add('hidden');
         document.getElementById('lunatic-banner').classList.add('hidden');
 
-        const oppRole = this.myRole === 'host' ? 'guest' : 'host';
-        const me = (data.players && data.players[this.myRole]) || { name: this.game.playerName, score: this.game.score, perfectCount: this.game.perfectCount, served: Math.max(0, this.game.customerIndex - 1), maxCombo: this.game.maxCombo, jammerSentCount: this.jammerSentCount };
-        const opp = (data.players && data.players[oppRole]) || { name: '対戦相手', score: 0, perfectCount: 0, served: 0, maxCombo: 0, jammerSentCount: 0 };
-        const w = data.winner || { role: 'draw', reason: '対戦終了' };
+        const standings = this.getSortedStandings(data);
+        const w = data.winner || { slot: standings[0] ? standings[0].slot : 'draw', reason: '対戦終了' };
+        const myRankIdx = standings.findIndex((p) => p.isMe);
+        const myRank = myRankIdx !== -1 ? myRankIdx + 1 : standings.length;
 
         const bannerEl = document.getElementById('vs-res-banner');
         const reasonEl = document.getElementById('vs-res-reason');
-        if (w.role === this.myRole) {
-          bannerEl.textContent = '🏆 YOU WIN!!';
-          bannerEl.className = 'text-3xl sm:text-5xl font-black tracking-wider text-amber-300 drop-shadow mb-1';
+        if (w.slot === this.mySlot || (w.slot !== 'draw' && myRank === 1)) {
+          bannerEl.textContent = standings.length > 2 ? '👑 1ST PLACE!! YOU WIN!!' : '🏆 YOU WIN!!';
+          bannerEl.className = 'text-2xl sm:text-4xl font-black tracking-wider text-amber-300 drop-shadow mb-1';
           sound.playPerfectFanfare();
-        } else if (w.role === 'draw') {
+        } else if (w.slot === 'draw') {
           bannerEl.textContent = '🤝 DRAW!!';
           bannerEl.className = 'text-3xl sm:text-5xl font-black tracking-wider text-cyan-300 drop-shadow mb-1';
           sound.playGood();
         } else {
-          bannerEl.textContent = '😢 YOU LOSE...';
-          bannerEl.className = 'text-3xl sm:text-5xl font-black tracking-wider text-rose-400 drop-shadow mb-1';
+          bannerEl.textContent = standings.length > 2 ? `🏁 ${myRank}位 / ${standings.length}人` : '😢 YOU LOSE...';
+          bannerEl.className = myRank <= 3
+            ? 'text-3xl sm:text-4xl font-black tracking-wider text-cyan-300 drop-shadow mb-1'
+            : 'text-3xl sm:text-4xl font-black tracking-wider text-rose-400 drop-shadow mb-1';
           sound.playBadBuzzer();
         }
         if (reasonEl) reasonEl.textContent = w.reason || '';
 
         const isJammer = data.settings && data.settings.vsRule === 'jammer';
-        const fillCard = (prefix, p) => {
-          const nEl = document.getElementById(`vs-res-${prefix}-name`);
-          const sEl = document.getElementById(`vs-res-${prefix}-score`);
-          const stEl = document.getElementById(`vs-res-${prefix}-stats`);
-          if (nEl) nEl.textContent = p.name || '---';
-          if (sEl) sEl.textContent = `${Number(p.score || 0).toLocaleString()} pt`;
-          if (stEl) {
-            stEl.innerHTML = `
-              <div>PERFECT: ${p.perfectCount || 0}回 ／ 処理: ${p.served || 0}人</div>
-              <div>最大コンボ: ${p.maxCombo || 0}連鎖${isJammer ? ` ／ お邪魔: ${p.jammerSentCount || 0}枚` : ''}</div>
+        const listEl = document.getElementById('vs-res-standings');
+        if (listEl) {
+          listEl.innerHTML = '';
+          standings.forEach((p, idx) => {
+            const rank = idx + 1;
+            const medal = rank === 1 ? '🥇' : (rank === 2 ? '🥈' : (rank === 3 ? '🥉' : `${rank}位`));
+            const row = document.createElement('div');
+            row.className = `flex items-center justify-between gap-2 px-3 py-2 rounded-xl border-2 ${
+              p.isMe
+                ? 'bg-cyan-950/75 border-cyan-400 text-white shadow'
+                : (rank === 1 ? 'bg-amber-950/45 border-amber-400/70 text-white' : 'bg-slate-800/85 border-slate-700 text-slate-200')
+            }`;
+            row.innerHTML = `
+              <div class="flex items-center gap-2 min-w-0 flex-1">
+                <span class="w-8 text-center font-black shrink-0 ${rank <= 3 ? 'text-lg' : 'text-xs text-slate-400'}">${medal}</span>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-1.5 min-w-0">
+                    <span class="text-xs sm:text-sm font-black truncate ${p.isMe ? 'text-cyan-200' : 'text-white'}">${escapeHtml(p.name)}</span>
+                    ${p.isMe ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-400 text-slate-950 font-black shrink-0">YOU</span>' : ''}
+                    ${p.isBot ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/30 text-amber-200 border border-amber-400/60 font-black shrink-0">BOT</span>' : ''}
+                  </div>
+                  <div class="text-[10px] text-slate-300 font-bold mt-0.5">
+                    神:${p.perfectCount}回 ／ 処理:${p.served}人 ／ 最大${p.maxCombo}連${isJammer ? ` ／ 妨害:${p.jammerSentCount}枚` : ''}
+                  </div>
+                </div>
+              </div>
+              <div class="font-digital text-sm sm:text-lg font-black text-amber-300 shrink-0">
+                ${Number(p.score || 0).toLocaleString()} pt
+              </div>
             `;
-          }
-        };
-        fillCard('me', me);
-        fillCard('opp', opp);
-
-        const rematchBtn = document.getElementById('btn-vs-res-rematch');
-        if (rematchBtn) {
-          const canRematch = Boolean(this.roomRef && opp && opp.connected !== false);
-          rematchBtn.disabled = !canRematch;
-          rematchBtn.classList.toggle('opacity-50', !canRematch);
+            listEl.appendChild(row);
+          });
         }
 
+        const canRematch = Boolean(this.roomRef && !data.isRandom);
         switchScreen('screen-versus-result');
+        this.startVersusResultCooldown(canRematch);
       }
 
       requestRematch() {
@@ -6447,8 +7738,14 @@
         }
         this.matchLaunched = false;
         this.resultShown = false;
-        if (this.myRole === 'host') {
-          this.roomRef.update({ status: 'waiting', winner: null }).catch(() => {});
+        this.stopBotTimers();
+        if (this.isHost) {
+          // BOT枠を除去して人間だけ残して待機状態に戻す
+          const humansOnly = {};
+          this.getConnectedHumanEntries(this.lastRoomData).forEach(({ slot, player }) => {
+            humansOnly[slot] = this.makeEmptyPlayer(player.name, false, player.uid);
+          });
+          this.roomRef.update({ status: 'waiting', winner: null, players: humansOnly, jammers: {} }).catch(() => {});
         }
         switchScreen('screen-versus-room');
       }
@@ -6475,6 +7772,9 @@
         this.aiHelperEnabled = false;
         this.dopagakiMode = (() => {
           try { return localStorage.getItem('pittariman_dopagaki_mode_v1') === '1'; } catch (e) { return false; }
+        })();
+        this.vibrationEnabled = (() => {
+          try { return localStorage.getItem('pittariman_vibe_v1') !== '0'; } catch (e) { return true; }
         })();
 
         // ルールコンセプト: 'wallet' (財布の小銭枚数最小ルール) | 'change' (お釣りの枚数最小ルール)
@@ -6527,6 +7827,7 @@
         this.syncChangeToggleUI();
         this.syncHelperToggleUI();
         this.syncDopagakiUI();
+        this.syncVibrationUI();
         this.syncRuleToggleUI();
         this.updateUnlockAndCumulativeUI();
         sound.syncSoundButtonsUI();
@@ -6546,6 +7847,15 @@
             this.toggleDopagakiMode();
           });
         }
+        ['btn-title-vibe', 'btn-mode-toggle-vibe', 'btn-hud-vibe-toggle', 'btn-vs-lobby-vibe'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.addEventListener('click', () => {
+              sound.init();
+              this.toggleVibration();
+            });
+          }
+        });
         document.getElementById('btn-bgm-toggle').addEventListener('click', () => {
           sound.toggleBGM();
         });
@@ -7288,6 +8598,58 @@
         }
       }
 
+      vibrate(pattern = 80) {
+        if (!this.vibrationEnabled) return;
+        try { navigator.vibrate?.(pattern); } catch (e) {}
+      }
+
+      toggleVibration() {
+        this.vibrationEnabled = !this.vibrationEnabled;
+        try {
+          localStorage.setItem('pittariman_vibe_v1', this.vibrationEnabled ? '1' : '0');
+        } catch (e) {}
+        this.syncVibrationUI();
+        sound.playClick();
+        if (this.vibrationEnabled) {
+          this.vibrate(45);
+        }
+      }
+
+      syncVibrationUI() {
+        const on = Boolean(this.vibrationEnabled);
+        document.querySelectorAll('.vibe-icon-text').forEach((el) => {
+          el.textContent = on ? '📳' : '📴';
+        });
+        document.querySelectorAll('.vibe-label-text').forEach((el) => {
+          el.textContent = on ? 'バイブ ON' : 'バイブ OFF';
+        });
+        const titleBtn = document.getElementById('btn-title-vibe');
+        if (titleBtn) {
+          titleBtn.className = on
+            ? 'btn-3d bg-slate-800 hover:bg-slate-700 border border-cyan-500/60 text-[10px] sm:text-[11px] font-extrabold px-2 py-1 rounded-xl text-cyan-300 flex items-center gap-1'
+            : 'btn-3d bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] sm:text-[11px] font-extrabold px-2 py-1 rounded-xl text-slate-500 flex items-center gap-1';
+        }
+        const modeBtn = document.getElementById('btn-mode-toggle-vibe');
+        if (modeBtn) {
+          modeBtn.className = on
+            ? 'btn-3d shrink-0 whitespace-nowrap px-2.5 py-1.5 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-cyan-500/20 border-cyan-400 text-cyan-200 flex items-center gap-1 shadow'
+            : 'btn-3d shrink-0 whitespace-nowrap px-2.5 py-1.5 rounded-xl font-black text-[11px] sm:text-xs border-2 bg-slate-900 border-slate-700 text-slate-500 flex items-center gap-1 shadow';
+        }
+        const hudBtn = document.getElementById('btn-hud-vibe-toggle');
+        if (hudBtn) {
+          hudBtn.textContent = on ? '📳' : '📴';
+          hudBtn.className = on
+            ? 'btn-3d bg-slate-800 hover:bg-slate-700 border border-cyan-400/70 w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center text-xs shadow shrink-0'
+            : 'btn-3d bg-slate-900 hover:bg-slate-800 border border-slate-700 w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center text-xs opacity-60 shadow shrink-0';
+        }
+        const lobbyBtn = document.getElementById('btn-vs-lobby-vibe');
+        if (lobbyBtn) {
+          lobbyBtn.className = on
+            ? 'btn-3d bg-slate-800 hover:bg-slate-700 border border-cyan-400/70 text-cyan-200 text-[10px] font-black px-2 py-0.5 rounded-lg flex items-center gap-1 shrink-0'
+            : 'btn-3d bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-500 text-[10px] font-black px-2 py-0.5 rounded-lg flex items-center gap-1 shrink-0';
+        }
+      }
+
       toggleDopagakiMode() {
         this.dopagakiMode = !this.dopagakiMode;
         try {
@@ -7577,6 +8939,16 @@
           this.retryCooldownInterval = null;
         }
         this.retryCooldownRemaining = 0;
+
+        if (Array.isArray(this.vsIntroTimers)) {
+          this.vsIntroTimers.forEach((t) => clearTimeout(t));
+        }
+        this.vsIntroTimers = [];
+        const introOverlay = document.getElementById('vs-intro-overlay');
+        if (introOverlay) {
+          introOverlay.classList.add('hidden');
+          introOverlay.innerHTML = '';
+        }
 
         const cdOverlay = document.getElementById('countdown-overlay');
         if (cdOverlay) {
@@ -7921,19 +9293,209 @@
 
         // 両プレイヤー共通のシードで乱数を初期化
         setSeededRng(roomData.seed || 12345);
-        this._launchGameplayWithCountdown();
 
-        // 先取勝負の場合は制限時間を長め（180秒）に設定
-        if (s.vsRule === 'race') {
-          this.maxTime = 180.0;
-          this.timeLeft = 180.0;
-        }
+        // 先に3D背景＆ゲーム画面を準備してから動画風VSイントロ→カウントダウンへ移行
+        this.clearActiveTimers();
+        this.state = 'COUNTDOWN';
+        this.scene3D.clearAllTrayItems(false);
+        this.scene3D.setTitleMode(false);
+        switchScreen('screen-game');
         const vsBar = document.getElementById('vs-opponent-bar');
         if (vsBar) vsBar.classList.remove('hidden');
-        this.updateTopHUD();
+
+        this.playVersusStartIntro(roomData, () => {
+          if (!this.isVersusRun) return;
+          this._launchGameplayWithCountdown();
+          if (s.vsRule === 'race') {
+            this.maxTime = 180.0;
+            this.timeLeft = 180.0;
+          }
+          const barEl = document.getElementById('vs-opponent-bar');
+          if (barEl) barEl.classList.remove('hidden');
+          this.updateTopHUD();
+        });
       }
 
-      receiveVersusJammer(c1, c10, fromCombo) {
+      playVersusStartIntro(roomData, onComplete) {
+        const overlay = document.getElementById('vs-intro-overlay');
+        if (!overlay) {
+          if (typeof onComplete === 'function') onComplete();
+          return;
+        }
+        if (Array.isArray(this.vsIntroTimers)) {
+          this.vsIntroTimers.forEach((t) => clearTimeout(t));
+        }
+        this.vsIntroTimers = [];
+
+        const s = (roomData && roomData.settings) || this.versus.getDefaultSettings();
+        const participants = this.versus.getActiveParticipants(roomData);
+        const myEntry = participants.find((x) => x.slot === this.versus.mySlot);
+        const rivals = participants.filter((x) => x.slot !== this.versus.mySlot);
+        const myName = (myEntry && myEntry.player && myEntry.player.name) ? myEntry.player.name : this.playerName;
+
+        const ruleTitle = s.vsRule === 'jammer'
+          ? '💣 お邪魔バトル'
+          : (s.vsRule === 'race' ? `⚡ ${s.raceTarget || 7}人先取勝負` : '🏆 スコア対決');
+
+        const isMulti = rivals.length > 1;
+        const primaryRival = rivals[0] ? rivals[0].player : { name: 'ライバル', isBot: false };
+        const rightRivalHtml = isMulti
+          ? `
+            <div class="text-[10px] sm:text-xs font-black tracking-widest text-pink-200 uppercase mb-1">
+              RIVALS // ${rivals.length} PLAYERS
+            </div>
+            <div class="space-y-1 max-w-[165px] sm:max-w-[240px] ml-auto">
+              ${rivals.slice(0, 5).map((r) => `
+                <div class="bg-slate-950/80 border-2 border-pink-300/80 rounded-xl px-2.5 py-1 text-right shadow-lg">
+                  <span class="text-xs sm:text-sm font-black text-white truncate block">${escapeHtml(r.player.name)}</span>
+                </div>
+              `).join('')}
+              ${rivals.length > 5 ? `<div class="text-[11px] font-black text-pink-100 text-right">…ほか ${rivals.length - 5}人！</div>` : ''}
+            </div>
+          `
+          : `
+            <div class="inline-block bg-slate-950/80 border border-pink-300/80 text-pink-200 text-[10px] sm:text-xs font-black px-2.5 py-0.5 rounded-full mb-1.5">
+              ${primaryRival.isBot ? '🤖 BOT RIVAL' : '⚔️ RIVAL'}
+            </div>
+            <div class="vs-intro-name-anim text-2xl sm:text-5xl font-black text-white drop-shadow-[0_4px_14px_rgba(0,0,0,0.9)] tracking-wide break-all leading-tight">
+              ${escapeHtml(primaryRival.name)}
+            </div>
+            <div class="mt-2 inline-flex items-center justify-center w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-slate-950/75 border-4 border-pink-300 text-3xl sm:text-5xl shadow-2xl">
+              ${primaryRival.isBot ? '🤖' : '😈'}
+            </div>
+          `;
+
+        overlay.innerHTML = `
+          <div id="vs-intro-stage" class="relative w-full h-full bg-slate-950/90 overflow-hidden">
+            <!-- Right Pane (Pink / Magenta) -->
+            <div id="vs-intro-right" class="hidden absolute inset-0 vs-intro-right-pane bg-gradient-to-br from-fuchsia-600 via-pink-600 to-rose-800 flex items-center justify-end pr-4 sm:pr-12">
+              <div class="text-right max-w-[46%] pl-2">
+                ${rightRivalHtml}
+              </div>
+            </div>
+
+            <!-- Left Pane (Gold / Amber) -->
+            <div id="vs-intro-left" class="hidden absolute inset-0 vs-intro-left-pane bg-gradient-to-br from-amber-400 via-orange-500 to-amber-700 flex items-center justify-start pl-4 sm:pl-12">
+              <div class="text-left max-w-[46%] pr-2">
+                <div class="inline-block bg-slate-950/80 border border-amber-200/90 text-amber-300 text-[10px] sm:text-xs font-black px-2.5 py-0.5 rounded-full mb-1.5">
+                  👑 YOU
+                </div>
+                <div class="vs-intro-name-anim text-2xl sm:text-5xl font-black text-slate-950 drop-shadow-[0_2px_0_rgba(255,255,255,0.85)] tracking-wide break-all leading-tight">
+                  ${escapeHtml(myName)}
+                </div>
+                <div class="mt-2 inline-flex items-center justify-center w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-slate-950/80 border-4 border-amber-200 text-3xl sm:text-5xl shadow-2xl">
+                  😎
+                </div>
+              </div>
+            </div>
+
+            <!-- Diagonal Energy Lightning Split -->
+            <div id="vs-intro-bolt" class="vs-intro-bolt"></div>
+
+            <!-- Center VS Emblem -->
+            <div id="vs-intro-vs-wrap" class="hidden vs-intro-center-badge z-20 text-center pointer-events-none">
+              <div class="relative px-6 py-3 sm:px-10 sm:py-4 rounded-2xl bg-gradient-to-r from-red-600 via-orange-500 to-amber-400 border-4 border-white shadow-[0_0_45px_rgba(251,191,36,0.95)] -skew-x-12">
+                <div class="font-digital text-4xl sm:text-7xl font-black text-white drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)] tracking-widest leading-none">
+                  VS
+                </div>
+                <div class="text-[11px] sm:text-base font-black text-slate-950 bg-white/95 rounded-full px-3 py-0.5 mt-1 inline-block shadow">
+                  ${escapeHtml(ruleTitle)}
+                </div>
+              </div>
+            </div>
+
+            <!-- Shatter Glass Layer -->
+            <div id="vs-intro-shatter" class="absolute inset-0 pointer-events-none z-30"></div>
+          </div>
+        `;
+        overlay.classList.remove('hidden');
+
+        // Step 1 (0.00s): 青い稲妻が画面を斜めに切り裂く
+        sound.playVersusIntroSlashSE();
+
+        // Step 2 (0.22s): 右側（対戦相手）スライドイン
+        this.vsIntroTimers.push(setTimeout(() => {
+          const rightEl = document.getElementById('vs-intro-right');
+          if (rightEl) rightEl.classList.remove('hidden');
+          sound.playClick();
+        }, 220));
+
+        // Step 3 (0.56s): 左側（自分）スライドイン
+        this.vsIntroTimers.push(setTimeout(() => {
+          const leftEl = document.getElementById('vs-intro-left');
+          if (leftEl) leftEl.classList.remove('hidden');
+          sound.playClick();
+        }, 560));
+
+        // Step 4 (0.98s): 稲妻が黄金に変化＆中央「VS」ロゴがドーン！
+        this.vsIntroTimers.push(setTimeout(() => {
+          const bolt = document.getElementById('vs-intro-bolt');
+          if (bolt) bolt.classList.add('gold-surge');
+          const vsWrap = document.getElementById('vs-intro-vs-wrap');
+          if (vsWrap) vsWrap.classList.remove('hidden');
+          const stage = document.getElementById('vs-intro-stage');
+          if (stage) {
+            const flash = document.createElement('div');
+            flash.className = 'vs-intro-flash';
+            stage.appendChild(flash);
+            setTimeout(() => flash.remove(), 500);
+          }
+          sound.playVersusIntroClimaxSE();
+          this.vibrate([45, 30, 80]);
+        }, 980));
+
+        // Step 5 (2.15s): ガラス破砕（パリーン！）演出で画面が砕け散る
+        this.vsIntroTimers.push(setTimeout(() => {
+          sound.playVersusIntroShatterSE();
+          const stage = document.getElementById('vs-intro-stage');
+          const shatter = document.getElementById('vs-intro-shatter');
+          const leftEl = document.getElementById('vs-intro-left');
+          const rightEl = document.getElementById('vs-intro-right');
+          const bolt = document.getElementById('vs-intro-bolt');
+          const vsWrap = document.getElementById('vs-intro-vs-wrap');
+
+          if (stage) stage.style.background = 'transparent';
+          if (leftEl) leftEl.style.opacity = '0';
+          if (rightEl) rightEl.style.opacity = '0';
+          if (bolt) bolt.style.opacity = '0';
+          if (vsWrap) vsWrap.style.opacity = '0';
+
+          if (shatter) {
+            const shards = [
+              { poly: '0% 0%, 54% 0%, 42% 38%, 0% 30%', bg: 'linear-gradient(135deg,#fbbf24,#f97316)', tx: '-38vw', ty: '-34vh', rot: '-26deg' },
+              { poly: '54% 0%, 100% 0%, 100% 34%, 56% 42%', bg: 'linear-gradient(135deg,#ec4899,#9d174d)', tx: '42vw', ty: '-36vh', rot: '28deg' },
+              { poly: '0% 30%, 42% 38%, 48% 66%, 0% 72%', bg: 'linear-gradient(135deg,#f59e0b,#b45309)', tx: '-46vw', ty: '6vh', rot: '-22deg' },
+              { poly: '42% 38%, 56% 42%, 52% 64%, 48% 66%', bg: 'linear-gradient(135deg,#fef08a,#ef4444)', tx: '4vw', ty: '-18vh', rot: '38deg' },
+              { poly: '56% 42%, 100% 34%, 100% 70%, 52% 64%', bg: 'linear-gradient(135deg,#db2777,#be185d)', tx: '46vw', ty: '8vh', rot: '24deg' },
+              { poly: '0% 72%, 48% 66%, 44% 100%, 0% 100%', bg: 'linear-gradient(135deg,#d97706,#78350f)', tx: '-34vw', ty: '40vh', rot: '-30deg' },
+              { poly: '48% 66%, 52% 64%, 100% 70%, 100% 100%, 44% 100%', bg: 'linear-gradient(135deg,#e11d48,#881337)', tx: '38vw', ty: '42vh', rot: '32deg' }
+            ];
+            shards.forEach((sh) => {
+              const div = document.createElement('div');
+              div.className = 'vs-intro-shard';
+              div.style.clipPath = `polygon(${sh.poly})`;
+              div.style.background = sh.bg;
+              div.style.boxShadow = 'inset 0 0 0 2px rgba(255,255,255,0.85)';
+              div.style.setProperty('--tx', sh.tx);
+              div.style.setProperty('--ty', sh.ty);
+              div.style.setProperty('--rot', sh.rot);
+              shatter.appendChild(div);
+            });
+            const flash = document.createElement('div');
+            flash.className = 'vs-intro-flash';
+            shatter.appendChild(flash);
+          }
+        }, 2150));
+
+        // Step 6 (2.85s): オーバーレイを閉じてカウントダウンへ移行！
+        this.vsIntroTimers.push(setTimeout(() => {
+          overlay.classList.add('hidden');
+          overlay.innerHTML = '';
+          if (typeof onComplete === 'function') onComplete();
+        }, 2850));
+      }
+
+      receiveVersusJammer(c1, c10, fromCombo, fromName = 'ライバル') {
         if (!this.isVersusRun || this.state === 'RESULT') return;
         this.wallet[1] = (this.wallet[1] || 0) + (c1 || 0);
         this.wallet[10] = (this.wallet[10] || 0) + (c10 || 0);
@@ -7944,28 +9506,124 @@
           this.updatePOSDisplay();
           this.renderWalletUI();
         }
-        sound.playBadBuzzer();
-        const parts = [];
-        if (c1 > 0) parts.push(`1円×${c1}`);
-        if (c10 > 0) parts.push(`10円×${c10}`);
-        this.showVersusJammerToast(`💣 お邪魔襲来！ ${parts.join('・')} が財布に追加！`, true);
+
+        // 重厚な被弾ダメージ演出（SE・バイブ・3Dカメラ揺れ・店員ショック・コイン雨・ダメージカットイン）
+        sound.playJammerDamageSE();
+        this.vibrate([80, 40, 120]);
+
+        if (this.scene3D) {
+          this.scene3D.triggerDamageShake(0.45, 0.5);
+          this.scene3D.triggerClerkReaction('shock', 1.45);
+          this.scene3D.spawnJammerCoinRain(c1 || 0, c10 || 0);
+        }
+        this.setClerkComment('bad', `きゃっ！${fromName}さんからお邪魔コインが降ってきました💦`);
+
+        const screenEl = document.getElementById('screen-game');
+        if (screenEl) {
+          screenEl.classList.remove('vs-screen-damage-shake');
+          void screenEl.offsetWidth;
+          screenEl.classList.add('vs-screen-damage-shake');
+          setTimeout(() => screenEl.classList.remove('vs-screen-damage-shake'), 520);
+        }
         const posPanel = document.getElementById('pos-panel');
         if (posPanel) {
           posPanel.classList.remove('animate-shake');
           void posPanel.offsetWidth;
           posPanel.classList.add('animate-shake');
         }
+
+        const parts = [];
+        if (c1 > 0) parts.push(`1円×${c1}`);
+        if (c10 > 0) parts.push(`10円×${c10}`);
+        this.triggerVersusDamageFX(fromName, parts.join('・'), c1 || 0, c10 || 0);
+      }
+
+      triggerVersusDamageFX(fromName, coinText, c1 = 2, c10 = 0) {
+        const layer = document.getElementById('vs-fx-layer');
+        if (!layer) return;
+
+        // 赤フラッシュ
+        const flash = document.createElement('div');
+        flash.className = 'vs-jammer-flash';
+        layer.appendChild(flash);
+        setTimeout(() => flash.remove(), 680);
+
+        // 衝撃波リング
+        const ring = document.createElement('div');
+        ring.className = 'vs-damage-shockwave';
+        layer.appendChild(ring);
+        setTimeout(() => ring.remove(), 650);
+
+        // 被弾ダメージカットイン帯
+        const cutin = document.createElement('div');
+        cutin.className = 'vs-damage-cutin';
+        cutin.innerHTML = `
+          <div class="text-[11px] sm:text-xs font-black text-rose-200 tracking-widest">💥 ${escapeHtml(fromName)} のお邪魔攻撃!! 💥</div>
+          <div class="text-lg sm:text-2xl font-black text-white drop-shadow mt-0.5">💢 DAMAGE! 財布に ${escapeHtml(coinText)} 襲来!!</div>
+        `;
+        layer.appendChild(cutin);
+        setTimeout(() => cutin.remove(), 1200);
+
+        // 財布へ降り注ぐ2Dお邪魔コイン雨
+        const totalDrops = Math.min(12, Math.max(4, (c1 + c10) * 2));
+        for (let i = 0; i < totalDrops; i++) {
+          const isTen = i < c10 * 2;
+          const coin = document.createElement('div');
+          coin.className = `vs-jammer-coin-drop ${isTen ? 'w-9 h-9 bg-amber-700 text-amber-100 text-xs' : 'w-8 h-8 bg-slate-200 text-slate-900 text-[11px]'}`;
+          coin.textContent = isTen ? '10円' : '1円';
+          coin.style.left = `${10 + Math.random() * 80}%`;
+          coin.style.setProperty('--dur', `${(0.68 + Math.random() * 0.42).toFixed(2)}s`);
+          coin.style.animationDelay = `${(i * 0.04).toFixed(2)}s`;
+          layer.appendChild(coin);
+          setTimeout(() => coin.remove(), 1300);
+        }
+      }
+
+      triggerVersusSpecialAttackFX(comboCount, c1, c10, targetName = '相手') {
+        const layer = document.getElementById('vs-fx-layer');
+        if (!layer) return;
+
+        sound.playJammerSpecialAttackSE(comboCount);
+
+        const skillName = comboCount >= 5
+          ? '💥 極・ジャラジャラ無双!!'
+          : (comboCount >= 3 ? '🔥 端数ブレイカー!!' : '⚡ 小銭スラッシュ!!');
+        const parts = [];
+        if (c1 > 0) parts.push(`1円×${c1}`);
+        if (c10 > 0) parts.push(`10円×${c10}`);
+
+        const flash = document.createElement('div');
+        flash.className = 'vs-special-flash';
+        layer.appendChild(flash);
+        setTimeout(() => flash.remove(), 580);
+
+        const lines = document.createElement('div');
+        lines.className = 'vs-special-speedlines';
+        layer.appendChild(lines);
+        setTimeout(() => lines.remove(), 980);
+
+        const band = document.createElement('div');
+        band.className = 'vs-special-band';
+        band.innerHTML = `
+          <div class="vs-special-title">
+            <div class="text-[10px] sm:text-xs font-black text-cyan-200 tracking-widest uppercase">
+              ✨ SPECIAL JAMMER ATTACK // ${comboCount} COMBO ✨
+            </div>
+            <div class="text-xl sm:text-3xl font-black text-amber-300 drop-shadow-[0_2px_10px_rgba(250,204,21,0.9)] tracking-wide mt-0.5">
+              ${skillName}
+            </div>
+            <div class="text-xs sm:text-sm font-black text-white mt-0.5">
+              🎯 ${escapeHtml(targetName)} へ <span class="text-cyan-300">${escapeHtml(parts.join('・'))}</span> を送り込んだ!!
+            </div>
+          </div>
+        `;
+        layer.appendChild(band);
+        setTimeout(() => band.remove(), 1300);
       }
 
       showVersusJammerToast(text, isIncoming = true) {
         const layer = document.getElementById('vs-fx-layer');
         if (!layer) return;
-        if (isIncoming) {
-          const flash = document.createElement('div');
-          flash.className = 'vs-jammer-flash';
-          layer.appendChild(flash);
-          setTimeout(() => flash.remove(), 580);
-        }
         const toast = document.createElement('div');
         toast.className = `vs-jammer-toast text-xs sm:text-base border-2 shadow-2xl ${
           isIncoming
@@ -8860,7 +10518,7 @@
             billBonusInfo = { savedBills: billSavedCount, bonusPt: billBonusPt };
           }
           this.score += earnedScore;
-          if (this.isVersusRun && this.versus) {
+          if (this.isVersusRun && this.versus && this.perfectCount > 0 && this.perfectCount % 3 === 0) {
             this.versus.sendJammerToOpponent(this.combo);
           }
 
