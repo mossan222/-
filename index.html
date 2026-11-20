@@ -2202,7 +2202,7 @@
           </div>
           <div class="flex items-center justify-between gap-2 text-[11px] font-extrabold">
             <span id="vs-random-members-count" class="text-cyan-300">参加中: 1 / 4人</span>
-            <span id="vs-random-bot-countdown" class="font-digital text-amber-300">残りをbotで埋めるまで 10.0秒</span>
+            <span id="vs-random-bot-countdown" class="font-digital text-amber-300">残りをbotで埋めるまで 20.0秒</span>
           </div>
         </div>
         <p id="vs-random-error" class="hidden text-xs font-bold text-rose-400 mt-1.5"></p>
@@ -2264,7 +2264,7 @@
       <!-- Random Match Bot Auto-Fill Countdown Bar (Shown only in Random Match waiting room) -->
       <div id="vs-room-bot-countdown-bar" class="hidden mb-2.5 bg-amber-950/80 border border-amber-400/80 rounded-xl px-3 py-1.5 flex items-center justify-between gap-2 text-xs font-black">
         <span class="text-amber-200">🤖 自動マッチング待機中</span>
-        <span id="vs-room-bot-countdown-text" class="font-digital text-amber-300">残りをbotで埋めるまで 10.0秒</span>
+        <span id="vs-room-bot-countdown-text" class="font-digital text-amber-300">残りをbotで埋めるまで 20.0秒</span>
       </div>
 
       <!-- Players Box (2〜10人対応) -->
@@ -6067,9 +6067,13 @@
         this.vsResultCooldownRemaining = 0;
         this.vsCanRematch = false;
 
-        // 10秒BOT補充タイマー＆BOTシミュレーション状態
+        // 20秒BOT補充タイマー＆同時押し自動合流＆BOTシミュレーション状態
+        this.BOT_FILL_WAIT_MS = 20000;
         this.botFillTimer = null;
         this.botFillTriggered = false;
+        this.randomMergeTimer = null;
+        this.isMergingRandom = false;
+        this.myRandomSearchOpts = null;
         this.botSimTimer = null;
         this.botStates = {};
         this.botLastJammerSeqs = {};
@@ -6527,11 +6531,16 @@
           clearInterval(this.botFillTimer);
           this.botFillTimer = null;
         }
+        if (this.randomMergeTimer) {
+          clearInterval(this.randomMergeTimer);
+          this.randomMergeTimer = null;
+        }
         if (this.botSimTimer) {
           clearInterval(this.botSimTimer);
           this.botSimTimer = null;
         }
         this.botFillTriggered = false;
+        this.isMergingRandom = false;
         this.botStates = {};
         this.botLastJammerSeqs = {};
         this.lastGlobalBotJammerAt = 0;
@@ -6560,7 +6569,7 @@
           anyCount: Boolean(anyCount),
           anyRule: Boolean(anyRule),
           createdAt: now,
-          botFillDeadline: isRandom ? (now + 10000) : 0,
+          botFillDeadline: isRandom ? (now + this.BOT_FILL_WAIT_MS) : 0,
           status: 'waiting',
           seed: 0,
           startedAt: 0,
@@ -6602,13 +6611,26 @@
         const ref = db.ref('rooms/' + cleanCode);
 
         try {
+          // ★重要：Firebase RTDB の transaction はキャッシュ未取得時に初回 data=null で呼ばれるため、
+          // 事前に once('value') でサーバーから最新ルーム状態を取得してキャッシュを温める
+          const preSnap = await ref.once('value');
+          const preData = preSnap.val();
+          if (!preData) {
+            if (!isRandom) this.showLobbyError(`ルーム「${cleanCode}」が見つかりませんでした。`);
+            return false;
+          }
+          if (preData.status !== 'waiting') {
+            if (!isRandom) this.showLobbyError('このルームはすでに対戦中または終了しています。');
+            return false;
+          }
+
           let assignedSlot = null;
           let failReason = null;
 
           const txRes = await ref.transaction((data) => {
-            if (!data) {
-              failReason = `ルーム「${cleanCode}」が見つかりませんでした。`;
-              return;
+            if (data === null) {
+              // 初回キャッシュ欠損時は null を返してサーバー最新値でのリトライを許可する
+              return null;
             }
             if (data.status !== 'waiting') {
               failReason = 'このルームはすでに対戦中または終了しています。';
@@ -6685,18 +6707,20 @@
             assignedSlot = freeSlot;
             data.players[freeSlot] = this.makeEmptyPlayer(name, false, this.myUid);
 
-            // ランダムマッチ中、新しいプレイヤーが入るたびに10秒BOT補充タイマーをリセット！
+            // ランダムマッチ中、新しいプレイヤーが入るたびに20秒BOT補充タイマーをリセット！
             if (data.isRandom) {
-              data.botFillDeadline = Date.now() + 10000;
+              data.botFillDeadline = Date.now() + this.BOT_FILL_WAIT_MS;
             }
             return data;
           });
 
-          if (!txRes.committed || !assignedSlot) {
+          const committedVal = txRes && txRes.snapshot ? txRes.snapshot.val() : null;
+          if (!txRes.committed || !committedVal || !assignedSlot) {
             if (!isRandom) this.showLobbyError(failReason || '入室に失敗しました。');
             return false;
           }
 
+          this.lastRoomData = committedVal;
           this.attachRoom(cleanCode, assignedSlot, false, ref);
           if (!isRandom) {
             switchScreen('screen-versus-room');
@@ -6779,8 +6803,13 @@
               this.startBotFillCountdownLoop();
               return;
             } else {
-              // 古い・満員のキューは軽く掃除
-              qRef.child(cand.code).remove().catch(() => {});
+              // 部屋が既に消滅・対戦中だった場合のみキューを掃除
+              db.ref('rooms/' + cand.code + '/status').once('value').then((stSnap) => {
+                const st = stSnap.val();
+                if (!st || st !== 'waiting') {
+                  qRef.child(cand.code).remove().catch(() => {});
+                }
+              }).catch(() => {});
             }
           }
 
@@ -6797,6 +6826,15 @@
             return;
           }
           this.queueRoomCode = newCode;
+          const myCreatedAt = Date.now();
+          this.myRandomSearchOpts = {
+            rule,
+            isAnyRule,
+            genMode,
+            targetCount,
+            anyCount,
+            createdAt: myCreatedAt
+          };
           await qRef.child(newCode).set({
             code: newCode,
             hostUid: this.myUid,
@@ -6806,11 +6844,12 @@
             maxPlayers: targetCount,
             anyCount: anyCount,
             currentHumans: 1,
-            createdAt: Date.now(),
-            updatedAt: Date.now()
+            createdAt: myCreatedAt,
+            updatedAt: myCreatedAt
           });
           qRef.child(newCode).onDisconnect().remove();
           this.startBotFillCountdownLoop();
+          this.startRandomAutoMergeLoop();
         } catch (err) {
           console.warn('startRandomMatch error:', err);
           this.cancelRandomSearch();
@@ -6846,6 +6885,82 @@
         }
       }
 
+      startRandomAutoMergeLoop() {
+        if (this.randomMergeTimer) {
+          clearInterval(this.randomMergeTimer);
+          this.randomMergeTimer = null;
+        }
+        this.randomMergeTimer = setInterval(async () => {
+          if (!this.isRandomSearching || !this.isHost || !this.queueRef || !this.roomCode || this.isMergingRandom) return;
+          const d = this.lastRoomData;
+          if (!d || d.status !== 'waiting' || !d.isRandom) {
+            clearInterval(this.randomMergeTimer);
+            this.randomMergeTimer = null;
+            return;
+          }
+          // 既に他の人間が入室していれば合流不要
+          const humans = this.getConnectedHumanEntries(d);
+          if (humans.length >= 2) {
+            clearInterval(this.randomMergeTimer);
+            this.randomMergeTimer = null;
+            return;
+          }
+          const opts = this.myRandomSearchOpts;
+          if (!opts) return;
+
+          this.isMergingRandom = true;
+          try {
+            const snap = await this.queueRef.once('value');
+            const entriesObj = snap.val() || {};
+            const now = Date.now();
+            const olderCandidates = Object.values(entriesObj)
+              .filter((e) => e && e.code && e.code !== this.roomCode && e.hostUid !== this.myUid && (now - (e.createdAt || 0)) < 120000)
+              .filter((e) => {
+                // 同時押しレース回避：作成時刻が古い方（同値ならコードが小さい方）へ合流する
+                const eTime = Number(e.createdAt || 0);
+                if (eTime > opts.createdAt) return false;
+                if (eTime === opts.createdAt && String(e.code) >= String(this.roomCode)) return false;
+
+                const curH = Number(e.currentHumans || 1);
+                const maxP = Number(e.maxPlayers || 4);
+                if (curH >= maxP) return false;
+                if (!opts.isAnyRule) {
+                  const candAnyRule = Boolean(e.anyRule);
+                  if (!candAnyRule && e.vsRule !== opts.rule) return false;
+                }
+                if (opts.anyCount) return true;
+                if (e.anyCount) return curH < opts.targetCount;
+                return maxP === opts.targetCount;
+              })
+              .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+
+            for (const cand of olderCandidates) {
+              if (!this.isRandomSearching) break;
+              const oldRoomRef = this.roomRef;
+              const oldRoomCode = this.roomCode;
+              const qRef = this.queueRef;
+
+              const ok = await this.joinRoomByCode(cand.code, true, opts.targetCount, opts.anyCount, opts.rule, opts.genMode);
+              if (ok) {
+                // 自分の古い仮ルームとキューを削除して合流完了！
+                if (oldRoomCode && oldRoomCode !== cand.code) {
+                  qRef.child(oldRoomCode).remove().catch(() => {});
+                  if (oldRoomRef) oldRoomRef.remove().catch(() => {});
+                }
+                this.queueRoomCode = cand.code;
+                this.syncRandomQueueMeta();
+                clearInterval(this.randomMergeTimer);
+                this.randomMergeTimer = null;
+                break;
+              }
+            }
+          } catch (e) {
+          } finally {
+            this.isMergingRandom = false;
+          }
+        }, 1600);
+      }
+
       startBotFillCountdownLoop() {
         if (this.botFillTimer) {
           clearInterval(this.botFillTimer);
@@ -6862,8 +6977,8 @@
           }
           const maxP = Number((d.settings && d.settings.maxPlayers) || 4);
           const humans = this.getConnectedHumanEntries(d);
-          const deadline = Number(d.botFillDeadline || (Date.now() + 10000));
-          const remMs = Math.max(0, deadline - Date.now());
+          const deadline = Number(d.botFillDeadline || (Date.now() + this.BOT_FILL_WAIT_MS));
+          const remMs = Math.max(0, Math.min(this.BOT_FILL_WAIT_MS, deadline - Date.now()));
           const remSec = (remMs / 1000).toFixed(1);
 
           const lobbyCnt = document.getElementById('vs-random-members-count');
