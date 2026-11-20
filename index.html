@@ -1851,31 +1851,67 @@
 
       <!-- Section 1: Random Match -->
       <div class="bg-gradient-to-r from-violet-950/85 to-slate-800/90 border-2 border-violet-400/70 rounded-2xl p-3.5 mb-3 text-left">
-        <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center justify-between mb-1.5">
           <div class="text-sm sm:text-base font-black text-violet-300">🎲 ランダムマッチ（自動対戦）</div>
-          <span class="text-[10px] font-black bg-violet-400 text-slate-950 px-2 py-0.5 rounded-full">すぐ対戦</span>
+          <span class="text-[10px] font-black bg-violet-400 text-slate-950 px-2 py-0.5 rounded-full">2人の希望から抽選</span>
         </div>
-        <div class="text-[11px] text-slate-300 mb-2">希望の対戦ルールを選んで待機中の相手と自動マッチング！</div>
-        <div class="grid grid-cols-3 gap-1.5 mb-2">
-          <button id="btn-vs-rand-rule-score" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-violet-500 text-slate-950 border-white">
-            🏆 スコア対決
-          </button>
-          <button id="btn-vs-rand-rule-jammer" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
-            💣 お邪魔あり
-          </button>
-          <button id="btn-vs-rand-rule-race" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
-            ⚡ 7人先取
-          </button>
+        <div class="text-[11px] text-slate-300 mb-2.5 leading-snug">
+          あなたの希望ルール・難易度を選択！マッチングした2人が選んだ内容から<strong class="text-amber-300">ランダムに抽選されたルール</strong>で対戦します！
         </div>
-        <div class="text-[10px] font-bold text-slate-400 mb-1">金額の出題方式</div>
-        <div class="grid grid-cols-2 gap-1.5 mb-2.5">
-          <button id="btn-vs-rand-gen-clean" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-emerald-400 text-slate-950 border-white shadow">
-            ✨ 割とお釣りがきれい出るモード
-          </button>
-          <button id="btn-vs-rand-gen-random" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600">
-            🎲 完全ランダム生成
-          </button>
+
+        <div class="space-y-2 mb-3">
+          <div>
+            <div class="text-[10px] font-bold text-slate-400 mb-1">希望の勝敗ルール</div>
+            <div class="grid grid-cols-3 gap-1.5">
+              <button type="button" data-vs-rand-set="vsRule" data-vs-rand-val="score" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">🏆 スコア対決</button>
+              <button type="button" data-vs-rand-set="vsRule" data-vs-rand-val="jammer" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">💣 お邪魔あり</button>
+              <button type="button" data-vs-rand-set="vsRule" data-vs-rand-val="race" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">⚡ 7人先取</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-[10px] font-bold text-slate-400 mb-1">希望の会計ルール</div>
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" data-vs-rand-set="ruleType" data-vs-rand-val="wallet" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">👛 財布の小銭最小</button>
+              <button type="button" data-vs-rand-set="ruleType" data-vs-rand-val="change" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">🪙 お釣り枚数最小</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-[10px] font-bold text-slate-400 mb-1">希望の難易度（全難易度選択OK）</div>
+            <div class="grid grid-cols-4 gap-1.5">
+              <button type="button" data-vs-rand-set="difficulty" data-vs-rand-val="NORMAL" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">🍀 NORMAL</button>
+              <button type="button" data-vs-rand-set="difficulty" data-vs-rand-val="HARD" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">🔥 HARD</button>
+              <button type="button" data-vs-rand-set="difficulty" data-vs-rand-val="EX" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">💀 EX</button>
+              <button type="button" data-vs-rand-set="difficulty" data-vs-rand-val="LUNATIC" class="vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2">🌙 LUNATIC</button>
+            </div>
+          </div>
+
+          <div id="vs-rand-lunatic-tax-row" class="hidden">
+            <div class="text-[10px] font-bold text-slate-400 mb-1">🌙 ルナティック消費税率</div>
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" data-vs-rand-set="lunaticTaxRate" data-vs-rand-val="8" class="vs-rand-opt-btn btn-3d py-1 px-2 rounded-xl font-black text-[10px] sm:text-xs border-2">消費税 8% (×1.08)</button>
+              <button type="button" data-vs-rand-set="lunaticTaxRate" data-vs-rand-val="10" class="vs-rand-opt-btn btn-3d py-1 px-2 rounded-xl font-black text-[10px] sm:text-xs border-2">消費税 10% (×1.10)</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-[10px] font-bold text-slate-400 mb-1">希望の金額の出題方式</div>
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" data-vs-rand-set="priceGenMode" data-vs-rand-val="clean" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">✨ 割とお釣りがきれい出るモード</button>
+              <button type="button" data-vs-rand-set="priceGenMode" data-vs-rand-val="random" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">🎲 完全ランダム生成</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-[10px] font-bold text-slate-400 mb-1">希望のPOSお釣り表示</div>
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" data-vs-rand-set="showChange" data-vs-rand-val="true" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">👁️ お釣り表示あり</button>
+              <button type="button" data-vs-rand-set="showChange" data-vs-rand-val="false" class="vs-rand-opt-btn btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2">🙈 お釣り非表示（暗算）</button>
+            </div>
+          </div>
         </div>
+
         <button id="btn-vs-random-start" class="btn-3d w-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 hover:from-violet-400 hover:to-pink-400 text-white font-black text-sm sm:text-base py-2.5 rounded-xl border-b-4 border-fuchsia-900 shadow-lg">
           🎲 ランダムマッチを探す！
         </button>
@@ -2087,8 +2123,8 @@
         <button id="btn-vs-res-lobby" class="btn-3d bg-slate-700 hover:bg-slate-600 text-fuchsia-300 font-extrabold text-xs sm:text-sm py-2.5 rounded-2xl border-b-4 border-slate-900">
           ⚔️ ロビーへ
         </button>
-        <button id="btn-vs-res-rematch" class="btn-3d col-span-2 sm:col-span-1 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 font-black text-sm py-2.5 rounded-2xl border-b-4 border-emerald-800 shadow-lg">
-          🔄 ルームで再戦
+        <button id="btn-vs-res-rematch" class="btn-3d col-span-2 sm:col-span-1 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 font-black text-sm py-2.5 rounded-2xl border-b-4 border-emerald-800 shadow-lg disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed">
+          🔄 もう一度やる
         </button>
       </div>
     </div>
@@ -5505,16 +5541,26 @@
         this.queueRef = null;
         this.queueRoomCode = null;
         this.isRandomSearching = false;
-        this.selectedRandomRule = 'score';
-        this.selectedRandomGenMode = 'clean';
+        this.randomPrefs = {
+          vsRule: 'score',
+          raceTarget: 7,
+          ruleType: this.game.ruleType || 'wallet',
+          difficulty: 'NORMAL',
+          lunaticTaxRate: 8,
+          priceGenMode: 'clean',
+          showChange: true
+        };
         this.lastRoomData = null;
         this.matchLaunched = false;
         this.resultShown = false;
         this.lastJammerSeq = 0;
         this.finishWaitTimeout = null;
+        this.rematchCooldownInterval = null;
+        this.rematchCooldownRemaining = 0;
         this.jammerSentCount = 0;
 
         this.bindLobbyAndRoomEvents();
+        this.renderRandomPrefsUI();
       }
 
       getDb() {
@@ -5537,44 +5583,65 @@
         };
       }
 
+      renderRandomPrefsUI() {
+        const p = this.randomPrefs;
+        document.querySelectorAll('.vs-rand-opt-btn').forEach((btn) => {
+          const key = btn.getAttribute('data-vs-rand-set');
+          const val = btn.getAttribute('data-vs-rand-val');
+          const active = String(p[key]) === String(val);
+          btn.disabled = this.isRandomSearching;
+          btn.className = `vs-rand-opt-btn btn-3d py-1.5 px-1 rounded-xl font-black text-[10px] sm:text-xs border-2 transition-colors ${
+            active
+              ? 'bg-violet-400 text-slate-950 border-white shadow'
+              : 'bg-slate-800 text-slate-300 border-slate-600 hover:bg-slate-700'
+          } ${this.isRandomSearching ? 'opacity-60 cursor-not-allowed' : ''}`;
+        });
+        const lunRow = document.getElementById('vs-rand-lunatic-tax-row');
+        if (lunRow) lunRow.classList.toggle('hidden', p.difficulty !== 'LUNATIC');
+      }
+
+      pickRandomSettingsFromTwo(hostPref, guestPref) {
+        const hp = { ...this.getDefaultSettings(), ...(hostPref || {}) };
+        const gp = { ...this.getDefaultSettings(), ...(guestPref || hp) };
+        const pick = (a, b) => (Math.random() < 0.5 ? a : b);
+
+        const difficulty = pick(hp.difficulty, gp.difficulty);
+        let lunaticTaxRate = 8;
+        if (difficulty === 'LUNATIC') {
+          if (hp.difficulty === 'LUNATIC' && gp.difficulty !== 'LUNATIC') {
+            lunaticTaxRate = hp.lunaticTaxRate === 10 ? 10 : 8;
+          } else if (gp.difficulty === 'LUNATIC' && hp.difficulty !== 'LUNATIC') {
+            lunaticTaxRate = gp.lunaticTaxRate === 10 ? 10 : 8;
+          } else {
+            lunaticTaxRate = pick(hp.lunaticTaxRate === 10 ? 10 : 8, gp.lunaticTaxRate === 10 ? 10 : 8);
+          }
+        }
+
+        return {
+          vsRule: pick(hp.vsRule, gp.vsRule),
+          raceTarget: 7,
+          ruleType: pick(hp.ruleType, gp.ruleType),
+          difficulty,
+          lunaticTaxRate,
+          priceGenMode: pick(hp.priceGenMode, gp.priceGenMode),
+          showChange: pick(Boolean(hp.showChange), Boolean(gp.showChange)),
+          isRandomDrawn: true
+        };
+      }
+
       bindLobbyAndRoomEvents() {
-        const setRandRule = (rule) => {
-          this.selectedRandomRule = rule;
-          const map = {
-            score: 'btn-vs-rand-rule-score',
-            jammer: 'btn-vs-rand-rule-jammer',
-            race: 'btn-vs-rand-rule-race'
-          };
-          Object.entries(map).forEach(([k, id]) => {
-            const el = document.getElementById(id);
-            if (!el) return;
-            el.className = k === rule
-              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-violet-500 text-slate-950 border-white shadow'
-              : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
+        document.querySelectorAll('.vs-rand-opt-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            if (this.isRandomSearching) return;
+            sound.playClick();
+            const key = btn.getAttribute('data-vs-rand-set');
+            let val = btn.getAttribute('data-vs-rand-val');
+            if (key === 'raceTarget' || key === 'lunaticTaxRate') val = Number(val);
+            if (key === 'showChange') val = (val === 'true');
+            this.randomPrefs[key] = val;
+            this.renderRandomPrefsUI();
           });
-        };
-
-        document.getElementById('btn-vs-rand-rule-score').addEventListener('click', () => { sound.playClick(); setRandRule('score'); });
-        document.getElementById('btn-vs-rand-rule-jammer').addEventListener('click', () => { sound.playClick(); setRandRule('jammer'); });
-        document.getElementById('btn-vs-rand-rule-race').addEventListener('click', () => { sound.playClick(); setRandRule('race'); });
-
-        const setRandGenMode = (mode) => {
-          this.selectedRandomGenMode = mode === 'random' ? 'random' : 'clean';
-          const btnClean = document.getElementById('btn-vs-rand-gen-clean');
-          const btnRandom = document.getElementById('btn-vs-rand-gen-random');
-          if (btnClean) {
-            btnClean.className = this.selectedRandomGenMode === 'clean'
-              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-emerald-400 text-slate-950 border-white shadow'
-              : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
-          }
-          if (btnRandom) {
-            btnRandom.className = this.selectedRandomGenMode === 'random'
-              ? 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-fuchsia-400 text-slate-950 border-white shadow'
-              : 'btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-slate-800 text-slate-300 border-slate-600';
-          }
-        };
-        document.getElementById('btn-vs-rand-gen-clean').addEventListener('click', () => { sound.playClick(); setRandGenMode('clean'); });
-        document.getElementById('btn-vs-rand-gen-random').addEventListener('click', () => { sound.playClick(); setRandGenMode('random'); });
+        });
 
         document.getElementById('btn-vs-lobby-back').addEventListener('click', () => {
           sound.playClick();
@@ -5666,13 +5733,16 @@
         });
 
         document.getElementById('btn-vs-res-rematch').addEventListener('click', () => {
+          if (this.rematchCooldownRemaining > 0) return;
           sound.playClick();
           this.requestRematch();
         });
       }
 
       openLobby() {
+        this.clearRematchCooldown();
         this.game.clearActiveTimers();
+        this.renderRandomPrefsUI();
         this.game.state = 'MODE_SELECT';
         this.game.isVersusRun = false;
         clearSeededRng();
@@ -5722,8 +5792,8 @@
         return String(1000 + Math.floor(Math.random() * 9000));
       }
 
-      makeEmptyPlayer(name) {
-        return {
+      makeEmptyPlayer(name, pref = null) {
+        const obj = {
           uid: this.myUid,
           name: name,
           connected: true,
@@ -5736,9 +5806,11 @@
           failedSuddenDeath: false,
           jammerSentCount: 0
         };
+        if (pref) obj.pref = { ...pref };
+        return obj;
       }
 
-      async createPrivateRoom(isRandom = false, forcedVsRule = null, forcedGenMode = null) {
+      async createPrivateRoom(isRandom = false, forcedPrefs = null) {
         const db = this.getDb();
         if (!db) {
           this.showLobbyError('Firebaseに接続できていません。ネット環境を確認してください。');
@@ -5752,7 +5824,8 @@
         const name = this.getEnteredPlayerName();
         const code = this.generate4DigitCode();
         const ref = db.ref('rooms/' + code);
-        const settings = this.getDefaultSettings(forcedVsRule || 'score', forcedGenMode || 'clean');
+        const hostPrefs = isRandom ? { ...this.getDefaultSettings(), ...(forcedPrefs || this.randomPrefs) } : null;
+        const settings = isRandom ? { ...hostPrefs } : this.getDefaultSettings('score', 'clean');
         const roomData = {
           code,
           isRandom: Boolean(isRandom),
@@ -5763,7 +5836,7 @@
           settings,
           winner: null,
           players: {
-            host: this.makeEmptyPlayer(name)
+            host: this.makeEmptyPlayer(name, hostPrefs)
           },
           jammers: {
             toHost: { seq: 0, c1: 0, c10: 0, fromCombo: 0 },
@@ -5785,7 +5858,7 @@
         }
       }
 
-      async joinRoomByCode(code, isRandom = false) {
+      async joinRoomByCode(code, isRandom = false, guestPrefs = null) {
         const db = this.getDb();
         if (!db) {
           this.showLobbyError('Firebaseに接続できていません。');
@@ -5818,7 +5891,8 @@
             return false;
           }
 
-          const guestObj = this.makeEmptyPlayer(name);
+          const gPref = isRandom ? { ...this.getDefaultSettings(), ...(guestPrefs || this.randomPrefs) } : null;
+          const guestObj = this.makeEmptyPlayer(name, gPref);
           const txRes = await ref.child('players/guest').transaction((cur) => {
             if (cur && cur.connected) return;
             return guestObj;
@@ -5850,14 +5924,14 @@
         this.leaveRoom();
         this.getEnteredPlayerName();
 
-        const rule = this.selectedRandomRule || 'score';
-        const genMode = this.selectedRandomGenMode === 'random' ? 'random' : 'clean';
-        const queueKey = genMode === 'random' ? `${rule}_random` : rule;
-        const qRef = db.ref('versus_queue/' + queueKey);
+        const myPrefs = { ...this.getDefaultSettings(), ...this.randomPrefs };
+        // 全ルール共通キューでマッチングし、成立時に2人の希望からランダム抽選する
+        const qRef = db.ref('versus_queue/random_all');
         this.queueRef = qRef;
         this.isRandomSearching = true;
         document.getElementById('vs-random-searching').classList.remove('hidden');
         document.getElementById('btn-vs-random-start').disabled = true;
+        this.renderRandomPrefsUI();
 
         let matchedCode = null;
         try {
@@ -5871,11 +5945,12 @@
           });
 
           if (matchedCode) {
-            const ok = await this.joinRoomByCode(matchedCode, true);
+            const ok = await this.joinRoomByCode(matchedCode, true, myPrefs);
             if (ok) {
               this.isRandomSearching = false;
               document.getElementById('vs-random-searching').classList.add('hidden');
               document.getElementById('btn-vs-random-start').disabled = false;
+              this.renderRandomPrefsUI();
               switchScreen('screen-versus-room');
               return;
             }
@@ -5884,7 +5959,7 @@
           if (!this.isRandomSearching) return;
 
           // 待機相手がいない場合は自分が待機ルームを作成してキューに登録
-          const newCode = await this.createPrivateRoom(true, rule, genMode);
+          const newCode = await this.createPrivateRoom(true, myPrefs);
           if (!newCode) {
             this.cancelRandomSearch();
             return;
@@ -5913,6 +5988,7 @@
         if (searchBox) searchBox.classList.add('hidden');
         const startBtn = document.getElementById('btn-vs-random-start');
         if (startBtn) startBtn.disabled = false;
+        this.renderRandomPrefsUI();
 
         if (this.queueRef && this.queueRoomCode) {
           const targetCode = this.queueRoomCode;
@@ -5965,7 +6041,46 @@
         ref.on('value', this.roomListener);
       }
 
+      clearRematchCooldown() {
+        if (this.rematchCooldownInterval) {
+          clearInterval(this.rematchCooldownInterval);
+          this.rematchCooldownInterval = null;
+        }
+        this.rematchCooldownRemaining = 0;
+      }
+
+      startRematchCooldown(canRematch) {
+        this.clearRematchCooldown();
+        const rematchBtn = document.getElementById('btn-vs-res-rematch');
+        if (!rematchBtn) return;
+
+        if (!canRematch) {
+          rematchBtn.disabled = true;
+          rematchBtn.textContent = '🔄 もう一度やる';
+          return;
+        }
+
+        this.rematchCooldownRemaining = 2.0;
+        rematchBtn.disabled = true;
+        rematchBtn.textContent = `⏳ もう一度やる (${this.rematchCooldownRemaining.toFixed(1)}s)`;
+
+        this.rematchCooldownInterval = setInterval(() => {
+          this.rematchCooldownRemaining = Math.max(0, +(this.rematchCooldownRemaining - 0.1).toFixed(1));
+          if (this.rematchCooldownRemaining <= 0) {
+            this.clearRematchCooldown();
+            const oppRole = this.myRole === 'host' ? 'guest' : 'host';
+            const opp = this.lastRoomData && this.lastRoomData.players ? this.lastRoomData.players[oppRole] : null;
+            const stillCanRematch = Boolean(this.roomRef && opp && opp.connected !== false);
+            rematchBtn.disabled = !stillCanRematch;
+            rematchBtn.textContent = '🔄 もう一度やる';
+          } else {
+            rematchBtn.textContent = `⏳ もう一度やる (${this.rematchCooldownRemaining.toFixed(1)}s)`;
+          }
+        }, 100);
+      }
+
       detachRoomListeners() {
+        this.clearRematchCooldown();
         if (this.finishWaitTimeout) {
           clearTimeout(this.finishWaitTimeout);
           this.finishWaitTimeout = null;
@@ -6012,20 +6127,22 @@
         const me = data.players ? data.players[this.myRole] : null;
         const opp = data.players ? data.players[oppRole] : null;
 
-        // ランダムマッチでゲストが入室したら自動的に開始する（ホスト側）
+        // ランダムマッチでゲストが入室したら2人の希望からルールを抽選して自動的に開始する（ホスト側）
         if (data.isRandom && data.status === 'waiting' && this.myRole === 'host' && guest && guest.connected) {
           this.isRandomSearching = false;
           const searchBox = document.getElementById('vs-random-searching');
           if (searchBox) searchBox.classList.add('hidden');
           const startBtn = document.getElementById('btn-vs-random-start');
           if (startBtn) startBtn.disabled = false;
+          this.renderRandomPrefsUI();
           if (this.queueRef) {
             this.queueRef.onDisconnect().cancel().catch(() => {});
             this.queueRef.remove().catch(() => {});
             this.queueRef = null;
             this.queueRoomCode = null;
           }
-          this.hostStartMatch();
+          const drawnSettings = this.pickRandomSettingsFromTwo(host && host.pref, guest && guest.pref);
+          this.hostStartMatch(drawnSettings);
           return;
         }
 
@@ -6152,26 +6269,32 @@
         }
       }
 
-      hostStartMatch() {
+      hostStartMatch(overrideSettings = null) {
         if (!this.roomRef || !this.lastRoomData) return;
-        const hostName = this.lastRoomData.players && this.lastRoomData.players.host ? this.lastRoomData.players.host.name : this.game.playerName;
-        const guestName = this.lastRoomData.players && this.lastRoomData.players.guest ? this.lastRoomData.players.guest.name : 'ゲスト';
-        const hostUid = this.lastRoomData.players && this.lastRoomData.players.host ? this.lastRoomData.players.host.uid : this.myUid;
-        const guestUid = this.lastRoomData.players && this.lastRoomData.players.guest ? this.lastRoomData.players.guest.uid : 'guest';
+        const hostObj = this.lastRoomData.players && this.lastRoomData.players.host ? this.lastRoomData.players.host : null;
+        const guestObj = this.lastRoomData.players && this.lastRoomData.players.guest ? this.lastRoomData.players.guest : null;
+        const hostName = hostObj ? hostObj.name : this.game.playerName;
+        const guestName = guestObj ? guestObj.name : 'ゲスト';
+        const hostUid = hostObj ? hostObj.uid : this.myUid;
+        const guestUid = guestObj ? guestObj.uid : 'guest';
 
         const seed = Math.floor(Math.random() * 2147483640) + 1;
-        this.roomRef.update({
+        const payload = {
           status: 'playing',
           seed,
           startedAt: Date.now(),
           winner: null,
-          'players/host': { ...this.makeEmptyPlayer(hostName), uid: hostUid },
-          'players/guest': { ...this.makeEmptyPlayer(guestName), uid: guestUid },
+          'players/host': { ...this.makeEmptyPlayer(hostName, hostObj && hostObj.pref ? hostObj.pref : null), uid: hostUid },
+          'players/guest': { ...this.makeEmptyPlayer(guestName, guestObj && guestObj.pref ? guestObj.pref : null), uid: guestUid },
           jammers: {
             toHost: { seq: 0, c1: 0, c10: 0, fromCombo: 0 },
             toGuest: { seq: 0, c1: 0, c10: 0, fromCombo: 0 }
           }
-        }).catch(() => {});
+        };
+        if (overrideSettings) {
+          payload.settings = overrideSettings;
+        }
+        this.roomRef.update(payload).catch(() => {});
       }
 
       updateOpponentHUD(data, me, opp) {
@@ -6382,17 +6505,15 @@
         fillCard('me', me);
         fillCard('opp', opp);
 
-        const rematchBtn = document.getElementById('btn-vs-res-rematch');
-        if (rematchBtn) {
-          const canRematch = Boolean(this.roomRef && opp && opp.connected !== false);
-          rematchBtn.disabled = !canRematch;
-          rematchBtn.classList.toggle('opacity-50', !canRematch);
-        }
+        const canRematch = Boolean(this.roomRef && opp && opp.connected !== false);
+        this.startRematchCooldown(canRematch);
 
         switchScreen('screen-versus-result');
       }
 
       requestRematch() {
+        if (this.rematchCooldownRemaining > 0) return;
+        this.clearRematchCooldown();
         if (!this.roomRef) {
           this.openLobby();
           return;
@@ -8076,7 +8197,16 @@
         cdOverlay.classList.remove('hidden');
         cdOverlay.classList.add('flex');
 
-        if (isLunatic) {
+        if (this.isVersusRun && this.vsSettings) {
+          const vs = this.vsSettings;
+          const vsRuleLabel = vs.vsRule === 'jammer' ? '💣お邪魔あり' : (vs.vsRule === 'race' ? `⚡${vs.raceTarget || 7}人先取` : '🏆スコア対決');
+          const accLabel = this.ruleType === 'change' ? '🪙お釣り最小' : '👛財布最小';
+          const diffLabel = isLunatic ? `🌙LUNATIC(${taxRate}%)` : (isEx ? '💀EX' : (isHard ? '🔥HARD' : '🍀NORMAL'));
+          const genLabel = this.priceGenMode === 'random' ? '🎲完全ランダム' : '✨きれい出る';
+          const chLabel = this.showChangeDisplay ? '👁️お釣り表示あり' : '🙈暗算';
+          cdSubLabel.textContent = vs.isRandomDrawn ? '🎲 2人の希望から抽選されたルール！' : '⚔️ ONLINE VERSUS BATTLE';
+          cdRuleHint.innerHTML = `<span class="text-amber-300 font-black">${vsRuleLabel}</span> ／ ${accLabel} ／ <span class="text-cyan-300 font-black">${diffLabel}</span> ／ ${genLabel} ／ ${chLabel}`;
+        } else if (isLunatic) {
           cdSubLabel.textContent = `🌙 LUNATIC MODE (TAX ${taxRate}%)`;
           cdRuleHint.innerHTML = `表示は<span class="text-amber-300 font-bold">本体価格（税抜）</span>のみ！<span class="text-rose-300 font-bold">×${taxMultStr}（小数点以下切り捨て）</span>の税込金額で会計しよう！`;
         } else if (isEx) {
