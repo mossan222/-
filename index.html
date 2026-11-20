@@ -1124,7 +1124,7 @@
       </div>
 
       <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800">
-        <span class="text-[11px] text-slate-400">💡 PCキーボード操作対応（1-3 / Q-Y / Enter）</span>
+        <span class="text-[11px] text-slate-400">💡 PCキー対応（W-L出し / U-,戻し / Space会計 / B全戻し）</span>
         <div class="flex items-center gap-1.5">
           <button id="btn-mode-keyconfig" class="btn-3d bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-400/60 text-xs font-extrabold px-2.5 py-1.5 rounded-xl">
             ⌨️ キー設定
@@ -1982,12 +1982,12 @@
           <button id="btn-reset-tray" class="btn-3d bg-slate-700 hover:bg-slate-600 active:bg-slate-800 text-slate-100 font-extrabold text-xs sm:text-base py-2.5 sm:py-3 px-3.5 sm:px-5 rounded-2xl border-b-4 border-slate-900 shadow-lg flex items-center justify-center gap-1.5 shrink-0">
             <span>↩️</span>
             <span>全戻し</span>
-            <span id="key-hint-reset" class="hidden sm:inline-block font-digital text-[10px] font-black px-1.5 py-0.5 rounded bg-slate-900/90 text-slate-200 border border-slate-500 leading-none">BS</span>
+            <span id="key-hint-reset" class="hidden sm:inline-block font-digital text-[10px] font-black px-1.5 py-0.5 rounded bg-slate-900/90 text-slate-200 border border-slate-500 leading-none">B</span>
           </button>
 
           <button id="btn-checkout" class="btn-3d flex-1 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-base sm:text-xl py-2.5 sm:py-3 px-4 rounded-2xl border-b-4 border-amber-800 shadow-xl flex items-center justify-center gap-2">
             <span>🔔 お会計！（決定）</span>
-            <span id="key-hint-checkout" class="hidden sm:inline-block font-digital text-xs font-black px-2 py-0.5 rounded-md bg-slate-950/85 text-amber-300 border border-amber-300/70 leading-none">Enter</span>
+            <span id="key-hint-checkout" class="hidden sm:inline-block font-digital text-xs font-black px-2 py-0.5 rounded-md bg-slate-950/85 text-amber-300 border border-amber-300/70 leading-none">Space</span>
           </button>
         </div>
       </div>
@@ -2604,34 +2604,52 @@
     const RANKING_KEY_LUNATIC_10_10          = 'pittariman_ranking_lunatic_10p_10s';
     const RANKING_KEY_LUNATIC_10_15          = 'pittariman_ranking_lunatic_10p_15s';
     const PLAYER_NAME_STORAGE_KEY            = 'pittariman_player_name_v3';
-    const KEY_CONFIG_STORAGE_KEY             = 'pittariman_key_config_v1';
+    const KEY_CONFIG_STORAGE_KEY             = 'pittariman_key_config_v2';
 
     const DEFAULT_KEY_BINDINGS = {
-      '10000': 'Digit1',
-      '5000': 'Digit2',
-      '1000': 'Digit3',
-      '500': 'KeyQ',
-      '100': 'KeyW',
-      '50': 'KeyE',
-      '10': 'KeyR',
-      '5': 'KeyT',
-      '1': 'KeyY',
-      'checkout': 'Enter',
-      'reset': 'Backspace'
+      '10000': 'KeyW',
+      '5000': 'KeyE',
+      '1000': 'KeyR',
+      '500': 'KeyS',
+      '100': 'KeyD',
+      '50': 'KeyF',
+      '10': 'KeyJ',
+      '5': 'KeyK',
+      '1': 'KeyL',
+      'ret_10000': 'KeyU',
+      'ret_5000': 'KeyI',
+      'ret_1000': 'KeyO',
+      'ret_500': 'KeyX',
+      'ret_100': 'KeyC',
+      'ret_50': 'KeyV',
+      'ret_10': 'KeyN',
+      'ret_5': 'KeyM',
+      'ret_1': 'Comma',
+      'checkout': 'Space',
+      'reset': 'KeyB'
     };
 
     const KEY_CONFIG_ITEMS = [
-      { action: '10000', label: '💴 10,000円札', group: '紙幣' },
-      { action: '5000',  label: '💴 5,000円札',  group: '紙幣' },
-      { action: '1000',  label: '💴 1,000円札',  group: '紙幣' },
-      { action: '500',   label: '🪙 500円玉',    group: '硬貨' },
-      { action: '100',   label: '🪙 100円玉',    group: '硬貨' },
-      { action: '50',    label: '🪙 50円玉',     group: '硬貨' },
-      { action: '10',    label: '🪙 10円玉',     group: '硬貨' },
-      { action: '5',     label: '🪙 5円玉',      group: '硬貨' },
-      { action: '1',     label: '🪙 1円玉',      group: '硬貨' },
-      { action: 'checkout', label: '🔔 お会計！（決定）', group: '操作' },
-      { action: 'reset',    label: '↩️ 全戻し',           group: '操作' }
+      { action: '10000',     label: '💴 10,000円札を出す', group: 'お金出し' },
+      { action: '5000',      label: '💴 5,000円札を出す',  group: 'お金出し' },
+      { action: '1000',      label: '💴 1,000円札を出す',  group: 'お金出し' },
+      { action: '500',       label: '🪙 500円玉を出す',    group: 'お金出し' },
+      { action: '100',       label: '🪙 100円玉を出す',    group: 'お金出し' },
+      { action: '50',        label: '🪙 50円玉を出す',     group: 'お金出し' },
+      { action: '10',        label: '🪙 10円玉を出す',     group: 'お金出し' },
+      { action: '5',         label: '🪙 5円玉を出す',      group: 'お金出し' },
+      { action: '1',         label: '🪙 1円玉を出す',      group: 'お金出し' },
+      { action: 'ret_10000', label: '↩️ 10,000円札を戻す', group: 'お金戻し' },
+      { action: 'ret_5000',  label: '↩️ 5,000円札を戻す',  group: 'お金戻し' },
+      { action: 'ret_1000',  label: '↩️ 1,000円札を戻す',  group: 'お金戻し' },
+      { action: 'ret_500',   label: '↩️ 500円玉を戻す',    group: 'お金戻し' },
+      { action: 'ret_100',   label: '↩️ 100円玉を戻す',    group: 'お金戻し' },
+      { action: 'ret_50',    label: '↩️ 50円玉を戻す',     group: 'お金戻し' },
+      { action: 'ret_10',    label: '↩️ 10円玉を戻す',     group: 'お金戻し' },
+      { action: 'ret_5',     label: '↩️ 5円玉を戻す',      group: 'お金戻し' },
+      { action: 'ret_1',     label: '↩️ 1円玉を戻す',      group: 'お金戻し' },
+      { action: 'checkout',  label: '🔔 お会計！（決定）', group: '操作' },
+      { action: 'reset',     label: '↩️ 全戻し',           group: '操作' }
     ];
 
     function normalizeKeyEventCode(e) {
@@ -2642,6 +2660,8 @@
       }
       if (!e.key || e.key === 'Unidentified') return '';
       if (e.key === ' ') return 'Space';
+      if (e.key === ',') return 'Comma';
+      if (e.key === '.') return 'Period';
       if (e.key.length === 1) {
         const up = e.key.toUpperCase();
         if (up >= 'A' && up <= 'Z') return 'Key' + up;
@@ -8830,7 +8850,7 @@
         this.renderKeyConfigModal();
         const msgEl = document.getElementById('keyconfig-status-msg');
         if (msgEl) {
-          msgEl.innerHTML = '✅ <span class="text-emerald-300 font-black">初期設定に戻しました！</span>（1-3: 紙幣 / Q-Y: 硬貨 / Enter: お会計 / BS: 全戻し）';
+          msgEl.innerHTML = '✅ <span class="text-emerald-300 font-black">初期設定に戻しました！</span>（出し: W-L / 戻し: U-, / 会計: Space / 全戻し: B）';
         }
       }
 
@@ -9014,6 +9034,11 @@
             this.handleCheckout();
           } else if (matchedAction === 'reset') {
             this.returnAllTrayToWallet();
+          } else if (matchedAction.startsWith('ret_')) {
+            const denom = Number(matchedAction.slice(4));
+            if (ALL_DENOMS.includes(denom)) {
+              this.removeDenomFromTray(denom);
+            }
           } else {
             const denom = Number(matchedAction);
             if (ALL_DENOMS.includes(denom)) {
@@ -11917,10 +11942,11 @@
           wrap.appendChild(addBtn);
 
           if (inTray > 0) {
+            const retBillKeyLabel = escapeHtml(formatKeyCodeLabel(this.keyBindings['ret_' + d]));
             const subBtn = document.createElement('button');
-            subBtn.className = 'btn-3d bg-rose-600 hover:bg-rose-500 text-white text-[9px] sm:text-[10px] font-black px-1.5 py-2 rounded-lg border-b-2 border-rose-900 shadow shrink-0';
-            subBtn.title = 'トレイから1枚戻す';
-            subBtn.textContent = `-${inTray}`;
+            subBtn.className = 'btn-3d bg-rose-600 hover:bg-rose-500 text-white text-[9px] sm:text-[10px] font-black px-1.5 py-1.5 rounded-lg border-b-2 border-rose-900 shadow shrink-0 leading-tight';
+            subBtn.title = `トレイから1枚戻す (${retBillKeyLabel})`;
+            subBtn.innerHTML = `<div>-${inTray}</div><div class="hidden sm:block font-digital text-[8px] text-rose-100/90">[${retBillKeyLabel}]</div>`;
             subBtn.addEventListener('click', () => this.removeDenomFromTray(d));
             wrap.appendChild(subBtn);
           }
@@ -11959,9 +11985,11 @@
           col.appendChild(btn);
 
           if (inTray > 0) {
+            const retCoinKeyLabel = escapeHtml(formatKeyCodeLabel(this.keyBindings['ret_' + d]));
             const retBtn = document.createElement('button');
             retBtn.className = 'btn-3d w-full bg-rose-600/90 hover:bg-rose-500 text-white text-[9px] sm:text-[10px] font-black py-0.5 rounded-lg border border-rose-300/40 shadow';
-            retBtn.textContent = `出${inTray} ↩`;
+            retBtn.title = `トレイから1枚戻す (${retCoinKeyLabel})`;
+            retBtn.innerHTML = `出${inTray} ↩<span class="hidden sm:inline font-digital text-[9px] text-rose-100 ml-0.5">[${retCoinKeyLabel}]</span>`;
             retBtn.addEventListener('click', () => this.removeDenomFromTray(d));
             col.appendChild(retBtn);
           } else {
