@@ -830,6 +830,9 @@
           <button id="btn-title-keyconfig" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-sky-400/70 text-[10px] sm:text-[11px] font-black px-2 py-1 rounded-xl text-sky-300 flex items-center gap-1" title="PCキーボード操作のキー設定変更">
             <span>⌨️</span><span>キー設定</span>
           </button>
+          <button id="btn-title-stats" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-emerald-400/70 text-[10px] sm:text-[11px] font-black px-2 py-1 rounded-xl text-emerald-300 flex items-center gap-1" title="マイ戦績・弱点分析を見る">
+            <span>📊</span><span>戦績</span>
+          </button>
         </div>
       </div>
 
@@ -1129,6 +1132,9 @@
       <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800">
         <span class="text-[11px] text-slate-400">💡 PCキー対応（W-L出し / U-,戻し / Space会計 / B全戻し）</span>
         <div class="flex items-center gap-1.5">
+          <button id="btn-mode-stats" class="btn-3d bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-400/60 text-xs font-extrabold px-2.5 py-1.5 rounded-xl">
+            📊 戦績・分析
+          </button>
           <button id="btn-mode-keyconfig" class="btn-3d bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-400/60 text-xs font-extrabold px-2.5 py-1.5 rounded-xl">
             ⌨️ キー設定
           </button>
@@ -1969,22 +1975,15 @@
 
     <!-- BOTTOM WALLET & ACTION CONTROLS -->
     <footer class="w-full max-w-3xl mx-auto pointer-events-auto">
-      <!-- VERSUS JAMMER MODE HP BAR + LEFT(HEAL) / RIGHT(STUN) ITEM BUTTONS -->
+      <!-- VERSUS JAMMER MODE HP BAR + 3 ITEM BUTTONS (HEAL / STUN / CRASH) -->
       <div id="vs-hp-bar-wrap" class="hidden px-2 sm:px-4 mb-1.5 pointer-events-none">
-        <div class="max-w-2xl mx-auto flex items-stretch justify-center gap-1.5 sm:gap-2">
-          <!-- Left: Heal Item Button (+100 HP) -->
-          <button id="btn-vs-item-heal" type="button" disabled class="hidden pointer-events-auto btn-3d shrink-0 w-[86px] sm:w-[116px] bg-gradient-to-b from-emerald-500 to-teal-700 hover:from-emerald-400 hover:to-teal-600 text-white rounded-2xl border-2 border-emerald-300 px-1.5 py-1 shadow-lg flex flex-col items-center justify-center leading-tight disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed relative">
-            <span id="key-hint-item-heal" class="hidden sm:inline-block absolute -top-2 -left-1.5 font-digital text-[9px] font-black px-1.5 py-0.5 rounded bg-slate-950 text-emerald-300 border border-emerald-400 leading-none">G</span>
-            <div class="text-[11px] sm:text-xs font-black flex items-center gap-0.5"><span>💚</span><span>回復</span><span id="vs-item-heal-uses" class="text-[9px] px-1 rounded bg-slate-950/70 text-emerald-200">残3</span></div>
-            <div id="vs-item-heal-sub" class="text-[9px] sm:text-[10px] font-extrabold text-emerald-100 mt-0.5">あと3回神</div>
-          </button>
-
-          <!-- Center: HP Bar -->
-          <div id="vs-hp-bar-card" class="flex-1 min-w-0 max-w-md bg-slate-950/90 backdrop-blur-md border-2 border-emerald-400/80 rounded-2xl px-2.5 sm:px-3 py-1.5 shadow-[0_4px_18px_rgba(0,0,0,0.75)] relative flex flex-col justify-center">
+        <div class="max-w-2xl mx-auto space-y-1">
+          <!-- Row 1: HP Bar -->
+          <div id="vs-hp-bar-card" class="max-w-md mx-auto bg-slate-950/90 backdrop-blur-md border-2 border-emerald-400/80 rounded-2xl px-2.5 sm:px-3 py-1 shadow-[0_4px_18px_rgba(0,0,0,0.75)] relative flex flex-col justify-center">
             <div class="flex items-center justify-between gap-1.5 mb-1 leading-none">
               <div class="flex items-center gap-1 min-w-0">
                 <span class="text-xs sm:text-sm shrink-0">❤️</span>
-                <span class="text-[10px] sm:text-xs font-black text-white tracking-wider shrink-0">HP</span>
+                <span class="text-[10px] sm:text-xs font-black text-white tracking-wider shrink-0">YOUR HP</span>
                 <span id="vs-hp-zone-atk-badge" class="hidden text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded-full bg-gradient-to-r from-fuchsia-500 to-amber-400 text-slate-950 animate-pulse shrink-0">⚡×1.5</span>
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
@@ -1997,12 +1996,29 @@
             </div>
           </div>
 
-          <!-- Right: Stun Item Button (100 DMG + 2s Stun) -->
-          <button id="btn-vs-item-stun" type="button" disabled class="hidden pointer-events-auto btn-3d shrink-0 w-[86px] sm:w-[116px] bg-gradient-to-b from-amber-400 to-orange-600 hover:from-amber-300 hover:to-orange-500 text-slate-950 rounded-2xl border-2 border-yellow-200 px-1.5 py-1 shadow-lg flex flex-col items-center justify-center leading-tight disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed relative">
-            <span id="key-hint-item-stun" class="hidden sm:inline-block absolute -top-2 -right-1.5 font-digital text-[9px] font-black px-1.5 py-0.5 rounded bg-slate-950 text-amber-300 border border-amber-400 leading-none">H</span>
-            <div class="text-[11px] sm:text-xs font-black flex items-center gap-0.5"><span>⚡</span><span>スタン</span><span id="vs-item-stun-uses" class="text-[9px] px-1 rounded bg-slate-950/80 text-amber-300">残3</span></div>
-            <div id="vs-item-stun-sub" class="text-[9px] sm:text-[10px] font-extrabold text-slate-900 mt-0.5">あと3回神</div>
-          </button>
+          <!-- Row 2: 3 Item Buttons (Heal / Stun / Exchange Crash) -->
+          <div id="vs-items-row" class="hidden max-w-md mx-auto grid grid-cols-3 gap-1.5">
+            <!-- Heal (+100 HP) -->
+            <button id="btn-vs-item-heal" type="button" disabled class="hidden pointer-events-auto btn-3d bg-gradient-to-b from-emerald-500 to-teal-700 hover:from-emerald-400 hover:to-teal-600 text-white rounded-xl border-2 border-emerald-300 px-1.5 py-1 shadow-lg flex flex-col items-center justify-center leading-tight disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed relative">
+              <span id="key-hint-item-heal" class="hidden sm:inline-block absolute -top-2 -left-1 font-digital text-[9px] font-black px-1.5 py-0.5 rounded bg-slate-950 text-emerald-300 border border-emerald-400 leading-none">G</span>
+              <div class="text-[10px] sm:text-xs font-black flex items-center gap-0.5"><span>💚</span><span>回復</span><span id="vs-item-heal-uses" class="text-[9px] px-1 rounded bg-slate-950/70 text-emerald-200">残3</span></div>
+              <div id="vs-item-heal-sub" class="text-[9px] sm:text-[10px] font-extrabold text-emerald-100 mt-0.5">あと3回神</div>
+            </button>
+
+            <!-- Stun (100 DMG + 2s Stun) -->
+            <button id="btn-vs-item-stun" type="button" disabled class="hidden pointer-events-auto btn-3d bg-gradient-to-b from-amber-400 to-orange-600 hover:from-amber-300 hover:to-orange-500 text-slate-950 rounded-xl border-2 border-yellow-200 px-1.5 py-1 shadow-lg flex flex-col items-center justify-center leading-tight disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed relative">
+              <span id="key-hint-item-stun" class="hidden sm:inline-block absolute -top-2 -left-1 font-digital text-[9px] font-black px-1.5 py-0.5 rounded bg-slate-950 text-amber-300 border border-amber-400 leading-none">H</span>
+              <div class="text-[10px] sm:text-xs font-black flex items-center gap-0.5"><span>⚡</span><span>スタン</span><span id="vs-item-stun-uses" class="text-[9px] px-1 rounded bg-slate-950/80 text-amber-300">残3</span></div>
+              <div id="vs-item-stun-sub" class="text-[9px] sm:text-[10px] font-extrabold text-slate-900 mt-0.5">あと3回神</div>
+            </button>
+
+            <!-- Exchange Crash (Break 500/100 into 10/1 coins) -->
+            <button id="btn-vs-item-crash" type="button" disabled class="hidden pointer-events-auto btn-3d bg-gradient-to-b from-fuchsia-500 to-purple-800 hover:from-fuchsia-400 hover:to-purple-700 text-white rounded-xl border-2 border-fuchsia-300 px-1.5 py-1 shadow-lg flex flex-col items-center justify-center leading-tight disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed relative">
+              <span id="key-hint-item-crash" class="hidden sm:inline-block absolute -top-2 -right-1 font-digital text-[9px] font-black px-1.5 py-0.5 rounded bg-slate-950 text-fuchsia-300 border border-fuchsia-400 leading-none">Y</span>
+              <div class="text-[10px] sm:text-xs font-black flex items-center gap-0.5"><span>🔨</span><span>両替崩し</span><span id="vs-item-crash-uses" class="text-[9px] px-1 rounded bg-slate-950/75 text-fuchsia-200">残3</span></div>
+              <div id="vs-item-crash-sub" class="text-[9px] sm:text-[10px] font-extrabold text-fuchsia-100 mt-0.5">あと3回神</div>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -2098,6 +2114,19 @@
             <span id="res-mistake-arrow" class="shrink-0">▼</span>
           </button>
           <div id="res-mistake-list" class="hidden mt-1.5 max-h-48 overflow-y-auto custom-scroll space-y-1.5 text-[10px] sm:text-[11px] leading-relaxed text-slate-800 pr-1 pb-1"></div>
+        </div>
+
+        <!-- Receipt PNG Save / Copy & Stats Actions -->
+        <div class="mt-2 pt-1.5 border-t border-dashed border-slate-400 grid grid-cols-3 gap-1.5">
+          <button id="btn-res-receipt-save" type="button" class="btn-3d bg-slate-800 hover:bg-slate-700 text-amber-300 font-black text-[10px] sm:text-[11px] py-1.5 px-1.5 rounded-lg flex items-center justify-center gap-1 shadow">
+            <span>📷</span><span>画像保存</span>
+          </button>
+          <button id="btn-res-receipt-copy" type="button" class="btn-3d bg-sky-600 hover:bg-sky-500 text-white font-black text-[10px] sm:text-[11px] py-1.5 px-1.5 rounded-lg flex items-center justify-center gap-1 shadow">
+            <span>📋</span><span>画像コピー</span>
+          </button>
+          <button id="btn-res-open-stats" type="button" class="btn-3d bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] sm:text-[11px] py-1.5 px-1.5 rounded-lg flex items-center justify-center gap-1 shadow">
+            <span>📊</span><span>弱点分析</span>
+          </button>
         </div>
       </div>
 
@@ -2251,7 +2280,7 @@
             🎲 完全ランダム生成
           </button>
         </div>
-        <div class="text-[10px] font-bold text-slate-400 mb-1">🎁 アイテム（HPお邪魔モード用：回復・スタン）</div>
+        <div class="text-[10px] font-bold text-slate-400 mb-1">🎁 アイテム（HPお邪魔モード用：回復・スタン・両替崩し）</div>
         <div class="grid grid-cols-2 gap-1.5 mb-2.5">
           <button id="btn-vs-rand-items-on" type="button" class="btn-3d py-1.5 px-1.5 rounded-xl font-black text-[10px] sm:text-xs border-2 bg-amber-400 text-slate-950 border-white shadow">
             🎁 アイテムあり
@@ -2419,7 +2448,7 @@
 
         <!-- 1c. Jammer Items ON/OFF (Only when jammer selected) -->
         <div id="vs-jammer-items-row" class="hidden">
-          <div class="text-[10px] font-bold text-slate-400 mb-1">🎁 アイテム（回復+100 / スタン100DMG+2秒痺れ）</div>
+          <div class="text-[10px] font-bold text-slate-400 mb-1">🎁 アイテム（回復+100 / スタン100+2s / 両替クラッシュ）</div>
           <div class="grid grid-cols-2 gap-1.5">
             <button data-vs-set="itemsEnabled" data-vs-val="true" class="vs-opt-btn btn-3d py-1 px-2 rounded-xl text-[11px] font-black border-2">🎁 アイテムあり</button>
             <button data-vs-set="itemsEnabled" data-vs-val="false" class="vs-opt-btn btn-3d py-1 px-2 rounded-xl text-[11px] font-black border-2">🚫 アイテムなし</button>
@@ -2474,6 +2503,22 @@
         </div>
       </div>
 
+      <!-- Quick Stamps (Waiting Room) -->
+      <div class="bg-slate-950/85 border border-fuchsia-500/40 rounded-2xl p-2.5 mb-3 text-left">
+        <div class="flex items-center justify-between gap-2 mb-1.5">
+          <span class="text-[10px] font-black text-fuchsia-300">💬 クイックスタンプ</span>
+          <span id="vs-room-stamp-latest" class="text-[10px] font-bold text-cyan-200 truncate">スタンプで挨拶しよう！</span>
+        </div>
+        <div class="grid grid-cols-3 gap-1">
+          <button type="button" data-vs-stamp="👋 よろしく！" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">👋 よろしく！</button>
+          <button type="button" data-vs-stamp="✨ ナイス神会計！" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-200 text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">✨ ナイス神会計！</button>
+          <button type="button" data-vs-stamp="🔥 もう一戦！" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-orange-300 text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">🔥 もう一戦！</button>
+          <button type="button" data-vs-stamp="😱 強すぎ…" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-rose-300 text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">😱 強すぎ…</button>
+          <button type="button" data-vs-stamp="😂 ヤバい！" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-cyan-200 text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">😂 ヤバい！</button>
+          <button type="button" data-vs-stamp="🙏 ありがとう！" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-emerald-300 text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">🙏 ありがとう！</button>
+        </div>
+      </div>
+
       <!-- Start / Host-Only Bot Fill Start Buttons -->
       <div class="space-y-2">
         <button id="btn-vs-start-match" disabled class="btn-3d w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-black text-base sm:text-lg py-3 rounded-2xl border-b-4 border-emerald-800 shadow-xl disabled:opacity-45 disabled:grayscale disabled:cursor-not-allowed">
@@ -2514,7 +2559,33 @@
         <div id="vs-res-mistake-list" class="hidden mt-2 max-h-48 overflow-y-auto custom-scroll space-y-1.5 text-[10px] sm:text-[11px] leading-relaxed text-slate-100 pr-1 pb-1"></div>
       </div>
 
-      <div class="text-[11px] font-bold text-slate-400 bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-2 mb-4">
+      <!-- Quick Stamps (Versus Result) -->
+      <div class="bg-slate-950/90 border border-fuchsia-500/45 rounded-2xl p-2.5 mb-2.5 text-left">
+        <div class="flex items-center justify-between gap-2 mb-1.5">
+          <span class="text-[10px] font-black text-fuchsia-300">💬 クイックスタンプ</span>
+          <span id="vs-res-stamp-latest" class="text-[10px] font-bold text-cyan-200 truncate">お疲れさまでした！</span>
+        </div>
+        <div class="grid grid-cols-3 gap-1">
+          <button type="button" data-vs-stamp="👋 よろしく！" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">👋 よろしく！</button>
+          <button type="button" data-vs-stamp="✨ ナイス神会計！" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-200 text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">✨ ナイス神会計！</button>
+          <button type="button" data-vs-stamp="🔥 もう一戦！" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-orange-300 text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">🔥 もう一戦！</button>
+          <button type="button" data-vs-stamp="😱 強すぎ…" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-rose-300 text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">😱 強すぎ…</button>
+          <button type="button" data-vs-stamp="😂 ヤバい！" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-cyan-200 text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">😂 ヤバい！</button>
+          <button type="button" data-vs-stamp="🙏 ありがとう！" class="vs-stamp-btn btn-3d bg-slate-800 hover:bg-slate-700 border border-slate-600 text-emerald-300 text-[10px] sm:text-[11px] font-black py-1 px-1 rounded-lg">🙏 ありがとう！</button>
+        </div>
+      </div>
+
+      <!-- Versus Result Receipt PNG Export -->
+      <div class="grid grid-cols-2 gap-2 mb-2.5">
+        <button id="btn-vs-receipt-save" type="button" class="btn-3d bg-slate-800 hover:bg-slate-700 border border-amber-400/70 text-amber-300 font-black text-xs py-2 px-2 rounded-xl flex items-center justify-center gap-1">
+          <span>📷</span><span>対戦レシート保存</span>
+        </button>
+        <button id="btn-vs-receipt-copy" type="button" class="btn-3d bg-sky-600 hover:bg-sky-500 text-white font-black text-xs py-2 px-2 rounded-xl flex items-center justify-center gap-1">
+          <span>📋</span><span>画像をコピー</span>
+        </button>
+      </div>
+
+      <div class="text-[11px] font-bold text-slate-400 bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-1.5 mb-3">
         ※リアルタイム対戦モードのスコアはランキングおよび自己ベスト・解放条件には影響しません。
       </div>
 
@@ -2561,6 +2632,82 @@
         </button>
         <button id="btn-done-keyconfig" type="button" class="btn-3d bg-gradient-to-r from-sky-400 to-cyan-400 hover:from-sky-300 hover:to-cyan-300 text-slate-950 font-black text-xs sm:text-sm px-5 py-2 rounded-xl border-b-4 border-sky-800 shadow">
           ✅ 完了
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL: MY STATS & WEAKNESS ANALYSIS (#modal-stats)
+       ========================================================================= -->
+  <div id="modal-stats" class="fixed inset-0 z-[82] hidden items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md" style="z-index: 82;">
+    <div class="max-w-xl w-full bg-slate-900/95 border-2 border-emerald-400 rounded-3xl p-4 sm:p-6 shadow-2xl max-h-[94vh] overflow-y-auto custom-scroll text-left">
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <span class="text-[10px] font-black text-emerald-400 tracking-wider uppercase">PERSONAL ANALYTICS</span>
+          <h3 class="text-lg sm:text-2xl font-black text-white">📊 マイ戦績・弱点分析</h3>
+        </div>
+        <button id="btn-close-stats" type="button" class="btn-3d bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-extrabold px-3 py-1.5 rounded-xl">
+          ✕ 閉じる
+        </button>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3 text-center">
+        <div class="bg-slate-950/90 border border-slate-700 rounded-2xl p-2.5">
+          <div class="text-[10px] font-bold text-slate-400">平均回答スピード</div>
+          <div id="stats-avg-speed" class="font-digital text-lg sm:text-xl font-black text-cyan-300 mt-0.5">--.-秒/人</div>
+        </div>
+        <div class="bg-slate-950/90 border border-slate-700 rounded-2xl p-2.5">
+          <div class="text-[10px] font-bold text-slate-400">通算PERFECT率</div>
+          <div id="stats-total-perfect-rate" class="font-digital text-lg sm:text-xl font-black text-emerald-300 mt-0.5">--%</div>
+          <div id="stats-total-served" class="text-[9px] text-slate-400 font-bold">0人処理 / 0戦</div>
+        </div>
+        <div class="bg-slate-950/90 border border-slate-700 rounded-2xl p-2.5">
+          <div class="text-[10px] font-bold text-slate-400">オンライン勝率</div>
+          <div id="stats-vs-winrate" class="font-digital text-lg sm:text-xl font-black text-fuchsia-300 mt-0.5">--%</div>
+          <div id="stats-vs-record" class="text-[9px] text-slate-400 font-bold">0勝 0敗 0分</div>
+        </div>
+        <div class="bg-slate-950/90 border border-slate-700 rounded-2xl p-2.5">
+          <div class="text-[10px] font-bold text-slate-400">通算K.O.勝利数</div>
+          <div id="stats-vs-ko" class="font-digital text-lg sm:text-xl font-black text-amber-300 mt-0.5">0回</div>
+          <div class="text-[9px] text-slate-400 font-bold">HPお邪魔バトル</div>
+        </div>
+      </div>
+
+      <!-- PERFECT Rate Trend Chart (Last 15 games) -->
+      <div class="bg-slate-950/90 border border-slate-700 rounded-2xl p-3 mb-3">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-black text-emerald-300">📈 PERFECT率の推移（直近15戦）</span>
+          <span class="text-[10px] text-slate-400 font-bold">右ほど最新</span>
+        </div>
+        <div id="stats-perfect-chart" class="h-28 flex items-end gap-1 pt-2 px-1 border-b border-slate-700"></div>
+      </div>
+
+      <!-- Weakness Digit Breakdown -->
+      <div class="bg-slate-950/90 border border-slate-700 rounded-2xl p-3 mb-3">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-xs font-black text-rose-300">🎯 ミスしやすい桁・硬貨の分析</span>
+          <span id="stats-mistake-total-badge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40">分析対象: 0件</span>
+        </div>
+        <p id="stats-weakness-advice" class="text-[11px] font-bold text-amber-200 mb-2 leading-snug">
+          まだミスログがありません。プレイすると苦手な桁が自動で分析されます！
+        </p>
+        <div id="stats-digit-bars" class="space-y-1.5"></div>
+      </div>
+
+      <!-- Saved Recent Mistakes Log -->
+      <div class="bg-slate-950/90 border border-slate-700 rounded-2xl p-3 mb-3">
+        <div class="text-xs font-black text-sky-300 mb-1.5">📝 直近の保存済みミスログ（最新10件）</div>
+        <div id="stats-recent-mistakes" class="custom-scroll max-h-40 overflow-y-auto space-y-1.5 text-[10px] sm:text-[11px] pr-1"></div>
+      </div>
+
+      <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-800">
+        <button id="btn-stats-reset" type="button" class="btn-3d bg-slate-800 hover:bg-rose-900/70 text-rose-300 border border-rose-500/50 text-xs font-extrabold px-3 py-2 rounded-xl">
+          🗑️ 戦績データをリセット
+        </button>
+        <button id="btn-stats-done" type="button" class="btn-3d bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black text-xs sm:text-sm px-5 py-2 rounded-xl border-b-4 border-emerald-800 shadow">
+          ✅ 閉じる
         </button>
       </div>
     </div>
@@ -2668,7 +2815,7 @@
     const RANKING_KEY_LUNATIC_10_10          = 'pittariman_ranking_lunatic_10p_10s';
     const RANKING_KEY_LUNATIC_10_15          = 'pittariman_ranking_lunatic_10p_15s';
     const PLAYER_NAME_STORAGE_KEY            = 'pittariman_player_name_v3';
-    const KEY_CONFIG_STORAGE_KEY             = 'pittariman_key_config_v3';
+    const KEY_CONFIG_STORAGE_KEY             = 'pittariman_key_config_v4';
 
     const DEFAULT_KEY_BINDINGS = {
       '10000': 'KeyW',
@@ -2692,7 +2839,8 @@
       'checkout': 'Space',
       'reset': 'KeyB',
       'item_heal': 'KeyG',
-      'item_stun': 'KeyH'
+      'item_stun': 'KeyH',
+      'item_crash': 'KeyY'
     };
 
     const KEY_CONFIG_ITEMS = [
@@ -2717,7 +2865,8 @@
       { action: 'checkout',  label: '🔔 お会計！（決定）', group: '操作' },
       { action: 'reset',     label: '↩️ 全戻し',           group: '操作' },
       { action: 'item_heal', label: '💚 回復アイテム (+100HP)', group: '対戦アイテム' },
-      { action: 'item_stun', label: '⚡ スタンアイテム (100DMG+2秒痺れ)', group: '対戦アイテム' }
+      { action: 'item_stun', label: '⚡ スタンアイテム (100DMG+2秒痺れ)', group: '対戦アイテム' },
+      { action: 'item_crash', label: '🔨 両替クラッシュ (500/100円を10/1円に崩す)', group: '対戦アイテム' }
     ];
 
     function normalizeKeyEventCode(e) {
@@ -3525,6 +3674,531 @@
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
+    }
+
+    /*************************************************************************
+     * 3.5. マイ戦績・弱点分析マネージャー (StatsManager)
+     *************************************************************************/
+    const STATS_STORAGE_KEY = 'pittariman_stats_v1';
+
+    class StatsManager {
+      static getEmpty() {
+        return {
+          totalGames: 0,
+          totalServed: 0,
+          totalPerfect: 0,
+          totalAnswerSec: 0,
+          totalAnswersCount: 0,
+          recentRuns: [],
+          vsStats: { played: 0, wins: 0, losses: 0, draws: 0, koWins: 0 },
+          digitMistakes: { 1: 0, 5: 0, 10: 0, 50: 0, 100: 0, 500: 0 },
+          totalMistakesAnalyzed: 0,
+          recentMistakes: []
+        };
+      }
+
+      static load() {
+        try {
+          const raw = localStorage.getItem(STATS_STORAGE_KEY);
+          if (!raw) return StatsManager.getEmpty();
+          const parsed = JSON.parse(raw);
+          const base = StatsManager.getEmpty();
+          return {
+            ...base,
+            ...parsed,
+            vsStats: { ...base.vsStats, ...(parsed.vsStats || {}) },
+            digitMistakes: { ...base.digitMistakes, ...(parsed.digitMistakes || {}) },
+            recentRuns: Array.isArray(parsed.recentRuns) ? parsed.recentRuns : [],
+            recentMistakes: Array.isArray(parsed.recentMistakes) ? parsed.recentMistakes : []
+          };
+        } catch (e) {
+          return StatsManager.getEmpty();
+        }
+      }
+
+      static save(data) {
+        try {
+          localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {}
+      }
+
+      static reset() {
+        StatsManager.save(StatsManager.getEmpty());
+      }
+
+      static analyzeAndAppendMistakes(stats, mistakeLogs) {
+        if (!Array.isArray(mistakeLogs) || mistakeLogs.length === 0) return;
+        const nowStr = RankingManager.formatDateTime(Date.now());
+        mistakeLogs.forEach((m) => {
+          if (!m) return;
+          stats.totalMistakesAnalyzed += 1;
+          const p = Math.max(0, Math.floor(Number(m.price) || 0));
+          const ones = p % 10;
+          const tens = Math.floor(p / 10) % 10;
+          const hundreds = Math.floor(p / 100) % 10;
+          const bd = String(m.bestBreakdown || '');
+
+          if (ones !== 0 || bd.includes('1円×')) {
+            stats.digitMistakes[1] = (stats.digitMistakes[1] || 0) + 1;
+          }
+          if (ones >= 5 || bd.includes('5円×')) {
+            stats.digitMistakes[5] = (stats.digitMistakes[5] || 0) + 1;
+          }
+          if (tens !== 0 || bd.includes('10円×')) {
+            stats.digitMistakes[10] = (stats.digitMistakes[10] || 0) + 1;
+          }
+          if (tens >= 5 || bd.includes('50円×')) {
+            stats.digitMistakes[50] = (stats.digitMistakes[50] || 0) + 1;
+          }
+          if (hundreds !== 0 || bd.includes('100円×')) {
+            stats.digitMistakes[100] = (stats.digitMistakes[100] || 0) + 1;
+          }
+          if (hundreds >= 5 || bd.includes('500円×')) {
+            stats.digitMistakes[500] = (stats.digitMistakes[500] || 0) + 1;
+          }
+
+          stats.recentMistakes.unshift({
+            date: nowStr,
+            grade: m.grade || 'BAD',
+            price: p,
+            paidTotal: m.paidTotal || 0,
+            bestPaid: m.bestPaid || 0,
+            bestBreakdown: bd
+          });
+        });
+        if (stats.recentMistakes.length > 30) {
+          stats.recentMistakes = stats.recentMistakes.slice(0, 30);
+        }
+      }
+
+      static recordSoloRun({ mode, score, served, perfectCount, answerSecSum, answerCount, mistakeLogs }) {
+        const stats = StatsManager.load();
+        const sCount = Math.max(0, Number(served) || 0);
+        const pCount = Math.max(0, Number(perfectCount) || 0);
+        const rate = sCount > 0 ? Math.round((pCount / sCount) * 100) : 0;
+
+        stats.totalGames += 1;
+        stats.totalServed += sCount;
+        stats.totalPerfect += pCount;
+        stats.totalAnswerSec += Math.max(0, Number(answerSecSum) || 0);
+        stats.totalAnswersCount += Math.max(0, Number(answerCount) || 0);
+
+        stats.recentRuns.push({
+          date: RankingManager.formatDateTime(Date.now()),
+          mode: mode || 'NORMAL',
+          perfectRate: rate,
+          score: Number(score) || 0,
+          served: sCount
+        });
+        if (stats.recentRuns.length > 15) {
+          stats.recentRuns = stats.recentRuns.slice(-15);
+        }
+
+        StatsManager.analyzeAndAppendMistakes(stats, mistakeLogs);
+        StatsManager.save(stats);
+      }
+
+      static recordVersusRun({ outcome, isKoWin, mode, score, served, perfectCount, answerSecSum, answerCount, mistakeLogs }) {
+        const stats = StatsManager.load();
+        const sCount = Math.max(0, Number(served) || 0);
+        const pCount = Math.max(0, Number(perfectCount) || 0);
+        const rate = sCount > 0 ? Math.round((pCount / sCount) * 100) : 0;
+
+        stats.totalGames += 1;
+        stats.totalServed += sCount;
+        stats.totalPerfect += pCount;
+        stats.totalAnswerSec += Math.max(0, Number(answerSecSum) || 0);
+        stats.totalAnswersCount += Math.max(0, Number(answerCount) || 0);
+
+        stats.vsStats.played += 1;
+        if (outcome === 'win') {
+          stats.vsStats.wins += 1;
+          if (isKoWin) stats.vsStats.koWins += 1;
+        } else if (outcome === 'draw') {
+          stats.vsStats.draws += 1;
+        } else {
+          stats.vsStats.losses += 1;
+        }
+
+        stats.recentRuns.push({
+          date: RankingManager.formatDateTime(Date.now()),
+          mode: 'VS:' + (mode || 'NORMAL'),
+          perfectRate: rate,
+          score: Number(score) || 0,
+          served: sCount
+        });
+        if (stats.recentRuns.length > 15) {
+          stats.recentRuns = stats.recentRuns.slice(-15);
+        }
+
+        StatsManager.analyzeAndAppendMistakes(stats, mistakeLogs);
+        StatsManager.save(stats);
+      }
+
+      static renderToModal() {
+        const stats = StatsManager.load();
+        const avgSpeedEl = document.getElementById('stats-avg-speed');
+        const perfRateEl = document.getElementById('stats-total-perfect-rate');
+        const totalServedEl = document.getElementById('stats-total-served');
+        const vsWinEl = document.getElementById('stats-vs-winrate');
+        const vsRecEl = document.getElementById('stats-vs-record');
+        const vsKoEl = document.getElementById('stats-vs-ko');
+
+        const avgSec = stats.totalAnswersCount > 0 ? (stats.totalAnswerSec / stats.totalAnswersCount) : null;
+        if (avgSpeedEl) avgSpeedEl.textContent = avgSec !== null ? `${avgSec.toFixed(2)}秒/人` : '--.-秒/人';
+
+        const totalPerfRate = stats.totalServed > 0 ? Math.round((stats.totalPerfect / stats.totalServed) * 100) : null;
+        if (perfRateEl) perfRateEl.textContent = totalPerfRate !== null ? `${totalPerfRate}%` : '--%';
+        if (totalServedEl) totalServedEl.textContent = `${stats.totalServed.toLocaleString()}人処理 / ${stats.totalGames}戦`;
+
+        const vs = stats.vsStats;
+        const vsRate = vs.played > 0 ? Math.round((vs.wins / vs.played) * 100) : null;
+        if (vsWinEl) vsWinEl.textContent = vsRate !== null ? `${vsRate}%` : '--%';
+        if (vsRecEl) vsRecEl.textContent = `${vs.wins}勝 ${vs.losses}敗 ${vs.draws}分`;
+        if (vsKoEl) vsKoEl.textContent = `${vs.koWins}回`;
+
+        const chartEl = document.getElementById('stats-perfect-chart');
+        if (chartEl) {
+          if (stats.recentRuns.length === 0) {
+            chartEl.innerHTML = '<div class="w-full text-center text-xs text-slate-400 font-bold pb-8">まだプレイ履歴がありません</div>';
+          } else {
+            chartEl.innerHTML = stats.recentRuns.map((r, i) => {
+              const hPct = Math.max(8, Math.min(100, Number(r.perfectRate) || 0));
+              const barColor = hPct >= 85
+                ? 'from-emerald-400 to-teal-300'
+                : (hPct >= 60 ? 'from-amber-400 to-yellow-300' : 'from-rose-500 to-orange-400');
+              return `
+                <div class="flex-1 h-full flex flex-col items-center justify-end gap-0.5 min-w-0" title="${escapeHtml(r.date)} (${escapeHtml(r.mode)}) PERFECT率:${r.perfectRate}%">
+                  <span class="font-digital text-[8px] sm:text-[9px] text-slate-300 leading-none">${r.perfectRate}</span>
+                  <div class="w-full max-w-[24px] rounded-t-md bg-gradient-to-t ${barColor} transition-all" style="height: ${Math.round(hPct * 0.78)}%;"></div>
+                  <span class="text-[8px] text-slate-500 font-digital leading-none">${i + 1}</span>
+                </div>
+              `;
+            }).join('');
+          }
+        }
+
+        const badgeEl = document.getElementById('stats-mistake-total-badge');
+        const adviceEl = document.getElementById('stats-weakness-advice');
+        const barsEl = document.getElementById('stats-digit-bars');
+        if (badgeEl) badgeEl.textContent = `分析対象: ${stats.totalMistakesAnalyzed}件`;
+
+        const digitMeta = [
+          { d: 1,   label: '1円単位（端数1〜9円）',    color: 'bg-slate-300' },
+          { d: 5,   label: '5円単位（5〜9円の端数）',  color: 'bg-amber-400' },
+          { d: 10,  label: '10円単位（10〜90円）',     color: 'bg-orange-500' },
+          { d: 50,  label: '50円単位（50〜90円）',     color: 'bg-sky-400' },
+          { d: 100, label: '100円単位（100〜900円）',  color: 'bg-cyan-400' },
+          { d: 500, label: '500円単位（500〜900円）',  color: 'bg-yellow-300' }
+        ];
+        const maxCnt = Math.max(1, ...digitMeta.map((m) => stats.digitMistakes[m.d] || 0));
+        let topDigit = null;
+        let topVal = 0;
+        digitMeta.forEach((m) => {
+          const v = stats.digitMistakes[m.d] || 0;
+          if (v > topVal) {
+            topVal = v;
+            topDigit = m;
+          }
+        });
+
+        if (adviceEl) {
+          if (stats.totalMistakesAnalyzed === 0 || !topDigit) {
+            adviceEl.textContent = 'まだミスログがありません。プレイすると苦手な桁が自動で分析されます！';
+          } else {
+            adviceEl.textContent = `💡 弱点傾向：「${topDigit.label}」が絡む問題でミスが多め（${topVal}回）です！この桁の端数を先に揃える意識をするとPERFECT率が伸びます！`;
+          }
+        }
+
+        if (barsEl) {
+          barsEl.innerHTML = digitMeta.map((m) => {
+            const cnt = stats.digitMistakes[m.d] || 0;
+            const pct = stats.totalMistakesAnalyzed > 0 ? Math.round((cnt / stats.totalMistakesAnalyzed) * 100) : 0;
+            const widthPct = stats.totalMistakesAnalyzed > 0 ? Math.round((cnt / maxCnt) * 100) : 0;
+            return `
+              <div class="flex items-center gap-2 text-[10px] sm:text-xs">
+                <span class="w-36 sm:w-44 shrink-0 font-bold text-slate-200 truncate">${m.label}</span>
+                <div class="flex-1 h-2.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+                  <div class="h-full ${m.color} rounded-full" style="width: ${widthPct}%;"></div>
+                </div>
+                <span class="w-16 text-right font-digital font-bold text-slate-300 shrink-0">${cnt}回 (${pct}%)</span>
+              </div>
+            `;
+          }).join('');
+        }
+
+        const recentEl = document.getElementById('stats-recent-mistakes');
+        if (recentEl) {
+          if (stats.recentMistakes.length === 0) {
+            recentEl.innerHTML = '<div class="text-slate-400 font-bold py-2 text-center">保存済みのミスログはありません 🎉</div>';
+          } else {
+            recentEl.innerHTML = stats.recentMistakes.slice(0, 10).map((m) => `
+              <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-2">
+                <div class="min-w-0 flex-1">
+                  <div class="font-black text-white truncate">
+                    <span class="text-rose-400 mr-1">[${escapeHtml(m.grade)}]</span>請求 ¥${Number(m.price || 0).toLocaleString()} → 支払 ¥${Number(m.paidTotal || 0).toLocaleString()}
+                  </div>
+                  <div class="text-[10px] text-emerald-300 font-bold truncate">
+                    最適解: ¥${Number(m.bestPaid || 0).toLocaleString()} (${escapeHtml(m.bestBreakdown || '---')})
+                  </div>
+                </div>
+                <span class="text-[9px] font-digital text-slate-400 shrink-0">${escapeHtml((m.date || '').slice(5))}</span>
+              </div>
+            `).join('');
+          }
+        }
+      }
+    }
+
+    /*************************************************************************
+     * 3.6. 印刷風レシート PNG画像生成・保存＆クリップボードコピー (ReceiptImageExporter)
+     *************************************************************************/
+    class ReceiptImageExporter {
+      static drawReceiptPaper(ctx, w, h) {
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, w, h);
+
+        const padX = 28;
+        const padY = 24;
+        const rw = w - padX * 2;
+        const rh = h - padY * 2;
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.55)';
+        ctx.shadowBlur = 22;
+        ctx.shadowOffsetY = 8;
+
+        const grad = ctx.createLinearGradient(0, padY, 0, padY + rh);
+        grad.addColorStop(0, '#fffdf7');
+        grad.addColorStop(1, '#f4ede0');
+        ctx.fillStyle = grad;
+
+        ctx.beginPath();
+        const teeth = 26;
+        const step = rw / teeth;
+        ctx.moveTo(padX, padY + 8);
+        for (let i = 0; i < teeth; i++) {
+          ctx.lineTo(padX + i * step + step * 0.5, padY);
+          ctx.lineTo(padX + (i + 1) * step, padY + 8);
+        }
+        ctx.lineTo(padX + rw, padY + rh - 8);
+        for (let i = teeth; i > 0; i--) {
+          ctx.lineTo(padX + i * step - step * 0.5, padY + rh);
+          ctx.lineTo(padX + (i - 1) * step, padY + rh - 8);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+
+        return { padX, padY, rw, rh };
+      }
+
+      static drawDashedLine(ctx, x1, x2, y) {
+        ctx.save();
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([7, 5]);
+        ctx.beginPath();
+        ctx.moveTo(x1, y);
+        ctx.lineTo(x2, y);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      static buildSoloCanvas(info) {
+        const w = 680;
+        const h = 760;
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+
+        const { padX, padY, rw } = ReceiptImageExporter.drawReceiptPaper(ctx, w, h);
+        const left = padX + 34;
+        const right = padX + rw - 34;
+        const cx = w / 2;
+
+        ctx.fillStyle = '#334155';
+        ctx.font = '900 26px "M PLUS Rounded 1c", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('🧾 お会計ピッタリマン RECEIPT', cx, padY + 62);
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '700 16px "Share Tech Mono", monospace';
+        ctx.fillText(`${info.modeLabel}  //  ${info.dateStr}`, cx, padY + 92);
+
+        ReceiptImageExporter.drawDashedLine(ctx, left, right, padY + 114);
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = '900 34px "M PLUS Rounded 1c", sans-serif';
+        ctx.fillText(info.rankTitle || '👑 レジ打ちの神', cx, padY + 166);
+
+        ctx.fillStyle = '#475569';
+        ctx.font = '700 17px "M PLUS Rounded 1c", sans-serif';
+        ctx.fillText((info.rankDesc || '').slice(0, 32), cx, padY + 198);
+
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.roundRect(left, padY + 222, right - left, 118, 16);
+        ctx.fill();
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = '800 16px "M PLUS Rounded 1c", sans-serif';
+        ctx.fillText('FINAL SCORE', cx, padY + 254);
+
+        ctx.font = '900 56px "Share Tech Mono", monospace';
+        ctx.fillText(`${Number(info.score || 0).toLocaleString()} pt`, cx, padY + 314);
+
+        let y = padY + 382;
+        const rows = [
+          ['プレイヤー名', info.playerName || 'ゲスト'],
+          ['処理人数', `${info.customers} 人`],
+          ['PERFECT率', `${info.perfectRate}%`],
+          ['平均回答スピード', info.avgSpeedStr || '--.-秒/人'],
+          ['ミス回数', `${info.mistakeCount} 回`],
+          ['ランキング結果', info.rankBadge || 'フリープレイ']
+        ];
+        rows.forEach(([k, v]) => {
+          ctx.textAlign = 'left';
+          ctx.fillStyle = '#475569';
+          ctx.font = '700 20px "M PLUS Rounded 1c", sans-serif';
+          ctx.fillText(k, left + 8, y);
+
+          ctx.textAlign = 'right';
+          ctx.fillStyle = '#0f172a';
+          ctx.font = '900 22px "M PLUS Rounded 1c", sans-serif';
+          ctx.fillText(String(v), right - 8, y);
+          y += 40;
+        });
+
+        ReceiptImageExporter.drawDashedLine(ctx, left, right, y + 4);
+
+        const barY = y + 24;
+        ctx.fillStyle = '#1e293b';
+        let bx = cx - 150;
+        for (let i = 0; i < 42; i++) {
+          const bw = (i * 7 + (info.score || 13)) % 4 === 0 ? 5 : 2;
+          ctx.fillRect(bx, barY, bw, 36);
+          bx += bw + 4;
+          if (bx > cx + 148) break;
+        }
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#64748b';
+        ctx.font = '700 14px "Share Tech Mono", monospace';
+        ctx.fillText('THANK YOU FOR PLAYING! // OKANE-PITTARIMAN', cx, barY + 56);
+
+        return canvas;
+      }
+
+      static buildVersusCanvas(info) {
+        const standings = Array.isArray(info.standings) ? info.standings.slice(0, 6) : [];
+        const w = 680;
+        const h = 420 + standings.length * 52;
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+
+        const { padX, padY, rw } = ReceiptImageExporter.drawReceiptPaper(ctx, w, h);
+        const left = padX + 34;
+        const right = padX + rw - 34;
+        const cx = w / 2;
+
+        ctx.fillStyle = '#6d28d9';
+        ctx.font = '900 24px "M PLUS Rounded 1c", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('⚔️ ONLINE VERSUS RECEIPT', cx, padY + 58);
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '700 15px "Share Tech Mono", monospace';
+        ctx.fillText(`${info.ruleLabel}  //  ${info.dateStr}`, cx, padY + 86);
+
+        ReceiptImageExporter.drawDashedLine(ctx, left, right, padY + 106);
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = '900 38px "M PLUS Rounded 1c", sans-serif';
+        ctx.fillText(info.bannerText || '🏆 YOU WIN!!', cx, padY + 158);
+
+        ctx.fillStyle = '#475569';
+        ctx.font = '700 16px "M PLUS Rounded 1c", sans-serif';
+        ctx.fillText((info.reasonText || '').slice(0, 34), cx, padY + 190);
+
+        ReceiptImageExporter.drawDashedLine(ctx, left, right, padY + 212);
+
+        let y = padY + 252;
+        standings.forEach((p, idx) => {
+          const rank = idx + 1;
+          const medal = rank === 1 ? '🥇' : (rank === 2 ? '🥈' : (rank === 3 ? '🥉' : `${rank}位`));
+          if (p.isMe) {
+            ctx.fillStyle = 'rgba(14, 165, 233, 0.14)';
+            ctx.beginPath();
+            ctx.roundRect(left, y - 28, right - left, 42, 8);
+            ctx.fill();
+          }
+          ctx.textAlign = 'left';
+          ctx.fillStyle = '#0f172a';
+          ctx.font = '900 20px "M PLUS Rounded 1c", sans-serif';
+          ctx.fillText(`${medal} ${p.name}${p.isMe ? ' (YOU)' : ''}`, left + 10, y);
+
+          ctx.textAlign = 'right';
+          ctx.fillStyle = info.isJammer ? (p.hp <= 0 ? '#e11d48' : '#059669') : '#b45309';
+          ctx.font = '900 20px "Share Tech Mono", monospace';
+          const valStr = info.isJammer
+            ? (p.hp <= 0 ? 'K.O.' : `HP ${p.hp}`)
+            : `${Number(p.score || 0).toLocaleString()} pt`;
+          ctx.fillText(valStr, right - 10, y);
+          y += 50;
+        });
+
+        ReceiptImageExporter.drawDashedLine(ctx, left, right, y - 6);
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#64748b';
+        ctx.font = '700 14px "Share Tech Mono", monospace';
+        ctx.fillText('OKANE-PITTARIMAN ONLINE BATTLE', cx, y + 32);
+
+        return canvas;
+      }
+
+      static async exportCanvas(canvas, action = 'download', filename = 'okane_receipt.png', triggerBtn = null) {
+        const setFeedback = (txt) => {
+          if (!triggerBtn) return;
+          const prev = triggerBtn.innerHTML;
+          triggerBtn.textContent = txt;
+          setTimeout(() => { triggerBtn.innerHTML = prev; }, 1600);
+        };
+
+        const downloadBlob = (blob) => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1500);
+        };
+
+        return new Promise((resolve) => {
+          canvas.toBlob(async (blob) => {
+            if (!blob) {
+              resolve(false);
+              return;
+            }
+            if (action === 'copy' && navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+              try {
+                await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+                setFeedback('✅ コピー完了!');
+                resolve(true);
+                return;
+              } catch (e) {}
+            }
+            downloadBlob(blob);
+            setFeedback(action === 'copy' ? '💾 保存しました!' : '✅ 保存完了!');
+            resolve(true);
+          }, 'image/png');
+        });
+      }
     }
 
     /*************************************************************************
@@ -4515,6 +5189,55 @@
           g.connect(this.ctx.destination);
           osc.start(t);
           osc.stop(t + 0.48);
+        });
+      }
+
+      playStampPop() {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(1180, now + 0.08);
+        g.gain.setValueAtTime(0.14, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc.connect(g);
+        g.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.13);
+      }
+
+      playExchangeCrashSE() {
+        if (!this.seEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const sub = this.ctx.createOscillator();
+        const subG = this.ctx.createGain();
+        sub.type = 'sawtooth';
+        sub.frequency.setValueAtTime(210, now);
+        sub.frequency.exponentialRampToValueAtTime(48, now + 0.25);
+        subG.gain.setValueAtTime(0.24, now);
+        subG.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+        sub.connect(subG);
+        subG.connect(this.ctx.destination);
+        sub.start(now);
+        sub.stop(now + 0.30);
+
+        [0.05, 0.10, 0.15, 0.20, 0.26, 0.32].forEach((off, idx) => {
+          const osc = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(2200 + (idx % 3) * 650 + Math.random() * 220, now + off);
+          g.gain.setValueAtTime(0.09, now + off);
+          g.gain.exponentialRampToValueAtTime(0.001, now + off + 0.11);
+          osc.connect(g);
+          g.connect(this.ctx.destination);
+          osc.start(now + off);
+          osc.stop(now + off + 0.12);
         });
       }
     }
@@ -6494,6 +7217,9 @@
         this.VS_JAMMER_MAX_HP = 1000;
         this.lastJammerSeq = 0;
         this.lastReceivedDamage = 0;
+        this.lastStampSeq = 0;
+        this.lastStampSentAt = 0;
+        this.lastVersusResultInfo = null;
         this.finishWaitTimeout = null;
         this.jammerSentCount = 0;
         this.damageDealtTotal = 0;
@@ -6840,6 +7566,28 @@
           sound.playClick();
           this.requestRematch();
         });
+
+        document.querySelectorAll('.vs-stamp-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const txt = btn.getAttribute('data-vs-stamp');
+            if (txt) this.sendQuickStamp(txt);
+          });
+        });
+
+        const btnVsRecSave = document.getElementById('btn-vs-receipt-save');
+        if (btnVsRecSave) {
+          btnVsRecSave.addEventListener('click', () => {
+            sound.playClick();
+            this.exportVersusReceipt('download', btnVsRecSave);
+          });
+        }
+        const btnVsRecCopy = document.getElementById('btn-vs-receipt-copy');
+        if (btnVsRecCopy) {
+          btnVsRecCopy.addEventListener('click', () => {
+            sound.playClick();
+            this.exportVersusReceipt('copy', btnVsRecCopy);
+          });
+        }
       }
 
       openLobby() {
@@ -7547,6 +8295,7 @@
         this.resultShown = false;
         this.lastJammerSeq = 0;
         this.lastReceivedDamage = 0;
+        this.lastStampSeq = 0;
         this.jammerSentCount = 0;
         this.damageDealtTotal = 0;
         this.lastHumanCount = 1;
@@ -7622,6 +8371,14 @@
       }
 
       handleRoomUpdate(data) {
+        // クイックスタンプ受信チェック（待機ルーム・リザルト画面共通）
+        if (data && data.stamp && typeof data.stamp.seq === 'number' && data.stamp.seq > this.lastStampSeq) {
+          this.lastStampSeq = data.stamp.seq;
+          if (data.stamp.text) {
+            this.displayReceivedStamp(data.stamp);
+          }
+        }
+
         const humans = this.getConnectedHumanEntries(data);
         const participants = this.getActiveParticipants(data);
         const maxP = Math.max(2, Math.min(10, Number((data.settings && data.settings.maxPlayers) || 4)));
@@ -7691,7 +8448,8 @@
                 this.lastReceivedDamage = totalDmg;
               }
               const stunSec = Number(jam.stunSec || 0);
-              if ((jam.c1 || 0) > 0 || (jam.c10 || 0) > 0 || deltaDmg > 0 || stunSec > 0) {
+              const isCrash = Boolean(jam.crashCoins);
+              if ((jam.c1 || 0) > 0 || (jam.c10 || 0) > 0 || deltaDmg > 0 || stunSec > 0 || isCrash) {
                 this.game.receiveVersusJammer(
                   jam.c1 || 0,
                   jam.c10 || 0,
@@ -7699,7 +8457,8 @@
                   jam.fromName || 'ライバル',
                   deltaDmg,
                   Boolean(jam.isZone),
-                  stunSec
+                  stunSec,
+                  isCrash
                 );
               }
             }
@@ -7875,14 +8634,14 @@
           const existing = data.players ? data.players[slot] : null;
           if (existing && !existing.isBot && existing.connected !== false) {
             nextPlayers[slot] = this.makeEmptyPlayer(existing.name, false, existing.uid);
-            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, damage: 0, totalDamage: 0, isZone: false, stunSec: 0, fromCombo: 0, fromName: '' };
+            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, damage: 0, totalDamage: 0, isZone: false, stunSec: 0, crashCoins: false, fromCombo: 0, fromName: '' };
           } else if (fillWithBots) {
             const bName = this.BOT_NAMES[botIdx % this.BOT_NAMES.length];
             botIdx++;
             const uniqueName = usedBotNames.has(bName) ? `${bName}#${botIdx}` : bName;
             usedBotNames.add(uniqueName);
             nextPlayers[slot] = this.makeEmptyPlayer(uniqueName, true, `bot_${slot}_${Date.now()}`);
-            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, damage: 0, totalDamage: 0, isZone: false, stunSec: 0, fromCombo: 0, fromName: '' };
+            nextJammers[slot] = { seq: 0, c1: 0, c10: 0, damage: 0, totalDamage: 0, isZone: false, stunSec: 0, crashCoins: false, fromCombo: 0, fromName: '' };
           }
         }
 
@@ -8056,6 +8815,11 @@
                 }
                 if ((jam.stunSec || 0) > 0) {
                   st.nextActionAt = Math.max(st.nextActionAt, now) + Math.round(jam.stunSec * 1000);
+                }
+                if (jam.crashCoins) {
+                  st.jammerHitCount += 10;
+                  st.nextActionAt = Math.max(st.nextActionAt, now) + 2200;
+                  updates[`players/${st.slot}/jammerHitCount`] = st.jammerHitCount;
                 }
                 if (deltaDmg > 0) {
                   st.hp = Math.max(0, (typeof st.hp === 'number' ? st.hp : this.VS_JAMMER_MAX_HP) - deltaDmg);
@@ -8413,6 +9177,7 @@
             totalDamage: prevTotalDmg + damage,
             isZone: Boolean(isZoneActive),
             stunSec: 0,
+            crashCoins: false,
             fromCombo: comboCount,
             fromName: fromName || 'ライバル'
           };
@@ -8463,6 +9228,7 @@
             totalDamage: prevTotalDmg + stunDmg,
             isZone: false,
             stunSec: stunSec,
+            crashCoins: false,
             fromCombo: this.game.combo || 1,
             fromName: this.game.playerName || 'ライバル'
           };
@@ -8474,6 +9240,90 @@
           : '20,000';
         this.game.showVersusJammerToast(`⚡ スタン発動!! ${target.player.name || '相手'} に 100 DMG ＆ 2秒痺れ（-${costTxt}pt）`, false);
         return true;
+      }
+
+      sendCrashItemAttack() {
+        if (!this.roomRef || !this.lastRoomData || !this.mySlot) return false;
+        const s = this.lastRoomData.settings || {};
+        if (s.vsRule !== 'jammer') return false;
+
+        const candidates = this.getActiveParticipants(this.lastRoomData)
+          .filter(({ slot, player }) => {
+            const hpVal = typeof player.hp === 'number' ? player.hp : this.VS_JAMMER_MAX_HP;
+            return slot !== this.mySlot && !player.finished && !player.koDefeated && hpVal > 0;
+          });
+        if (candidates.length === 0) return false;
+
+        const target = candidates[Math.floor(Math.random() * candidates.length)];
+
+        this.roomRef.child('jammers/' + target.slot).transaction((cur) => {
+          const nextSeq = (cur && typeof cur.seq === 'number' ? cur.seq : 0) + 1;
+          const prevTotalDmg = (cur && typeof cur.totalDamage === 'number') ? cur.totalDamage : 0;
+          return {
+            seq: nextSeq,
+            c1: 0,
+            c10: 0,
+            damage: 0,
+            totalDamage: prevTotalDmg,
+            isZone: false,
+            stunSec: 0,
+            crashCoins: true,
+            fromCombo: this.game.combo || 1,
+            fromName: this.game.playerName || 'ライバル'
+          };
+        }).catch(() => {});
+
+        const costTxt = (this.game && typeof this.game.getVersusItemCost === 'function')
+          ? this.game.getVersusItemCost().toLocaleString()
+          : '20,000';
+        this.game.showVersusJammerToast(`🔨 両替クラッシュ発動!! ${target.player.name || '相手'} の大玉を小銭に粉砕!!（-${costTxt}pt）`, false);
+        return true;
+      }
+
+      sendQuickStamp(text) {
+        if (!this.roomRef || !this.mySlot) return;
+        const now = Date.now();
+        if (now - (this.lastStampSentAt || 0) < 800) return;
+        this.lastStampSentAt = now;
+        const senderName = this.game.playerName || 'プレイヤー';
+        this.roomRef.child('stamp').transaction((cur) => {
+          const nextSeq = (cur && typeof cur.seq === 'number' ? cur.seq : 0) + 1;
+          return {
+            seq: nextSeq,
+            fromSlot: this.mySlot,
+            fromName: senderName,
+            text: String(text),
+            at: now
+          };
+        }).catch(() => {});
+      }
+
+      displayReceivedStamp(stamp) {
+        if (!stamp || !stamp.text) return;
+        sound.playStampPop();
+        const label = `${stamp.fromName || 'プレイヤー'}: ${stamp.text}`;
+        const roomLatest = document.getElementById('vs-room-stamp-latest');
+        const resLatest = document.getElementById('vs-res-stamp-latest');
+        if (roomLatest) roomLatest.textContent = label;
+        if (resLatest) resLatest.textContent = label;
+
+        const layer = document.getElementById('vs-fx-layer');
+        if (layer) {
+          const toast = document.createElement('div');
+          toast.className = 'vs-jammer-toast text-xs sm:text-base border-2 border-fuchsia-300 bg-slate-900/95 text-white shadow-2xl';
+          toast.style.top = '13%';
+          toast.innerHTML = `<span class="text-cyan-300 font-black mr-1.5">${escapeHtml(stamp.fromName || 'プレイヤー')}</span><span>${escapeHtml(stamp.text)}</span>`;
+          layer.appendChild(toast);
+          setTimeout(() => toast.remove(), 1400);
+        }
+      }
+
+      exportVersusReceipt(action = 'download', btnEl = null) {
+        if (!this.lastVersusResultInfo) return;
+        const canvas = ReceiptImageExporter.buildVersusCanvas(this.lastVersusResultInfo);
+        const d = new Date();
+        const fname = `okane_vs_${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}_${String(d.getHours()).padStart(2, '0')}${String(d.getMinutes()).padStart(2, '0')}.png`;
+        ReceiptImageExporter.exportCanvas(canvas, action, fname, btnEl);
       }
 
       claimWinner(winnerSlot, reason) {
@@ -8602,6 +9452,35 @@
           this.game.renderMistakeReviewList('versus');
         }
 
+        // マイ戦績へオンライン対戦結果を自動記録
+        const isWin = (w.slot === this.mySlot || (w.slot !== 'draw' && myRank === 1));
+        const isDraw = (w.slot === 'draw');
+        const isKoWin = Boolean(isWin && isJammer && standings.some((p) => !p.isMe && (p.hp <= 0 || p.koDefeated)));
+        const meStats = standings.find((p) => p.isMe);
+        StatsManager.recordVersusRun({
+          outcome: isWin ? 'win' : (isDraw ? 'draw' : 'loss'),
+          isKoWin,
+          mode: (data.settings && data.settings.difficulty) || 'NORMAL',
+          score: meStats ? meStats.score : (this.game.score || 0),
+          served: meStats ? meStats.served : Math.max(0, this.game.customerIndex - 1),
+          perfectCount: meStats ? meStats.perfectCount : (this.game.perfectCount || 0),
+          answerSecSum: this.game.runAnswerTimeSum || 0,
+          answerCount: this.game.runAnswerCount || 0,
+          mistakeLogs: this.game.mistakeLogs || []
+        });
+
+        const ruleLabel = isJammer
+          ? '❤️ HPお邪魔バトル'
+          : (data.settings && data.settings.vsRule === 'race' ? `⚡ ${data.settings.raceTarget || 7}人先取` : '🏆 スコア対決');
+        this.lastVersusResultInfo = {
+          ruleLabel,
+          dateStr: RankingManager.formatDateTime(Date.now()),
+          bannerText: bannerEl ? bannerEl.textContent : 'RESULT',
+          reasonText: w.reason || '',
+          isJammer,
+          standings
+        };
+
         const canRematch = Boolean(this.roomRef && !data.isRandom);
         switchScreen('screen-versus-result');
         this.startVersusResultCooldown(canRematch);
@@ -8644,8 +9523,12 @@
         this.vsItemPerfectProgress = 0;
         this.vsHealUsesLeft = 3;
         this.vsStunUsesLeft = 3;
+        this.vsCrashUsesLeft = 3;
         this.vsStunTimeLeft = 0;
         this.vsRouletteTimers = [];
+        this.runAnswerTimeSum = 0;
+        this.runAnswerCount = 0;
+        this.lastSoloReceiptInfo = null;
         this.isTutorial = false;
         this.difficulty = 'NORMAL';
         this.lunaticTaxRate = 8;
@@ -9165,6 +10048,63 @@
             this.useVersusItem('stun');
           });
         }
+        const btnCrash = document.getElementById('btn-vs-item-crash');
+        if (btnCrash) {
+          btnCrash.addEventListener('click', () => {
+            if (this.state !== 'PLAYING') return;
+            this.useVersusItem('crash');
+          });
+        }
+
+        // マイ戦績・弱点分析モーダル
+        ['btn-title-stats', 'btn-mode-stats', 'btn-res-open-stats'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.addEventListener('click', () => {
+              sound.playClick();
+              this.openStatsModal();
+            });
+          }
+        });
+        const closeStats = () => {
+          sound.playReturn();
+          const m = document.getElementById('modal-stats');
+          if (m) {
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+          }
+        };
+        const btnCloseStats = document.getElementById('btn-close-stats');
+        const btnDoneStats = document.getElementById('btn-stats-done');
+        if (btnCloseStats) btnCloseStats.addEventListener('click', closeStats);
+        if (btnDoneStats) btnDoneStats.addEventListener('click', closeStats);
+
+        const btnResetStats = document.getElementById('btn-stats-reset');
+        if (btnResetStats) {
+          btnResetStats.addEventListener('click', () => {
+            if (window.confirm('マイ戦績・弱点分析のローカルデータをすべてリセットしますか？')) {
+              sound.playReturn();
+              StatsManager.reset();
+              StatsManager.renderToModal();
+            }
+          });
+        }
+
+        // ソロレシートPNG保存＆コピー
+        const btnResSave = document.getElementById('btn-res-receipt-save');
+        if (btnResSave) {
+          btnResSave.addEventListener('click', () => {
+            sound.playClick();
+            this.exportSoloReceipt('download', btnResSave);
+          });
+        }
+        const btnResCopy = document.getElementById('btn-res-receipt-copy');
+        if (btnResCopy) {
+          btnResCopy.addEventListener('click', () => {
+            sound.playClick();
+            this.exportSoloReceipt('copy', btnResCopy);
+          });
+        }
 
         document.getElementById('tab-res-gen-clean').addEventListener('click', () => {
           sound.playClick();
@@ -9280,7 +10220,7 @@
         this.renderKeyConfigModal();
         const msgEl = document.getElementById('keyconfig-status-msg');
         if (msgEl) {
-          msgEl.innerHTML = '✅ <span class="text-emerald-300 font-black">初期設定に戻しました！</span>（出し: W-L / 戻し: U-, / 会計: Space / 全戻し: B / 回復: G / スタン: H）';
+          msgEl.innerHTML = '✅ <span class="text-emerald-300 font-black">初期設定に戻しました！</span>（出し: W-L / 戻し: U-, / 会計: Space / 全戻し: B / 回復: G / スタン: H / 両替崩し: Y）';
         }
       }
 
@@ -9377,6 +10317,10 @@
         const stunHint = document.getElementById('key-hint-item-stun');
         if (stunHint) {
           stunHint.textContent = formatKeyCodeLabel(this.keyBindings.item_stun);
+        }
+        const crashHint = document.getElementById('key-hint-item-crash');
+        if (crashHint) {
+          crashHint.textContent = formatKeyCodeLabel(this.keyBindings.item_crash);
         }
         if (this.state === 'PLAYING' || this.state === 'COUNTDOWN' || this.state === 'JUDGING') {
           this.renderWalletUI();
@@ -9477,6 +10421,8 @@
             this.useVersusItem('heal');
           } else if (matchedAction === 'item_stun') {
             this.useVersusItem('stun');
+          } else if (matchedAction === 'item_crash') {
+            this.useVersusItem('crash');
           } else if (matchedAction.startsWith('ret_')) {
             const denom = Number(matchedAction.slice(4));
             if (ALL_DENOMS.includes(denom)) {
@@ -10490,6 +11436,7 @@
         this.vsItemPerfectProgress = 0;
         this.vsHealUsesLeft = 3;
         this.vsStunUsesLeft = 3;
+        this.vsCrashUsesLeft = 3;
         this.vsStunTimeLeft = 0;
         this.updateStunOverlay();
         this.mistakeLogs = [];
@@ -10847,28 +11794,99 @@
         }
       }
 
+      openStatsModal() {
+        StatsManager.renderToModal();
+        const m = document.getElementById('modal-stats');
+        if (m) {
+          m.classList.remove('hidden');
+          m.classList.add('flex');
+        }
+      }
+
+      exportSoloReceipt(action = 'download', btnEl = null) {
+        if (!this.lastSoloReceiptInfo) return;
+        const canvas = ReceiptImageExporter.buildSoloCanvas(this.lastSoloReceiptInfo);
+        const d = new Date();
+        const fname = `okane_receipt_${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}_${String(d.getHours()).padStart(2, '0')}${String(d.getMinutes()).padStart(2, '0')}.png`;
+        ReceiptImageExporter.exportCanvas(canvas, action, fname, btnEl);
+      }
+
+      applyExchangeCrashToWallet() {
+        let crashedText = '';
+        const c10Now = this.wallet[10] || 0;
+        const c1Now = this.wallet[1] || 0;
+
+        if ((this.wallet[500] || 0) >= 1) {
+          this.wallet[500] -= 1;
+          if (c10Now <= 14 && c1Now <= 14) {
+            this.wallet[100] = (this.wallet[100] || 0) + 4;
+            this.wallet[10] = c10Now + 9;
+            this.wallet[1] = c1Now + 10;
+            crashedText = '500円玉→100円×4・10円×9・1円×10';
+          } else {
+            this.wallet[100] = (this.wallet[100] || 0) + 4;
+            this.wallet[50] = (this.wallet[50] || 0) + 1;
+            this.wallet[10] = c10Now + 4;
+            this.wallet[1] = c1Now + 10;
+            crashedText = '500円玉→小銭に粉砕！';
+          }
+        } else if ((this.wallet[100] || 0) >= 1) {
+          const breakCnt = ((this.wallet[100] || 0) >= 2 && c10Now <= 10 && c1Now <= 10) ? 2 : 1;
+          this.wallet[100] -= breakCnt;
+          if (breakCnt === 2) {
+            this.wallet[50] = (this.wallet[50] || 0) + 1;
+            this.wallet[10] = c10Now + 14;
+            this.wallet[1] = c1Now + 10;
+            crashedText = '100円玉×2→10円×14・1円×10・50円×1';
+          } else {
+            this.wallet[10] = c10Now + 9;
+            this.wallet[1] = c1Now + 10;
+            crashedText = '100円玉→10円×9・1円×10';
+          }
+        } else if ((this.wallet[50] || 0) >= 1) {
+          this.wallet[50] -= 1;
+          this.wallet[10] = c10Now + 4;
+          this.wallet[1] = c1Now + 10;
+          crashedText = '50円玉→10円×4・1円×10';
+        } else {
+          this.wallet[1] = c1Now + 5;
+          crashedText = '1円玉×5 襲来！';
+        }
+        return crashedText;
+      }
+
       updateVersusItemButtons() {
+        const itemsRow = document.getElementById('vs-items-row');
         const btnHeal = document.getElementById('btn-vs-item-heal');
         const btnStun = document.getElementById('btn-vs-item-stun');
+        const btnCrash = document.getElementById('btn-vs-item-crash');
         const healSub = document.getElementById('vs-item-heal-sub');
         const stunSub = document.getElementById('vs-item-stun-sub');
+        const crashSub = document.getElementById('vs-item-crash-sub');
         const healUsesEl = document.getElementById('vs-item-heal-uses');
         const stunUsesEl = document.getElementById('vs-item-stun-uses');
-        if (!btnHeal || !btnStun) return;
+        const crashUsesEl = document.getElementById('vs-item-crash-uses');
+        if (!btnHeal || !btnStun || !btnCrash) return;
 
         if (!this.isVersusJammerItemsEnabled()) {
+          if (itemsRow) itemsRow.classList.add('hidden');
           btnHeal.classList.add('hidden');
           btnStun.classList.add('hidden');
+          btnCrash.classList.add('hidden');
           return;
         }
 
+        if (itemsRow) itemsRow.classList.remove('hidden');
         btnHeal.classList.remove('hidden');
         btnStun.classList.remove('hidden');
+        btnCrash.classList.remove('hidden');
 
         const healLeft = Math.max(0, this.vsHealUsesLeft || 0);
         const stunLeft = Math.max(0, this.vsStunUsesLeft || 0);
+        const crashLeft = Math.max(0, this.vsCrashUsesLeft || 0);
         if (healUsesEl) healUsesEl.textContent = `残${healLeft}`;
         if (stunUsesEl) stunUsesEl.textContent = `残${stunLeft}`;
+        if (crashUsesEl) crashUsesEl.textContent = `残${crashLeft}`;
 
         const cost = this.getVersusItemCost();
         const costLabel = '20,000pt';
@@ -10879,34 +11897,31 @@
 
         const canHeal = canUseBase && healLeft > 0 && (this.vsHp || 0) < (this.vsMaxHp || 1000);
         const canStun = canUseBase && stunLeft > 0;
+        const canCrash = canUseBase && crashLeft > 0;
 
         btnHeal.disabled = !canHeal;
         btnStun.disabled = !canStun;
+        btnCrash.disabled = !canCrash;
 
         const remPerfect = Math.max(1, 3 - (this.vsItemPerfectProgress || 0));
         if (healSub) {
-          if (healLeft <= 0) {
-            healSub.textContent = '使用上限';
-          } else if (!hasCharge) {
-            healSub.textContent = `あと${remPerfect}回神`;
-          } else if (!canAfford) {
-            healSub.textContent = `要${costLabel}`;
-          } else if ((this.vsHp || 0) >= (this.vsMaxHp || 1000)) {
-            healSub.textContent = 'HP満タン';
-          } else {
-            healSub.textContent = `+100 (${costLabel})`;
-          }
+          if (healLeft <= 0) healSub.textContent = '使用上限';
+          else if (!hasCharge) healSub.textContent = `あと${remPerfect}回神`;
+          else if (!canAfford) healSub.textContent = `要${costLabel}`;
+          else if ((this.vsHp || 0) >= (this.vsMaxHp || 1000)) healSub.textContent = 'HP満タン';
+          else healSub.textContent = `+100 (${costLabel})`;
         }
         if (stunSub) {
-          if (stunLeft <= 0) {
-            stunSub.textContent = '使用上限';
-          } else if (!hasCharge) {
-            stunSub.textContent = `あと${remPerfect}回神`;
-          } else if (!canAfford) {
-            stunSub.textContent = `要${costLabel}`;
-          } else {
-            stunSub.textContent = `100+2s (${costLabel})`;
-          }
+          if (stunLeft <= 0) stunSub.textContent = '使用上限';
+          else if (!hasCharge) stunSub.textContent = `あと${remPerfect}回神`;
+          else if (!canAfford) stunSub.textContent = `要${costLabel}`;
+          else stunSub.textContent = `100+2s (${costLabel})`;
+        }
+        if (crashSub) {
+          if (crashLeft <= 0) crashSub.textContent = '使用上限';
+          else if (!hasCharge) crashSub.textContent = `あと${remPerfect}回神`;
+          else if (!canAfford) crashSub.textContent = `要${costLabel}`;
+          else crashSub.textContent = `小銭化 (${costLabel})`;
         }
       }
 
@@ -10982,6 +11997,27 @@
           this.showScoreSpendPopup(cost);
           this.updateVersusHpBar();
           if (this.versus) this.versus.syncMyProgress(false, false);
+        } else if (type === 'crash') {
+          if ((this.vsCrashUsesLeft || 0) <= 0) {
+            sound.playBadBuzzer();
+            return;
+          }
+          if (!this.versus) return;
+          const ok = this.versus.sendCrashItemAttack();
+          if (!ok) {
+            sound.playBadBuzzer();
+            return;
+          }
+          this.vsCrashUsesLeft -= 1;
+          this.vsItemCharges = 0;
+          this.vsItemPerfectProgress = 0;
+          this.score = Math.max(0, (this.score || 0) - cost);
+          sound.playExchangeCrashSE();
+          this.vibrate([50, 30, 70]);
+          this.updateTopHUD();
+          this.showScoreSpendPopup(cost);
+          this.updateVersusHpBar();
+          if (this.versus) this.versus.syncMyProgress(false, false);
         }
       }
 
@@ -11051,11 +12087,20 @@
         this.updateVersusItemButtons();
       }
 
-      receiveVersusJammer(c1, c10, fromCombo, fromName = 'ライバル', damage = 0, isZoneAttack = false, stunSec = 0) {
+      receiveVersusJammer(c1, c10, fromCombo, fromName = 'ライバル', damage = 0, isZoneAttack = false, stunSec = 0, isCrashAttack = false) {
         if (!this.isVersusRun || this.state === 'RESULT') return;
         const hasCoins = (c1 || 0) > 0 || (c10 || 0) > 0;
         const dmg = Math.max(0, Math.round(Number(damage) || 0));
         const stunDur = Math.max(0, Number(stunSec) || 0);
+        let crashDetail = '';
+        if (isCrashAttack) {
+          crashDetail = this.applyExchangeCrashToWallet();
+          if (this.state === 'PLAYING') {
+            this.bestSolution = findBestPayment(this.currentPrice, this.wallet, this.ruleType);
+            this.updatePOSDisplay();
+            this.renderWalletUI();
+          }
+        }
 
         if (hasCoins) {
           this.wallet[1] = (this.wallet[1] || 0) + (c1 || 0);
@@ -11102,6 +12147,22 @@
             posPanel.classList.add('animate-shake');
           }
           this.triggerVersusDamageFX(fromName, parts.join('・'), c1 || 0, c10 || 0, dmg, isZoneAttack);
+        } else if (isCrashAttack) {
+          sound.playExchangeCrashSE();
+          this.vibrate([90, 40, 110]);
+          if (this.scene3D) {
+            this.scene3D.triggerDamageShake(0.42, 0.45);
+            this.scene3D.spawnJammerCoinRain(6, 4);
+          }
+          const screenEl = document.getElementById('screen-game');
+          if (screenEl) {
+            screenEl.classList.remove('vs-screen-damage-shake');
+            void screenEl.offsetWidth;
+            screenEl.classList.add('vs-screen-damage-shake');
+            setTimeout(() => screenEl.classList.remove('vs-screen-damage-shake'), 520);
+          }
+          this.setClerkComment('bad', `ガシャン🔨 ${fromName}さんの両替クラッシュ！財布がジャラジャラに💦`);
+          this.showVersusJammerToast(`🔨 ${fromName} の両替クラッシュ!! ${crashDetail}`, true);
         } else if (stunDur > 0) {
           this.vsStunTimeLeft = Math.max(this.vsStunTimeLeft || 0, stunDur);
           this.updateStunOverlay();
@@ -11250,6 +12311,8 @@
         this.perfectCount = 0;
         this.totalCoinsSaved = 0;
         this.mistakeLogs = [];
+        this.runAnswerTimeSum = 0;
+        this.runAnswerCount = 0;
         this.lowTimeWarned = false;
         this.trayList = [];
         this.vsStunTimeLeft = 0;
@@ -11959,6 +13022,10 @@
         }
 
         this.state = 'JUDGING';
+        if (!this.isTutorial && this.turnElapsed > 0 && this.turnElapsed < 120) {
+          this.runAnswerTimeSum += this.turnElapsed;
+          this.runAnswerCount += 1;
+        }
         sound.playRegisterCheckout();
 
         const walletBefore = { ...this.wallet };
@@ -12120,7 +13187,7 @@
             if (
               this.isVersusJammerItemsEnabled() &&
               (this.vsItemCharges || 0) < 1 &&
-              ((this.vsHealUsesLeft || 0) > 0 || (this.vsStunUsesLeft || 0) > 0)
+              ((this.vsHealUsesLeft || 0) > 0 || (this.vsStunUsesLeft || 0) > 0 || (this.vsCrashUsesLeft || 0) > 0)
             ) {
               this.vsItemPerfectProgress = (this.vsItemPerfectProgress || 0) + 1;
               if (this.vsItemPerfectProgress >= 3) {
@@ -13257,6 +14324,31 @@
           void receiptCard.offsetWidth;
           receiptCard.classList.add('animate-receipt-print');
         }
+
+        StatsManager.recordSoloRun({
+          mode: this.difficulty,
+          score: this.score,
+          served: totalServed,
+          perfectCount: this.perfectCount,
+          answerSecSum: this.runAnswerTimeSum,
+          answerCount: this.runAnswerCount,
+          mistakeLogs: this.mistakeLogs
+        });
+
+        const avgSpdStr = this.runAnswerCount > 0 ? `${(this.runAnswerTimeSum / this.runAnswerCount).toFixed(2)}秒/人` : '--.-秒/人';
+        this.lastSoloReceiptInfo = {
+          modeLabel: document.getElementById('res-mode-label') ? document.getElementById('res-mode-label').textContent : this.difficulty,
+          dateStr: RankingManager.formatDateTime(Date.now()),
+          rankTitle: document.getElementById('res-rank-title') ? document.getElementById('res-rank-title').textContent : '',
+          rankDesc: document.getElementById('res-rank-desc') ? document.getElementById('res-rank-desc').textContent : '',
+          score: this.score,
+          playerName: this.isRankingRun ? this.playerName : 'フリープレイ',
+          customers: totalServed,
+          perfectRate,
+          avgSpeedStr: avgSpdStr,
+          mistakeCount: this.mistakeLogs.length,
+          rankBadge: document.getElementById('res-rank-in-badge') ? document.getElementById('res-rank-in-badge').textContent : ''
+        };
 
         this.renderMistakeReviewList();
         this.updateUnlockAndCumulativeUI();
