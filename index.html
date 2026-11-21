@@ -1762,9 +1762,10 @@
             <span id="ui-rule-badge" class="text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-cyan-500/25 text-cyan-200 border border-cyan-400/60 leading-none">
               👛財布最小
             </span>
-            <div class="bg-slate-800/90 px-1.5 py-0.5 rounded-lg border border-slate-700 flex items-baseline gap-1">
+            <div id="ui-score-box" class="relative bg-slate-800/90 px-1.5 py-0.5 rounded-lg border border-slate-700 flex items-baseline gap-1">
               <span class="text-[8px] sm:text-[10px] text-amber-300 font-bold tracking-wider uppercase">SCORE</span>
               <span id="ui-score" class="font-digital text-sm sm:text-lg font-bold text-white leading-none">0</span>
+              <div id="ui-score-delta-anchor" class="absolute -bottom-5 left-1/2 -translate-x-1/2 pointer-events-none z-30"></div>
             </div>
 
             <div id="ui-combo-badge" class="hidden bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 px-1.5 py-0.5 rounded-lg font-black text-[9px] sm:text-[11px] leading-none shadow">
@@ -8180,7 +8181,7 @@
             isMe,
             isBot: Boolean(player.isBot),
             name: player.name || slot,
-            score: isMe ? Math.max(player.score || 0, this.game.score || 0) : (player.score || 0),
+            score: isMe ? (s.vsRule === 'jammer' ? (this.game.score || 0) : Math.max(player.score || 0, this.game.score || 0)) : (player.score || 0),
             perfectCount: isMe ? Math.max(player.perfectCount || 0, this.game.perfectCount || 0) : (player.perfectCount || 0),
             combo: isMe ? (this.game.combo || 0) : (player.combo || 0),
             maxCombo: isMe ? Math.max(player.maxCombo || 0, this.game.maxCombo || 0) : (player.maxCombo || 0),
@@ -8468,7 +8469,10 @@
         }).catch(() => {});
 
         this.damageDealtTotal += stunDmg;
-        this.game.showVersusJammerToast(`⚡ スタン発動!! ${target.player.name || '相手'} に 100 DMG ＆ 2秒痺れ!!`, false);
+        const costTxt = (this.game && typeof this.game.getVersusItemCost === 'function')
+          ? this.game.getVersusItemCost().toLocaleString()
+          : '20,000';
+        this.game.showVersusJammerToast(`⚡ スタン発動!! ${target.player.name || '相手'} に 100 DMG ＆ 2秒痺れ（-${costTxt}pt）`, false);
         return true;
       }
 
@@ -10906,6 +10910,25 @@
         }
       }
 
+      showScoreSpendPopup(spentAmount) {
+        const anchor = document.getElementById('ui-score-delta-anchor');
+        if (anchor) {
+          const el = document.createElement('div');
+          el.className = 'animate-float-up font-digital text-xs sm:text-sm font-black whitespace-nowrap px-2 py-0.5 rounded-full shadow-lg bg-rose-500 text-white border border-rose-200';
+          el.textContent = `-${Number(spentAmount || 0).toLocaleString()}pt`;
+          anchor.appendChild(el);
+          setTimeout(() => el.remove(), 950);
+        }
+        const scoreBox = document.getElementById('ui-score-box');
+        if (scoreBox) {
+          scoreBox.classList.remove('animate-shake');
+          void scoreBox.offsetWidth;
+          scoreBox.classList.add('animate-shake');
+          scoreBox.classList.add('border-rose-400');
+          setTimeout(() => scoreBox.classList.remove('border-rose-400'), 550);
+        }
+      }
+
       useVersusItem(type) {
         if (this.state !== 'PLAYING' || !this.isVersusJammerItemsEnabled()) return;
         if (this.vsStunTimeLeft > 0) return;
@@ -10927,15 +10950,16 @@
           this.vsHealUsesLeft -= 1;
           this.vsItemCharges = 0;
           this.vsItemPerfectProgress = 0;
-          this.score = Math.max(0, this.score - cost);
+          this.score = Math.max(0, (this.score || 0) - cost);
           const beforeHp = this.vsHp || 0;
           this.vsHp = Math.min(this.vsMaxHp || 1000, beforeHp + 100);
           const healed = this.vsHp - beforeHp;
           sound.playPerfectFanfare();
           this.vibrate(45);
           this.updateTopHUD();
+          this.showScoreSpendPopup(cost);
           this.updateVersusHpBar(0, healed);
-          this.showVersusJammerToast(`💚 回復アイテム発動！ HP +${healed}（残${this.vsHealUsesLeft}回）`, false);
+          this.showVersusJammerToast(`💚 回復アイテム発動！ HP +${healed}（-${cost.toLocaleString()}pt / 残${this.vsHealUsesLeft}回）`, false);
           if (this.versus) this.versus.syncMyProgress(false, false);
         } else if (type === 'stun') {
           if ((this.vsStunUsesLeft || 0) <= 0) {
@@ -10951,10 +10975,11 @@
           this.vsStunUsesLeft -= 1;
           this.vsItemCharges = 0;
           this.vsItemPerfectProgress = 0;
-          this.score = Math.max(0, this.score - cost);
+          this.score = Math.max(0, (this.score || 0) - cost);
           sound.playLightningBonusSE();
           this.vibrate([40, 25, 60]);
           this.updateTopHUD();
+          this.showScoreSpendPopup(cost);
           this.updateVersusHpBar();
           if (this.versus) this.versus.syncMyProgress(false, false);
         }
