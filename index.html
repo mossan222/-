@@ -7203,6 +7203,8 @@
         this.isHost = false;
         this.roomRef = null;
         this.roomListener = null;
+        this.connRef = null;
+        this.connListener = null;
         this.queueRef = null;
         this.queueRoomCode = null;
         this.isRandomSearching = false;
@@ -8304,6 +8306,20 @@
         myConnRef.set(true).catch(() => {});
         myConnRef.onDisconnect().set(false);
 
+        // モバイルの一時的な通信断・バックグラウンド復帰時に自動で connected: true と onDisconnect を再設定
+        const db = this.getDb();
+        if (db) {
+          this.connRef = db.ref('.info/connected');
+          this.connListener = (connSnap) => {
+            if (connSnap.val() === true && this.roomRef && this.mySlot) {
+              const cRef = this.roomRef.child(`players/${this.mySlot}/connected`);
+              cRef.onDisconnect().set(false);
+              cRef.set(true).catch(() => {});
+            }
+          };
+          this.connRef.on('value', this.connListener);
+        }
+
         this.roomListener = (snap) => {
           const data = snap.val();
           if (!data) {
@@ -8335,6 +8351,11 @@
           this.roomRef.off('value', this.roomListener);
         }
         this.roomListener = null;
+        if (this.connRef && this.connListener) {
+          this.connRef.off('value', this.connListener);
+        }
+        this.connRef = null;
+        this.connListener = null;
       }
 
       leaveRoom() {
@@ -9506,21 +9527,68 @@
         this.startVersusResultCooldown(canRematch);
       }
 
-      requestRematch() {
-        if (!this.roomRef) {
+      async requestRematch() {
+        if (!this.roomRef || !this.mySlot) {
           this.openLobby();
           return;
         }
         this.matchLaunched = false;
         this.resultShown = false;
         this.stopBotTimers();
-        if (this.isHost) {
-          // BOT枠を除去して人間だけ残して待機状態に戻す
-          const humansOnly = {};
-          this.getConnectedHumanEntries(this.lastRoomData).forEach(({ slot, player }) => {
-            humansOnly[slot] = this.makeEmptyPlayer(player.name, false, player.uid);
+
+        const myName = this.game.playerName || RankingManager.getSavedPlayerName() || '名無しの会計士';
+        const myFreshPlayer = this.makeEmptyPlayer(myName, false, this.myUid);
+
+        try {
+          // 事前にルーム存在確認＆キャッシュ更新
+          const preSnap = await this.roomRef.once('value');
+          const preData = preSnap.val();
+          if (!preData) {
+            this.leaveRoom();
+            this.openLobby();
+            this.showLobbyError('ルームが解散されました。');
+            return;
+          }
+
+          // ホスト・ゲストどちらが先に押しても競合しないトランザクションで安全に待機状態へ戻す
+          const txRes = await this.roomRef.transaction((data) => {
+            if (data === null) return null;
+            if (!data.players) data.players = {};
+            if (data.status === 'finished') {
+              data.status = 'waiting';
+              data.winner = null;
+              data.jammers = {};
+              for (let i = 1; i <= 10; i++) {
+                const sl = 'p' + i;
+                const p = data.players[sl];
+                if (!p) continue;
+                if (p.isBot) {
+                  delete data.players[sl];
+                } else {
+                  const wasConn = p.connected !== false;
+                  data.players[sl] = this.makeEmptyPlayer(p.name, false, p.uid);
+                  data.players[sl].connected = wasConn;
+                }
+              }
+            }
+            // 自分自身のスロットは必ず connected: true で復元・最新化する（相手スロットは絶対に消さない）
+            data.players[this.mySlot] = myFreshPlayer;
+            return data;
           });
-          this.roomRef.update({ status: 'waiting', winner: null, players: humansOnly, jammers: {} }).catch(() => {});
+
+          if (txRes && txRes.snapshot && txRes.snapshot.val()) {
+            this.lastRoomData = txRes.snapshot.val();
+          }
+
+          const myConnRef = this.roomRef.child(`players/${this.mySlot}/connected`);
+          myConnRef.onDisconnect().set(false);
+          myConnRef.set(true).catch(() => {});
+        } catch (err) {
+          console.warn('requestRematch error:', err);
+        }
+
+        if (this.lastRoomData) {
+          this.renderRoomUI(this.lastRoomData);
         }
         switchScreen('screen-versus-room');
       }
