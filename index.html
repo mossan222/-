@@ -8792,7 +8792,12 @@
           if (now < playStartMs) return;
 
           const elapsed = now - playStartMs;
-          const timeUp = elapsed >= matchDurMs;
+          const humanEntries = this.getConnectedHumanEntries(this.lastRoomData);
+          const allHumansFinished = humanEntries.length > 0 && humanEntries.every(({ player }) => Boolean(player.finished));
+          // 判定演出の停止分でプレイヤーの実時間が延びるため、人間全員が終了するまでBOTを先にタイムアップさせない
+          const timeUp = s.vsRule === 'race'
+            ? (elapsed >= matchDurMs)
+            : (allHumansFinished || elapsed >= (matchDurMs + 45000));
           const updates = {};
           let dirty = false;
 
@@ -9080,6 +9085,9 @@
             miniBoard.classList.add('hidden');
           }
         }
+        if (this.game && typeof this.game.updateVersusItemButtons === 'function') {
+          this.game.updateVersusItemButtons();
+        }
       }
 
       syncMyProgress(finished = false, failedSuddenDeath = false) {
@@ -9199,6 +9207,18 @@
       sendJammerToOpponent(comboCount, isZoneActive = false, withCoins = true) {
         if (!this.mySlot) return;
         this.sendJammerFromSlot(this.mySlot, this.game.playerName, comboCount, false, isZoneActive, withCoins);
+      }
+
+      hasAttackableOpponent() {
+        if (!this.lastRoomData || !this.mySlot) return false;
+        const s = this.lastRoomData.settings || {};
+        if (s.vsRule !== 'jammer') return false;
+        const candidates = this.getActiveParticipants(this.lastRoomData)
+          .filter(({ slot, player }) => {
+            const hpVal = typeof player.hp === 'number' ? player.hp : this.VS_JAMMER_MAX_HP;
+            return slot !== this.mySlot && !player.finished && !player.koDefeated && hpVal > 0;
+          });
+        return candidates.length > 0;
       }
 
       sendStunItemAttack() {
@@ -11895,9 +11915,10 @@
         const notStunned = (this.vsStunTimeLeft || 0) <= 0;
         const canUseBase = this.state === 'PLAYING' && hasCharge && canAfford && notStunned;
 
+        const hasTarget = this.versus ? this.versus.hasAttackableOpponent() : false;
         const canHeal = canUseBase && healLeft > 0 && (this.vsHp || 0) < (this.vsMaxHp || 1000);
-        const canStun = canUseBase && stunLeft > 0;
-        const canCrash = canUseBase && crashLeft > 0;
+        const canStun = canUseBase && stunLeft > 0 && hasTarget;
+        const canCrash = canUseBase && crashLeft > 0 && hasTarget;
 
         btnHeal.disabled = !canHeal;
         btnStun.disabled = !canStun;
@@ -11913,12 +11934,14 @@
         }
         if (stunSub) {
           if (stunLeft <= 0) stunSub.textContent = '使用上限';
+          else if (!hasTarget) stunSub.textContent = '相手終了';
           else if (!hasCharge) stunSub.textContent = `あと${remPerfect}回神`;
           else if (!canAfford) stunSub.textContent = `要${costLabel}`;
           else stunSub.textContent = `100+2s (${costLabel})`;
         }
         if (crashSub) {
           if (crashLeft <= 0) crashSub.textContent = '使用上限';
+          else if (!hasTarget) crashSub.textContent = '相手終了';
           else if (!hasCharge) crashSub.textContent = `あと${remPerfect}回神`;
           else if (!canAfford) crashSub.textContent = `要${costLabel}`;
           else crashSub.textContent = `小銭化 (${costLabel})`;
