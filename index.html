@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>英語IIB 試験対策 本文連動クイズ（オリジナル練習問題版）</title>
+  <title>魔女の宅急便 英語IIB 試験対策 本文連動クイズ</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Inter & Noto Sans JP -->
@@ -115,10 +115,10 @@
           </div>
           <div class="min-w-0">
             <h1 class="text-sm sm:text-lg font-extrabold text-slate-900 truncate">
-              英語IIB 試験対策 本文連動クイズ（オリジナル練習問題版）
+              魔女の宅急便 英語IIB 試験対策 本文連動クイズ
             </h1>
             <p class="text-[11px] sm:text-xs text-slate-500 leading-snug">
-              ※場面1〜5の重要文法・前置詞・熟語・語彙を同等に演習できるよう構成したオリジナル対話を使用しています。
+              場面1〜5の全スクリプト＋授業内参考表現を収録。前置詞・和訳・単語の重複なしで何度でも演習できます。
             </p>
           </div>
         </div>
@@ -250,7 +250,7 @@
       <section class="w-full min-w-0 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="px-4 sm:px-5 py-3 border-b border-slate-100 bg-slate-50/80 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div class="min-w-0">
-            <h2 id="script-title" class="text-base sm:text-lg font-extrabold text-slate-900">場面1：旅立ちと準備</h2>
+            <h2 id="script-title" class="text-base sm:text-lg font-extrabold text-slate-900">場面1：旅立ち</h2>
             <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">
               空欄に直接入力し、[訳]・[単]・(1) バッジをクリックすると解答用紙へジャンプします。
             </p>
@@ -289,383 +289,396 @@
   <script>
     /**
      * ============================================================================
-     * 1. オリジナル練習問題データベース（場面1〜5 ＋ 参考表現）
+     * 1. 『魔女の宅急便』英語版スクリプト データベース（場面1〜5 ＋ 参考表現）
      * ============================================================================
-     * - すべて著作権に配慮した100%オリジナルの英文対話で構成。
-     * - 場面1〜5の重要文法・前置詞・熟語・語彙を網羅。
-     * - 1行につき最大1問（前置詞・和訳・単語の完全排他）を前提に豊富な候補を収録。
      */
     const SCENES = [
-      /* ==================== 場面1：旅立ちと準備 ==================== */
+      /* ==================== 場面1：旅立ち ==================== */
       {
         id: '1',
-        tabLabel: '場面1 (旅立ちと準備)',
-        title: '場面1：旅立ちと準備（独立修行への出発）',
+        tabLabel: '場面1 (旅立ち)',
+        title: '場面1：旅立ち',
+        config: {
+          transCount: 3,
+          blankCount: 3,
+          vocabCount: 4,
+          presetA: { transIds: ['t3', 't5', 't7'] },
+          presetB: { transIds: ['t1', 't4', 't6'] }
+        },
+        lines: [
+          { id: 1, text: "Mother: Be careful.", sub: '— 旅立ちの瞬間 —' },
+          { id: 2, text: "Mother: You be strong. Okay?" },
+          { id: 3, text: "Kiki: I will." },
+          { id: 4, text: "Neighbors: Bye, Kiki. Fly safely. Go get 'em!" },
+          { id: 5, text: "Neighbors: Go, Kiki. Go, Kiki. Go, Kiki." },
+          { id: 6, text: "Father: Aim your broomstick." },
+          { id: 7, text: "Mother: May our little baby be well and have a safe trip." },
+          { id: 8, text: "Father: I'm going to miss the wonderful sound of those little bells." },
+          { id: 9, text: "Jiji: Where are we going?", sub: '— 夜空へ飛び立ってから —' },
+          { id: 10, text: "Kiki: I'm headed south to see the ocean." },
+          { id: 11, text: "Kiki: Jiji, climb up and turn on the radio." },
+          { id: 12, text: "Jiji: I don't think I can handle it." },
+          { id: 13, text: "Kiki: Can you do it?" }
+        ],
+        blankPool: [
+          { id: 'b1', lineId: 4, target: 'safely', before: 'Fly ', ans: ['safely'], exp: 'Fly safely：気をつけて飛んでね（副詞）' },
+          { id: 'b2', lineId: 8, target: 'of', before: 'sound ', ans: ['of'], exp: 'the sound of ～：～の音' },
+          { id: 'b3', lineId: 10, target: 'to', before: 'south ', ans: ['to'], exp: 'to see the ocean：海を見るために（目的の不定詞）' },
+          { id: 'b4', lineId: 11, target: 'on', before: 'turn ', ans: ['on'], exp: 'turn on：電源を入れる・つける' },
+          { id: 'b5', lineId: 11, target: 'up', before: 'climb ', ans: ['up'], exp: 'climb up：上に登る' }
+        ],
+        transPool: [
+          { id: 't1', lineIds: [2], ans: '強く生きるのよ（しっかりするのよ）、いい？', exp: '命令文 Be strong. に主語 You を付けて強調している。' },
+          { id: 't2', lineIds: [4], ans: 'キキ、さようなら！気をつけて飛んでね。がんばってね！', exp: "Go get 'em!（'em = them）は口語で「がんばれ！」の励まし。" },
+          { id: 't3', lineIds: [7], ans: '私たちの小さな子が元気で、安全な旅ができますように。', exp: 'May + 主語 + 動詞原形 で祈願「～でありますように」。' },
+          { id: 't4', lineIds: [8], ans: 'あの小さな鈴の素晴らしい音が恋しくなるだろうな。', exp: 'be going to miss で「～が恋しくなるだろう」。' },
+          { id: 't5', lineIds: [10], ans: '海を見るために南へ向かっているところよ。', exp: 'be headed ＝ ～へ向かっている、to see ＝ 目的の不定詞。' },
+          { id: 't6', lineIds: [11], ans: 'ジジ、上に登ってラジオをつけて。', exp: 'climb up と turn on the radio を and でつないだ命令文。' },
+          { id: 't7', lineIds: [12], ans: '僕にはうまく扱えそうにない（対処できそうにない）と思う。', exp: "I don't think + 文、handle it ＝ それをうまく対処する・扱う。" }
+        ],
+        vocabPool: [
+          { id: 'v1', lineId: 1, target: 'careful', ans: '気をつけて、注意深い', keys: ['気をつけ', '注意'], exp: 'Be careful.（気をつけて）。' },
+          { id: 'v2', lineId: 4, target: "Go get 'em", ans: 'がんばれ、やってこい', keys: ['がんば', '頑張', 'やってこい'], exp: "'em は them の省略形。励ましの口語表現。" },
+          { id: 'v3', lineId: 6, target: 'Aim', ans: '狙う、向ける', keys: ['狙', 'ねら', '向'], exp: 'Aim your broomstick（ほうきを狙って飛ばして）。' },
+          { id: 'v4', lineId: 6, target: 'broomstick', ans: 'ほうき', keys: ['ほうき', '箒'], exp: '魔女の乗るほうき。' },
+          { id: 'v5', lineId: 7, target: 'well', ans: '元気な、健康な', keys: ['元気', '健康', '無事'], exp: '形容詞の well は「元気な・健康な」。' },
+          { id: 'v6', lineId: 8, target: 'miss', ans: '恋しく思う、なくて寂しく思う', keys: ['恋し', 'こいし', '寂し', 'さびし', 'さみし'], exp: '離れてしまって恋しく思う。' },
+          { id: 'v7', lineId: 10, target: 'headed', ans: '向かっている', keys: ['向か', 'むか', '目指'], exp: 'be headed south（南へ向かっている）。' },
+          { id: 'v8', lineId: 11, target: 'turn on', ans: '（電源を）入れる、つける', keys: ['つけ', '付け', '入れ', 'オン'], exp: 'turn on the radio（ラジオをつける）。' },
+          { id: 'v9', lineId: 12, target: 'handle', ans: '対処する、うまく扱う', keys: ['対処', '扱', 'あつか'], exp: 'handle it（それをうまく扱う・対処する）。' }
+        ]
+      },
+
+      /* ==================== 場面2：先輩魔女との話 ==================== */
+      {
+        id: '2',
+        tabLabel: '場面2 (先輩魔女)',
+        title: '場面2：先輩魔女との話',
         config: {
           transCount: 3,
           blankCount: 4,
           vocabCount: 5,
-          presetA: { transIds: ['t2', 't5', 't7'] },
-          presetB: { transIds: ['t1', 't4', 't8'] }
+          presetA: { transIds: ['t3', 't6', 't10'] },
+          presetB: { transIds: ['t2', 't4', 't9'] }
         },
         lines: [
-          { id: 1, text: "Mother: Are your bags packed, Mina? You be strong out there, okay?", sub: '— 家の前で出発の準備 —' },
-          { id: 2, text: "Mina: I will, Mom. I promise to write home every week." },
-          { id: 3, text: "Father: Aim your lantern toward the narrow path so you don't stumble." },
-          { id: 4, text: "Mina: Don't worry, Dad. I checked the route twice this morning." },
-          { id: 5, text: "Mother: May our dear daughter be well and have a safe trip across the hills." },
-          { id: 6, text: "Neighbor: Goodbye, Mina! Travel safely and go get 'em!" },
-          { id: 7, text: "Father: I'm going to miss the cheerful sound of your morning practice." },
-          { id: 8, text: "Mina: I'll miss our quiet dinners too, especially Mom's vegetable soup." },
-          { id: 9, text: "Leo (companion): Wait—where are we actually going for our first year?", sub: '— 丘の上へ向かう途中 —' },
-          { id: 10, text: "Mina: I'm headed south to see the ocean before nightfall." },
-          { id: 11, text: "Leo: The wind is picking up. Can you climb up onto the ridge?" },
-          { id: 12, text: "Mina: Sure! Climb up beside me and turn on the portable radio." },
-          { id: 13, text: "Leo: The dial is stuck in the cold. I don't think I can handle it alone." },
-          { id: 14, text: "Mina: Let me adjust the antenna. There—now we have music for the journey." },
-          { id: 15, text: "Leo: That sounds much better. Do you think we can reach the coast by dawn?" },
-          { id: 16, text: "Mina: Keep your spirits high, Leo. Our new life starts tonight." }
+          { id: 1, text: "Kiki: Hey, good evening.", sub: '— 先輩魔女との出会い —' },
+          { id: 2, text: "Senior Witch: It was. You're new, aren't you?" },
+          { id: 3, text: "Kiki: Yep, how'd you guess? I just left home tonight." },
+          { id: 4, text: "Senior Witch: Would you mind turning off that radio? I prefer to fly without being distracted." },
+          { id: 5, text: "Kiki: Oh, yeah, sure." },
+          { id: 6, text: "Kiki: Could you tell me, is it really hard to get settled into a brand new city?" },
+          { id: 7, text: "Senior Witch: Oh, yes, a lot can go wrong." },
+          { id: 8, text: "Senior Witch: But since my skill is fortune-telling, I can handle anything." },
+          { id: 9, text: "Kiki: Fortune telling?" },
+          { id: 10, text: "Senior Witch: Yes, I tell fortunes about love." },
+          { id: 11, text: "Senior Witch: And what exactly is your skill?" },
+          { id: 12, text: "Kiki: Um, well, I haven't really decided that yet." },
+          { id: 13, text: "Senior Witch: Ah, well, I'm nearly finished with my training period." },
+          { id: 14, text: "Senior Witch: I'm going home soon to show off my new skills." },
+          { id: 15, text: "Senior Witch: That's my town down there." },
+          { id: 16, text: "Kiki: It's so big." },
+          { id: 17, text: "Senior Witch: Yes, to you, I'm sure it looks big. I hope you don't have too tough a time." },
+          { id: 18, text: "Kiki / Senior Witch: Thanks. — Ciao." },
+          { id: 19, text: "Jiji / Kiki: Geez, what a snob. And did you see that cat? — What's my skill?" }
         ],
         blankPool: [
-          { id: 'b1', lineId: 3, target: 'toward', before: 'lantern ', ans: ['toward', 'towards'], exp: 'aim A toward B：AをBに向ける' },
-          { id: 'b2', lineId: 5, target: 'across', before: 'trip ', ans: ['across'], exp: 'across the hills：丘を越えて' },
-          { id: 'b3', lineId: 7, target: 'of', before: 'sound ', ans: ['of'], exp: 'the sound of ～：～の音' },
-          { id: 'b4', lineId: 10, target: 'to', before: 'south ', ans: ['to'], exp: 'to see ～：～を見るために（目的の不定詞）' },
-          { id: 'b5', lineId: 11, target: 'up', before: 'picking ', ans: ['up'], exp: 'pick up：（風などが）強くなる' },
-          { id: 'b6', lineId: 12, target: 'on', before: 'turn ', ans: ['on'], exp: 'turn on：電源を入れる・つける' },
-          { id: 'b7', lineId: 14, target: 'for', before: 'music ', ans: ['for'], exp: 'for the journey：旅のための' },
-          { id: 'b8', lineId: 15, target: 'by', before: 'coast ', ans: ['by'], exp: 'by dawn：夜明けまでに（期限の by）' }
-        ],
-        transPool: [
-          { id: 't1', lineIds: [1], ans: '荷物は詰めたかい、ミナ？向こうでは強く生きるのよ（しっかりするのよ）、いい？', exp: '命令文 Be strong. に主語 You を付けて強調している。' },
-          { id: 't2', lineIds: [5], ans: '私たちの愛する娘が元気で、丘を越える安全な旅ができますように。', exp: 'May + 主語 + 動詞原形 で祈願「～でありますように」。' },
-          { id: 't3', lineIds: [6], ans: 'さようなら、ミナ！気をつけて旅をして、がんばってね！', exp: "Go get 'em!（'em = them）は「がんばれ！やってこい！」という口語の励まし。" },
-          { id: 't4', lineIds: [7], ans: 'あなたの朝の練習の明るい音が恋しくなるだろうな。', exp: 'be going to miss で「～が恋しくなるだろう」。' },
-          { id: 't5', lineIds: [10], ans: '日暮れ前に海を見るために、南へ向かっているところよ。', exp: 'be headed ＝ ～へ向かっている、to see ＝ 目的の不定詞。' },
-          { id: 't6', lineIds: [12], ans: 'もちろん！私の横に登って、携帯ラジオをつけて。', exp: 'climb up（登る）と turn on（つける）を and でつないだ命令文。' },
-          { id: 't7', lineIds: [13], ans: '寒さでダイヤルが固まっているんだ。僕ひとりではうまく扱えそうにないと思う。', exp: "I don't think + 文、handle it ＝ それをうまく対処する・扱う。" },
-          { id: 't8', lineIds: [15], ans: 'ずっといい音だね。夜明けまでに海岸に着けると思う？', exp: 'by dawn ＝ 夜明けまでに、reach ＝ ～に到着する。' }
-        ],
-        vocabPool: [
-          { id: 'v1', lineId: 2, target: 'promise', ans: '約束する', keys: ['約束', 'やくそく'], exp: 'promise to do（～すると約束する）。' },
-          { id: 'v2', lineId: 3, target: 'Aim', ans: '狙う、向ける', keys: ['狙', 'ねら', '向'], exp: 'Aim + 目的語で「～を向ける・狙う」。' },
-          { id: 'v3', lineId: 4, target: 'route', ans: '道筋、ルート、経路', keys: ['道', 'ルート', '経路'], exp: 'checked the route（経路を確認した）。' },
-          { id: 'v4', lineId: 5, target: 'well', ans: '元気な、健康な', keys: ['元気', '健康', '無事'], exp: '形容詞の well は「元気な・健康な」。' },
-          { id: 'v5', lineId: 6, target: 'safely', ans: '安全に、気をつけて', keys: ['安全', '気をつけ', '無事'], exp: 'Travel safely（安全に旅をして）。' },
-          { id: 'v6', lineId: 7, target: 'miss', ans: '恋しく思う、なくて寂しく思う', keys: ['恋し', 'こいし', '寂し', 'さびし', 'さみし'], exp: '離れてしまって恋しく思う。' },
-          { id: 'v7', lineId: 8, target: 'especially', ans: '特に', keys: ['特に', 'とりわけ'], exp: "especially Mom's soup（特に母のスープ）。" },
-          { id: 'v8', lineId: 9, target: 'actually', ans: '実際には、本当に', keys: ['実際', '本当', '実のところ'], exp: 'where are we actually going（実際にはどこへ行くの）。' },
-          { id: 'v9', lineId: 10, target: 'headed', ans: '向かっている', keys: ['向か', 'むか', '目指'], exp: 'be headed south（南へ向かっている）。' },
-          { id: 'v10', lineId: 11, target: 'climb up', ans: '上に登る', keys: ['登', 'のぼ'], exp: 'climb up onto the ridge（尾根の上へ登る）。' },
-          { id: 'v11', lineId: 12, target: 'turn on', ans: '（電源を）入れる、つける', keys: ['つけ', '付け', '入れ', 'オン'], exp: 'turn on the radio（ラジオをつける）。' },
-          { id: 'v12', lineId: 13, target: 'handle', ans: '対処する、うまく扱う', keys: ['対処', '扱', 'あつか'], exp: 'handle it（それをうまく扱う・対処する）。' },
-          { id: 'v13', lineId: 14, target: 'journey', ans: '旅、旅行', keys: ['旅', 'たび'], exp: 'for the journey（旅のために）。' },
-          { id: 'v14', lineId: 16, target: 'spirits', ans: '気分、元気、気持ち', keys: ['気分', '元気', '気持', '士気'], exp: 'Keep your spirits high（元気を出して）。' }
-        ]
-      },
-
-      /* ==================== 場面2：先輩との会話 ==================== */
-      {
-        id: '2',
-        tabLabel: '場面2 (先輩との会話)',
-        title: '場面2：先輩との会話（夕暮れの出会い）',
-        config: {
-          transCount: 3,
-          blankCount: 5,
-          vocabCount: 5,
-          presetA: { transIds: ['t2', 't4', 't8'] },
-          presetB: { transIds: ['t1', 't5', 't9'] }
-        },
-        lines: [
-          { id: 1, text: "Mina: Good evening! Are you heading along this valley road too?", sub: '— 夕暮れの丘で先輩と出会う —' },
-          { id: 2, text: "Claire: It was a peaceful evening until that loud music started." },
-          { id: 3, text: "Claire: You're a newcomer, aren't you? You look fresh out of home." },
-          { id: 4, text: "Mina: Yep, how'd you guess? I only started my training tonight." },
-          { id: 5, text: "Claire: Would you mind turning off that radio for a while?" },
-          { id: 6, text: "Claire: I prefer to travel without being distracted by noise." },
-          { id: 7, text: "Mina: Oh, sure—sorry! Could you tell me if it's hard to get settled into a brand new city?" },
-          { id: 8, text: "Claire: Honestly, a lot can go wrong during the first few weeks." },
-          { id: 9, text: "Claire: Still, since my specialty is fortune-telling, I can handle most surprises." },
-          { id: 10, text: "Mina: Fortune-telling? What kind of predictions do you make?" },
-          { id: 11, text: "Claire: Mostly I tell fortunes about love and future careers." },
-          { id: 12, text: "Claire: What exactly is your own special skill, by the way?" },
-          { id: 13, text: "Mina: Well, to be honest, I haven't really decided that yet." },
-          { id: 14, text: "Claire: I see. As for me, I'm nearly finished with my training period." },
-          { id: 15, text: "Claire: I'm returning home soon to show off my new skills to everyone." },
-          { id: 16, text: "Mina: Look at those lights in the valley—your town is huge!" },
-          { id: 17, text: "Claire: Yes, to you, I'm sure it looks huge. I hope you don't have too tough a time." },
-          { id: 18, text: "Leo: Geez, what a snob! Let's keep moving and find our own town." }
-        ],
-        blankPool: [
-          { id: 'b1', lineId: 1, target: 'along', before: 'heading ', ans: ['along'], exp: 'along this road：この道に沿って' },
-          { id: 'b2', lineId: 5, target: 'off', before: 'turning ', ans: ['off'], exp: 'turn off：電源を消す・切る' },
-          { id: 'b3', lineId: 6, target: 'without', before: 'travel ', ans: ['without'], exp: 'without -ing：～することなく' },
-          { id: 'b4', lineId: 7, target: 'into', before: 'settled ', ans: ['into'], exp: 'get settled into ～：～に落ち着く・馴染む' },
-          { id: 'b5', lineId: 11, target: 'about', before: 'fortunes ', ans: ['about'], exp: 'tell fortunes about ～：～について占う' },
-          { id: 'b6', lineId: 14, target: 'with', before: 'finished ', ans: ['with'], exp: 'be finished with ～：～を終えている' },
-          { id: 'b7', lineId: 15, target: 'off', before: 'show ', ans: ['off'], exp: 'show off：見せびらかす・披露する' },
+          { id: 'b1', lineId: 4, target: 'off', before: 'turning ', ans: ['off'], exp: 'turn off：電源を消す・切る' },
+          { id: 'b2', lineId: 4, target: 'without', before: 'fly ', ans: ['without'], exp: 'without -ing：～することなく' },
+          { id: 'b3', lineId: 6, target: 'into', before: 'settled ', ans: ['into'], exp: 'get settled into ～：～に落ち着く・馴染む' },
+          { id: 'b4', lineId: 10, target: 'about', before: 'fortunes ', ans: ['about'], exp: 'tell fortunes about ～：～について占う' },
+          { id: 'b5', lineId: 13, target: 'with', before: 'finished ', ans: ['with'], exp: 'be finished with ～：～を終えている' },
+          { id: 'b6', lineId: 14, target: 'off', before: 'show ', ans: ['off'], exp: 'show off：見せびらかす・披露する' },
+          { id: 'b7', lineId: 15, target: 'down', before: 'town ', ans: ['down'], exp: 'down there：下のほうにある場所' },
           { id: 'b8', lineId: 17, target: 'to', before: 'Yes, ', ans: ['to'], exp: 'to you：あなたにとっては' }
         ],
         transPool: [
-          { id: 't1', lineIds: [4], ans: 'うん、どうして分かったの？今夜、修行を始めたばかりなの。', exp: "how'd ＝ how did、guess ＝ 推測する・言い当てる。" },
-          { id: 't2', lineIds: [5], ans: 'しばらくの間、そのラジオを消してもらえませんか？', exp: 'Would you mind -ing? ＝ 丁寧な依頼「～していただけませんか」。' },
-          { id: 't3', lineIds: [6], ans: '私は雑音で気を散らされずに旅をするのが好きなの。', exp: 'prefer to ＝ ～の方を好む、without being distracted ＝ 受動態の動名詞。' },
-          { id: 't4', lineIds: [7], ans: 'あ、もちろん、ごめんなさい！まったく新しい街に馴染むのって大変かどうか教えてくれる？', exp: 'get settled into ＝ 落ち着く・馴染む、brand new ＝ まったく新しい。' },
-          { id: 't5', lineIds: [8], ans: '正直なところ、最初の数週間はたくさんのことがうまくいかないこともあるわ。', exp: 'go wrong ＝ うまくいかない・問題が起きる。' },
-          { id: 't6', lineIds: [9], ans: 'それでも、私の特技は占いだから、たいていのハプニングには対処できるわ。', exp: 'since ＝ ～なので（理由）、handle ＝ 対処する。' },
-          { id: 't7', lineIds: [13], ans: 'うーん、正直に言うと、それはまだちゃんと決めていないんだ。', exp: "haven't ... yet ＝ まだ～していない（現在完了）。" },
-          { id: 't8', lineIds: [14], ans: 'なるほどね。私に関して言うと、もうすぐ修行期間が終わるところなの。', exp: 'nearly finished with ～ ＝ ほとんど～を終えている。' },
-          { id: 't9', lineIds: [15], ans: 'もうすぐ故郷に帰って、みんなに自分の新しい技術を披露するのよ。', exp: '進行形で近い未来の予定、show off ＝ 見せびらかす・披露する。' },
-          { id: 't10', lineIds: [17], ans: 'ええ、あなたにとってはきっと大きく見えるでしょうね。あまり苦労しないといいんだけど。', exp: 'to you ＝ あなたにとっては、too + 形容詞 + a + 名詞 の語順。' }
+          { id: 't1', lineIds: [2], ans: 'そうだったわ。あなた、新入りでしょ？', exp: "aren't you? は確認のための付加疑問文。" },
+          { id: 't2', lineIds: [3], ans: 'うん、どうして分かったの？今夜、家を出たばかりなの。', exp: "how'd ＝ how did、just left ＝ ちょうど出たばかり。" },
+          { id: 't3', lineIds: [4], ans: 'そのラジオを消してもらえますか？私は気を散らされずに飛ぶのが好きなの。', exp: 'Would you mind -ing?（丁寧な依頼）、without being distracted（受動態の動名詞）。' },
+          { id: 't4', lineIds: [6], ans: '教えてくれる？まったく新しい街に落ち着く（馴染む）のって本当に大変なの？', exp: 'get settled into ＝ 落ち着く・馴染む、brand new ＝ まったく新しい。' },
+          { id: 't5', lineIds: [7], ans: 'ああ、そうね、たくさんのことがうまくいかないこともあるわ。', exp: 'go wrong ＝ うまくいかない・問題が起きる。' },
+          { id: 't6', lineIds: [8], ans: 'でも私の特技は占いだから、何でも対処できるわ。', exp: 'since ＝ ～なので（理由）、handle ＝ 対処する。' },
+          { id: 't7', lineIds: [12], ans: 'えーと、うーん、それはまだちゃんと決めていないんだ。', exp: "haven't ... yet ＝ まだ～していない（現在完了）。" },
+          { id: 't8', lineIds: [13], ans: 'ああ、まあね、私はもうすぐ修行期間が終わるところなの。', exp: 'nearly finished with ～ ＝ ほとんど～を終えている。' },
+          { id: 't9', lineIds: [14], ans: 'もうすぐ故郷に帰って、自分の新しい力（技術）を披露するのよ。', exp: '進行形で近い未来の予定、show off ＝ 見せびらかす・披露する。' },
+          { id: 't10', lineIds: [17], ans: 'ええ、あなたにとってはきっと大きく見えるでしょうね。あまり苦労しないといいんだけど。', exp: 'to you ＝ あなたにとっては、too + 形容詞 + a + 名詞 の語順。' },
+          { id: 't11', lineIds: [19], ans: 'やれやれ、なんて気取り屋（感じの悪いやつ）なの。それにあの猫、見た？ — 私の特技って何だろう？', exp: 'what a snob（感嘆文）。' }
         ],
         vocabPool: [
-          { id: 'v1', lineId: 2, target: 'peaceful', ans: '平和な、穏やかな', keys: ['平和', '穏や', '静か'], exp: 'a peaceful evening（穏やかな夜）。' },
-          { id: 'v2', lineId: 3, target: 'newcomer', ans: '新入り、新参者', keys: ['新入', '新人', '新参'], exp: 'You are a newcomer（新入りでしょ）。' },
-          { id: 'v3', lineId: 4, target: 'guess', ans: '推測する、言い当てる', keys: ['推測', '当て', 'わか', '分か'], exp: "how'd you guess?（どうして分かったの？）。" },
-          { id: 'v4', lineId: 6, target: 'distracted', ans: '気が散った、注意をそらされた', keys: ['気が散', '散', '注意', '集中'], exp: 'without being distracted（気を散らされずに）。' },
-          { id: 'v5', lineId: 7, target: 'brand new', ans: 'まったく新しい、新品の', keys: ['まったく新', '全く新', '新品', '新し'], exp: 'a brand new city（まったく新しい街）。' },
-          { id: 'v6', lineId: 8, target: 'go wrong', ans: 'うまくいかない、問題が起きる', keys: ['うまくいか', '問題', '失敗', '悪く'], exp: 'a lot can go wrong（いろんなことがうまくいかない）。' },
-          { id: 'v7', lineId: 9, target: 'fortune-telling', ans: '占い', keys: ['占', 'うらな'], exp: 'tell fortunes ＝ 占いをする。' },
-          { id: 'v8', lineId: 10, target: 'predictions', ans: '予測、予言', keys: ['予測', '予言', '予想'], exp: 'predict（予測する）の名詞形。' },
-          { id: 'v9', lineId: 12, target: 'exactly', ans: '正確に、まさに', keys: ['正確', 'まさに', '厳密'], exp: 'What exactly is ～（正確には何）。' },
-          { id: 'v10', lineId: 14, target: 'period', ans: '期間', keys: ['期間', '時期'], exp: 'training period（修行期間）。' },
-          { id: 'v11', lineId: 15, target: 'show off', ans: '見せびらかす、披露する', keys: ['見せびらか', '披露', '自慢', '見せる'], exp: 'show off my new skills（新しい力を披露する）。' },
-          { id: 'v12', lineId: 16, target: 'huge', ans: '巨大な、とても大きい', keys: ['巨大', 'とても大き', '大き'], exp: 'your town is huge（あなたの町はすごく大きい）。' },
-          { id: 'v13', lineId: 17, target: 'tough', ans: '大変な、厳しい、つらい', keys: ['大変', '厳し', 'つら', '苦労'], exp: 'too tough a time（大変すぎる思い・苦労）。' },
-          { id: 'v14', lineId: 18, target: 'snob', ans: '気取り屋、感じの悪いやつ', keys: ['気取', 'きど', '感じ', '嫌な', 'いやな'], exp: 'what a snob（なんて嫌なやつなの）。' }
+          { id: 'v1', lineId: 3, target: 'guess', ans: '推測する、言い当てる', keys: ['推測', '当て', 'わか', '分か'], exp: "how'd you guess?（どうして分かったの？）。" },
+          { id: 'v2', lineId: 4, target: 'distracted', ans: '気が散った、注意をそらされた', keys: ['気が散', '散', '注意', '集中'], exp: 'without being distracted（気を散らされずに）。' },
+          { id: 'v3', lineId: 6, target: 'brand new', ans: 'まったく新しい、新品の', keys: ['まったく新', '全く新', '新品', '新し'], exp: 'a brand new city（まったく新しい街）。' },
+          { id: 'v4', lineId: 7, target: 'go wrong', ans: 'うまくいかない、問題が起きる', keys: ['うまくいか', '問題', '失敗', '悪く'], exp: 'a lot can go wrong（いろんなことがうまくいかない）。' },
+          { id: 'v5', lineId: 8, target: 'fortune-telling', ans: '占い', keys: ['占', 'うらな'], exp: 'tell fortunes ＝ 占いをする。' },
+          { id: 'v6', lineId: 10, target: 'tell fortunes', ans: '占いをする', keys: ['占', 'うらな'], exp: 'tell fortunes about love（恋愛占いをする）。' },
+          { id: 'v7', lineId: 11, target: 'exactly', ans: '正確に、まさに', keys: ['正確', 'まさに', '厳密'], exp: 'What exactly is ～（正確には何）。' },
+          { id: 'v8', lineId: 13, target: 'training period', ans: '修行期間、訓練期間', keys: ['修行', '訓練', '期間'], exp: 'period ＝ 期間。' },
+          { id: 'v9', lineId: 14, target: 'show off', ans: '見せびらかす、披露する', keys: ['見せびらか', '披露', '自慢', '見せる'], exp: 'show off my new skills（新しい力を披露する）。' },
+          { id: 'v10', lineId: 15, target: 'down there', ans: 'あそこの下に、下のほうに', keys: ['下', 'あそこ'], exp: 'That is my town down there.' },
+          { id: 'v11', lineId: 17, target: 'tough', ans: '大変な、厳しい、つらい', keys: ['大変', '厳し', 'つら', '苦労'], exp: 'too tough a time（大変すぎる思い・苦労）。' },
+          { id: 'v12', lineId: 18, target: 'Ciao', ans: 'じゃあね、さようなら', keys: ['じゃあね', 'さようなら', 'バイバイ', 'またね'], exp: 'イタリア語由来のカジュアルな別れの挨拶。' },
+          { id: 'v13', lineId: 19, target: 'snob', ans: '気取り屋、感じの悪いやつ', keys: ['気取', 'きど', '感じ', '嫌な', 'いやな'], exp: 'what a snob（なんて嫌なやつなの）。' }
         ]
       },
 
-      /* ==================== 場面3：悪天候と海辺の街 ==================== */
+      /* ==================== 場面3：突然の豪雨・海・時計塔 ==================== */
       {
         id: '3',
-        tabLabel: '場面3 (悪天候と海辺の街)',
-        title: '場面3：悪天候と海辺の街（突然の豪雨〜時計塔の港町）',
+        tabLabel: '場面3 (豪雨・海・時計塔)',
+        title: '場面3：突然の豪雨・海・時計塔',
         config: {
           transCount: 4,
           blankCount: 5,
           vocabCount: 5,
-          presetA: { transIds: ['t1', 't3', 't5', 't8'] },
-          presetB: { transIds: ['t2', 't4', 't6', 't9'] }
+          presetA: { transIds: ['t1', 't4', 't6', 't10'] },
+          presetB: { transIds: ['t2', 't5', 't7', 't11'] }
         },
         lines: [
-          { id: 1, text: "Leo: The storm is getting heavier—we can't stay up in this wind!", sub: '— 突然の豪雨と避難 —' },
-          { id: 2, text: "Mina: Hold on tight! There's an open freight car down by the tracks." },
-          { id: 3, text: "Mina: We had better rest inside this shelter until our coats are dry." },
-          { id: 4, text: "Leo: Won't we get in trouble if the conductor catches us here?" },
-          { id: 5, text: "Mina: Not if nobody finds us before morning. I'm soaked through, down to the bone." },
-          { id: 6, text: "Mina: Oops! Sorry! We didn't mean to fall asleep on your hay bales!", sub: '— 翌朝、海の見える港町へ —' },
-          { id: 7, text: "Mina: Leo, wake up! You've got to come see the shining ocean." },
-          { id: 8, text: "Leo: Big deal—it's just an oversized puddle of salty water." },
-          { id: 9, text: "Mina: Look, up ahead! There's a grand clock tower above the harbor." },
-          { id: 10, text: "Mina: How lovely! I wonder if they already have an apprentice living there." },
-          { id: 11, text: "Mina: This is just the kind of harbor city I've always imagined." },
-          { id: 12, text: "Mina: A lively place like this would be wonderful to live in." },
-          { id: 13, text: "Leo: Look at how many people are crowding the square—too many, if you ask me." },
-          { id: 14, text: "Caretaker: Bless my hourglass! It's been ages since a traveler visited my tower.", sub: '— 時計塔の管理人との会話 —' },
-          { id: 15, text: "Mina: Good morning, sir. Do any traveling apprentices live in this town?" },
-          { id: 16, text: "Caretaker: Why, nobody's seen one around here in a long time." },
-          { id: 17, text: "Mina: That's fantastic! Our long trip is finally over—we're staying right here." }
+          { id: 1, text: "Kiki: What are we gonna do? We can't stay up! Hold on!", sub: '— 突然の豪雨と列車への避難 —' },
+          { id: 2, text: "Kiki: We better rest here until it's dry." },
+          { id: 3, text: "Jiji: Won't we get in trouble?" },
+          { id: 4, text: "Kiki: Not if nobody finds us." },
+          { id: 5, text: "Jiji: I'm soaked through, down to the bone. This smells great." },
+          { id: 6, text: "Kiki: Oops! Sorry! We didn't mean to fall asleep in your breakfast.", sub: '— 海の見える街へ —' },
+          { id: 7, text: "Kiki: Jiji, you've got to come see the ocean. It's beautiful." },
+          { id: 8, text: "Jiji: Big deal, just a big puddle of water." },
+          { id: 9, text: "Kiki: Look, up ahead. How lovely!" },
+          { id: 10, text: "Kiki / Jiji: I wonder if they have a witch there. — Oh, great." },
+          { id: 11, text: "Kiki: Ready, set, go! Hold on! You okay back there?", sub: '— コリコの街と時計塔 —' },
+          { id: 12, text: "Kiki: This is just the kind of place I've always imagined!" },
+          { id: 13, text: "Kiki: Wow! A clock tower! Look at this city!" },
+          { id: 14, text: "Kiki: A place like this would be great to live in." },
+          { id: 15, text: "Kiki: But there may be some witches living here already. And there may not be." },
+          { id: 16, text: "Kiki / Jiji: Look at how many people there are. — Too many, if you ask me." },
+          { id: 17, text: "Clock Tower Man: Bless my hourglass. It's a real live witch." },
+          { id: 18, text: "Kiki: Good morning. Do any witches live in this town?" },
+          { id: 19, text: "Clock Tower Man: Why, uh, nobody's seen one around here in a long time." },
+          { id: 20, text: "Kiki: That's great. Our trip is over. We're staying right here. Thanks, mister. Bye!" }
         ],
         blankPool: [
-          { id: 'b1', lineId: 1, target: 'up', before: 'stay ', ans: ['up'], exp: 'stay up：ここでは「持ちこたえる・空中に留まり続ける」' },
-          { id: 'b2', lineId: 2, target: 'on', before: 'Hold ', ans: ['on'], exp: 'Hold on：しっかりつかまる' },
-          { id: 'b3', lineId: 4, target: 'in', before: 'get ', ans: ['in'], exp: 'get in trouble：怒られる・トラブルになる' },
+          { id: 'b1', lineId: 1, target: 'up', before: 'stay ', ans: ['up'], exp: 'stay up：ここでは「空中に留まり続ける・持ちこたえる」' },
+          { id: 'b2', lineId: 1, target: 'on', before: 'Hold ', ans: ['on'], exp: 'Hold on：しっかりつかまる' },
+          { id: 'b3', lineId: 3, target: 'in', before: 'get ', ans: ['in'], exp: 'get in trouble：怒られる・トラブルになる' },
           { id: 'b4', lineId: 5, target: 'to', before: 'down ', ans: ['to'], exp: 'down to the bone：骨の髄まで・芯まで' },
-          { id: 'b5', lineId: 9, target: 'up', before: 'Look, ', ans: ['up'], exp: 'up ahead：前方に・少し先に' },
-          { id: 'b6', lineId: 12, target: 'in', before: 'live ', ans: ['in'], exp: 'live in a place の前置詞残し' },
+          { id: 'b5', lineId: 6, target: 'in', before: 'asleep ', ans: ['in'], exp: 'fall asleep in ～：～の中で眠ってしまう' },
+          { id: 'b6', lineId: 9, target: 'up', before: 'Look, ', ans: ['up'], exp: 'up ahead：前方に・少し先に' },
           { id: 'b7', lineId: 13, target: 'at', before: 'Look ', ans: ['at'], exp: 'look at ～：～を見る' },
-          { id: 'b8', lineId: 16, target: 'in', before: 'here ', ans: ['in'], exp: 'in a long time：長い間' },
-          { id: 'b9', lineId: 17, target: 'over', before: 'finally ', ans: ['over'], exp: 'be over：終わる' }
+          { id: 'b8', lineId: 14, target: 'in', before: 'live ', ans: ['in'], exp: 'live in a place の前置詞残し' },
+          { id: 'b9', lineId: 16, target: 'at', before: 'Look ', ans: ['at'], exp: 'look at ～：～を見る' },
+          { id: 'b10', lineId: 19, target: 'in', before: 'here ', ans: ['in'], exp: 'in a long time：長い間' },
+          { id: 'b11', lineId: 20, target: 'over', before: 'is ', ans: ['over'], exp: 'be over：終わる' }
         ],
         transPool: [
-          { id: 't1', lineIds: [3], ans: 'コートが乾くまで、この避難場所の中で休んだほうがいいわ。', exp: 'had better ＝ ～したほうがよい、until ＝ ～まで。' },
-          { id: 't2', lineIds: [4], ans: 'もしここで車掌さんに見つかったら、怒られないかな（トラブルにならないかな）？', exp: "Won't we get in trouble? ＝ トラブルにならないかな？" },
-          { id: 't3', lineIds: [6], ans: 'おっと、ごめんなさい！あなたの干し草の束の上で眠ってしまうつもりはなかったんです！', exp: "didn't mean to do ＝ ～するつもりはなかった、fall asleep ＝ 眠ってしまう。" },
-          { id: 't4', lineIds: [8], ans: '大したことないよ、ただの巨大な塩水の水たまりじゃないか。', exp: 'Big deal ＝ 皮肉で「大したことない」、puddle ＝ 水たまり。' },
-          { id: 't5', lineIds: [10], ans: 'なんて素敵なの！あそこにはすでに住んでいる見習いがいるのかな。', exp: 'I wonder if ～ ＝ ～かなと思う（if は「～かどうか」）。' },
-          { id: 't6', lineIds: [11], ans: 'ここはまさに私がずっと想像していたような港町だわ。', exp: 'city の後ろに関係代名詞 that 省略＋現在完了。' },
-          { id: 't7', lineIds: [12], ans: 'こんな活気ある場所に住めたら素晴らしいだろうな。', exp: 'would ＝ 仮定のニュアンス、live in の前置詞残し。' },
-          { id: 't8', lineIds: [13], ans: 'どれだけたくさんの人が広場に集まっているか見てよ。僕に言わせれば多すぎるよ。', exp: 'how many + 名詞、if you ask me ＝ 私に言わせれば。' },
-          { id: 't9', lineIds: [16], ans: 'ええと、この辺りでは長い間、誰も（見習いを）見ていませんね。', exp: "nobody's seen ＝ nobody has seen、in a long time ＝ 長い間。" }
+          { id: 't1', lineIds: [2], ans: '乾くまで、ここで休んだほうがいいね。', exp: 'We better ＝ We had better（～したほうがよい）、until ＝ ～まで。' },
+          { id: 't2', lineIds: [3], ans: '怒られないかな（トラブルにならないかな）？', exp: "Won't we get in trouble? ＝ トラブルにならないかな？" },
+          { id: 't3', lineIds: [5], ans: '骨の髄まで完全にびしょ濡れだよ。いい匂いだね。', exp: 'be soaked through（完全にびしょ濡れ）、down to the bone（骨の髄まで）。' },
+          { id: 't4', lineIds: [6], ans: 'おっと、ごめんなさい！あなたの朝食の中で眠ってしまうつもりはなかったんです。', exp: "didn't mean to do ＝ ～するつもりはなかった、fall asleep ＝ 眠ってしまう。" },
+          { id: 't5', lineIds: [8], ans: '大したことないよ、ただの大きな水たまりじゃないか。', exp: 'Big deal ＝ 皮肉で「大したことない」、puddle ＝ 水たまり。' },
+          { id: 't6', lineIds: [10], ans: 'あそこに魔女がいるのかな。 — ああ、もう最悪（やれやれ）。', exp: 'I wonder if ～ ＝ ～かなと思う（if は「～かどうか」）。Oh, great. は皮肉。' },
+          { id: 't7', lineIds: [12], ans: 'ここはまさに私がずっと想像していたような場所だわ！', exp: 'place の後ろに関係代名詞 that 省略＋現在完了。' },
+          { id: 't8', lineIds: [14], ans: 'こんな場所に住めたら素晴らしいだろうな。', exp: 'would ＝ 仮定のニュアンス、live in の前置詞残し。' },
+          { id: 't9', lineIds: [15], ans: 'でもここにはすでに住んでいる魔女がいるかもしれないわ。いないかもしれないけど。', exp: 'there may be ～（～がいるかもしれない）、living here は現在分詞。' },
+          { id: 't10', lineIds: [16], ans: 'どれだけたくさんの人がいるか見て。 — 僕に言わせれば多すぎるよ。', exp: 'how many + 名詞、if you ask me ＝ 私に言わせれば。' },
+          { id: 't11', lineIds: [19], ans: 'ええと、この辺りでは長い間、誰も（魔女を）見ていませんね。', exp: "nobody's seen ＝ nobody has seen、in a long time ＝ 長い間。" }
         ],
         vocabPool: [
-          { id: 'v1', lineId: 1, target: 'stay up', ans: '持ちこたえる、留まり続ける', keys: ['持ちこた', '留ま', 'とどま', '続け', '起き'], exp: '悪天候の中で「持ちこたえる・留まり続ける」。' },
-          { id: 'v2', lineId: 2, target: 'Hold on', ans: 'しっかりつかまる、耐える', keys: ['つかま', '掴', '耐', '待'], exp: 'Hold on tight!（しっかりつかまって！）。' },
-          { id: 'v3', lineId: 3, target: 'shelter', ans: '避難場所、雨宿りする場所', keys: ['避難', '雨宿', 'シェルター'], exp: '雨風をしのぐ場所。' },
-          { id: 'v4', lineId: 4, target: 'get in trouble', ans: '怒られる、トラブルになる', keys: ['怒ら', 'トラブル', '問題', '困'], exp: '熟語「問題になる・怒られる」。' },
-          { id: 'v5', lineId: 5, target: 'soaked', ans: 'びしょ濡れの', keys: ['びしょ', '濡', 'ぬれ', 'ずぶ'], exp: 'be soaked through（完全にびしょ濡れ）。' },
-          { id: 'v6', lineId: 6, target: 'fall asleep', ans: '眠ってしまう', keys: ['眠', 'ねむ', '寝'], exp: '句動詞「眠りに落ちる」。' },
-          { id: 'v7', lineId: 7, target: 'ocean', ans: '海、大洋', keys: ['海', 'うみ', '大洋'], exp: 'the shining ocean（輝く海）。' },
-          { id: 'v8', lineId: 8, target: 'puddle', ans: '水たまり', keys: ['水たまり', '水溜'], exp: 'puddle of water（水たまり）。' },
-          { id: 'v9', lineId: 9, target: 'up ahead', ans: '前方に、少し先に', keys: ['前方', '先', '前'], exp: 'Look, up ahead!（見て、前の方に！）。' },
-          { id: 'v10', lineId: 10, target: 'wonder', ans: '～かなと思う、疑問に思う', keys: ['疑問', '不思議', 'かな', 'だろう'], exp: 'I wonder if ～（～かなと思う）。' },
-          { id: 'v11', lineId: 11, target: 'imagined', ans: '想像した', keys: ['想像', 'そうぞう'], exp: 'imagine の過去分詞。' },
-          { id: 'v12', lineId: 13, target: 'if you ask me', ans: '私に言わせれば、私の意見では', keys: ['言わせ', '意見', '私'], exp: '会話の挿入句。' },
-          { id: 'v13', lineId: 14, target: 'hourglass', ans: '砂時計', keys: ['砂時計', 'すなどけい'], exp: 'Bless my hourglass!（なんてことだ！）。' },
-          { id: 'v14', lineId: 15, target: 'apprentices', ans: '見習い、修行生', keys: ['見習', '修行', '弟子'], exp: 'apprentice の複数形。' },
-          { id: 'v15', lineId: 16, target: 'around here', ans: 'この辺りで', keys: ['この辺', 'このあた', '周辺', '近く'], exp: '場所を表す表現。' },
-          { id: 'v16', lineId: 17, target: 'over', ans: '終わった、終了した', keys: ['終わ', 'おわ', '終了'], exp: 'be over ＝ 終わる。' }
+          { id: 'v1', lineId: 1, target: 'stay up', ans: '空中に留まり続ける、持ちこたえる', keys: ['留ま', 'とどま', '持ちこた', '飛び続け', '起き'], exp: 'この文脈では「飛び続ける・持ちこたえる」。' },
+          { id: 'v2', lineId: 2, target: 'until', ans: '～まで', keys: ['まで'], exp: "until it's dry（乾くまで）。" },
+          { id: 'v3', lineId: 3, target: 'get in trouble', ans: '怒られる、トラブルになる', keys: ['怒ら', 'トラブル', '問題', '困'], exp: '熟語「問題になる・怒られる」。' },
+          { id: 'v4', lineId: 5, target: 'soaked', ans: 'びしょ濡れの', keys: ['びしょ', '濡', 'ぬれ', 'ずぶ'], exp: 'be soaked through（完全にびしょ濡れ）。' },
+          { id: 'v5', lineId: 6, target: 'fall asleep', ans: '眠ってしまう', keys: ['眠', 'ねむ', '寝'], exp: '句動詞「眠りに落ちる」。' },
+          { id: 'v6', lineId: 7, target: 'ocean', ans: '海、大洋', keys: ['海', 'うみ', '大洋'], exp: 'come see the ocean（海を見に来る）。' },
+          { id: 'v7', lineId: 8, target: 'puddle', ans: '水たまり', keys: ['水たまり', '水溜'], exp: 'puddle of water（水たまり）。' },
+          { id: 'v8', lineId: 9, target: 'up ahead', ans: '前方に、少し先に', keys: ['前方', '先', '前'], exp: 'Look, up ahead.（見て、前の方に）。' },
+          { id: 'v9', lineId: 10, target: 'wonder', ans: '～かなと思う、疑問に思う', keys: ['疑問', '不思議', 'かな', 'だろう'], exp: 'I wonder if ～（～かなと思う）。' },
+          { id: 'v10', lineId: 11, target: 'back there', ans: '後ろで、あちらで', keys: ['後ろ', 'うしろ', 'あちら'], exp: 'You okay back there?（後ろ大丈夫？）。' },
+          { id: 'v11', lineId: 12, target: 'imagined', ans: '想像した', keys: ['想像', 'そうぞう'], exp: 'imagine の過去分詞。' },
+          { id: 'v12', lineId: 13, target: 'clock tower', ans: '時計塔', keys: ['時計塔', 'とけいとう'], exp: 'A clock tower!（時計塔よ！）。' },
+          { id: 'v13', lineId: 15, target: 'already', ans: 'すでに、もう', keys: ['すでに', '既に', 'もう'], exp: 'living here already（すでにここに住んでいる）。' },
+          { id: 'v14', lineId: 16, target: 'if you ask me', ans: '私に言わせれば、私の意見では', keys: ['言わせ', '意見', '私'], exp: '会話の挿入句。' },
+          { id: 'v15', lineId: 17, target: 'hourglass', ans: '砂時計', keys: ['砂時計', 'すなどけい'], exp: 'Bless my hourglass!（なんてことだ！）。' },
+          { id: 'v16', lineId: 19, target: 'around here', ans: 'この辺りで', keys: ['この辺', 'このあた', '周辺', '近く'], exp: '場所を表す表現。' },
+          { id: 'v17', lineId: 20, target: 'over', ans: '終わった、終了した', keys: ['終わ', 'おわ', '終了'], exp: 'be over ＝ 終わる。' }
         ]
       },
 
-      /* ==================== 場面4：警官と少年との出会い ==================== */
+      /* ==================== 場面4：警官とのやりとり・トンボとの出会い ==================== */
       {
         id: '4',
-        tabLabel: '場面4 (警官と少年との出会い)',
-        title: '場面4：警官と少年との出会い（大通りの騒動〜通りでの会話）',
+        tabLabel: '場面4 (警官・トンボ)',
+        title: '場面4：警官とのやりとり・トンボとの出会い',
         config: {
           transCount: 4,
           blankCount: 5,
           vocabCount: 5,
-          presetA: { transIds: ['t1', 't4', 't7', 't10'] },
-          presetB: { transIds: ['t2', 't5', 't8', 't11'] }
+          presetA: { transIds: ['t1', 't5', 't8', 't11'] },
+          presetB: { transIds: ['t2', 't6', 't9', 't12'] }
         },
         lines: [
-          { id: 1, text: "Mina: Hello! We'd be honored if we could live in your lovely harbor city.", sub: '— 大通りでのあいさつとハプニング —' },
-          { id: 2, text: "Officer: Hey, kid! Who do you think you are, jumping out into the main street like that?" },
-          { id: 3, text: "Officer: You were almost responsible for a serious traffic accident back there." },
-          { id: 4, text: "Mina: I'm sorry, officer! I'm new here, and I was supposed to keep to the side lane." },
-          { id: 5, text: "Officer: Everyone is supposed to obey the law. I'm going to have to write you up." },
-          { id: 6, text: "Mina: Will you really contact my parents about this?" },
-          { id: 7, text: "Officer: Of course—I have to report this with every minor." },
-          { id: 8, text: "Ken (in the crowd): Thief! Somebody call the cops—he's getting away!" },
-          { id: 9, text: "Officer: Stay right where you are! I'll deal with you in a second." },
-          { id: 10, text: "Ken: Miss, wait up! I sure fooled that cop, didn't I?", sub: '— 通りで話しかけてきた少年 —' },
-          { id: 11, text: "Ken: That was me yelling thief from the corner. Worked out pretty well, huh?" },
-          { id: 12, text: "Ken: You must be an amazing glider! Do you think you can teach me how to steer it?" },
-          { id: 13, text: "Friend: Hey Ken, maybe you can sweep her off her feet with all that charm!" },
-          { id: 14, text: "Mina: Thank you for getting me out of trouble, though I shouldn't be talking to you." },
-          { id: 15, text: "Mina: It's very rude to speak to a girl before you've been properly introduced!" },
-          { id: 16, text: "Ken: You're kind of old-fashioned, aren't you? You sound like my grandmother." },
-          { id: 17, text: "Mina: Just go away and leave me alone!" }
+          { id: 1, text: "Kiki: Um, hi. My name's Kiki, and I'm a witch. And this is Jiji. He's my black cat.", sub: '— 警官とのやりとり —' },
+          { id: 2, text: "Kiki: And we'd be honored if we could live here." },
+          { id: 3, text: "Kiki: Your city is so amazing, and what a beautiful clock tower." },
+          { id: 4, text: "Lady: Oh, really, that's very nice, dear. Bye." },
+          { id: 5, text: "Policeman: Hey, you kid! Who do you think you are, jumping out into the street like that?" },
+          { id: 6, text: "Policeman: You were almost responsible for a big accident, zooming around on your broom back there." },
+          { id: 7, text: "Kiki: But I'm a new witch, sir. We're supposed to fly around." },
+          { id: 8, text: "Policeman: You're supposed to obey the law. I'm gonna have to write you up." },
+          { id: 9, text: "Policeman / Kiki: Now give me your name and address. — Will you tell my parents?" },
+          { id: 10, text: "Policeman: Of course, I'm going to tell your parents. I have to do that with every minor." },
+          { id: 11, text: "Tombo / Policeman: Thief! Thief! Somebody! Call the cops. He's getting away! — Now you stay right there!" },
+          { id: 12, text: "Tombo: Miss, wait up. I sure fooled that cop, huh? Hey, that was me yelling thief.", sub: '— トンボとの出会い —' },
+          { id: 13, text: "Tombo: You'll be okay now. Worked out pretty good, huh?" },
+          { id: 14, text: "Tombo: You gotta be a real witch, the way you can fly that broom." },
+          { id: 15, text: "Tombo: Do you think maybe you can teach me how to fly it?" },
+          { id: 16, text: "Friend / Tombo: Hey, Tombo, maybe you can sweep her off her feet with that broom. — Hey, shut up, all right?" },
+          { id: 17, text: "Tombo: You know, miss, I love flying, too. Can I see your broom?" },
+          { id: 18, text: "Kiki: Thank you for getting me out of trouble, but it's very rude to talk to a girl before you've been introduced and before you know her name." },
+          { id: 19, text: "Tombo: You're kind of old-fashioned, aren't you? You sound like my grandmother." },
+          { id: 20, text: "Kiki / Tombo: Just go away. Leave me alone. — Hey, don't go—oh!" }
         ],
         blankPool: [
-          { id: 'b1', lineId: 2, target: 'out', before: 'jumping ', ans: ['out'], exp: 'jump out into ～：～へ飛び出す' },
-          { id: 'b2', lineId: 3, target: 'for', before: 'responsible ', ans: ['for'], exp: 'be responsible for ～：～の責任がある' },
-          { id: 'b3', lineId: 5, target: 'up', before: 'write you ', ans: ['up'], exp: 'write A up：違反として記録する・報告書を書く' },
-          { id: 'b4', lineId: 8, target: 'away', before: 'getting ', ans: ['away'], exp: 'get away：逃げる' },
-          { id: 'b5', lineId: 10, target: 'up', before: 'wait ', ans: ['up'], exp: 'wait up：立ち止まって待つ' },
-          { id: 'b6', lineId: 11, target: 'out', before: 'Worked ', ans: ['out'], exp: 'work out：うまくいく' },
-          { id: 'b7', lineId: 13, target: 'off', before: 'sweep her ', ans: ['off'], exp: "sweep A off one's feet：Aを夢中にさせる" },
-          { id: 'b8', lineId: 14, target: 'of', before: 'out ', ans: ['of'], exp: 'get A out of trouble：トラブルから助け出す' },
-          { id: 'b9', lineId: 16, target: 'like', before: 'sound ', ans: ['like'], exp: 'sound like ～：～のように聞こえる' },
-          { id: 'b10', lineId: 17, target: 'away', before: 'go ', ans: ['away'], exp: 'go away：立ち去る・あっちへ行く' }
+          { id: 'b1', lineId: 5, target: 'out', before: 'jumping ', ans: ['out'], exp: 'jump out into ～：～へ飛び出す' },
+          { id: 'b2', lineId: 6, target: 'for', before: 'responsible ', ans: ['for'], exp: 'be responsible for ～：～の責任がある' },
+          { id: 'b3', lineId: 6, target: 'on', before: 'around ', ans: ['on'], exp: 'on your broom：ほうきに乗って' },
+          { id: 'b4', lineId: 7, target: 'around', before: 'fly ', ans: ['around'], exp: 'fly around：飛び回る' },
+          { id: 'b5', lineId: 8, target: 'up', before: 'write you ', ans: ['up'], exp: 'write A up：違反として記録する・報告書を書く' },
+          { id: 'b6', lineId: 11, target: 'away', before: 'getting ', ans: ['away'], exp: 'get away：逃げる' },
+          { id: 'b7', lineId: 12, target: 'up', before: 'wait ', ans: ['up'], exp: 'wait up：立ち止まって待つ' },
+          { id: 'b8', lineId: 13, target: 'out', before: 'Worked ', ans: ['out'], exp: 'work out：うまくいく' },
+          { id: 'b9', lineId: 16, target: 'off', before: 'sweep her ', ans: ['off'], exp: "sweep A off one's feet：Aを夢中にさせる" },
+          { id: 'b10', lineId: 18, target: 'of', before: 'out ', ans: ['of'], exp: 'get A out of trouble：トラブルから助け出す' },
+          { id: 'b11', lineId: 19, target: 'like', before: 'sound ', ans: ['like'], exp: 'sound like ～：～のように聞こえる' },
+          { id: 'b12', lineId: 20, target: 'away', before: 'go ', ans: ['away'], exp: 'go away：立ち去る・あっちへ行く' }
         ],
         transPool: [
-          { id: 't1', lineIds: [1], ans: 'こんにちは！もしこの素敵な港町に住めたら、とても光栄です。', exp: "We'd be honored if we could ～ ＝ 仮定法の丁寧な表現「もし～できたら光栄です」。" },
-          { id: 't2', lineIds: [2], ans: 'おい、君！そんなふうに大通りに飛び出して、何様のつもりだ？', exp: 'Who do you think you are? ＝ 強い非難、jumping は分詞構文。' },
-          { id: 't3', lineIds: [3], ans: 'あそこで重大な交通事故の責任を負うところだったんだぞ（起こしかけたんだぞ）。', exp: 'be almost responsible for ～ ＝ ～の責任を負いかけた。' },
-          { id: 't4', lineIds: [5], ans: '誰でも法律を守らなければならないんだ。違反報告書を書くことになるぞ。', exp: 'be supposed to ＝ ～することになっている、obey ＝ 守る、write A up ＝ 違反記録を書く。' },
-          { id: 't5', lineIds: [7], ans: 'もちろんだ、未成年者全員に対してこれを報告しなければならないんだ。', exp: 'minor ＝ 未成年者。' },
-          { id: 't6', lineIds: [10], ans: 'お姉さん、待ってよ！あの警官をうまくだませたよね？', exp: 'wait up ＝ 立ち止まって待つ、fool ＝ だます、cop ＝ 警官。' },
-          { id: 't7', lineIds: [11], ans: '角から「泥棒！」と叫んでいたのは僕だよ。かなりうまくいったよね？', exp: 'that was me -ing ＝ ～していたのは私だ、work out ＝ うまくいく。' },
-          { id: 't8', lineIds: [12], ans: '君はすごい操縦士に違いないね！それの操縦の仕方を僕に教えてくれる？', exp: 'teach A how to do ＝ Aに～の仕方を教える。' },
-          { id: 't9', lineIds: [13], ans: 'おいケン、その魅力で彼女を夢中にさせられるかもな！', exp: "sweep A off one's feet ＝ Aを夢中にさせる・心を奪う。" },
-          { id: 't10', lineIds: [15], ans: 'きちんと紹介される前に女の子に話しかけるのはとても失礼なのよ！', exp: "形式主語構文、before you've been introduced（現在完了の受動態）。" },
-          { id: 't11', lineIds: [16], ans: '君はちょっと古風だね？僕のおばあちゃんみたいに聞こえるよ。', exp: 'kind of ＝ ちょっと、old-fashioned ＝ 古風な、sound like ～ ＝ ～のように聞こえる。' }
+          { id: 't1', lineIds: [2], ans: 'そして、もしここに住めたらとても光栄です。', exp: "we'd be honored if we could ～ ＝ 仮定法の丁寧な表現「もし～できたら光栄です」。" },
+          { id: 't2', lineIds: [5], ans: 'おい、君！そんなふうに通りに飛び出して、何様のつもりだ？', exp: 'Who do you think you are? ＝ 強い非難、jumping は分詞構文。' },
+          { id: 't3', lineIds: [6], ans: 'あそこでほうきに乗って飛び回って、大事故の責任を負うところだったんだぞ（起こしかけたんだぞ）。', exp: 'be almost responsible for ～ ＝ ～の責任を負いかけた。' },
+          { id: 't4', lineIds: [7], ans: 'でも私は新米の魔女なんです。私たちは飛び回ることになっているんです。', exp: 'be supposed to do ＝ ～することになっている。' },
+          { id: 't5', lineIds: [8], ans: '法律を守らなければならないんだ。違反切符を切る（報告書を書く）ことになるぞ。', exp: 'be supposed to ＝ ～することになっている、obey ＝ 守る、write A up ＝ 違反記録を書く。' },
+          { id: 't6', lineIds: [10], ans: 'もちろん君の両親に知らせるよ。未成年者全員に対してそうしなければならないんだ。', exp: 'minor ＝ 未成年者。' },
+          { id: 't7', lineIds: [12], ans: 'お姉さん、待ってよ。あの警官をうまくだませたよね？ねえ、「泥棒！」と叫んでいたのは僕だよ。', exp: 'wait up ＝ 待つ、fool ＝ だます、that was me -ing ＝ ～していたのは僕だ。' },
+          { id: 't8', lineIds: [14], ans: 'そのほうきで飛べる様子からすると、君は本物の魔女に違いないね。', exp: 'gotta ＝ have got to（～に違いない）、the way ～ ＝ ～の様子からすると。' },
+          { id: 't9', lineIds: [15], ans: 'もしかして、それの飛び方を僕に教えてくれる？', exp: 'teach A how to do ＝ Aに～の仕方を教える。' },
+          { id: 't10', lineIds: [16], ans: 'おいトンボ、そのほうきで彼女を夢中にさせられるかもな。 — ねえ、黙ってよ、いい？', exp: "sweep A off one's feet ＝ Aを夢中にさせる・心を奪う。" },
+          { id: 't11', lineIds: [18], ans: 'トラブルから助け出してくれてありがとう。でも女の子に、紹介される前や名前を知る前に話しかけるのはとても失礼なのよ。', exp: "形式主語構文、before you've been introduced（現在完了の受動態）。" },
+          { id: 't12', lineIds: [19], ans: '君はちょっと古風だね？僕のおばあちゃんみたいに聞こえるよ。', exp: 'kind of ＝ ちょっと、old-fashioned ＝ 古風な、sound like ～ ＝ ～のように聞こえる。' }
         ],
         vocabPool: [
-          { id: 'v1', lineId: 1, target: 'be honored', ans: '光栄に思う', keys: ['光栄', 'こうえい'], exp: "We'd be honored if ～（もし～できたら光栄です）。" },
-          { id: 'v2', lineId: 3, target: 'responsible', ans: '責任がある', keys: ['責任', 'せきにん'], exp: 'be responsible for ～（～の責任がある）。' },
-          { id: 'v3', lineId: 4, target: 'supposed to', ans: '～することになっている', keys: ['ことになっ', 'べき', '義務', 'はず'], exp: 'be supposed to do（～することになっている）。' },
-          { id: 'v4', lineId: 5, target: 'obey', ans: '従う、守る', keys: ['従', 'したが', '守', 'まも'], exp: 'obey the law（法律を守る）。' },
-          { id: 'v5', lineId: 6, target: 'parents', ans: '両親', keys: ['両親', '親'], exp: 'contact my parents（両親に連絡する）。' },
-          { id: 'v6', lineId: 7, target: 'minor', ans: '未成年者', keys: ['未成年', 'みせいねん'], exp: '法律・警察の文脈で「未成年者」。' },
-          { id: 'v7', lineId: 8, target: 'cops', ans: '警官、警察', keys: ['警官', '警察'], exp: 'call the cops（警察を呼ぶ）。' },
-          { id: 'v8', lineId: 9, target: 'deal with', ans: '対処する、相手にする', keys: ['対処', '処理', '相手'], exp: 'deal with you（君の相手をする）。' },
-          { id: 'v9', lineId: 10, target: 'fooled', ans: 'だました', keys: ['だま', '騙'], exp: '動詞 fool は「だます」。' },
-          { id: 'v10', lineId: 11, target: 'yelling', ans: '叫んでいる', keys: ['叫', 'さけ', '大声'], exp: 'yell ＝ 叫ぶ。' },
-          { id: 'v11', lineId: 12, target: 'steer', ans: '操縦する、舵をとる', keys: ['操縦', '舵', '運転'], exp: 'how to steer it（操縦の仕方）。' },
-          { id: 'v12', lineId: 13, target: 'sweep her off her feet', ans: '彼女を夢中にさせる', keys: ['夢中', 'むちゅう', '心を奪', '惚'], exp: "イディオム sweep A off one's feet。" },
-          { id: 'v13', lineId: 14, target: 'getting me out of trouble', ans: '私をトラブルから助け出すこと', keys: ['助け', '救', 'トラブル'], exp: 'get O out of trouble（Oをトラブルから救う）。' },
-          { id: 'v14', lineId: 15, target: 'rude', ans: '失礼な、無礼な', keys: ['失礼', '無礼'], exp: "it's very rude to ～（～するのはとても失礼だ）。" },
-          { id: 'v15', lineId: 16, target: 'old-fashioned', ans: '古風な、時代遅れの', keys: ['古風', '時代遅れ', '古い'], exp: 'kind of old-fashioned（ちょっと古風）。' },
-          { id: 'v16', lineId: 17, target: 'leave me alone', ans: '放っておいて、一人にしておいて', keys: ['放って', 'ほって', '一人に', '構わ'], exp: 'leave A alone（Aを放っておく）。' }
+          { id: 'v1', lineId: 2, target: 'be honored', ans: '光栄に思う', keys: ['光栄', 'こうえい'], exp: "we'd be honored if ～（もし～できたら光栄です）。" },
+          { id: 'v2', lineId: 3, target: 'amazing', ans: '素晴らしい、驚くべき', keys: ['素晴ら', 'すご', '驚', '素敵'], exp: 'so amazing（とても素晴らしい）。' },
+          { id: 'v3', lineId: 6, target: 'responsible', ans: '責任がある', keys: ['責任', 'せきにん'], exp: 'be responsible for ～（～の責任がある）。' },
+          { id: 'v4', lineId: 7, target: 'supposed to', ans: '～することになっている', keys: ['ことになっ', 'べき', '義務', 'はず'], exp: 'be supposed to do（～することになっている）。' },
+          { id: 'v5', lineId: 8, target: 'obey', ans: '従う、守る', keys: ['従', 'したが', '守', 'まも'], exp: 'obey the law（法律を守る）。' },
+          { id: 'v6', lineId: 9, target: 'parents', ans: '両親', keys: ['両親', '親'], exp: 'tell my parents（両親に言う）。' },
+          { id: 'v7', lineId: 10, target: 'minor', ans: '未成年者', keys: ['未成年', 'みせいねん'], exp: '法律・警察の文脈で「未成年者」。' },
+          { id: 'v8', lineId: 11, target: 'cops', ans: '警官、警察', keys: ['警官', '警察'], exp: 'Call the cops.（警察を呼んで）。' },
+          { id: 'v9', lineId: 12, target: 'fooled', ans: 'だました', keys: ['だま', '騙'], exp: '動詞 fool は「だます」。' },
+          { id: 'v10', lineId: 13, target: 'Worked out', ans: 'うまくいった', keys: ['うまくい', '上手くい', '成功'], exp: 'work out ＝ うまくいく。' },
+          { id: 'v11', lineId: 14, target: 'gotta', ans: '～に違いない、～しなければならない', keys: ['違いない', 'ちがいない', 'しなければ'], exp: 'have got to の口語形。ここでは強い推量。' },
+          { id: 'v12', lineId: 16, target: 'sweep her off her feet', ans: '彼女を夢中にさせる', keys: ['夢中', 'むちゅう', '心を奪', '惚'], exp: "イディオム sweep A off one's feet。" },
+          { id: 'v13', lineId: 17, target: 'broom', ans: 'ほうき', keys: ['ほうき', '箒'], exp: 'Can I see your broom?（ほうきを見せてくれる？）。' },
+          { id: 'v14', lineId: 18, target: 'rude', ans: '失礼な、無礼な', keys: ['失礼', '無礼'], exp: "it's very rude to ～（～するのはとても失礼だ）。" },
+          { id: 'v15', lineId: 19, target: 'old-fashioned', ans: '古風な、時代遅れの', keys: ['古風', '時代遅れ', '古い'], exp: 'kind of old-fashioned（ちょっと古風）。' },
+          { id: 'v16', lineId: 20, target: 'Leave me alone', ans: '放っておいて、一人にしておいて', keys: ['放って', 'ほって', '一人に', '構わ'], exp: 'leave A alone（Aを放っておく）。' }
         ]
       },
 
-      /* ==================== 場面5：宿探しとパン屋での出会い ==================== */
+      /* ==================== 場面5：宿探し・おソノさんとの出会い〜提案 ==================== */
       {
         id: '5',
-        tabLabel: '場面5 (宿探しとパン屋)',
-        title: '場面5：宿探しとパン屋での出会い（おしゃぶり配達〜屋根裏部屋の提案）',
+        tabLabel: '場面5 (宿探し・おソノさん)',
+        title: '場面5：宿探し・おソノさんとの出会い〜提案',
         config: {
           transCount: 4,
           blankCount: 5,
-          vocabCount: 5,
-          presetA: { transIds: ['t2', 't5', 't8', 't11'] },
-          presetB: { transIds: ['t1', 't6', 't9', 't12'] }
+          vocabCount: 6,
+          presetA: { transIds: ['t2', 't6', 't10', 't13'] },
+          presetB: { transIds: ['t3', 't5', 't8', 't12'] }
         },
         lines: [
-          { id: 1, text: "Clerk: I'm afraid I don't understand. Do you have some identification?", sub: '— 宿探しに苦労する —' },
-          { id: 2, text: "Mina: Oh, never mind. I'm a new apprentice in training, so I'll look elsewhere." },
-          { id: 3, text: "Leo: I'll bet there are bigger and friendlier towns just down the coast." },
-          { id: 4, text: "Baker Hana: Excuse me, folks! Could you wait a moment? That mother forgot her baby's pacifier!", sub: '— パン屋の店主ハナとの出会い —' },
-          { id: 5, text: "Hana: Without this, the poor baby will cry all the way home." },
-          { id: 6, text: "Mina: Would you like me to deliver it for you? I saw the woman with the baby carriage go around the corner." },
-          { id: 7, text: "Mina: I can reach her in no time! — Really? Thank you so much." },
-          { id: 8, text: "Mina: Sorry to surprise you, ma'am, but the baker asked me to return this pacifier." },
-          { id: 9, text: "Hana: Here you go—I'd like one of those! Welcome back, these rolls are just out of the oven. When I saw you fly off, I thought for a second I was dreaming.", sub: '— パン屋に戻ってから —' },
-          { id: 10, text: "Mina: The mother told me to give you this note: 'Thanks for returning the pacifier!'" },
-          { id: 11, text: "Mina: Well, I'll be on my way now. — Wait! I must do something to show you my thanks." },
-          { id: 12, text: "Hana: Follow me. The bakery is downstairs, and upstairs is our home.", sub: '— 店主の家での会話と提案 —' },
-          { id: 13, text: "Hana: Sit down and relax. Would you like some hot chocolate?" },
-          { id: 14, text: "Hana: So tell me if I'm right. I'm guessing you're a traveler in training." },
-          { id: 15, text: "Mina: Yes! I really love it here, though people don't seem to welcome newcomers." },
-          { id: 16, text: "Hana: That depends on the people. Take me for instance—I just met you, and I already like you." },
-          { id: 17, text: "Hana: Whereabouts are you two staying? Why didn't you tell me you have no place to stay? We have a spare room in the attic." },
-          { id: 18, text: "Mina: You'd really let me stay with you? — Of course! Wait, we haven't introduced ourselves yet." }
+          { id: 1, text: "Clerk: Stay here tonight? I'm afraid I don't understand. Your parents are here with you, aren't they?", sub: '— 途方に暮れるキキ（宿探し） —' },
+          { id: 2, text: "Kiki: No, sir. I'm alone. I've come to this town because I'm a new witch in training." },
+          { id: 3, text: "Clerk / Kiki: Do you have some identification? — Oh, never mind." },
+          { id: 4, text: "Jiji / Kiki: Kiki, aren't you going to eat that? — No, you can have it, Jiji. Where are we going to stay tonight?" },
+          { id: 5, text: "Jiji: Why don't we go find another town? I'll bet there are bigger and better ones, ones that are friendlier than this.", sub: '— おソノさんとの出会い —' },
+          { id: 6, text: "Osono: You forgot your baby's pacifier! Without this, the baby will wake up and cry all the way home." },
+          { id: 7, text: "Osono: I'm sorry, folks, but could you wait just a minute? I'll be right back." },
+          { id: 8, text: "Kiki: Excuse me, but would you like me to deliver it for you?" },
+          { id: 9, text: "Osono / Kiki: The woman with the baby carriage who just went around the corner. — I could reach her in no time." },
+          { id: 10, text: "Kiki: Sorry to surprise you, but the lady in the bakery asked me to return this pacifier." },
+          { id: 11, text: "Customer / Osono: Here you go. Yeah, I'd like one of those. Yes, sir.", sub: '— パン屋に戻ってから —' },
+          { id: 12, text: "Osono: Oh, hi there. Come in and wait a minute, will you?" },
+          { id: 13, text: "Osono: Mmm, these are nice and fresh. Just out of the oven." },
+          { id: 14, text: "Osono: When I saw you fly off, I thought for a second I was dreaming." },
+          { id: 15, text: "Kiki: The baby's mother told me to give you this message." },
+          { id: 16, text: "Osono: Thanks for returning the pacifier. Your new delivery girl is really quite special." },
+          { id: 17, text: "Kiki / Osono: Well, I'll be on my way. — Wait a minute. I really must do something to show you my thanks." },
+          { id: 18, text: "Osono: Follow me. Bakery's downstairs. Upstairs is home. Sit down and relax. Would you like some hot chocolate?", sub: '— おソノさんの提案と自己紹介 —' },
+          { id: 19, text: "Osono: So tell me if I'm right. I'm guessing you're a witch in training." },
+          { id: 20, text: "Kiki: I really love it here, but people don't seem to like witches in this town." },
+          { id: 21, text: "Osono: Depends on the people. Now take me for instance. I just met you, and I know I like you." },
+          { id: 22, text: "Osono: So tell me, whereabouts are you two staying? Oh, I see. Why didn't you tell me you have no place to stay?" },
+          { id: 23, text: "Osono / Kiki: We have a spare room in the attic. You can use that. — You'd really let me stay with you?" },
+          { id: 24, text: "Osono / Kiki: Why, of course. But we haven't introduced ourselves. My name's Osono. — And I'm Kiki, ma'am. And Jiji here is my very best friend." }
         ],
         blankPool: [
-          { id: 'b1', lineId: 2, target: 'in', before: 'apprentice ', ans: ['in'], exp: 'in training：修行中の・見習いの' },
-          { id: 'b2', lineId: 6, target: 'around', before: 'go ', ans: ['around'], exp: 'go around the corner：角を曲がる' },
-          { id: 'b3', lineId: 7, target: 'in', before: 'her ', ans: ['in'], exp: 'in no time：あっという間に・すぐに' },
-          { id: 'b4', lineId: 9, target: 'for', before: 'thought ', ans: ['for'], exp: 'for a second：一瞬（期間を表す for）' },
-          { id: 'b5', lineId: 10, target: 'for', before: 'Thanks ', ans: ['for'], exp: 'Thanks for -ing：～してくれてありがとう' },
-          { id: 'b6', lineId: 11, target: 'on', before: 'be ', ans: ['on'], exp: "be on one's way：出発する・そろそろ失礼する" },
-          { id: 'b7', lineId: 16, target: 'on', before: 'depends ', ans: ['on'], exp: 'depend on ～：～次第である・～による' },
-          { id: 'b8', lineId: 17, target: 'in', before: 'room ', ans: ['in'], exp: 'in the attic：屋根裏に' },
-          { id: 'b9', lineId: 18, target: 'with', before: 'stay ', ans: ['with'], exp: 'stay with ～：～と一緒に泊まる・住む' }
+          { id: 'b1', lineId: 2, target: 'in', before: 'witch ', ans: ['in'], exp: 'in training：修行中の・見習いの' },
+          { id: 'b2', lineId: 9, target: 'around', before: 'went ', ans: ['around'], exp: 'go around the corner：角を曲がる' },
+          { id: 'b3', lineId: 9, target: 'in', before: 'her ', ans: ['in'], exp: 'in no time：あっという間に・すぐに' },
+          { id: 'b4', lineId: 11, target: 'of', before: 'one ', ans: ['of'], exp: 'one of those：あちらのものの1つ' },
+          { id: 'b5', lineId: 12, target: 'in', before: 'Come ', ans: ['in'], exp: 'Come in：中に入る' },
+          { id: 'b6', lineId: 13, target: 'of', before: 'out ', ans: ['of'], exp: 'out of the oven：オーブンから出たばかりの（焼きたて）' },
+          { id: 'b7', lineId: 14, target: 'for', before: 'thought ', ans: ['for'], exp: 'for a second：一瞬（期間を表す for）' },
+          { id: 'b8', lineId: 16, target: 'for', before: 'Thanks ', ans: ['for'], exp: 'Thanks for -ing：～してくれてありがとう' },
+          { id: 'b9', lineId: 17, target: 'on', before: 'be ', ans: ['on'], exp: "be on one's way：出発する・そろそろ失礼する" },
+          { id: 'b10', lineId: 21, target: 'on', before: 'Depends ', ans: ['on'], exp: 'depend on ～：～次第である・～による' },
+          { id: 'b11', lineId: 21, target: 'for', before: 'me ', ans: ['for'], exp: 'take A for instance：Aを例に取る' },
+          { id: 'b12', lineId: 23, target: 'in', before: 'room ', ans: ['in'], exp: 'in the attic：屋根裏に' },
+          { id: 'b13', lineId: 23, target: 'with', before: 'stay ', ans: ['with'], exp: 'stay with ～：～と一緒に泊まる・住む' }
         ],
         transPool: [
-          { id: 't1', lineIds: [3], ans: '海岸を少し下ったところに、もっと大きくて親切な町がきっとあると思うよ。', exp: "I'll bet ＝ 確信を持って「きっと～だと思う」。" },
-          { id: 't2', lineIds: [5], ans: 'これがないと、かわいそうな赤ちゃんは家に着くまでずっと泣いてしまうわ。', exp: 'Without this ＝ これがなければ、all the way home ＝ 家までずっと。' },
-          { id: 't3', lineIds: [6], ans: 'あなたの代わりにそれを届けましょうか？ベビーカーを押した女性が角を曲がるのを見ましたよ。', exp: 'Would you like me to do? ＝ ～しましょうか、see + O + 原形。' },
-          { id: 't4', lineIds: [8], ans: '驚かせてごめんなさい、奥様。でもパン屋さんにこのおしゃぶりを返すよう頼まれたんです。', exp: 'Sorry to do ＝ 不定詞の理由、ask A to do ＝ Aに～するよう頼む。' },
-          { id: 't5', lineIds: [9], ans: 'はいどうぞ、あちらを1つください！おかえり、このロールパンは焼きたてよ。あなたが飛び立つのを見たとき、一瞬夢を見ているのかと思ったわ。', exp: 'just out of the oven ＝ 焼きたて、see + O + 原形、for a second ＝ 一瞬。' },
-          { id: 't6', lineIds: [10], ans: 'お母さんがこのメモをあなたに渡すように私に言ったんです。「おしゃぶりを返してくれてありがとう！」と。', exp: 'tell A to do ＝ Aに～するよう言う、Thanks for -ing。' },
-          { id: 't7', lineIds: [11], ans: 'それでは、そろそろ失礼します。 — 待って！感謝の気持ちを示すために何かさせてちょうだい。', exp: "I'll be on my way. ＝ 失礼します、my thanks ＝ 名詞「感謝の気持ち」。" },
-          { id: 't8', lineIds: [13], ans: '座ってくつろいで。ホットチョコレートはいかがですか？', exp: 'Would you like ～? ＝ ～はいかがですか（勧誘）。' },
-          { id: 't9', lineIds: [14], ans: 'じゃあ私が合っているかどうか教えて。あなたは修行中の旅人なんだと思うんだけど。', exp: 'tell me if ～ の if は「～かどうか」、guess ＝ 確信のない推測。' },
-          { id: 't10', lineIds: [15], ans: 'はい！私はここがとても気に入っているんです、でも人々は新参者を歓迎していないようですね。', exp: 'love ＝ カジュアルな「とても気に入っている」、seem to ＝ ～のようだ。' },
-          { id: 't11', lineIds: [16], ans: 'それは人によるわ。例えば私を例に取ってみて、会ったばかりだけどもうあなたを気に入っているわ。', exp: 'depend on ～ ＝ ～次第だ、take A for instance ＝ Aを例に取る。' },
-          { id: 't12', lineIds: [18], ans: '本当にあなたと一緒に泊まらせていただけるんですか？ — もちろんよ！待って、まだ自己紹介をしていなかったわね。', exp: '使役動詞 let ＝ 許可「～させていただく」、introduce oneself ＝ 自己紹介する。' }
+          { id: 't1', lineIds: [1], ans: '今夜ここに泊まるのですか？申し訳ないのですが、よく分かりません。ご両親も一緒にここにいるんですよね？', exp: "I'm afraid ～ ＝ 申し訳ないですが～、aren't they? ＝ 付加疑問文。" },
+          { id: 't2', lineIds: [5], ans: '別の町を探しに行かない？ここよりもっと大きくて良い町、もっと親切な町がきっとあると思うよ。', exp: "Why don't we ～?（～しませんか）、I'll bet ＝ 確信を持って「きっと～だと思う」。" },
+          { id: 't3', lineIds: [6], ans: '赤ちゃんのおしゃぶりを忘れていますよ！これがないと、赤ちゃんは目を覚まして家に着くまでずっと泣いてしまうわ。', exp: 'Without this ＝ これがなければ、all the way home ＝ 家までずっと。' },
+          { id: 't4', lineIds: [8], ans: 'すみません、あなたの代わりにそれを届けましょうか（私に届けてほしいですか）？', exp: 'Would you like me to do? ＝ 私に～してほしいですか？＝～しましょうか？' },
+          { id: 't5', lineIds: [10], ans: '驚かせてしまってごめんなさい。でも、パン屋さんの女性にこのおしゃぶりを返すように頼まれたんです。', exp: 'Sorry to do ＝ 不定詞の理由、ask A to do ＝ Aに～するよう頼む。' },
+          { id: 't6', lineIds: [14], ans: 'あなたが飛び立っていくのを見たとき、私は一瞬自分が夢を見ているのかと思ったわ。', exp: 'saw you fly off（知覚動詞 see + O + 原形）、for a second（一瞬）。' },
+          { id: 't7', lineIds: [15], ans: '赤ちゃんのお母さんが、このメッセージをあなたに渡すように私に言ったんです。', exp: 'tell A to do ＝ Aに～するよう言う（ask との違いに注意）。' },
+          { id: 't8', lineIds: [17], ans: 'それでは、そろそろ失礼します。 — ちょっと待って。あなたに感謝の気持ちを示すために、本当に何かしなければいけないわ。', exp: "I'll be on my way. ＝ 失礼します、my thanks ＝ 名詞「感謝の気持ち」。" },
+          { id: 't9', lineIds: [18], ans: 'ついてきて。パン屋は下の階で、上の階が私たちの家なの。座ってくつろいで。ホットチョコレートはいかが？', exp: 'downstairs / upstairs、Would you like ～? ＝ ～はいかがですか。' },
+          { id: 't10', lineIds: [19], ans: 'じゃあ私が合っているかどうか教えて。あなたは修行中の魔女なんだと思うんだけど（推測しているんだけど）。', exp: 'tell me if ～ の if は「～かどうか」、guess ＝ 確信のない推測。' },
+          { id: 't11', lineIds: [20], ans: '私はここがとても気に入っているんです、でもこの町の人々はどうやら魔女が好きではないようですね。', exp: 'love ＝ カジュアルな「とても気に入っている」、seem to ＝ ～のようだ。' },
+          { id: 't12', lineIds: [22], ans: 'それで教えて、あなたたち2人はどの辺りに泊まっているの？ああ、なるほど。どうして泊まる場所がないって私に言ってくれなかったの？', exp: 'whereabouts ＝ どの辺り、no place to stay ＝ 泊まるための場所がない。' },
+          { id: 't13', lineIds: [23], ans: '屋根裏に空いている部屋があるの。そこを使っていいわよ。 — 本当にあなたと一緒に泊まらせていただけるんですか？', exp: 'spare room ＝ 空き部屋、使役動詞 let ＝ 許可「～させていただく」。' }
         ],
         vocabPool: [
-          { id: 'v1', lineId: 1, target: 'identification', ans: '身分証明書、ID', keys: ['身分', '証明', 'ID', 'ＩＤ'], exp: 'ホテル等での本人確認書類。' },
-          { id: 'v2', lineId: 2, target: 'never mind', ans: '気にしないで、もういいです', keys: ['気にし', 'もういい', '構わ'], exp: '会話の定番表現。' },
-          { id: 'v3', lineId: 3, target: 'bet', ans: 'きっと～だと思う、賭ける', keys: ['賭', '確信', 'きっと', '思'], exp: 'think や guess より確信度が高い。' },
-          { id: 'v4', lineId: 4, target: 'folks', ans: '皆さん、人々', keys: ['皆', 'みな', '人々'], exp: '親しみを込めた「皆さん」。' },
-          { id: 'v5', lineId: 4, target: 'pacifier', ans: 'おしゃぶり', keys: ['おしゃぶり', 'しゃぶり'], exp: "baby's pacifier（赤ちゃんのおしゃぶり）。" },
-          { id: 'v6', lineId: 5, target: 'all the way', ans: 'ずっと、はるばる', keys: ['ずっと', 'はるばる', '道のり'], exp: 'all the way home（家までずっと）。' },
-          { id: 'v7', lineId: 6, target: 'deliver', ans: '届ける、配達する', keys: ['届', 'とど', '配達'], exp: '名詞形は delivery。' },
-          { id: 'v8', lineId: 6, target: 'baby carriage', ans: 'ベビーカー、乳母車', keys: ['ベビー', '乳母車', 'うばぐるま'], exp: '赤ちゃんを乗せるベビーカー。' },
-          { id: 'v9', lineId: 7, target: 'in no time', ans: 'あっという間に、すぐに', keys: ['あっという間', 'すぐ', 'たちまち'], exp: 'reach her in no time（すぐに追いつく）。' },
-          { id: 'v10', lineId: 8, target: 'return', ans: '返す、戻す', keys: ['返', 'かえ', '戻'], exp: 'return this pacifier（おしゃぶりを返す）。' },
-          { id: 'v11', lineId: 9, target: 'out of the oven', ans: '焼きたての、オーブンから出たばかりの', keys: ['焼きたて', 'オーブン', '出たばかり'], exp: 'just out of the oven（焼きたて）。' },
-          { id: 'v12', lineId: 11, target: 'my thanks', ans: '感謝の気持ち、お礼', keys: ['感謝', 'お礼', 'ありがとう'], exp: '所有格がついて名詞「感謝の思い」。' },
-          { id: 'v13', lineId: 12, target: 'downstairs', ans: '下の階', keys: ['下の階', '階下', '下'], exp: '対義語は upstairs（上の階）。' },
-          { id: 'v14', lineId: 14, target: 'guessing', ans: '推測している、たぶん～だと思う', keys: ['推測', 'たぶん', '思', '当て'], exp: '確信のない推測を表す guess。' },
-          { id: 'v15', lineId: 16, target: 'for instance', ans: '例えば', keys: ['例え', 'たとえ'], exp: 'take A for instance（Aを例に取る）。' },
-          { id: 'v16', lineId: 17, target: 'whereabouts', ans: 'どの辺り', keys: ['どの辺', 'どのあた', 'どこら辺', '辺り'], exp: 'where + about で「どの辺り」。' },
-          { id: 'v17', lineId: 17, target: 'spare room', ans: '空き部屋、余分な部屋', keys: ['空き部屋', '空いて', '余分', '予備'], exp: 'spare ＝ 余分な・使っていない。' },
-          { id: 'v18', lineId: 17, target: 'attic', ans: '屋根裏、屋根裏部屋', keys: ['屋根裏', 'やねうら'], exp: 'in the attic（屋根裏に）。' },
-          { id: 'v19', lineId: 18, target: 'introduced ourselves', ans: '自己紹介をした', keys: ['自己紹介', '紹介'], exp: 'introduce oneself ＝ 自己紹介する。' }
+          { id: 'v1', lineId: 1, target: "I'm afraid", ans: '申し訳ないですが、残念ながら', keys: ['申し訳', '残念', 'すみません'], exp: '丁寧に断ったり困惑を伝える定番表現。' },
+          { id: 'v2', lineId: 2, target: 'in training', ans: '修行中の、見習いの', keys: ['修行', '見習', '訓練'], exp: 'a witch in training（修行中の魔女）。' },
+          { id: 'v3', lineId: 3, target: 'identification', ans: '身分証明書、ID', keys: ['身分', '証明', 'ID', 'ＩＤ'], exp: 'ホテル等での本人確認書類。' },
+          { id: 'v4', lineId: 3, target: 'never mind', ans: '気にしないで、もういいです', keys: ['気にし', 'もういい', '構わ'], exp: '会話の定番表現。' },
+          { id: 'v5', lineId: 5, target: 'bet', ans: 'きっと～だと思う、賭ける', keys: ['賭', '確信', 'きっと', '思'], exp: 'think や guess より確信度が高い。' },
+          { id: 'v6', lineId: 6, target: 'pacifier', ans: 'おしゃぶり', keys: ['おしゃぶり', 'しゃぶり'], exp: "baby's pacifier（赤ちゃんのおしゃぶり）。" },
+          { id: 'v7', lineId: 7, target: 'folks', ans: '皆さん、人々', keys: ['皆', 'みな', '人々'], exp: '親しみを込めた「皆さん」。' },
+          { id: 'v8', lineId: 8, target: 'deliver', ans: '届ける、配達する', keys: ['届', 'とど', '配達'], exp: '名詞形は delivery。' },
+          { id: 'v9', lineId: 9, target: 'baby carriage', ans: 'ベビーカー、乳母車', keys: ['ベビー', '乳母車', 'うばぐるま'], exp: '赤ちゃんを乗せるベビーカー。' },
+          { id: 'v10', lineId: 9, target: 'in no time', ans: 'あっという間に、すぐに', keys: ['あっという間', 'すぐ', 'たちまち'], exp: 'reach her in no time（すぐに追いつく）。' },
+          { id: 'v11', lineId: 10, target: 'return', ans: '返す、戻す', keys: ['返', 'かえ', '戻'], exp: 'return this pacifier（おしゃぶりを返す）。' },
+          { id: 'v12', lineId: 13, target: 'out of the oven', ans: '焼きたての、オーブンから出たばかりの', keys: ['焼きたて', 'オーブン', '出たばかり'], exp: 'Just out of the oven.（焼きたてだわ）。' },
+          { id: 'v13', lineId: 16, target: 'delivery', ans: '配達', keys: ['配達', 'はいたつ'], exp: 'delivery girl（配達係の女の子）。' },
+          { id: 'v14', lineId: 17, target: 'my thanks', ans: '感謝の気持ち、お礼', keys: ['感謝', 'お礼', 'ありがとう'], exp: '所有格がついて名詞「感謝の思い」。' },
+          { id: 'v15', lineId: 18, target: 'downstairs', ans: '下の階', keys: ['下の階', '階下', '下'], exp: '対義語は upstairs（上の階）。' },
+          { id: 'v16', lineId: 19, target: 'guessing', ans: '推測している、たぶん～だと思う', keys: ['推測', 'たぶん', '思', '当て'], exp: '確信のない推測を表す guess。' },
+          { id: 'v17', lineId: 21, target: 'for instance', ans: '例えば', keys: ['例え', 'たとえ'], exp: 'take A for instance（Aを例に取る）。' },
+          { id: 'v18', lineId: 22, target: 'whereabouts', ans: 'どの辺り', keys: ['どの辺', 'どのあた', 'どこら辺', '辺り'], exp: 'where + about で「どの辺り」。' },
+          { id: 'v19', lineId: 23, target: 'spare room', ans: '空き部屋、余分な部屋', keys: ['空き部屋', '空いて', '余分', '予備'], exp: 'spare ＝ 余分な・使っていない。' },
+          { id: 'v20', lineId: 23, target: 'attic', ans: '屋根裏、屋根裏部屋', keys: ['屋根裏', 'やねうら'], exp: 'in the attic（屋根裏に）。' },
+          { id: 'v21', lineId: 24, target: 'introduced ourselves', ans: '自己紹介をした', keys: ['自己紹介', '紹介'], exp: 'introduce oneself ＝ 自己紹介する。' }
         ]
       },
 
-      /* ==================== タブ6：参考表現（スクリプト外） ==================== */
+      /* ==================== タブ6：参考表現（授業内紹介表現） ==================== */
       {
         id: 'ref',
         tabLabel: '参考表現 (授業内紹介)',
@@ -678,33 +691,33 @@
           presetB: { transIds: [] }
         },
         lines: [
-          { id: 1, text: "Waiter: What would you like for drink this evening?", sub: '— 注文・接客・位置を表す前置詞表現 —' },
-          { id: 2, text: "Customer: Please hand me the loaf on the second shelf from the top." },
-          { id: 3, text: "Customer: Actually, make that the third jar from the right." },
-          { id: 4, text: "Traveler: We traveled all the way from the northern mountains." },
-          { id: 5, text: "Friend: You can always rely on me whenever you need help." },
-          { id: 6, text: "Shopkeeper: Look at the top shelf (top / middle / bottom) for our seasonal jams.", sub: '— 重要単語・会話ニュアンス —' },
-          { id: 7, text: "Server: Would you like to order a starter before your main dish?" },
-          { id: 8, text: "Student: Are you going to the festival tomorrow? — It depends." },
-          { id: 9, text: "Guest: I'd like / Can I have a cup of tea, please? (Used instead of 'I want')" },
-          { id: 10, text: "Nuance check: bet / think / guess / wonder / suppose" },
-          { id: 11, text: "Conversation tip: Everyday difference between 'love' and 'like'" }
+          { id: 1, text: "What would you like for drink?", sub: '— 注文・位置・頻出イディオムの前置詞 —' },
+          { id: 2, text: "The second shelf from the top." },
+          { id: 3, text: "The third from the right." },
+          { id: 4, text: "Thank you for getting me out of trouble." },
+          { id: 5, text: "all the way from ～ (～からはるばる)" },
+          { id: 6, text: "shelf (top / middle / bottom)", sub: '— 授業内で紹介された重要語彙・ニュアンス —' },
+          { id: 7, text: "starter (レストラン／居酒屋での意味)" },
+          { id: 8, text: "rely on (depend on の類義語)" },
+          { id: 9, text: "It depends." },
+          { id: 10, text: "bet / think / guess / wonder / suppose" },
+          { id: 11, text: "Can I have ...? / I'd like ... (I want の代わりの丁寧な注文表現)" }
         ],
         blankPool: [
           { id: 'b1', lineId: 1, target: 'for', before: 'like ', ans: ['for'], exp: 'What would you like for drink?（飲み物は何になさいますか？）' },
           { id: 'b2', lineId: 2, target: 'from', before: 'shelf ', ans: ['from'], exp: 'from the top（上から）' },
-          { id: 'b3', lineId: 3, target: 'from', before: 'jar ', ans: ['from'], exp: 'from the right（右から）' },
-          { id: 'b4', lineId: 4, target: 'from', before: 'way ', ans: ['from'], exp: 'all the way from ～（～からはるばる）' },
-          { id: 'b5', lineId: 5, target: 'on', before: 'rely ', ans: ['on'], exp: 'rely on ～（～に頼る・信頼する：depend on の類義語）' }
+          { id: 'b3', lineId: 3, target: 'from', before: 'third ', ans: ['from'], exp: 'from the right（右から）' },
+          { id: 'b4', lineId: 4, target: 'of', before: 'out ', ans: ['of'], exp: 'get O out of trouble（Oをトラブルから助け出す）' },
+          { id: 'b5', lineId: 5, target: 'from', before: 'way ', ans: ['from'], exp: 'all the way from ～（～からはるばる）' }
         ],
         transPool: [],
         vocabPool: [
-          { id: 'v1', lineId: 6, target: 'shelf', ans: '棚（top:一番上 / middle:真ん中 / bottom:一番下）', keys: ['棚', 'たな'], exp: 'top（一番上）、middle（真ん中）、bottom（一番下）とセットで覚える。' },
-          { id: 'v2', lineId: 7, target: 'starter', ans: '前菜（居酒屋ではお通し）', keys: ['前菜', 'お通し', 'おとおし'], exp: 'レストランでは前菜、居酒屋ではお通し。' },
-          { id: 'v3', lineId: 8, target: 'It depends.', ans: '時と場合による、状況次第だ', keys: ['場合', '状況', '次第'], exp: 'depend on ～ から派生した定番の返答。' },
-          { id: 'v4', lineId: 9, target: "I'd like / Can I have", ans: '注文時の丁寧な表現（～をいただきたい）', keys: ['丁寧', '注文', 'いただき', 'ください', '欲しい'], exp: 'I want は直接的すぎるため、注文や買い物では I’d like / Can I have を使う。' },
-          { id: 'v5', lineId: 10, target: 'bet / think / guess / wonder / suppose', ans: 'bet(確信) > think(中立) > guess(推測) / wonder(疑問) / suppose(～と思う)', keys: ['確信', '推測', '疑問', '中立', 'bet'], exp: '確信度の違い：bet（強い確信）＞ think（中立）＞ guess（推測）。wonder は疑問、suppose は think と同等。' },
-          { id: 'v6', lineId: 11, target: "'love' and 'like'", ans: 'love はカジュアルで「お気に入り」、like はややフォーマル・堅苦しい', keys: ['カジュアル', 'フォーマル', 'お気に入り', '堅苦'], exp: '日常会話では love の方が気軽に「とても気に入っている」として頻用される。' }
+          { id: 'v1', lineId: 6, target: 'shelf', ans: '棚（top:一番上 / middle:真ん中 / bottom:一番下）', keys: ['棚', 'たな'], exp: 'top（一番上）、middle（真ん中）、bottom（一番下）とセットで暗記。' },
+          { id: 'v2', lineId: 7, target: 'starter', ans: '前菜（居酒屋ではお通し）', keys: ['前菜', 'お通し', 'おとおし'], exp: 'レストランでは前菜、居酒屋などではお通し。' },
+          { id: 'v3', lineId: 8, target: 'rely on', ans: '～に頼る、信頼する', keys: ['頼', 'たよ', '信頼'], exp: 'depend on の類義語。' },
+          { id: 'v4', lineId: 9, target: 'It depends.', ans: '時と場合による、状況次第だ', keys: ['場合', '状況', '次第'], exp: 'depend on ～ から派生した定番の返答。' },
+          { id: 'v5', lineId: 10, target: 'bet / think / guess / wonder / suppose', ans: 'bet(強い確信) > think(中立) > guess(推測) / wonder(疑問) / suppose(～と思う)', keys: ['確信', '推測', '疑問', '中立', 'bet'], exp: '確信度：bet ＞ think ＞ guess。wonder は疑問、suppose は think と同等。' },
+          { id: 'v6', lineId: 11, target: "Can I have ...? / I'd like ...", ans: '注文時の丁寧な表現（～をいただけますか／いただきたい）', keys: ['丁寧', '注文', 'いただき', 'ください', '欲しい'], exp: 'I want は直接的すぎるため、買い物や注文では Can I have / I’d like を使う。' }
         ]
       }
     ];
