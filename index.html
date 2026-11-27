@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>英語IIB 期末テスト対策：本文連動型 演習アプリ（場面1〜5）</title>
+  <title>英語IIB 期末テスト対策：本文連動型 演習アプリ（バリエーション強化版）</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Inter & Noto Sans JP -->
@@ -18,18 +18,18 @@
             sans: ['Inter', '"Noto Sans JP"', 'sans-serif'],
           },
           colors: {
-            paper: '#f7f6f2',
-            navy: '#2c3e50',
+            paper: '#f8fafc',
+            navy: '#1e293b',
           },
         },
       },
     };
   </script>
   <style>
-    /* スクロールバーの微調整とハイライトアニメーション */
+    /* カスタムスクロールバー */
     .custom-scroll::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
     }
     .custom-scroll::-webkit-scrollbar-track {
       background: transparent;
@@ -41,51 +41,52 @@
     .custom-scroll::-webkit-scrollbar-thumb:hover {
       background: #94a3b8;
     }
+    /* 双方向ジャンプ時のハイライト演出 */
     @keyframes pulseRing {
-      0% { box-shadow: 0 0 0 0 rgba(44, 62, 80, 0.35); }
-      70% { box-shadow: 0 0 0 8px rgba(44, 62, 80, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(44, 62, 80, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.45); }
+      70% { box-shadow: 0 0 0 8px rgba(79, 70, 229, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
     }
     .focus-flash {
       animation: pulseRing 0.9s ease-out;
     }
-    /* 本文内の和訳下線・単語ハイライト */
+    /* 本文中の和訳下線 */
     .trans-span {
       text-decoration: underline;
       text-decoration-color: #f59e0b;
       text-decoration-thickness: 2px;
-      text-underline-offset: 4px;
-      background-color: rgba(254, 243, 199, 0.45);
-      border-radius: 4px;
-      padding: 1px 3px;
+      text-underline-offset: 5px;
+      background-color: rgba(254, 243, 199, 0.5);
+      border-radius: 6px;
+      padding: 2px 4px;
     }
+    /* 本文中の単語ハイライト */
     .vocab-span {
       border-bottom: 2px solid #0284c7;
-      background-color: rgba(224, 242, 254, 0.75);
-      border-radius: 4px;
-      padding: 0 3px;
-      font-weight: 600;
+      background-color: rgba(224, 242, 254, 0.85);
+      border-radius: 5px;
+      padding: 1px 4px;
+      font-weight: 700;
       color: #0c4a6e;
     }
   </style>
 </head>
-<body class="bg-paper text-slate-800 min-h-screen flex flex-col antialiased selection:bg-amber-100 selection:text-slate-900">
+<body class="bg-paper text-slate-800 min-h-screen flex flex-col antialiased selection:bg-indigo-100 selection:text-slate-900">
 
   <!-- ==================== トップヘッダー ==================== -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-3 space-y-3">
-      <!-- タイトル行＋模試モードボタン -->
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-3 space-y-2.5">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
         <div class="flex items-center gap-2.5 min-w-0">
-          <div class="w-9 h-9 rounded-xl bg-navy text-white flex items-center justify-center font-extrabold text-base shadow-sm shrink-0">
+          <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-extrabold text-sm shadow-sm shrink-0">
             IIB
           </div>
           <div class="min-w-0">
-            <h1 class="text-sm sm:text-lg font-extrabold text-navy truncate">
-              英語IIB 期末テスト対策：本文連動型 演習アプリ（場面1〜5）
+            <h1 class="text-sm sm:text-lg font-extrabold text-slate-900 truncate">
+              英語IIB 期末テスト対策：本文連動型 演習アプリ
             </h1>
             <p class="text-[11px] sm:text-xs text-slate-500 truncate">
-              『魔女の宅急便』英語スクリプト全文収録 ｜ 前置詞穴埋め・和訳・単語問題
+              『魔女の宅急便』場面1〜5全文＋参考表現 ｜ 動的バリエーション生成＆和訳・単語の完全排他制御
             </p>
           </div>
         </div>
@@ -94,7 +95,7 @@
           <button
             id="btn-mock-toggle"
             type="button"
-            class="w-full sm:w-auto px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold border transition-all flex items-center justify-center gap-1.5 bg-white text-navy border-navy/30 hover:bg-navy hover:text-white shadow-sm"
+            class="w-full sm:w-auto px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold border transition-all flex items-center justify-center gap-1.5 bg-white text-indigo-700 border-indigo-300 hover:bg-indigo-600 hover:text-white shadow-sm"
           >
             <span id="mock-btn-icon">📝</span>
             <span id="mock-btn-label">本番模試モード (ランダム3場面)</span>
@@ -102,49 +103,43 @@
         </div>
       </div>
 
-      <!-- 通常モード用：場面タブ -->
-      <nav id="normal-tabs" class="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scroll" aria-label="場面選択">
-        <!-- JSで描画 -->
-      </nav>
+      <!-- 通常モード：場面タブ -->
+      <nav id="normal-tabs" class="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scroll" aria-label="場面選択"></nav>
 
-      <!-- 本番模試モード用：3場面ナビゲーションバー -->
-      <div id="mock-bar" class="hidden bg-indigo-50/80 border border-indigo-200 rounded-xl p-2.5 flex flex-col md:flex-row md:items-center md:justify-between gap-2.5">
+      <!-- 本番模試モード：3場面ナビゲーション -->
+      <div id="mock-bar" class="hidden bg-indigo-50 border border-indigo-200 rounded-xl p-2.5 flex flex-col md:flex-row md:items-center md:justify-between gap-2.5">
         <div class="flex items-center gap-2 flex-wrap">
-          <span class="px-2.5 py-1 rounded-lg bg-navy text-white text-xs font-bold">本番模試中</span>
-          <div id="mock-scene-tabs" class="flex items-center gap-1.5 flex-wrap">
-            <!-- JSで3場面分のボタンを描画 -->
-          </div>
+          <span class="px-2.5 py-1 rounded-lg bg-indigo-600 text-white text-xs font-bold">本番模試中</span>
+          <div id="mock-scene-tabs" class="flex items-center gap-1.5 flex-wrap"></div>
         </div>
-        <div class="flex items-center gap-2">
-          <button
-            id="btn-mock-summary"
-            type="button"
-            class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-sm transition-colors"
-          >
-            3場面の総合採点・結果を見る
-          </button>
-        </div>
+        <button
+          id="btn-mock-summary"
+          type="button"
+          class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-sm transition-colors"
+        >
+          3場面の総合採点・結果を見る
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- トースト通知（alert/confirmの代替） -->
-  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden px-4 py-2.5 rounded-xl bg-navy text-white text-sm font-medium shadow-xl transition-opacity"></div>
+  <!-- トースト通知 -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-medium shadow-xl transition-opacity"></div>
 
-  <!-- 総合模試結果モーダル -->
+  <!-- 本番模試 総合結果モーダル -->
   <div id="mock-modal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 space-y-5 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <div>
           <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Mock Exam Result</span>
-          <h2 class="text-xl font-extrabold text-navy">本番模試（ランダム3場面）総合結果</h2>
+          <h2 class="text-xl font-extrabold text-slate-900">本番模試（ランダム3場面）総合結果</h2>
         </div>
         <button id="btn-close-modal" type="button" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 font-bold">✕</button>
       </div>
       <div id="mock-modal-body" class="space-y-4"></div>
       <div class="flex flex-col sm:flex-row gap-2.5 pt-2">
-        <button id="btn-mock-new" type="button" class="flex-1 py-3 px-4 rounded-xl bg-navy hover:bg-slate-800 text-white font-bold text-sm transition-colors">
-          別の3場面で模試をやり直す
+        <button id="btn-mock-new" type="button" class="flex-1 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm transition-colors">
+          別の3場面・別問題で模試をやり直す
         </button>
         <button id="btn-mock-exit" type="button" class="flex-1 py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-sm transition-colors">
           通常モードに戻る
@@ -153,76 +148,105 @@
     </div>
   </div>
 
-  <!-- ==================== ワークスペース ==================== -->
-  <main class="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-6 py-4 flex flex-col gap-4">
+  <!-- ==================== メインワークスペース ==================== -->
+  <main class="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-6 py-4 flex flex-col gap-3.5">
 
-    <!-- ツールバー -->
-    <section class="bg-white rounded-2xl border border-slate-200/90 shadow-sm px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-      <div class="flex flex-wrap items-center gap-2">
-        <button
-          id="btn-grade"
-          type="button"
-          class="px-4 py-2.5 rounded-xl bg-navy hover:bg-slate-800 active:scale-[0.99] text-white text-sm font-bold shadow-sm transition-all"
-        >
-          ✓ 採点する
-        </button>
-        <button
-          id="btn-toggle-answers"
-          type="button"
-          class="px-3.5 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs sm:text-sm font-bold transition-colors"
-        >
-          模範解答をすべて表示
-        </button>
-        <button
-          id="btn-reset-scene"
-          type="button"
-          class="px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-600 border border-slate-200 text-xs sm:text-sm font-semibold transition-colors"
-        >
-          この場面をリセット
-        </button>
+    <!-- バリエーション切替 ＆ 採点ツールバー -->
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3.5 sm:p-4 space-y-3">
+      <!-- 上段：バリエーション切替UI ＋ 候補プール情報 -->
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2.5 pb-3 border-b border-slate-100">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs font-extrabold text-slate-500 mr-1">出題バリエーション：</span>
+          <button
+            id="btn-var-A"
+            type="button"
+            class="var-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold border transition-all"
+          >
+            パターンA
+          </button>
+          <button
+            id="btn-var-B"
+            type="button"
+            class="var-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold border transition-all"
+          >
+            パターンB
+          </button>
+          <button
+            id="btn-var-R"
+            type="button"
+            class="var-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold border transition-all flex items-center gap-1"
+          >
+            <span>🎲</span>
+            <span>ランダム生成（別問題）</span>
+          </button>
+        </div>
+
+        <!-- 収録候補数＆排他チェックバッジ -->
+        <div id="pool-info-badges" class="flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs font-bold"></div>
       </div>
 
-      <!-- ライブスコアバッジ -->
-      <div id="score-badges" class="flex flex-wrap items-center gap-2 text-xs font-bold">
-        <span class="px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-500">未採点</span>
+      <!-- 下段：採点アクション ＋ スコアバッジ -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2.5">
+        <div class="flex flex-wrap items-center gap-2">
+          <button
+            id="btn-grade"
+            type="button"
+            class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] text-white text-xs sm:text-sm font-bold shadow-sm transition-all"
+          >
+            ✓ 採点する
+          </button>
+          <button
+            id="btn-toggle-answers"
+            type="button"
+            class="px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs sm:text-sm font-bold transition-colors"
+          >
+            模範解答をすべて表示
+          </button>
+          <button
+            id="btn-reset-scene"
+            type="button"
+            class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-600 border border-slate-200 text-xs sm:text-sm font-semibold transition-colors"
+          >
+            入力をリセット
+          </button>
+        </div>
+
+        <div id="score-badges" class="flex flex-wrap items-center gap-1.5 text-xs font-bold">
+          <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-500">未採点</span>
+        </div>
       </div>
     </section>
 
-    <!-- メイン2ペイン（PC: 左58% 本文 / 右42% 解答用紙、モバイル: 縦積み） -->
+    <!-- 2カラム試験用紙ワークスペース -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
 
-      <!-- 左ペイン：英語スクリプト全文（試験問題用紙） -->
-      <section class="lg:col-span-7 bg-white rounded-2xl border border-slate-200/90 shadow-sm flex flex-col lg:h-[calc(100vh-235px)] overflow-hidden">
-        <div class="px-5 py-3.5 border-b border-slate-100 bg-slate-50/70 flex flex-wrap items-center justify-between gap-2 shrink-0">
+      <!-- 左ペイン：英語スクリプト全文 -->
+      <section class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:h-[calc(100vh-275px)] overflow-hidden">
+        <div class="px-4 sm:px-5 py-3 border-b border-slate-100 bg-slate-50/80 flex flex-wrap items-center justify-between gap-2 shrink-0">
           <div>
-            <h2 id="script-title" class="text-base sm:text-lg font-extrabold text-navy">場面1：旅立ち</h2>
-            <p id="script-subtitle" class="text-xs text-slate-500 mt-0.5">
-              空欄には直接入力、[訳]・[単]バッジをクリックすると右の解答欄へジャンプします。
+            <h2 id="script-title" class="text-base sm:text-lg font-extrabold text-slate-900">場面1：旅立ち</h2>
+            <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">
+              空欄に直接入力し、[訳]・[単]バッジをクリックすると右の解答用紙へ移動します。
             </p>
           </div>
-          <!-- 凡例 -->
-          <div class="flex items-center gap-2 text-[11px] font-bold">
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">(1) 穴埋め</span>
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-100 text-amber-900">訳 和訳</span>
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-sky-100 text-sky-900">単 単語</span>
+          <div class="flex items-center gap-1.5 text-[11px] font-bold">
+            <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">(1) 前置詞</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900">訳 和訳</span>
+            <span class="px-2 py-0.5 rounded bg-sky-100 text-sky-900">単 単語</span>
           </div>
         </div>
 
-        <div id="script-pane" class="p-4 sm:p-6 space-y-2.5 overflow-y-auto custom-scroll flex-1 leading-relaxed text-[15px] sm:text-base">
-          <!-- JSで本文を描画 -->
-        </div>
+        <div id="script-pane" class="p-4 sm:p-5 space-y-2 overflow-y-auto custom-scroll flex-1 text-[15px] sm:text-base"></div>
       </section>
 
-      <!-- 右ペイン：解答用紙（単語・和訳・前置詞解説） -->
-      <section class="lg:col-span-5 bg-white rounded-2xl border border-slate-200/90 shadow-sm flex flex-col lg:h-[calc(100vh-235px)] overflow-hidden">
-        <div class="px-5 py-3.5 border-b border-slate-100 bg-slate-50/70 flex items-center justify-between shrink-0">
-          <h2 class="text-base font-extrabold text-navy">解答用紙・解説</h2>
-          <span id="sheet-counts" class="text-xs font-semibold text-slate-500"></span>
+      <!-- 右ペイン：解答用紙（和訳・単語・前置詞解説） -->
+      <section class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:h-[calc(100vh-275px)] overflow-hidden">
+        <div class="px-4 sm:px-5 py-3 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between gap-2 shrink-0">
+          <h2 class="text-base font-extrabold text-slate-900">解答用紙・解説</h2>
+          <span id="sheet-counts" class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-lg"></span>
         </div>
 
-        <div id="answer-pane" class="p-4 sm:p-5 space-y-6 overflow-y-auto custom-scroll flex-1">
-          <!-- JSで解答欄を描画 -->
-        </div>
+        <div id="answer-pane" class="p-4 sm:p-5 space-y-6 overflow-y-auto custom-scroll flex-1"></div>
       </section>
 
     </div>
@@ -230,416 +254,753 @@
 
   <script>
     /**
-     * ============================================================
-     * 全場面データ（場面1〜5 全文スクリプト ＋ 参考表現タブ）
-     * ============================================================
+     * ============================================================================
+     * 1. 全場面データベース（プレーンテキスト全文 ＋ 豊富な問題候補プール）
+     * ============================================================================
+     * - lines: { id: number, text: string, sub?: string }
+     * - blankPool: { id, lineId, target, before?, after?, ans: string[], exp }
+     * - transPool: { id, lineIds: number[], ans, exp }
+     * - vocabPool: { id, lineId, target, ans, keys: string[], exp }
+     * - config: { transCount, vocabCount, blankCount, presetA: { transIds }, presetB: { transIds } }
      */
     const SCENES = [
+      /* ==================== 場面1 ==================== */
       {
         id: '1',
         tabLabel: '場面1 (旅立ち)',
-        title: '場面1：旅立ち',
+        title: '場面1：旅立ち（見送り〜ラジオ）',
+        config: {
+          transCount: 3,
+          vocabCount: 5,
+          blankCount: 4,
+          presetA: { transIds: ['t4', 't6', 't8'] },
+          presetB: { transIds: ['t1', 't2', 't5'] }
+        },
         lines: [
-          { type: 'line', text: "Be careful." },
-          { type: 'line', text: "You be strong. Okay?" },
-          { type: 'line', text: "I will." },
-          { type: 'line', text: "Bye, Kiki. Fly safely. Go get 'em!" },
-          { type: 'line', text: "Go, Kiki. Go, Kiki. Go, Kiki." },
-          { type: 'line', text: "[V1: Aim] your broomstick." },
-          { type: 'line', text: "[T1: May our little baby be well and have a safe trip.]" },
-          { type: 'line', text: "I'm going to [V2: miss] the wonderful sound [B1: of] those little bells." },
-          { type: 'line', text: "Where are we going?" },
-          { type: 'line', text: "[T2: I'm headed south to see the ocean.]" },
-          { type: 'line', text: "Jiji, climb [B2: up] and turn [B3: on] the radio." },
-          { type: 'line', text: "[T3: I don't think I can [V3: handle] it.]" },
-          { type: 'line', text: "Can you do it?" }
+          { id: 1, text: "Be careful." },
+          { id: 2, text: "You be strong. Okay?" },
+          { id: 3, text: "I will." },
+          { id: 4, text: "Bye, Kiki. Fly safely. Go get 'em!" },
+          { id: 5, text: "Go, Kiki. Go, Kiki. Go, Kiki." },
+          { id: 6, text: "Aim your broomstick." },
+          { id: 7, text: "May our little baby be well and have a safe trip." },
+          { id: 8, text: "I'm going to miss the wonderful sound of those little bells." },
+          { id: 9, text: "Where are we going?" },
+          { id: 10, text: "I'm headed south to see the ocean." },
+          { id: 11, text: "Jiji, climb up and turn on the radio." },
+          { id: 12, text: "I don't think I can handle it." },
+          { id: 13, text: "Can you do it?" }
         ],
-        blanks: {
-          B1: { ans: ['of'], exp: 'the sound of ～：～の音' },
-          B2: { ans: ['up'], exp: 'climb up：上に登る' },
-          B3: { ans: ['on'], exp: 'turn on：電源を入れる' }
-        },
-        translations: {
-          T1: {
-            ans: '私たちの小さな子が元気で、安全な旅ができますように。',
-            exp: 'May + S + 動詞原形 ＝ 祈願「～でありますように」。'
-          },
-          T2: {
-            ans: '海を見るために南へ向かっているところよ。',
-            exp: 'be headed ＝ ～へ向かっている、to see ＝ 目的を表す不定詞。'
-          },
-          T3: {
-            ans: '私にはそれをうまく扱えそうにない（対処できそうにない）と思う。',
-            exp: "I don't think + 文、handle ＝ 対処する・うまく扱う。"
-          }
-        },
-        vocabs: {
-          V1: { word: 'Aim', ans: '狙う、向ける', keys: ['狙', 'ねら', '向', 'むけ'], exp: '命令文。Aim + 目的語で「～を狙う・向ける」。' },
-          V2: { word: 'miss', ans: '恋しく思う、寂しく思う', keys: ['恋し', 'こいし', '寂し', 'さびし', 'さみし'], exp: '人や物がなくて恋しく思う・寂しく思う。' },
-          V3: { word: 'handle', ans: '対処する、うまく扱う', keys: ['対処', '扱', 'あつか', 'でき'], exp: 'handle it で「それをうまく対処する・扱う」。' }
-        }
+        blankPool: [
+          { id: 'b1', lineId: 8, target: 'of', before: 'sound ', ans: ['of'], exp: 'the sound of ～：～の音' },
+          { id: 'b2', lineId: 10, target: 'to', before: 'south ', ans: ['to'], exp: 'to see ～：～を見るために（不定詞の副詞的用法）' },
+          { id: 'b3', lineId: 11, target: 'up', before: 'climb ', ans: ['up'], exp: 'climb up：上に登る' },
+          { id: 'b4', lineId: 11, target: 'on', before: 'turn ', ans: ['on'], exp: 'turn on：電源を入れる' }
+        ],
+        transPool: [
+          { id: 't1', lineIds: [2], ans: '強く生きるのよ（しっかりするのよ）、いい？', exp: '命令文 Be strong. に主語 You を付けて強調している。' },
+          { id: 't2', lineIds: [4], ans: 'さようならキキ。気をつけて飛んでね。がんばってね！', exp: "Go get 'em!（'em = them）は「がんばれ！やってこい！」という励まし。" },
+          { id: 't3', lineIds: [6], ans: 'ほうきを狙って（しっかり向けて）飛ばして。', exp: '命令文。Aim + 目的語で「～を狙う・向ける」。' },
+          { id: 't4', lineIds: [7], ans: '私たちの小さな子が元気で、安全な旅ができますように。', exp: 'May + S + 動詞原形 で祈願「～でありますように」。' },
+          { id: 't5', lineIds: [8], ans: 'あの小さな鈴の素晴らしい音が恋しくなるだろうな。', exp: 'be going to miss で「～が恋しくなるだろう」。' },
+          { id: 't6', lineIds: [10], ans: '海を見るために南へ向かっているところよ。', exp: 'be headed ＝ ～へ向かっている、to see ＝ 目的を表す不定詞。' },
+          { id: 't7', lineIds: [11], ans: 'ジジ、上に登ってラジオをつけて。', exp: 'climb up と turn on の命令文を and で並列。' },
+          { id: 't8', lineIds: [12], ans: '私にはそれをうまく扱えそうにない（対処できそうにない）と思う。', exp: "I don't think + 文、handle it ＝ それをうまく対処する。" }
+        ],
+        vocabPool: [
+          { id: 'v1', lineId: 1, target: 'careful', ans: '気をつけて、注意深い', keys: ['気をつけ', '注意'], exp: 'Be careful.（気をつけて）。' },
+          { id: 'v2', lineId: 4, target: 'safely', ans: '安全に、気をつけて', keys: ['安全', '気をつけ', '無事'], exp: 'Fly safely.（安全に飛んでね）。' },
+          { id: 'v3', lineId: 4, target: "Go get 'em", ans: 'がんばれ、やってこい', keys: ['がんば', '頑張', 'やってこい'], exp: "口語の励まし表現。'em は them の省略。" },
+          { id: 'v4', lineId: 6, target: 'Aim', ans: '狙う、向ける', keys: ['狙', 'ねら', '向'], exp: 'Aim your broomstick.（ほうきを向けて）。' },
+          { id: 'v5', lineId: 6, target: 'broomstick', ans: 'ほうき', keys: ['ほうき', '箒'], exp: '魔女の乗るほうき。' },
+          { id: 'v6', lineId: 7, target: 'well', ans: '元気な、健康な', keys: ['元気', '健康', '無事'], exp: '形容詞の well は「元気な・健康な」。' },
+          { id: 'v7', lineId: 7, target: 'safe', ans: '安全な、無事な', keys: ['安全', '無事'], exp: 'a safe trip（安全な旅）。' },
+          { id: 'v8', lineId: 8, target: 'miss', ans: '恋しく思う、寂しく思う', keys: ['恋し', 'こいし', '寂し', 'さびし', 'さみし'], exp: '離れてしまって恋しく思う。' },
+          { id: 'v9', lineId: 8, target: 'bells', ans: '鈴、鐘', keys: ['鈴', 'すず', '鐘', 'ベル'], exp: 'little bells（小さな鈴）。' },
+          { id: 'v10', lineId: 10, target: 'headed', ans: '向かっている', keys: ['向か', 'むか', '目指'], exp: 'be headed south（南へ向かっている）。' },
+          { id: 'v11', lineId: 10, target: 'ocean', ans: '海、大洋', keys: ['海', 'うみ', '大洋'], exp: 'see the ocean（海を見る）。' },
+          { id: 'v12', lineId: 11, target: 'climb up', ans: '上に登る', keys: ['登', 'のぼ', '上'], exp: '句動詞「登る」。' },
+          { id: 'v13', lineId: 11, target: 'turn on', ans: '（電源を）入れる、つける', keys: ['つけ', '付け', '入れ', 'オン'], exp: 'turn on the radio（ラジオをつける）。' },
+          { id: 'v14', lineId: 12, target: 'handle', ans: '対処する、うまく扱う', keys: ['対処', '扱', 'あつか'], exp: 'handle it（うまく対処する・扱う）。' }
+        ]
       },
+
+      /* ==================== 場面2 ==================== */
       {
         id: '2',
         tabLabel: '場面2 (先輩魔女)',
         title: '場面2：先輩魔女との話',
+        config: {
+          transCount: 4,
+          vocabCount: 6,
+          blankCount: 7,
+          presetA: { transIds: ['t2', 't4', 't9', 't11'] },
+          presetB: { transIds: ['t1', 't3', 't6', 't12'] }
+        },
         lines: [
-          { type: 'line', text: "Hey, good evening." },
-          { type: 'line', text: "It was." },
-          { type: 'line', text: "You're new, aren't you?" },
-          { type: 'line', text: "Yep, how'd you guess? I just left home tonight." },
-          { type: 'line', text: "[T1: Would you mind turning [B1: off] that radio?]" },
-          { type: 'line', text: "[T2: I [V1: prefer] to fly [B2: without] being [V2: distracted].]" },
-          { type: 'line', text: "Oh, yeah, sure." },
-          { type: 'line', text: "[T3: Could you tell me, is it really hard to get settled [B3: into] a brand new city?]" },
-          { type: 'line', text: "Oh, yes, a lot can [V3: go wrong]." },
-          { type: 'line', text: "[T4: But since my skill is fortune-telling, I can handle anything.]" },
-          { type: 'line', text: "Fortune telling?" },
-          { type: 'line', text: "Yes, I tell fortunes [B4: about] love." },
-          { type: 'line', text: "Wow." },
-          { type: 'line', text: "And what exactly is your skill?" },
-          { type: 'line', text: "Um, well, I haven't really decided that yet." },
-          { type: 'line', text: "Ah, well, I'm [V4: nearly] finished [B5: with] my training [V5: period]." },
-          { type: 'line', text: "[T5: I'm going home soon to show [B6: off] my new skills.]" },
-          { type: 'line', text: "That's my town down there." },
-          { type: 'line', text: "It's so big." },
-          { type: 'line', text: "Yes, [B7: to] you, I'm sure it looks big." },
-          { type: 'line', text: "[T6: I hope you don't have too [V6: tough] a time.]" },
-          { type: 'line', text: "Thanks." },
-          { type: 'line', text: "Ciao." },
-          { type: 'line', text: "Geez, what a [V7: snob]. And did you see that cat?" },
-          { type: 'line', text: "What's my skill?" }
+          { id: 1, text: "Hey, good evening." },
+          { id: 2, text: "It was." },
+          { id: 3, text: "You're new, aren't you?" },
+          { id: 4, text: "Yep, how'd you guess? I just left home tonight." },
+          { id: 5, text: "Would you mind turning off that radio?" },
+          { id: 6, text: "I prefer to fly without being distracted." },
+          { id: 7, text: "Oh, yeah, sure." },
+          { id: 8, text: "Could you tell me, is it really hard to get settled into a brand new city?" },
+          { id: 9, text: "Oh, yes, a lot can go wrong." },
+          { id: 10, text: "But since my skill is fortune-telling, I can handle anything." },
+          { id: 11, text: "Fortune telling?" },
+          { id: 12, text: "Yes, I tell fortunes about love." },
+          { id: 13, text: "Wow." },
+          { id: 14, text: "And what exactly is your skill?" },
+          { id: 15, text: "Um, well, I haven't really decided that yet." },
+          { id: 16, text: "Ah, well, I'm nearly finished with my training period." },
+          { id: 17, text: "I'm going home soon to show off my new skills." },
+          { id: 18, text: "That's my town down there." },
+          { id: 19, text: "It's so big." },
+          { id: 20, text: "Yes, to you, I'm sure it looks big." },
+          { id: 21, text: "I hope you don't have too tough a time." },
+          { id: 22, text: "Thanks." },
+          { id: 23, text: "Ciao." },
+          { id: 24, text: "Geez, what a snob. And did you see that cat?" },
+          { id: 25, text: "What's my skill?" }
         ],
-        blanks: {
-          B1: { ans: ['off'], exp: 'turn off：電源を消す' },
-          B2: { ans: ['without'], exp: 'without -ing：～することなく' },
-          B3: { ans: ['into'], exp: 'get settled into ～：～に落ち着く・馴染む' },
-          B4: { ans: ['about'], exp: 'tell fortunes about love：恋愛占いをする' },
-          B5: { ans: ['with'], exp: 'be finished with ～：～を終えている' },
-          B6: { ans: ['off'], exp: 'show off：見せびらかす・披露する' },
-          B7: { ans: ['to'], exp: 'to you：あなたにとっては' }
-        },
-        translations: {
-          T1: { ans: 'そのラジオを消してもらえませんか？', exp: 'Would you mind -ing? ＝ 丁寧な依頼「～していただけませんか」。' },
-          T2: { ans: '私は気を散らされずに飛ぶのが好きなんです。', exp: 'prefer to ＝ ～を好む、without being distracted ＝ 受動態の動名詞。' },
-          T3: { ans: '教えてくれる？まったく新しい街に馴染むのって本当に大変なの？', exp: 'get settled into ＝ 落ち着く・馴染む、brand new ＝ まったく新しい。' },
-          T4: { ans: 'でも私の特技は占いだから、何でも対処できるわ。', exp: 'since ＝ ～なので（理由）。' },
-          T5: { ans: 'もうすぐ故郷に帰って、自分の新しい力（技術）を披露するのよ。', exp: '現在進行形で近い未来の予定、show off ＝ 披露する・見せびらかす。' },
-          T6: { ans: 'あなたがあまり苦労しない（大変すぎる思いをしない）といいですね。', exp: 'too + 形容詞 + a + 名詞 の語順に注意。' }
-        },
-        vocabs: {
-          V1: { word: 'prefer', ans: '～の方を好む', keys: ['好', 'この', '好き'], exp: 'prefer to ～ で「～することを好む」。' },
-          V2: { word: 'distracted', ans: '気が散った、注意をそらされた', keys: ['気が散', '散', '注意', '集中'], exp: 'without being distracted で「気を散らされずに」。' },
-          V3: { word: 'go wrong', ans: 'うまくいかない、問題が起きる', keys: ['うまくいか', '問題', '失敗', '悪く'], exp: 'a lot can go wrong で「たくさんのことがうまくいかないこともある」。' },
-          V4: { word: 'nearly', ans: 'ほとんど、もうすぐ', keys: ['ほとんど', 'もうすぐ', 'ほぼ'], exp: 'nearly finished で「ほとんど終わった」。' },
-          V5: { word: 'period', ans: '期間', keys: ['期間', '時期'], exp: 'training period で「修行期間」。' },
-          V6: { word: 'tough', ans: '大変な、つらい、厳しい', keys: ['大変', 'つら', '厳し', '苦労', '難'], exp: 'have a tough time で「苦労する」。' },
-          V7: { word: 'snob', ans: '気取り屋、感じの悪いやつ', keys: ['気取', 'きど', '感じ', '嫌な', 'いやな', '鼻'], exp: 'what a snob で「なんて嫌なやつ・気取り屋なの」。' }
-        }
+        blankPool: [
+          { id: 'b1', lineId: 5, target: 'off', before: 'turning ', ans: ['off'], exp: 'turn off：電源を消す' },
+          { id: 'b2', lineId: 6, target: 'without', before: 'fly ', ans: ['without'], exp: 'without -ing：～することなく' },
+          { id: 'b3', lineId: 8, target: 'into', before: 'settled ', ans: ['into'], exp: 'get settled into ～：～に落ち着く・馴染む' },
+          { id: 'b4', lineId: 12, target: 'about', before: 'fortunes ', ans: ['about'], exp: 'tell fortunes about love：恋愛占いをする' },
+          { id: 'b5', lineId: 16, target: 'with', before: 'finished ', ans: ['with'], exp: 'be finished with ～：～を終えている' },
+          { id: 'b6', lineId: 17, target: 'off', before: 'show ', ans: ['off'], exp: 'show off：見せびらかす・披露する' },
+          { id: 'b7', lineId: 20, target: 'to', before: 'Yes, ', ans: ['to'], exp: 'to you：あなたにとっては' }
+        ],
+        transPool: [
+          { id: 't1', lineIds: [4], ans: 'うん、どうして分かったの？今夜、家を出たばかりなの。', exp: "how'd ＝ how did、just left ＝ たった今出発した。" },
+          { id: 't2', lineIds: [5], ans: 'そのラジオを消してもらえませんか？', exp: 'Would you mind -ing? ＝ 丁寧な依頼「～していただけませんか」。' },
+          { id: 't3', lineIds: [6], ans: '私は気を散らされずに飛ぶのが好きなんです（静かに飛びたいの）。', exp: 'prefer to ＝ ～を好む、without being distracted ＝ 受動態の動名詞。' },
+          { id: 't4', lineIds: [8], ans: '教えてくれる？まったく新しい街に馴染むのって本当に大変なの？', exp: 'get settled into ＝ 落ち着く・馴染む、brand new ＝ まったく新しい。' },
+          { id: 't5', lineIds: [9], ans: 'ああ、そうね、たくさんのことがうまくいかないこともあるわ。', exp: 'go wrong ＝ うまくいかない・問題が起きる。' },
+          { id: 't6', lineIds: [10], ans: 'でも私の特技は占いだから、何でも対処できるわ。', exp: 'since ＝ ～なので（理由）、handle ＝ 対処する。' },
+          { id: 't7', lineIds: [14], ans: 'それで、正確にはあなたの特技って何なの？', exp: 'what exactly ＝ 正確には何。' },
+          { id: 't8', lineIds: [15], ans: 'えーと、うーん、それはまだちゃんと決めていないんだ。', exp: "haven't ... yet ＝ まだ～していない（現在完了）。" },
+          { id: 't9', lineIds: [16], ans: 'ああ、まあね、私はもうすぐ修行期間が終わるところなの。', exp: 'nearly finished with ～ ＝ ほとんど～を終えている。' },
+          { id: 't10', lineIds: [17], ans: 'もうすぐ故郷に帰って、自分の新しい力（技術）を披露するのよ。', exp: '現在進行形で近い未来の予定、show off ＝ 見せびらかす・披露する。' },
+          { id: 't11', lineIds: [20], ans: 'ええ、あなたにとっては、きっと大きく見えるでしょうね。', exp: "to you ＝ あなたにとっては、I'm sure ＝ きっと～だと思う。" },
+          { id: 't12', lineIds: [21], ans: 'あなたがあまり苦労しない（大変すぎる思いをしない）といいですね。', exp: 'too + 形容詞 + a + 名詞 の語順に注意。' },
+          { id: 't13', lineIds: [24], ans: 'やれやれ、なんて気取り屋（感じの悪い人）なの。それにあの猫、見た？', exp: 'what a snob ＝ 感嘆文「なんて嫌なやつ」。' }
+        ],
+        vocabPool: [
+          { id: 'v1', lineId: 4, target: 'guess', ans: '推測する、言い当てる', keys: ['推測', '当て', 'わか', '分か'], exp: "how'd you guess?（どうして分かったの？）。" },
+          { id: 'v2', lineId: 5, target: 'mind', ans: '気にする、嫌がる', keys: ['気に', '嫌', 'いや'], exp: 'Would you mind -ing?（～するのを気にしますか→～していただけませんか）。' },
+          { id: 'v3', lineId: 6, target: 'prefer', ans: '～の方を好む', keys: ['好', 'この', '好き'], exp: 'prefer to ～（～することを好む）。' },
+          { id: 'v4', lineId: 6, target: 'distracted', ans: '気が散った、注意をそらされた', keys: ['気が散', '散', '注意', '集中'], exp: 'without being distracted（気を散らされずに）。' },
+          { id: 'v5', lineId: 8, target: 'get settled', ans: '落ち着く、定住する、馴染む', keys: ['落ち着', '定住', '馴染', 'なじ'], exp: 'get settled into a city（街に落ち着く・馴染む）。' },
+          { id: 'v6', lineId: 8, target: 'brand new', ans: 'まったく新しい、新品の', keys: ['まったく新', '全く新', '新品', '新し'], exp: 'a brand new city（まったく新しい街）。' },
+          { id: 'v7', lineId: 9, target: 'go wrong', ans: 'うまくいかない、問題が起きる', keys: ['うまくいか', '問題', '失敗', '悪く'], exp: 'a lot can go wrong（いろんなことがうまくいかない）。' },
+          { id: 'v8', lineId: 10, target: 'fortune-telling', ans: '占い', keys: ['占', 'うらな'], exp: 'tell fortunes で「占いをする」。' },
+          { id: 'v9', lineId: 10, target: 'handle', ans: '対処する、扱う', keys: ['対処', '扱', 'あつか'], exp: 'handle anything（何でも対処できる）。' },
+          { id: 'v10', lineId: 12, target: 'tell fortunes', ans: '占いをする', keys: ['占', 'うらな'], exp: 'tell fortunes about love（恋愛占いをする）。' },
+          { id: 'v11', lineId: 14, target: 'exactly', ans: '正確に、まさに', keys: ['正確', 'まさに', '厳密'], exp: 'what exactly（正確には何）。' },
+          { id: 'v12', lineId: 16, target: 'nearly', ans: 'ほとんど、もうすぐ', keys: ['ほとんど', 'もうすぐ', 'ほぼ'], exp: 'nearly finished（ほとんど終わった）。' },
+          { id: 'v13', lineId: 16, target: 'period', ans: '期間', keys: ['期間', '時期'], exp: 'training period（修行期間）。' },
+          { id: 'v14', lineId: 17, target: 'show off', ans: '見せびらかす、披露する', keys: ['見せびらか', '披露', '自慢', '見せる'], exp: 'show off my new skills（新しい力を披露する）。' },
+          { id: 'v15', lineId: 21, target: 'tough', ans: '大変な、厳しい、つらい', keys: ['大変', '厳し', 'つら', '苦労'], exp: 'too tough a time（大変すぎる思い・苦労）。' },
+          { id: 'v16', lineId: 24, target: 'snob', ans: '気取り屋、感じの悪いやつ', keys: ['気取', 'きど', '感じ', '嫌な', 'いやな'], exp: 'what a snob（なんて嫌なやつなの）。' }
+        ]
       },
+
+      /* ==================== 場面3 ==================== */
       {
         id: '3',
         tabLabel: '場面3 (豪雨・海・時計塔)',
         title: '場面3：突然の豪雨・海の見える街へ・コリコの街',
+        config: {
+          transCount: 4,
+          vocabCount: 6,
+          blankCount: 8,
+          presetA: { transIds: ['t2', 't5', 't8', 't10'] },
+          presetB: { transIds: ['t3', 't7', 't9', 't13'] }
+        },
         lines: [
-          { type: 'sub', text: '— 突然の豪雨 —' },
-          { type: 'line', text: "What are we gonna do?" },
-          { type: 'line', text: "We can't stay [B1: up]!" },
-          { type: 'line', text: "Hold [B2: on]!" },
-          { type: 'line', text: "[T1: We better rest here until it's dry.]" },
-          { type: 'line', text: "Won't we get [B3: in] trouble?" },
-          { type: 'line', text: "Not if nobody finds us." },
-          { type: 'line', text: "I'm [V1: soaked] through, down [B4: to] the bone." },
-          { type: 'line', text: "This smells great." },
-          { type: 'sub', text: '— 海の見える街へ —' },
-          { type: 'line', text: "Ah!" },
-          { type: 'line', text: "[T2: Oops! Sorry! We didn't mean to [V2: fall asleep] [B5: in] your breakfast.]" },
-          { type: 'line', text: "Wow." },
-          { type: 'line', text: "Jiji, you've got to come see the ocean." },
-          { type: 'line', text: "It's beautiful." },
-          { type: 'line', text: "[V3: Big deal], just a big [V4: puddle] of water." },
-          { type: 'line', text: "Look, [B6: up] ahead." },
-          { type: 'line', text: "How lovely!" },
-          { type: 'line', text: "[T3: I [V5: wonder] if they have a witch there.]" },
-          { type: 'line', text: "Oh, great." },
-          { type: 'sub', text: '— コリコの街 —' },
-          { type: 'line', text: "Ready, set, go!" },
-          { type: 'line', text: "Hold on!" },
-          { type: 'line', text: "Oh!" },
-          { type: 'line', text: "You okay back there?" },
-          { type: 'line', text: "Wow!" },
-          { type: 'line', text: "[T4: This is just the kind of place I've always imagined!]" },
-          { type: 'line', text: "Wow! A clock tower!" },
-          { type: 'line', text: "Look [B7: at] this city!" },
-          { type: 'line', text: "[T5: A place like this would be great to live [B8: in].]" },
-          { type: 'line', text: "But there may be some witches living here already." },
-          { type: 'line', text: "And there may not be." },
-          { type: 'line', text: "Look at how many people there are." },
-          { type: 'line', text: "Too many, if you ask me." },
-          { type: 'line', text: "Bless my [V6: hourglass]. It's a real live witch." },
-          { type: 'line', text: "Good morning." },
-          { type: 'line', text: "Do any witches live in this town?" },
-          { type: 'line', text: "[T6: Why, uh, nobody's seen one around here [B9: in] a long time.]" },
-          { type: 'line', text: "That's great. Our trip is [B10: over]." },
-          { type: 'line', text: "We're staying right here. Thanks, mister. Bye!" },
-          { type: 'line', text: "No problem!" }
+          { id: 1, text: "What are we gonna do?", sub: '— 突然の豪雨 —' },
+          { id: 2, text: "We can't stay up!" },
+          { id: 3, text: "Hold on!" },
+          { id: 4, text: "We better rest here until it's dry." },
+          { id: 5, text: "Won't we get in trouble?" },
+          { id: 6, text: "Not if nobody finds us." },
+          { id: 7, text: "I'm soaked through, down to the bone." },
+          { id: 8, text: "This smells great." },
+          { id: 9, text: "Ah! Oops! Sorry! We didn't mean to fall asleep in your breakfast.", sub: '— 海の見える街へ —' },
+          { id: 10, text: "Wow. Jiji, you've got to come see the ocean." },
+          { id: 11, text: "It's beautiful." },
+          { id: 12, text: "Big deal, just a big puddle of water." },
+          { id: 13, text: "Look, up ahead. How lovely!" },
+          { id: 14, text: "I wonder if they have a witch there." },
+          { id: 15, text: "Oh, great." },
+          { id: 16, text: "Ready, set, go! Hold on! You okay back there?", sub: '— コリコの街 —' },
+          { id: 17, text: "This is just the kind of place I've always imagined!" },
+          { id: 18, text: "Wow! A clock tower! Look at this city!" },
+          { id: 19, text: "A place like this would be great to live in." },
+          { id: 20, text: "But there may be some witches living here already. And there may not be." },
+          { id: 21, text: "Look at how many people there are." },
+          { id: 22, text: "Too many, if you ask me." },
+          { id: 23, text: "Bless my hourglass. It's a real live witch." },
+          { id: 24, text: "Good morning. Do any witches live in this town?" },
+          { id: 25, text: "Why, uh, nobody's seen one around here in a long time." },
+          { id: 26, text: "That's great. Our trip is over." },
+          { id: 27, text: "We're staying right here. Thanks, mister. Bye!" },
+          { id: 28, text: "No problem!" }
         ],
-        blanks: {
-          B1: { ans: ['up'], exp: 'stay up：空中に留まり続ける・持ちこたえる' },
-          B2: { ans: ['on'], exp: 'hold on：しっかりつかまる' },
-          B3: { ans: ['in'], exp: 'get in trouble：トラブルになる・怒られる' },
-          B4: { ans: ['to'], exp: 'down to the bone：骨の髄まで' },
-          B5: { ans: ['in'], exp: 'in your breakfast：朝食の中で' },
-          B6: { ans: ['up'], exp: 'up ahead：前方に・少し先に' },
-          B7: { ans: ['at'], exp: 'look at ～：～を見る' },
-          B8: { ans: ['in'], exp: 'live in a place の前置詞残し' },
-          B9: { ans: ['in'], exp: 'in a long time：長い間' },
-          B10: { ans: ['over'], exp: 'be over：終わる' }
-        },
-        translations: {
-          T1: { ans: '乾くまでここで休んだほうがいいね。', exp: 'We better ＝ We had better（～したほうがよい）。' },
-          T2: { ans: 'おっと、ごめんなさい！あなたの朝食の中で眠ってしまうつもりはなかったんです。', exp: "didn't mean to ＝ ～するつもりはなかった。" },
-          T3: { ans: 'あそこに魔女がいるのかな（いるのだろうか）。', exp: 'I wonder if ～ ＝ ～かなと思う。if は「～かどうか」。' },
-          T4: { ans: 'ここはまさに私がずっと想像していたような場所だわ！', exp: 'place の後ろに関係代名詞 that が省略＋現在完了。' },
-          T5: { ans: 'こんな場所に住めたら素晴らしいだろうな。', exp: 'would ＝ 仮定のニュアンス、live in の前置詞残し。' },
-          T6: { ans: 'ええと、この辺りでは長い間、誰も（魔女を）見ていませんね。', exp: "nobody's seen ＝ nobody has seen、one は a witch を指す。" }
-        },
-        vocabs: {
-          V1: { word: 'soaked', ans: 'びしょ濡れの', keys: ['びしょ', '濡', 'ぬれ', 'ずぶ'], exp: 'be soaked through で「完全にびしょ濡れ」。' },
-          V2: { word: 'fall asleep', ans: '眠ってしまう', keys: ['眠', 'ねむ', '寝', 'ねて'], exp: '句動詞「眠りに落ちる・眠ってしまう」。' },
-          V3: { word: 'Big deal', ans: '大したことない（皮肉）', keys: ['大した', 'たいした', 'どうでも', 'すごくな'], exp: '本来は「重要なこと」だが、皮肉で「大したことない」。' },
-          V4: { word: 'puddle', ans: '水たまり', keys: ['水たまり', '水溜'], exp: 'a big puddle of water（大きな水たまり）。' },
-          V5: { word: 'wonder', ans: '～かなと思う、疑問に思う', keys: ['疑問', '不思議', 'かな', 'だろう'], exp: 'I wonder if ～ で「～かなと思う」。' },
-          V6: { word: 'hourglass', ans: '砂時計', keys: ['砂時計', 'すなどけい'], exp: '時計塔のおじいちゃんの驚きのセリフ。' }
-        }
+        blankPool: [
+          { id: 'b1', lineId: 2, target: 'up', before: 'stay ', ans: ['up'], exp: 'stay up：空中に留まり続ける・持ちこたえる' },
+          { id: 'b2', lineId: 3, target: 'on', before: 'Hold ', ans: ['on'], exp: 'Hold on!：しっかりつかまって！' },
+          { id: 'b3', lineId: 5, target: 'in', before: 'get ', ans: ['in'], exp: 'get in trouble：怒られる・トラブルになる' },
+          { id: 'b4', lineId: 7, target: 'to', before: 'down ', ans: ['to'], exp: 'down to the bone：骨の髄まで' },
+          { id: 'b5', lineId: 9, target: 'in', before: 'asleep ', ans: ['in'], exp: 'in your breakfast：あなたの朝食の中で' },
+          { id: 'b6', lineId: 13, target: 'up', before: 'Look, ', ans: ['up'], exp: 'up ahead：前方に・少し先に' },
+          { id: 'b7', lineId: 18, target: 'at', before: 'Look ', ans: ['at'], exp: 'look at ～：～を見る' },
+          { id: 'b8', lineId: 19, target: 'in', before: 'live ', ans: ['in'], exp: 'live in a place の前置詞残し' },
+          { id: 'b9', lineId: 25, target: 'in', before: 'here ', ans: ['in'], exp: 'in a long time：長い間' },
+          { id: 'b10', lineId: 26, target: 'over', before: 'is ', ans: ['over'], exp: 'be over：終わる' }
+        ],
+        transPool: [
+          { id: 't1', lineIds: [2], ans: 'もう飛び続けられないよ（持ちこたえられないよ）！', exp: 'ここでの stay up は「空中に留まり続ける」。' },
+          { id: 't2', lineIds: [4], ans: '乾くまでここで休んだほうがいいね。', exp: 'We better ＝ We had better（～したほうがよい）。' },
+          { id: 't3', lineIds: [5, 6], ans: '怒られないかな？ — 誰にも見つからなければ大丈夫さ。', exp: 'get in trouble ＝ 怒られる、Not if ～ ＝ ～でなければそうならない。' },
+          { id: 't4', lineIds: [7], ans: '骨の髄まで完全にびしょ濡れだよ。', exp: 'be soaked through ＝ 完全にびしょ濡れ、down to the bone ＝ 芯まで。' },
+          { id: 't5', lineIds: [9], ans: 'あっ！おっと、ごめんなさい！あなたの朝食の中で眠ってしまうつもりはなかったんです。', exp: "didn't mean to do ＝ ～するつもりはなかった、fall asleep ＝ 眠ってしまう。" },
+          { id: 't6', lineIds: [10], ans: 'わあ、ジジ、海を見に来なくちゃ！', exp: "you've got to ＝ have to、come see ＝ come and see。" },
+          { id: 't7', lineIds: [12], ans: '大したことないよ、ただの大きな水たまりじゃないか。', exp: 'Big deal ＝ 皮肉で「大したことない」、puddle ＝ 水たまり。' },
+          { id: 't8', lineIds: [14], ans: 'あそこに魔女がいるのかな（いるのだろうか）。', exp: 'I wonder if ～ ＝ ～かなと思う。if は「～かどうか」。' },
+          { id: 't9', lineIds: [17], ans: 'ここはまさに私がずっと想像していたような場所だわ！', exp: 'place の後ろに関係代名詞 that が省略＋現在完了。' },
+          { id: 't10', lineIds: [19], ans: 'こんな場所に住めたら素晴らしいだろうな。', exp: 'would ＝ 仮定のニュアンス、live in の前置詞残し。' },
+          { id: 't11', lineIds: [20], ans: 'でもここにはすでに住んでいる魔女がいるかもしれないわ。いないかもしれないけど。', exp: 'there may be ～、living here は現在分詞の後置修飾。' },
+          { id: 't12', lineIds: [21, 22], ans: 'どれだけたくさんの人がいるか見て。 — 僕に言わせれば多すぎるよ。', exp: 'how many + 名詞、if you ask me ＝ 私に言わせれば。' },
+          { id: 't13', lineIds: [25], ans: 'ええと、この辺りでは長い間、誰も（魔女を）見ていませんね。', exp: "nobody's seen ＝ nobody has seen、one は a witch を指す。" },
+          { id: 't14', lineIds: [26, 27], ans: 'それは素晴らしいわ。私たちの旅は終わりよ。まさにここに滞在します。ありがとうおじさん、バイバイ！', exp: 'be over ＝ 終わる、進行形で未来の予定。' }
+        ],
+        vocabPool: [
+          { id: 'v1', lineId: 2, target: 'stay up', ans: '（空中に）留まり続ける、持ちこたえる', keys: ['留ま', 'とどま', '飛び続け', '持ちこた', '起き'], exp: '文脈上「飛び続ける・持ちこたえる」。' },
+          { id: 'v2', lineId: 3, target: 'Hold on', ans: 'しっかりつかまる、待つ、耐える', keys: ['つかま', '掴', '待', '耐'], exp: '緊急時の「しっかりつかまって！」。' },
+          { id: 'v3', lineId: 4, target: 'rest', ans: '休む、休憩する', keys: ['休', 'やす'], exp: '動詞で「休む」。' },
+          { id: 'v4', lineId: 4, target: 'until', ans: '～まで', keys: ['まで'], exp: "until it's dry（乾くまで）。" },
+          { id: 'v5', lineId: 5, target: 'get in trouble', ans: '怒られる、トラブルになる', keys: ['怒ら', 'トラブル', '問題', '困'], exp: '熟語「トラブルになる・怒られる」。' },
+          { id: 'v6', lineId: 7, target: 'soaked', ans: 'びしょ濡れの', keys: ['びしょ', '濡', 'ぬれ', 'ずぶ'], exp: 'be soaked through（完全にびしょ濡れ）。' },
+          { id: 'v7', lineId: 7, target: 'down to the bone', ans: '骨の髄まで、芯まで', keys: ['骨', '髄', '芯', '完全'], exp: '慣用表現「芯まで・骨の髄まで」。' },
+          { id: 'v8', lineId: 9, target: 'mean to', ans: '～するつもりである', keys: ['つもり', '意図'], exp: "didn't mean to（～するつもりはなかった）。" },
+          { id: 'v9', lineId: 9, target: 'fall asleep', ans: '眠ってしまう', keys: ['眠', 'ねむ', '寝'], exp: '句動詞「眠りに落ちる」。' },
+          { id: 'v10', lineId: 12, target: 'Big deal', ans: '大したことない（皮肉）', keys: ['大した', 'たいした', 'どうでも', 'すごくな'], exp: '皮肉で使われると「大したことない」。' },
+          { id: 'v11', lineId: 12, target: 'puddle', ans: '水たまり', keys: ['水たまり', '水溜'], exp: 'a big puddle of water（大きな水たまり）。' },
+          { id: 'v12', lineId: 13, target: 'up ahead', ans: '前方に、少し先に', keys: ['前方', '先', '前'], exp: 'Look, up ahead.（見て、前の方に）。' },
+          { id: 'v13', lineId: 13, target: 'lovely', ans: '素敵な、かわいらしい', keys: ['素敵', 'すてき', 'かわい', '美し'], exp: 'How lovely!（なんて素敵なの！）。' },
+          { id: 'v14', lineId: 14, target: 'wonder', ans: '～かなと思う、疑問に思う', keys: ['疑問', '不思議', 'かな', 'だろう'], exp: 'I wonder if ～（～かなと思う）。' },
+          { id: 'v15', lineId: 17, target: 'imagined', ans: '想像した', keys: ['想像', 'そうぞう'], exp: 'imagine（想像する）の過去分詞。' },
+          { id: 'v16', lineId: 22, target: 'if you ask me', ans: '私に言わせれば、私の意見では', keys: ['言わせ', '意見', '私'], exp: '会話の挿入句。' },
+          { id: 'v17', lineId: 23, target: 'hourglass', ans: '砂時計', keys: ['砂時計', 'すなどけい'], exp: 'Bless my hourglass.（なんてことだ）。' },
+          { id: 'v18', lineId: 25, target: 'around here', ans: 'この辺りで', keys: ['この辺', 'このあた', '周辺', '近く'], exp: '場所を表す表現。' },
+          { id: 'v19', lineId: 26, target: 'is over', ans: '終わる、終わった', keys: ['終わ', 'おわ'], exp: 'be over ＝ 終わる。' }
+        ]
       },
+
+      /* ==================== 場面4 ==================== */
       {
         id: '4',
         tabLabel: '場面4 (警官・トンボ)',
         title: '場面4：警官とのやりとり・トンボとの出会い',
+        config: {
+          transCount: 4,
+          vocabCount: 6,
+          blankCount: 9,
+          presetA: { transIds: ['t1', 't3', 't5', 't13'] },
+          presetB: { transIds: ['t2', 't6', 't10', 't14'] }
+        },
         lines: [
-          { type: 'sub', text: '— 警官とのやりとり —' },
-          { type: 'line', text: "Um, hi. My name's Kiki, and I'm a witch." },
-          { type: 'line', text: "And this is Jiji. He's my black cat." },
-          { type: 'line', text: "[T1: And we'd [V1: be honored] if we could live here.]" },
-          { type: 'line', text: "Your city is so amazing, and what a beautiful clock tower." },
-          { type: 'line', text: "Oh, really, that's very nice, dear. Bye." },
-          { type: 'line', text: "Hey, you kid! Who do you think you are, jumping [B1: out] into the street like that?" },
-          { type: 'line', text: "[T2: You were almost [V2: responsible] [B2: for] a big accident, [V3: zooming] around [B3: on] your broom back there.]" },
-          { type: 'line', text: "But I'm a new witch, sir. We're supposed to fly around." },
-          { type: 'line', text: "[T3: You're supposed to [V4: obey] the law. I'm gonna have to write you [B4: up].]" },
-          { type: 'line', text: "Now give me your name and address." },
-          { type: 'line', text: "Will you tell my parents?" },
-          { type: 'line', text: "Of course, I'm going to tell your parents. I have to do that with every [V5: minor]." },
-          { type: 'line', text: "Thief! Thief! Somebody! Call the [V6: cops]." },
-          { type: 'line', text: "He's getting [B5: away]!" },
-          { type: 'line', text: "Now you stay right there!" },
-          { type: 'sub', text: '— トンボとの出会い —' },
-          { type: 'line', text: "Miss, wait [B6: up]. I sure [V7: fooled] that cop, huh?" },
-          { type: 'line', text: "Hey, that was me [V8: yelling] thief." },
-          { type: 'line', text: "You'll be okay now. Worked [B7: out] pretty good, huh?" },
-          { type: 'line', text: "[T4: You gotta be a real witch, the way you can fly that broom.]" },
-          { type: 'line', text: "Do you think maybe you can teach me how to fly it?" },
-          { type: 'line', text: "[T5: Hey, Tombo, maybe you can sweep her [B8: off] her feet with that broom.]" },
-          { type: 'line', text: "Hey, shut up, all right?" },
-          { type: 'line', text: "You know, miss, I love flying, too. Can I see your broom?" },
-          { type: 'line', text: "[T6: Thank you for getting me out [B9: of] trouble, but I really shouldn't be talking to you and you want to know why, it's very [V9: rude] to talk to a girl before you've been introduced and before you know her name hmph!]" },
-          { type: 'line', text: "You're kind of [V10: old-fashioned], aren't you? You sound [B10: like] my grandmother." },
-          { type: 'line', text: "Just go [B11: away]. Leave me alone." },
-          { type: 'line', text: "Hey, don't go—oh!" }
+          { id: 1, text: "Um, hi. My name's Kiki, and I'm a witch.", sub: '— 警官とのやりとり —' },
+          { id: 2, text: "And this is Jiji. He's my black cat." },
+          { id: 3, text: "And we'd be honored if we could live here." },
+          { id: 4, text: "Your city is so amazing, and what a beautiful clock tower." },
+          { id: 5, text: "Oh, really, that's very nice, dear. Bye." },
+          { id: 6, text: "Hey, you kid! Who do you think you are, jumping out into the street like that?" },
+          { id: 7, text: "You were almost responsible for a big accident, zooming around on your broom back there." },
+          { id: 8, text: "But I'm a new witch, sir. We're supposed to fly around." },
+          { id: 9, text: "You're supposed to obey the law. I'm gonna have to write you up." },
+          { id: 10, text: "Now give me your name and address." },
+          { id: 11, text: "Will you tell my parents?" },
+          { id: 12, text: "Of course, I'm going to tell your parents. I have to do that with every minor." },
+          { id: 13, text: "Thief! Thief! Somebody! Call the cops." },
+          { id: 14, text: "He's getting away!" },
+          { id: 15, text: "Now you stay right there!" },
+          { id: 16, text: "Miss, wait up. I sure fooled that cop, huh?", sub: '— トンボとの出会い —' },
+          { id: 17, text: "Hey, that was me yelling thief." },
+          { id: 18, text: "You'll be okay now. Worked out pretty good, huh?" },
+          { id: 19, text: "You gotta be a real witch, the way you can fly that broom." },
+          { id: 20, text: "Do you think maybe you can teach me how to fly it?" },
+          { id: 21, text: "Hey, Tombo, maybe you can sweep her off her feet with that broom." },
+          { id: 22, text: "Hey, shut up, all right?" },
+          { id: 23, text: "You know, miss, I love flying, too. Can I see your broom?" },
+          { id: 24, text: "Thank you for getting me out of trouble, but I really shouldn't be talking to you and you want to know why, it's very rude to talk to a girl before you've been introduced and before you know her name, hmph!" },
+          { id: 25, text: "You're kind of old-fashioned, aren't you? You sound like my grandmother." },
+          { id: 26, text: "Just go away. Leave me alone." },
+          { id: 27, text: "Hey, don't go—oh!" }
         ],
-        blanks: {
-          B1: { ans: ['out'], exp: 'jump out：飛び出す' },
-          B2: { ans: ['for'], exp: 'be responsible for ～：～の責任がある' },
-          B3: { ans: ['on'], exp: 'on your broom：ほうきに乗って' },
-          B4: { ans: ['up'], exp: 'write A up：違反として記録する・報告書を書く' },
-          B5: { ans: ['away'], exp: 'get away：逃げる' },
-          B6: { ans: ['up'], exp: 'wait up：立ち止まって待つ' },
-          B7: { ans: ['out'], exp: 'work out：うまくいく' },
-          B8: { ans: ['off'], exp: "sweep A off one's feet：Aを夢中にさせる" },
-          B9: { ans: ['of'], exp: 'get A out of trouble：トラブルから助け出す' },
-          B10: { ans: ['like'], exp: 'sound like ～：～のように聞こえる' },
-          B11: { ans: ['away'], exp: 'go away：立ち去る' }
-        },
-        translations: {
-          T1: { ans: 'そして、もしここに住めたらとても光栄です。', exp: 'would be honored if ... could ＝ 仮定法の丁寧な願望。' },
-          T2: { ans: 'あそこでほうきに乗って飛び回って、大事故の責任を負うところだったんだぞ（起こしかけたんだぞ）。', exp: 'be responsible for ～、zooming around は分詞構文。' },
-          T3: { ans: '法律を守らなければならないんだ。違反切符を切る（報告書に書く）ことになるぞ。', exp: 'be supposed to ＝ ～することになっている、write A up ＝ 違反記録を書く。' },
-          T4: { ans: 'そのほうきで飛べる様子からすると、君は本物の魔女に違いないね。', exp: 'gotta ＝ have got to「～に違いない」、the way ～「～の様子からすると」。' },
-          T5: { ans: 'おいトンボ、そのほうきで彼女を夢中にさせられるかもな。', exp: "sweep A off one's feet ＝ Aを夢中にさせる。" },
-          T6: { ans: 'トラブルから助け出してくれてありがとう。でも本当はあなたと話すべきじゃないの。理由を知りたい？紹介される前や名前を知る前に女の子に話しかけるのはとても失礼なのよ！', exp: '形式主語構文、before you\'ve been introduced（現在完了の受動態）。' }
-        },
-        vocabs: {
-          V1: { word: 'be honored', ans: '光栄に思う', keys: ['光栄', 'こうえい', '名誉'], exp: 'would be honored で「光栄です」。' },
-          V2: { word: 'responsible', ans: '責任がある', keys: ['責任', 'せきにん'], exp: 'be responsible for ～ で「～の責任がある」。' },
-          V3: { word: 'zooming', ans: '素早く動く、勢いよく飛び回る', keys: ['素早', '勢い', '飛び回', 'ビューン', '速'], exp: 'zoom around で「勢いよく飛び回る」。' },
-          V4: { word: 'obey', ans: '従う、守る', keys: ['従', 'したが', '守', 'まも'], exp: 'obey the law で「法律を守る・従う」。' },
-          V5: { word: 'minor', ans: '未成年者', keys: ['未成年', 'みせいねん', '子供'], exp: '警官のセリフでは名詞で「未成年者」。' },
-          V6: { word: 'cops', ans: '警察、警官', keys: ['警察', '警官', 'おまわり'], exp: 'Call the cops!（警察を呼んで！）。' },
-          V7: { word: 'fooled', ans: 'だました', keys: ['だま', '騙'], exp: '動詞 fool は「だます」。' },
-          V8: { word: 'yelling', ans: '叫んでいる', keys: ['叫', 'さけ', '大声'], exp: 'yell ＝ 叫ぶ、大声を出す。' },
-          V9: { word: 'rude', ans: '失礼な、無礼な', keys: ['失礼', '無礼', 'ぶれい'], exp: 'It\'s very rude to ～（～するのはとても失礼だ）。' },
-          V10: { word: 'old-fashioned', ans: '古風な、時代遅れの', keys: ['古風', '時代遅れ', '古い'], exp: 'kind of old-fashioned（ちょっと古風な）。' }
-        }
+        blankPool: [
+          { id: 'b1', lineId: 6, target: 'out', before: 'jumping ', ans: ['out'], exp: 'jump out：飛び出す' },
+          { id: 'b2', lineId: 7, target: 'for', before: 'responsible ', ans: ['for'], exp: 'be responsible for ～：～の責任がある' },
+          { id: 'b3', lineId: 7, target: 'on', before: 'around ', ans: ['on'], exp: 'on your broom：ほうきに乗って' },
+          { id: 'b4', lineId: 9, target: 'up', before: 'write you ', ans: ['up'], exp: 'write A up：違反として記録する' },
+          { id: 'b5', lineId: 14, target: 'away', before: 'getting ', ans: ['away'], exp: 'get away：逃げる' },
+          { id: 'b6', lineId: 16, target: 'up', before: 'wait ', ans: ['up'], exp: 'wait up：立ち止まって待つ' },
+          { id: 'b7', lineId: 18, target: 'out', before: 'Worked ', ans: ['out'], exp: 'work out：うまくいく' },
+          { id: 'b8', lineId: 21, target: 'off', before: 'sweep her ', ans: ['off'], exp: "sweep A off one's feet：Aを夢中にさせる" },
+          { id: 'b9', lineId: 24, target: 'of', before: 'out ', ans: ['of'], exp: 'get A out of trouble：トラブルから助け出す' },
+          { id: 'b10', lineId: 25, target: 'like', before: 'sound ', ans: ['like'], exp: 'sound like ～：～のように聞こえる' },
+          { id: 'b11', lineId: 26, target: 'away', before: 'go ', ans: ['away'], exp: 'go away：立ち去る' }
+        ],
+        transPool: [
+          { id: 't1', lineIds: [3], ans: 'そして、もしここに住めたらとても光栄です。', exp: 'would be honored if ... could ＝ 仮定法の丁寧な願望。' },
+          { id: 't2', lineIds: [6], ans: 'おい、君！そんなふうに通りに飛び出して、何様のつもりだ？', exp: 'Who do you think you are? ＝ 強い非難、jumping は分詞構文。' },
+          { id: 't3', lineIds: [7], ans: 'あそこでほうきに乗って飛び回って、大事故の責任を負うところだったんだぞ。', exp: 'be responsible for ～、zooming around は分詞構文。' },
+          { id: 't4', lineIds: [8], ans: 'でも私は新米の魔女なんです。私たちは飛び回ることになっているんです。', exp: 'be supposed to ＝ ～することになっている。' },
+          { id: 't5', lineIds: [9], ans: '法律を守らなければならないんだ。違反切符を切る（報告書に書く）ことになるぞ。', exp: 'obey the law ＝ 法律を守る、write A up ＝ 違反記録を書く。' },
+          { id: 't6', lineIds: [12], ans: 'もちろん君の両親に知らせるよ。未成年者全員に対してそうしなければならないんだ。', exp: 'minor ＝ 未成年者。' },
+          { id: 't7', lineIds: [16], ans: 'お姉さん、待ってよ。あの警官をうまくだませたよね？', exp: 'wait up ＝ 立ち止まって待つ、fool ＝ だます。' },
+          { id: 't8', lineIds: [17], ans: 'ねえ、「泥棒！」と叫んでいたのは僕だよ。', exp: 'that was me -ing ＝ ～していたのは私だ。' },
+          { id: 't9', lineIds: [18], ans: 'もう大丈夫だよ。かなりうまくいったよね？', exp: 'work out ＝ うまくいく、pretty good ＝ かなり良い。' },
+          { id: 't10', lineIds: [19], ans: 'そのほうきで飛べる様子からすると、君は本物の魔女に違いないね。', exp: 'gotta ＝ have got to「～に違いない」、the way ～「～の様子からすると」。' },
+          { id: 't11', lineIds: [20], ans: 'もしかして、それ（ほうき）の飛び方を僕に教えてくれる？', exp: 'teach A how to do ＝ Aに～の仕方を教える。' },
+          { id: 't12', lineIds: [21], ans: 'おいトンボ、そのほうきで彼女を夢中にさせられるかもな。', exp: "sweep A off one's feet ＝ Aを夢中にさせる。" },
+          { id: 't13', lineIds: [24], ans: 'トラブルから助け出してくれてありがとう。でも本当はあなたと話すべきじゃないの。理由を知りたい？紹介される前や名前を知る前に女の子に話しかけるのはとても失礼なのよ！', exp: "形式主語構文、before you've been introduced（現在完了の受動態）。" },
+          { id: 't14', lineIds: [25], ans: '君はちょっと古風だね？僕のおばあちゃんみたいに聞こえるよ（おばあちゃんみたいだ）。', exp: 'kind of ＝ ちょっと、sound like ～ ＝ ～のように聞こえる。' },
+          { id: 't15', lineIds: [26], ans: 'もうあっちへ行って。放っておいて。', exp: 'go away ＝ 立ち去る、leave A alone ＝ Aを一人にしておく。' }
+        ],
+        vocabPool: [
+          { id: 'v1', lineId: 3, target: 'be honored', ans: '光栄に思う', keys: ['光栄', 'こうえい', '名誉'], exp: 'would be honored（光栄です）。' },
+          { id: 'v2', lineId: 6, target: 'jumping out', ans: '飛び出す', keys: ['飛び出', 'とびだ'], exp: 'jump out into the street（通りに飛び出す）。' },
+          { id: 'v3', lineId: 7, target: 'responsible', ans: '責任がある', keys: ['責任', 'せきにん'], exp: 'be responsible for ～（～の責任がある）。' },
+          { id: 'v4', lineId: 7, target: 'zooming', ans: '素早く動く、勢いよく飛び回る', keys: ['素早', '勢い', '飛び回', '速'], exp: 'zoom around（勢いよく飛び回る）。' },
+          { id: 'v5', lineId: 8, target: 'supposed to', ans: '～することになっている', keys: ['ことになっ', 'べき', '義務', 'はず'], exp: 'be supposed to do（～することになっている）。' },
+          { id: 'v6', lineId: 9, target: 'obey', ans: '従う、守る', keys: ['従', 'したが', '守', 'まも'], exp: 'obey the law（法律を守る）。' },
+          { id: 'v7', lineId: 9, target: 'write you up', ans: '違反として記録する、報告書を書く', keys: ['違反', '記録', '報告', '切符'], exp: 'write A up（違反切符を切る・記録する）。' },
+          { id: 'v8', lineId: 12, target: 'minor', ans: '未成年者', keys: ['未成年', 'みせいねん'], exp: '名詞で「未成年者」。' },
+          { id: 'v9', lineId: 13, target: 'Thief', ans: '泥棒', keys: ['泥棒', 'どろぼう'], exp: 'Thief!（泥棒だ！）。' },
+          { id: 'v10', lineId: 13, target: 'cops', ans: '警察、警官', keys: ['警察', '警官'], exp: 'Call the cops!（警察を呼んで！）。' },
+          { id: 'v11', lineId: 14, target: 'getting away', ans: '逃げている、逃げる', keys: ['逃', 'にげ'], exp: 'get away（逃げる）。' },
+          { id: 'v12', lineId: 16, target: 'wait up', ans: '（立ち止まって）待つ', keys: ['待', 'ま'], exp: 'Miss, wait up.（お姉さん、待ってよ）。' },
+          { id: 'v13', lineId: 16, target: 'fooled', ans: 'だました', keys: ['だま', '騙'], exp: '動詞 fool は「だます」。' },
+          { id: 'v14', lineId: 17, target: 'yelling', ans: '叫んでいる', keys: ['叫', 'さけ', '大声'], exp: 'yell ＝ 叫ぶ。' },
+          { id: 'v15', lineId: 18, target: 'Worked out', ans: 'うまくいった', keys: ['うまくい', '成功'], exp: 'work out（うまくいく）。' },
+          { id: 'v16', lineId: 18, target: 'pretty', ans: 'かなり、とても', keys: ['かなり', 'とても', '結構'], exp: '副詞の pretty ＝ かなり。' },
+          { id: 'v17', lineId: 21, target: 'sweep her off her feet', ans: '彼女を夢中にさせる', keys: ['夢中', 'むちゅう', '心を奪', '惚'], exp: "イディオム sweep A off one's feet。" },
+          { id: 'v18', lineId: 24, target: 'rude', ans: '失礼な、無礼な', keys: ['失礼', '無礼'], exp: "it's very rude to ～（～するのはとても失礼だ）。" },
+          { id: 'v19', lineId: 24, target: 'introduced', ans: '紹介された', keys: ['紹介', 'しょうかい'], exp: 'introduce（紹介する）。' },
+          { id: 'v20', lineId: 25, target: 'kind of', ans: 'ちょっと、やや', keys: ['ちょっと', 'やや', '少し'], exp: 'kind of old-fashioned（ちょっと古風）。' },
+          { id: 'v21', lineId: 25, target: 'old-fashioned', ans: '古風な、時代遅れの', keys: ['古風', '時代遅れ', '古い'], exp: 'おばあちゃんみたいだ、という文脈。' },
+          { id: 'v22', lineId: 26, target: 'Leave me alone', ans: '放っておいて、一人にしておいて', keys: ['放って', 'ほって', '一人に', '構わ'], exp: 'leave A alone（Aを放っておく）。' }
+        ]
       },
+
+      /* ==================== 場面5 ==================== */
       {
         id: '5',
         tabLabel: '場面5 (宿探し・おソノさん)',
-        title: '場面5：宿探し・おソノさんとの出会い〜提案',
+        title: '場面5：途方に暮れるキキ〜おソノさんとの出会い・提案',
+        config: {
+          transCount: 5,
+          vocabCount: 8,
+          blankCount: 10,
+          presetA: { transIds: ['t5', 't11', 't13', 't19', 't26'] },
+          presetB: { transIds: ['t6', 't8', 't17', 't20', 't24'] }
+        },
         lines: [
-          { type: 'sub', text: '— 途方に暮れるキキ —' },
-          { type: 'line', text: "Stay here tonight?" },
-          { type: 'line', text: "I'm afraid I don't understand." },
-          { type: 'line', text: "Your parents are here with you, aren't they?" },
-          { type: 'line', text: "No, sir. I'm alone." },
-          { type: 'line', text: "I've come to this town because I'm a new witch [B1: in] training." },
-          { type: 'line', text: "Do you have some [V1: identification]?" },
-          { type: 'line', text: "Oh, never mind." },
-          { type: 'line', text: "Kiki, aren't you going to eat that?" },
-          { type: 'line', text: "No, you can have it, Jiji." },
-          { type: 'line', text: "Where are we going to stay tonight?" },
-          { type: 'line', text: "Let's go." },
-          { type: 'sub', text: '— オソノさんとの出会い —' },
-          { type: 'line', text: "Why don't we go find another town?" },
-          { type: 'line', text: "[T1: I'll [V2: bet] there are bigger and better ones, ones that are friendlier than this.]" },
-          { type: 'line', text: "Oh dear. Oh my goodness. Hey there!" },
-          { type: 'line', text: "Your [V3: pacifier]! Ma'am! You forgot your baby's pacifier!" },
-          { type: 'line', text: "[T2: Oh, poor baby. Without this, the baby will wake up and cry all the way home.]" },
-          { type: 'line', text: "I better go give it to her myself." },
-          { type: 'line', text: "I'm sorry, [V4: folks], but could you wait just a minute? I'll be right back." },
-          { type: 'line', text: "[T3: Excuse me, but would you like me to [V5: deliver] it for you?]" },
-          { type: 'line', text: "What?" },
-          { type: 'line', text: "The woman [B2: with] the [V6: baby carriage] who just went [B3: around] the corner. I could [V7: reach] her [B4: in] no time." },
-          { type: 'line', text: "Really? You'd do that? Thank you so much." },
-          { type: 'line', text: "My pleasure. Let's go, Jiji!" },
-          { type: 'line', text: "Wow!" },
-          { type: 'line', text: "[T4: Sorry to surprise you, but the lady in the bakery asked me to return this pacifier.]" },
-          { type: 'line', text: "Oh." },
-          { type: 'line', text: "Here you go. Yeah, I'd like one [B5: of] those. Yes, sir." },
-          { type: 'line', text: "Oh, hi there. Come [B6: in] and wait a minute, will you?" },
-          { type: 'line', text: "Mmm, these are nice and fresh. Just out [B7: of] the oven." },
-          { type: 'line', text: "There you are. Here you go. See you tomorrow." },
-          { type: 'line', text: "Bye. That'll be all for you? All right. Thank you. Now come back again." },
-          { type: 'line', text: "[T5: When I saw you fly off, I thought [B8: for] a second I was dreaming.]" },
-          { type: 'line', text: "The baby's mother told me to give you this message." },
-          { type: 'line', text: "Thanks [B9: for] returning the pacifier. Your new delivery girl is really quite special." },
-          { type: 'line', text: "Well, I'll be [B10: on] my way." },
-          { type: 'line', text: "[T6: Wait. Wait a minute. I really must do something to show you my thanks.]" },
-          { type: 'sub', text: '— オソノさんの提案 —' },
-          { type: 'line', text: "Follow me. Bakery's [V8: downstairs]. [V9: Upstairs] is home." },
-          { type: 'line', text: "Sit down and relax. Would you like some hot chocolate?" },
-          { type: 'line', text: "Okay." },
-          { type: 'line', text: "There you go." },
-          { type: 'line', text: "Thank you very much, ma'am." },
-          { type: 'line', text: "And this is for you, little guy." },
-          { type: 'line', text: "[T7: So tell me if I'm right. I'm guessing you're a witch in training.]" },
-          { type: 'line', text: "You're right. [T8: And I really love it here, but people don't seem to like witches in this town.]" },
-          { type: 'line', text: "Depends [B11: on] the people. Now take me [B12: for] instance. I just met you, and I know I like you." },
-          { type: 'line', text: "[T9: So tell me, [V10: whereabouts] are you two staying?]" },
-          { type: 'line', text: "Oh, I see. Why didn't you tell me you have no place to stay?" },
-          { type: 'line', text: "We have a [V11: spare] room [B13: in] the [V12: attic]. You can use that." },
-          { type: 'line', text: "[T10: You'd really let me stay [B14: with] you?]" },
-          { type: 'line', text: "Why, of course. But we haven't [V13: introduced ourselves]. My name's Osono." },
-          { type: 'line', text: "And I'm Kiki, ma'am. And Jiji here is my very best friend." }
+          { id: 1, text: "Stay here tonight? I'm afraid I don't understand.", sub: '— 途方に暮れるキキ —' },
+          { id: 2, text: "Your parents are here with you, aren't they?" },
+          { id: 3, text: "No, sir. I'm alone. I've come to this town because I'm a new witch in training." },
+          { id: 4, text: "Do you have some identification?" },
+          { id: 5, text: "Oh, never mind." },
+          { id: 6, text: "Kiki, aren't you going to eat that? — No, you can have it, Jiji." },
+          { id: 7, text: "Where are we going to stay tonight? Let's go." },
+          { id: 8, text: "Why don't we go find another town?", sub: '— オソノさんとの出会い —' },
+          { id: 9, text: "I'll bet there are bigger and better ones, ones that are friendlier than this." },
+          { id: 10, text: "Oh dear. Oh my goodness. Hey there! Your pacifier! Ma'am! You forgot your baby's pacifier!" },
+          { id: 11, text: "Oh, poor baby. Without this, the baby will wake up and cry all the way home." },
+          { id: 12, text: "I'm sorry, folks, but could you wait just a minute? I'll be right back." },
+          { id: 13, text: "Excuse me, but would you like me to deliver it for you?" },
+          { id: 14, text: "The woman with the baby carriage who just went around the corner." },
+          { id: 15, text: "I could reach her in no time." },
+          { id: 16, text: "Really? You'd do that? Thank you so much. — My pleasure." },
+          { id: 17, text: "Sorry to surprise you, but the lady in the bakery asked me to return this pacifier." },
+          { id: 18, text: "Here you go. Yeah, I'd like one of those. Yes, sir." },
+          { id: 19, text: "Oh, hi there. Come in and wait a minute, will you?" },
+          { id: 20, text: "Mmm, these are nice and fresh. Just out of the oven." },
+          { id: 21, text: "There you are. Here you go. See you tomorrow." },
+          { id: 22, text: "Bye. That'll be all for you? All right. Thank you. Now come back again." },
+          { id: 23, text: "When I saw you fly off, I thought for a second I was dreaming." },
+          { id: 24, text: "The baby's mother told me to give you this message." },
+          { id: 25, text: "Thanks for returning the pacifier. Your new delivery girl is really quite special." },
+          { id: 26, text: "Well, I'll be on my way." },
+          { id: 27, text: "Wait a minute. I really must do something to show you my thanks." },
+          { id: 28, text: "Follow me. Bakery's downstairs. Upstairs is home.", sub: '— オソノさんの提案 —' },
+          { id: 29, text: "Sit down and relax. Would you like some hot chocolate? — Okay." },
+          { id: 30, text: "There you go. Thank you very much, ma'am. And this is for you, little guy." },
+          { id: 31, text: "So tell me if I'm right. I'm guessing you're a witch in training." },
+          { id: 32, text: "I really love it here, but people don't seem to like witches in this town." },
+          { id: 33, text: "Depends on the people. Now take me for instance." },
+          { id: 34, text: "I just met you, and I know I like you." },
+          { id: 35, text: "So tell me, whereabouts are you two staying?" },
+          { id: 36, text: "Oh, I see. Why didn't you tell me you have no place to stay?" },
+          { id: 37, text: "We have a spare room in the attic. You can use that." },
+          { id: 38, text: "You'd really let me stay with you? — Why, of course." },
+          { id: 39, text: "But we haven't introduced ourselves. My name's Osono." },
+          { id: 40, text: "And I'm Kiki, ma'am. And Jiji here is my very best friend." }
         ],
-        blanks: {
-          B1: { ans: ['in'], exp: 'in training：修行中の・見習いの' },
-          B2: { ans: ['with'], exp: 'with the baby carriage：ベビーカーを押している' },
-          B3: { ans: ['around'], exp: 'go around the corner：角を曲がる' },
-          B4: { ans: ['in'], exp: 'in no time：あっという間に・すぐに' },
-          B5: { ans: ['of'], exp: 'one of those：あちらのものの1つ' },
-          B6: { ans: ['in'], exp: 'come in：中に入る' },
-          B7: { ans: ['of'], exp: 'out of the oven：オーブンから出たばかりの＝焼きたて' },
-          B8: { ans: ['for'], exp: 'for a second：一瞬（期間を表すfor）' },
-          B9: { ans: ['for'], exp: 'Thanks for -ing：～してくれてありがとう' },
-          B10: { ans: ['on'], exp: "be on one's way：出発する・失礼する" },
-          B11: { ans: ['on'], exp: 'depend on ～：～次第である・～による' },
-          B12: { ans: ['for'], exp: 'take A for instance：Aを例に取る' },
-          B13: { ans: ['in'], exp: 'in the attic：屋根裏に' },
-          B14: { ans: ['with'], exp: 'stay with ～：～の家に泊まる・一緒に住む' }
-        },
-        translations: {
-          T1: { ans: 'ここよりもっと大きくて良い町、ここより親切な町がきっとあると思うよ。', exp: "I'll bet ＝ 確信を持って「きっと～だと思う」。ones ＝ towns。" },
-          T2: { ans: 'ああ、かわいそうな赤ちゃん。これがないと、赤ちゃんは目を覚まして家に着くまでずっと泣いてしまうわ。', exp: 'all the way home ＝ 家までずっと。' },
-          T3: { ans: 'すみません、あなたの代わりにそれを届けましょうか？', exp: 'Would you like me to do? ＝ 私に～してほしいですか（～しましょうか？）。' },
-          T4: { ans: '驚かせてごめんなさい、でもパン屋さんの女性にこのおしゃぶりを返すように頼まれたんです。', exp: 'ask A to do ＝ Aに～するよう頼む。' },
-          T5: { ans: 'あなたが飛び立つのを見たとき、私は一瞬自分が夢を見ているのかと思ったわ。', exp: '知覚動詞 see + O + 原形、for a second ＝ 一瞬。' },
-          T6: { ans: '待って、ちょっと待って。あなたに感謝の気持ちを示すために、私は本当に何かしなければいけないわ。', exp: 'my thanks ＝ 名詞「感謝の気持ち」。' },
-          T7: { ans: 'じゃあ私が合っているかどうか教えて。あなたは修行中の魔女なんだと思うんだけど。', exp: 'if ＝ ～かどうか、guess ＝ 確信のない推測。' },
-          T8: { ans: 'そして私はここがとても気に入っているんです、でもこの町の人々はどうやら魔女が好きではないようですね。', exp: 'love ＝ カジュアルな大好き・お気に入り、seem to ＝ ～のようだ。' },
-          T9: { ans: 'それで教えて、あなたたち二人はどの辺りに泊まっている（泊まる予定な）の？', exp: 'whereabouts ＝ どの辺り。' },
-          T10: { ans: '本当にあなたと一緒に泊まらせて（住まわせて）いただけるんですか？', exp: '使役動詞 let ＝ 許可の「～させていただく」。' }
-        },
-        vocabs: {
-          V1: { word: 'identification', ans: '身分証明書、ID', keys: ['身分', '証明', 'ID', 'ＩＤ'], exp: 'ホテルのフロントでのやり取り。' },
-          V2: { word: 'bet', ans: 'きっと～だと思う、賭ける', keys: ['賭', 'かける', '確信', 'きっと', '思'], exp: '確信度が高い「思う」。' },
-          V3: { word: 'pacifier', ans: 'おしゃぶり', keys: ['おしゃぶり', 'しゃぶり'], exp: '赤ちゃんのおしゃぶり。' },
-          V4: { word: 'folks', ans: '皆さん、人々', keys: ['皆', 'みな', '人々'], exp: '親しみを込めた「皆さん」。' },
-          V5: { word: 'deliver', ans: '届ける、配達する', keys: ['届', 'とど', '配達'], exp: '名詞形は delivery（配達）。' },
-          V6: { word: 'baby carriage', ans: 'ベビーカー、乳母車', keys: ['ベビー', '乳母車', 'うばぐるま'], exp: 'ベビーカーを押している女性。' },
-          V7: { word: 'reach', ans: '追いつく、到達する', keys: ['追いつ', 'おいつ', '到達', '着'], exp: 'reach her in no time（すぐに彼女に追いつく）。' },
-          V8: { word: 'downstairs', ans: '下の階', keys: ['下の階', '階下', '下'], exp: 'stair＝階段。' },
-          V9: { word: 'Upstairs', ans: '上の階', keys: ['上の階', '階上', '上'], exp: 'Upstairs is home.（上の階が住まいなの）。' },
-          V10: { word: 'whereabouts', ans: 'どの辺り', keys: ['どの辺', 'どのあた', 'どこら辺', 'どこらあた', '辺り'], exp: 'where + about で「どの辺り」。' },
-          V11: { word: 'spare', ans: '余分な、空いている、予備の', keys: ['余分', '空', 'あい', '予備', '余っ'], exp: 'spare room（空き部屋）。' },
-          V12: { word: 'attic', ans: '屋根裏、屋根裏部屋', keys: ['屋根裏', 'やねうら'], exp: 'in the attic（屋根裏に）。' },
-          V13: { word: 'introduced ourselves', ans: '自己紹介をする（した）', keys: ['自己紹介', '紹介'], exp: 'introduce oneself ＝ 自己紹介する。' }
-        }
+        blankPool: [
+          { id: 'b1', lineId: 2, target: 'with', before: 'here ', ans: ['with'], exp: 'here with you：あなたと一緒にここに' },
+          { id: 'b2', lineId: 3, target: 'in', before: 'witch ', ans: ['in'], exp: 'in training：修行中の・見習いの' },
+          { id: 'b3', lineId: 11, target: 'up', before: 'wake ', ans: ['up'], exp: 'wake up：目を覚ます' },
+          { id: 'b4', lineId: 14, target: 'with', before: 'woman ', ans: ['with'], exp: 'with the baby carriage：ベビーカーを押している' },
+          { id: 'b5', lineId: 14, target: 'around', before: 'went ', ans: ['around'], exp: 'go around the corner：角を曲がる' },
+          { id: 'b6', lineId: 15, target: 'in', before: 'her ', ans: ['in'], exp: 'in no time：あっという間に・すぐに' },
+          { id: 'b7', lineId: 18, target: 'of', before: 'one ', ans: ['of'], exp: 'one of those：あちらのものの1つ' },
+          { id: 'b8', lineId: 19, target: 'in', before: 'Come ', ans: ['in'], exp: 'come in：中に入る' },
+          { id: 'b9', lineId: 20, target: 'of', before: 'out ', ans: ['of'], exp: 'out of the oven：オーブンから出たばかりの＝焼きたて' },
+          { id: 'b10', lineId: 23, target: 'for', before: 'thought ', ans: ['for'], exp: 'for a second：一瞬（期間を表すfor）' },
+          { id: 'b11', lineId: 25, target: 'for', before: 'Thanks ', ans: ['for'], exp: 'Thanks for -ing：～してくれてありがとう' },
+          { id: 'b12', lineId: 26, target: 'on', before: 'be ', ans: ['on'], exp: "be on one's way：出発する・失礼する" },
+          { id: 'b13', lineId: 33, target: 'on', before: 'Depends ', ans: ['on'], exp: 'depend on ～：～次第である・～による' },
+          { id: 'b14', lineId: 33, target: 'for', before: 'take me ', ans: ['for'], exp: 'take A for instance：Aを例に取る' },
+          { id: 'b15', lineId: 37, target: 'in', before: 'room ', ans: ['in'], exp: 'in the attic：屋根裏に' },
+          { id: 'b16', lineId: 38, target: 'with', before: 'stay ', ans: ['with'], exp: 'stay with ～：～の家に泊まる・一緒に住む' }
+        ],
+        transPool: [
+          { id: 't1', lineIds: [1, 2], ans: '今夜ここに泊まるのですか？申し訳ないのですが、よく分かりません。ご両親も一緒にここにいるんですよね？', exp: "I'm afraid ～ ＝ 申し訳ないですが、aren't they? ＝ 付加疑問文。" },
+          { id: 't2', lineIds: [3], ans: 'いいえ、私は一人です。私は見習いの新米魔女なので、この町に来たんです。', exp: 'in training ＝ 修行中の・見習いの。' },
+          { id: 't3', lineIds: [6], ans: 'キキ、それ食べないつもりなの？ — ううん、ジジが食べていいよ。', exp: 'be going to ＝ ～するつもり、can have it ＝ 食べていい。' },
+          { id: 't4', lineIds: [8], ans: '別の町を探しに行かない？', exp: "Why don't we ～? ＝ ～しませんか、go find ＝ go and find。" },
+          { id: 't5', lineIds: [9], ans: 'ここよりもっと大きくて良い町、ここより親切な町がきっとあると思うよ。', exp: "I'll bet ＝ 確信を持って「きっと～だと思う」。ones ＝ towns。" },
+          { id: 't6', lineIds: [11], ans: 'ああ、かわいそうな赤ちゃん。これがないと、赤ちゃんは目を覚まして家に着くまでずっと泣いてしまうわ。', exp: 'Without this ＝ これがなければ、all the way home ＝ 家までずっと。' },
+          { id: 't7', lineIds: [12], ans: '皆さんすみませんが、ほんの少しだけ待っていただけますか？すぐ戻ります。', exp: 'folks ＝ 皆さん、right back ＝ すぐ戻る。' },
+          { id: 't8', lineIds: [13], ans: 'すみません、あなたの代わりにそれを届けましょうか？', exp: 'Would you like me to do? ＝ 私に～してほしいですか（～しましょうか？）。' },
+          { id: 't9', lineIds: [14], ans: 'たった今、角を曲がった、ベビーカーを押している女性です。', exp: 'with ～ と関係代名詞 who 節の両方が The woman を修飾。' },
+          { id: 't10', lineIds: [15], ans: 'すぐに彼女に追いつけますよ。', exp: 'reach ＝ 追いつく・到達する、in no time ＝ あっという間に。' },
+          { id: 't11', lineIds: [17], ans: '驚かせてごめんなさい、でもパン屋さんの女性にこのおしゃぶりを返すように頼まれたんです。', exp: 'Sorry to do ＝ 不定詞の理由、ask A to do ＝ Aに～するよう頼む。' },
+          { id: 't12', lineIds: [20], ans: 'うーん、これらはおいしそうで新鮮ね。ちょうどオーブンから出たところ（焼きたて）だわ。', exp: 'just out of the oven ＝ 焼きたて。' },
+          { id: 't13', lineIds: [23], ans: 'あなたが飛び立つのを見たとき、私は一瞬自分が夢を見ているのかと思ったわ。', exp: '知覚動詞 see + O + 原形、for a second ＝ 一瞬。' },
+          { id: 't14', lineIds: [24], ans: '赤ちゃんのお母さんが、このメッセージをあなたに渡すように私に言ったんです。', exp: 'tell A to do ＝ Aに～するよう言う。' },
+          { id: 't15', lineIds: [25], ans: 'おしゃぶりを返してくれてありがとう。あなたたちの新しい配達係の女の子は、本当に特別ね。', exp: 'Thanks for -ing ＝ ～してくれてありがとう、quite ＝ かなり・本当に。' },
+          { id: 't16', lineIds: [26], ans: 'それでは、そろそろ失礼します（行きますね）。', exp: "I'll be on my way. ＝ 別れ際の定番表現。" },
+          { id: 't17', lineIds: [27], ans: 'ちょっと待って。あなたに感謝の気持ちを示すために、私は本当に何かしなければいけないわ。', exp: 'my thanks ＝ 名詞「感謝の気持ち」。' },
+          { id: 't18', lineIds: [29], ans: '座ってくつろいで。ホットチョコレートはいかが？ — はい。', exp: 'Would you like ～? ＝ ～はいかがですか。' },
+          { id: 't19', lineIds: [31], ans: 'じゃあ私が合っているかどうか教えて。あなたは修行中の魔女なんだと思うんだけど。', exp: 'if ＝ ～かどうか、guess ＝ 確信のない推測。' },
+          { id: 't20', lineIds: [32], ans: '私はここがとても気に入っているんです、でもこの町の人々はどうやら魔女が好きではないようですね。', exp: 'love ＝ カジュアルな大好き・お気に入り、seem to ＝ ～のようだ。' },
+          { id: 't21', lineIds: [33], ans: 'それは人によるわ。さて、私を例に取ってみて。', exp: 'depend on ～ ＝ ～次第だ、take A for instance ＝ Aを例に取る。' },
+          { id: 't22', lineIds: [34], ans: 'あなたとは会ったばかりだけど、あなたのことが気に入ったって分かっているわ。', exp: 'just met ＝ たった今会ったばかり。' },
+          { id: 't23', lineIds: [35], ans: 'それで教えて、あなたたち二人はどの辺りに泊まっている（泊まる予定な）の？', exp: 'whereabouts ＝ どの辺り。' },
+          { id: 't24', lineIds: [36], ans: 'あら、そうなの。どうして泊まる場所がないって私に言ってくれなかったの？', exp: 'no place to stay ＝ 泊まるための場所がない。' },
+          { id: 't25', lineIds: [37], ans: '私たちは屋根裏に空いている部屋があるの。そこを使ってもいいわよ。', exp: 'spare room ＝ 空き部屋、attic ＝ 屋根裏。' },
+          { id: 't26', lineIds: [38], ans: '本当にあなたと一緒に泊まらせて（住まわせて）いただけるんですか？ — もちろんよ。', exp: '使役動詞 let ＝ 許可の「～させていただく」。' },
+          { id: 't27', lineIds: [39], ans: 'でも、私たちまだ自己紹介をしていなかったわね。私の名前はおソノよ。', exp: 'introduce oneself ＝ 自己紹介する。' }
+        ],
+        vocabPool: [
+          { id: 'v1', lineId: 1, target: "I'm afraid", ans: '申し訳ないですが、残念ながら', keys: ['申し訳', '残念', 'すみません', '恐れ入'], exp: '丁寧に断ったり困惑を伝える表現。' },
+          { id: 'v2', lineId: 3, target: 'in training', ans: '修行中の、見習いの、訓練中の', keys: ['修行', '見習', '訓練', '研修'], exp: 'a witch in training（修行中の魔女）。' },
+          { id: 'v3', lineId: 4, target: 'identification', ans: '身分証明書、ID', keys: ['身分', '証明', 'ID', 'ＩＤ'], exp: 'ホテルのフロントでの確認。' },
+          { id: 'v4', lineId: 5, target: 'never mind', ans: '気にしないで、もういいです', keys: ['気にし', 'もういい', '構わ'], exp: '定番の会話表現。' },
+          { id: 'v5', lineId: 9, target: 'bet', ans: 'きっと～だと思う、賭ける', keys: ['賭', '確信', 'きっと', '思'], exp: '確信度が高い「思う」。' },
+          { id: 'v6', lineId: 9, target: 'friendlier', ans: 'より親切な、より親しみやすい', keys: ['親切', '親しみ', '優し'], exp: 'friendly の比較級。' },
+          { id: 'v7', lineId: 10, target: 'pacifier', ans: 'おしゃぶり', keys: ['おしゃぶり', 'しゃぶり'], exp: '赤ちゃんのおしゃぶり。' },
+          { id: 'v8', lineId: 10, target: "Ma'am", ans: '奥様、女性への丁寧な呼びかけ', keys: ['奥様', '奥さん', 'マダム', '女性'], exp: 'madam の短縮形。' },
+          { id: 'v9', lineId: 11, target: 'all the way', ans: 'ずっと、はるばる', keys: ['ずっと', 'はるばる', '道のり'], exp: 'all the way home（家に着くまでずっと）。' },
+          { id: 'v10', lineId: 12, target: 'folks', ans: '皆さん、人々', keys: ['皆', 'みな', '人々'], exp: '親しみを込めた「皆さん」。' },
+          { id: 'v11', lineId: 12, target: 'right back', ans: 'すぐ戻る', keys: ['すぐ戻', 'すぐ帰', '戻'], exp: "I'll be right back.（すぐ戻ります）。" },
+          { id: 'v12', lineId: 13, target: 'deliver', ans: '届ける、配達する', keys: ['届', 'とど', '配達'], exp: '名詞形は delivery。' },
+          { id: 'v13', lineId: 14, target: 'baby carriage', ans: 'ベビーカー、乳母車', keys: ['ベビー', '乳母車', 'うばぐるま'], exp: 'ベビーカーを押している女性。' },
+          { id: 'v14', lineId: 15, target: 'reach', ans: '追いつく、到達する', keys: ['追いつ', 'おいつ', '到達', '着'], exp: 'reach her in no time（すぐに追いつく）。' },
+          { id: 'v15', lineId: 15, target: 'in no time', ans: 'あっという間に、すぐに', keys: ['あっという間', 'すぐ', 'たちまち'], exp: '熟語「すぐに」。' },
+          { id: 'v16', lineId: 16, target: 'My pleasure', ans: 'どういたしまして', keys: ['どういたしまして', '喜び', '構い'], exp: 'お礼に対する丁寧な返答。' },
+          { id: 'v17', lineId: 17, target: 'bakery', ans: 'パン屋', keys: ['パン屋', 'ぱん屋', 'ベーカリー'], exp: 'the lady in the bakery（パン屋さんの女性）。' },
+          { id: 'v18', lineId: 17, target: 'return', ans: '返す、戻す', keys: ['返', 'かえ', '戻'], exp: 'return this pacifier（おしゃぶりを返す）。' },
+          { id: 'v19', lineId: 20, target: 'fresh', ans: '新鮮な、焼きたての', keys: ['新鮮', '焼きたて', 'フレッシュ'], exp: 'nice and fresh（おいしそうで新鮮）。' },
+          { id: 'v20', lineId: 20, target: 'oven', ans: 'オーブン、かまど', keys: ['オーブン', 'かまど', '窯'], exp: 'out of the oven（オーブンから出たばかり）。' },
+          { id: 'v21', lineId: 25, target: 'delivery', ans: '配達', keys: ['配達', '宅配'], exp: 'delivery girl（配達係の女の子）。' },
+          { id: 'v22', lineId: 25, target: 'quite', ans: 'かなり、本当に', keys: ['かなり', '本当に', 'とても', '相当'], exp: 'really quite special（本当に特別）。' },
+          { id: 'v23', lineId: 27, target: 'my thanks', ans: '感謝の気持ち、お礼', keys: ['感謝', 'お礼', 'ありがとう'], exp: '所有格がついて名詞「感謝の思い」。' },
+          { id: 'v24', lineId: 28, target: 'downstairs', ans: '下の階', keys: ['下の階', '階下', '下'], exp: 'stair＝階段。' },
+          { id: 'v25', lineId: 28, target: 'Upstairs', ans: '上の階', keys: ['上の階', '階上', '上'], exp: 'Upstairs is home.（上の階が住まい）。' },
+          { id: 'v26', lineId: 31, target: 'guessing', ans: '推測している、たぶん～だと思う', keys: ['推測', 'たぶん', '思', '当て'], exp: '確信のない推測の guess。' },
+          { id: 'v27', lineId: 35, target: 'whereabouts', ans: 'どの辺り', keys: ['どの辺', 'どのあた', 'どこら辺', '辺り'], exp: 'where + about で「どの辺り」。' },
+          { id: 'v28', lineId: 37, target: 'spare room', ans: '空き部屋、余分な部屋', keys: ['空き部屋', '空いて', '余分', '予備'], exp: 'spare＝余分な・使っていない。' },
+          { id: 'v29', lineId: 37, target: 'attic', ans: '屋根裏、屋根裏部屋', keys: ['屋根裏', 'やねうら'], exp: 'in the attic（屋根裏に）。' },
+          { id: 'v30', lineId: 39, target: 'introduced ourselves', ans: '自己紹介をした', keys: ['自己紹介', '紹介'], exp: 'introduce oneself ＝ 自己紹介する。' }
+        ]
       },
+
+      /* ==================== 参考表現タブ ==================== */
       {
         id: 'ref',
         tabLabel: '参考表現 (スクリプト外)',
         title: '参考表現（授業内スクリプト外・頻出重要語）',
-        lines: [
-          { type: 'sub', text: '— 前置詞・熟語（授業内紹介表現） —' },
-          { type: 'line', text: "What would you like [B1: for] drink?" },
-          { type: 'line', text: "The second [V1: shelf] [B2: from] the top. / The third [B3: from] the right." },
-          { type: 'line', text: "all the way [B4: from] ～ （～からはるばる）" },
-          { type: 'line', text: "rely [B5: on] ～ （～に頼る・信頼する）" },
-          { type: 'sub', text: '— 単語・会話表現（授業内紹介表現） —' },
-          { type: 'line', text: "[V2: starter] （レストラン／居酒屋での意味）" },
-          { type: 'line', text: "I [V3: suppose] so. （think と同等の表現）" },
-          { type: 'line', text: "[V4: It depends.] （誘いや質問への定番返答）" },
-          { type: 'line', text: "[V5: Can I have ...? / I'd like ...] （I want の代わりに使う表現）" },
-          { type: 'line', text: "[V6: bet / think / guess] の確信度の順番（高い順）" }
-        ],
-        blanks: {
-          B1: { ans: ['for'], exp: 'What would you like for drink?（飲み物は何になさいますか？）' },
-          B2: { ans: ['from'], exp: 'from the top（上から）' },
-          B3: { ans: ['from'], exp: 'from the right（右から）' },
-          B4: { ans: ['from'], exp: 'all the way from ～（～からはるばる）' },
-          B5: { ans: ['on'], exp: 'rely on ～（depend on の類義語：～に頼る・信頼する）' }
+        config: {
+          transCount: 0,
+          vocabCount: 7,
+          blankCount: 5,
+          presetA: { transIds: [] },
+          presetB: { transIds: [] }
         },
-        translations: {},
-        vocabs: {
-          V1: { word: 'shelf', ans: '棚', keys: ['棚', 'たな'], exp: 'top（一番上）、middle（真ん中）、bottom（一番下）もセットで暗記。' },
-          V2: { word: 'starter', ans: '前菜（居酒屋ではお通し）', keys: ['前菜', 'お通し', 'おとおし'], exp: 'レストランでは前菜、居酒屋ではお通しを指す。' },
-          V3: { word: 'suppose', ans: '～だと思う（thinkと同等）', keys: ['思', 'おも'], exp: 'I suppose so. ＝ I think so.' },
-          V4: { word: 'It depends.', ans: '時と場合による、状況次第だ', keys: ['場合', '状況', '次第'], exp: 'depend on ～ から派生した頻出会話表現。' },
-          V5: { word: "Can I have ...? / I'd like ...", ans: '注文時の丁寧な表現（「～をいただけますか」）', keys: ['注文', '丁寧', 'いただけます', 'ください', '欲し'], exp: 'I want は直接的すぎて強い印象を与えるため、注文時はこれらを使う。' },
-          V6: { word: 'bet / think / guess の確信度の順番（高い順）', ans: 'bet > think > guess', keys: ['bet > think > guess', 'bet>think>guess', 'bet＞think＞guess', 'bet, think, guess', 'bet think guess'], exp: 'bet（強い確信）＞ think（中立）＞ guess（確信のない推測）。' }
-        }
+        lines: [
+          { id: 1, text: "What would you like for drink?", sub: '— 前置詞・熟語（授業内紹介表現） —' },
+          { id: 2, text: "The second shelf from the top. / The third from the right." },
+          { id: 3, text: "all the way from ～ （～からはるばる）" },
+          { id: 4, text: "rely on ～ （depend on の類義語）" },
+          { id: 5, text: "starter （レストラン／居酒屋での意味）", sub: '— 単語・会話ニュアンス（授業内紹介表現） —' },
+          { id: 6, text: "It depends. （誘いや質問への定番返答）" },
+          { id: 7, text: "bet / think / guess / wonder / suppose （「思う」を表す動詞の確信度・違い）" },
+          { id: 8, text: "I'd like ... / Can I have ...? （I want の代わりに使う表現）" },
+          { id: 9, text: "love と like の日常会話での違い" }
+        ],
+        blankPool: [
+          { id: 'b1', lineId: 1, target: 'for', before: 'like ', ans: ['for'], exp: 'What would you like for drink?（飲み物は何になさいますか？）' },
+          { id: 'b2', lineId: 2, target: 'from', before: 'shelf ', ans: ['from'], exp: 'from the top（上から）' },
+          { id: 'b3', lineId: 2, target: 'from', before: 'third ', ans: ['from'], exp: 'from the right（右から）' },
+          { id: 'b4', lineId: 3, target: 'from', before: 'way ', ans: ['from'], exp: 'all the way from ～（～からはるばる）' },
+          { id: 'b5', lineId: 4, target: 'on', before: 'rely ', ans: ['on'], exp: 'rely on ～（～に頼る・信頼する）' }
+        ],
+        transPool: [],
+        vocabPool: [
+          { id: 'v1', lineId: 2, target: 'shelf', ans: '棚', keys: ['棚', 'たな'], exp: 'top（一番上）、middle（真ん中）、bottom（一番下）もセットで暗記。' },
+          { id: 'v2', lineId: 4, target: 'rely on', ans: '～に頼る、信頼する', keys: ['頼', 'たよ', '信頼'], exp: 'depend on の類義語。' },
+          { id: 'v3', lineId: 5, target: 'starter', ans: '前菜（居酒屋ではお通し）', keys: ['前菜', 'お通し', 'おとおし'], exp: 'レストランでは前菜、居酒屋ではお通し。' },
+          { id: 'v4', lineId: 6, target: 'It depends.', ans: '時と場合による、状況次第だ', keys: ['場合', '状況', '次第'], exp: 'depend on ～ から派生した定番表現。' },
+          { id: 'v5', lineId: 7, target: 'bet / think / guess / wonder / suppose', ans: 'bet(強い確信) > think(中立) > guess(推測) / wonder(疑問) / suppose(～と思う)', keys: ['確信', '推測', '疑問', 'bet', '中立'], exp: '確信度は bet ＞ think ＞ guess。wonder は疑問、suppose は think と同等。' },
+          { id: 'v6', lineId: 8, target: "I'd like ... / Can I have ...?", ans: '注文時の丁寧な表現（I want は直接的すぎるため避ける）', keys: ['丁寧', '注文', '直接', 'いただけます', 'ください'], exp: 'I want は強すぎるため、買い物や注文ではこれらを使う。' },
+          { id: 'v7', lineId: 9, target: 'love と like の日常会話での違い', ans: 'love はカジュアルで「お気に入り」、like はややフォーマル・堅苦しい', keys: ['カジュアル', 'フォーマル', 'お気に入り', '堅苦'], exp: '日常会話では love の方が頻繁にカジュアルに使われる。' }
+        ]
       }
     ];
 
     /**
-     * ============================================================
-     * アプリ状態管理（各場面の入力・採点結果を保持）
-     * ============================================================
+     * ============================================================================
+     * 2. 問題セット動的生成エンジン（厳密な和訳・単語排他制御付き）
+     * ============================================================================
+     */
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    /**
+     * 本文行内で target の開始・終了インデックスを特定する（before/afterヒント対応）
+     */
+    function findSpanInLine(lineText, target, before = '', after = '') {
+      const searchStr = before + target + after;
+      const idx = lineText.indexOf(searchStr);
+      if (idx !== -1) {
+        const start = idx + before.length;
+        return { start, end: start + target.length };
+      }
+      // フォールバック：大文字小文字無視の単純検索
+      const lowIdx = lineText.toLowerCase().indexOf(target.toLowerCase());
+      if (lowIdx !== -1) {
+        return { start: lowIdx, end: lowIdx + target.length };
+      }
+      return null;
+    }
+
+    /**
+     * 和訳問題に選ばれた英文群に、ある単語候補の文字列が含まれるかをチェック（二重チェック用）
+     */
+    function isWordInsideTexts(word, texts) {
+      const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`\\b${escaped}\\b`, 'i');
+      return texts.some((txt) => regex.test(txt));
+    }
+
+    /**
+     * 指定された場面とモード（'A' | 'B' | 'R'）で問題セットを生成する
+     * 保証：和訳と単語は lineId レベルかつ文字列レベルで絶対に重複しない
+     */
+    function generateProblemSet(scene, mode, prevTransKey = '') {
+      const cfg = scene.config;
+
+      // (a) 和訳問題を選出
+      let selectedTrans = [];
+      if (scene.transPool.length > 0 && cfg.transCount > 0) {
+        if (mode === 'A' && cfg.presetA.transIds.length > 0) {
+          selectedTrans = cfg.presetA.transIds
+            .map((id) => scene.transPool.find((t) => t.id === id))
+            .filter(Boolean);
+        } else if (mode === 'B' && cfg.presetB.transIds.length > 0) {
+          selectedTrans = cfg.presetB.transIds
+            .map((id) => scene.transPool.find((t) => t.id === id))
+            .filter(Boolean);
+        } else {
+          // ランダム生成：前回と同じ組み合わせにならないよう最大5回試行
+          for (let attempt = 0; attempt < 5; attempt++) {
+            const shuffled = shuffleArray(scene.transPool);
+            const picked = [];
+            const usedLineIds = new Set();
+            for (const cand of shuffled) {
+              if (picked.length >= cfg.transCount) break;
+              if (cand.lineIds.some((lid) => usedLineIds.has(lid))) continue;
+              picked.push(cand);
+              cand.lineIds.forEach((lid) => usedLineIds.add(lid));
+            }
+            const key = picked.map((t) => t.id).sort().join(',');
+            selectedTrans = picked;
+            if (key !== prevTransKey) break;
+          }
+        }
+      }
+      // 行番号順にソート
+      selectedTrans.sort((a, b) => a.lineIds[0] - b.lineIds[0]);
+
+      // 和訳に選ばれた行IDセットと、和訳対象の英文リストを作成
+      const transLineIds = new Set();
+      const transTexts = [];
+      selectedTrans.forEach((t) => {
+        t.lineIds.forEach((lid) => {
+          transLineIds.add(lid);
+          const lineObj = scene.lines.find((l) => l.id === lid);
+          if (lineObj) transTexts.push(lineObj.text);
+        });
+      });
+
+      // (b) 単語問題を選出（厳密な排他制御）
+      // 1. 和訳に選ばれた lineId の単語候補を必ず除外
+      // 2. 和訳に選ばれた英文中にその単語が含まれる場合も除外（二重チェック）
+      const eligibleVocabs = scene.vocabPool.filter((v) => {
+        if (transLineIds.has(v.lineId)) return false;
+        if (transTexts.length > 0 && isWordInsideTexts(v.target, transTexts)) return false;
+        return true;
+      });
+
+      let orderedVocabCandidates = [];
+      if (mode === 'A') {
+        orderedVocabCandidates = [...eligibleVocabs];
+      } else if (mode === 'B') {
+        orderedVocabCandidates = [...eligibleVocabs].reverse();
+      } else {
+        orderedVocabCandidates = shuffleArray(eligibleVocabs);
+      }
+
+      // 同じ行内で複数単語が選ばれて見づらくならないよう、なるべく異なる行から優先選出
+      const selectedVocabs = [];
+      const usedVocabLines = new Set();
+      const usedVocabTargets = new Set();
+
+      for (const v of orderedVocabCandidates) {
+        if (selectedVocabs.length >= cfg.vocabCount) break;
+        const lowTarget = v.target.toLowerCase();
+        if (usedVocabLines.has(v.lineId) || usedVocabTargets.has(lowTarget)) continue;
+        selectedVocabs.push(v);
+        usedVocabLines.add(v.lineId);
+        usedVocabTargets.add(lowTarget);
+      }
+      // 目標数に満たなければ、同一行でも位置が被らない別の単語候補を追加
+      if (selectedVocabs.length < cfg.vocabCount) {
+        for (const v of orderedVocabCandidates) {
+          if (selectedVocabs.length >= cfg.vocabCount) break;
+          if (selectedVocabs.includes(v)) continue;
+          const lowTarget = v.target.toLowerCase();
+          if (usedVocabTargets.has(lowTarget)) continue;
+          const lineObj = scene.lines.find((l) => l.id === v.lineId);
+          if (!lineObj) continue;
+          const span = findSpanInLine(lineObj.text, v.target);
+          if (!span) continue;
+          const overlapsExisting = selectedVocabs.some((ev) => {
+            if (ev.lineId !== v.lineId) return false;
+            const eSpan = findSpanInLine(lineObj.text, ev.target);
+            return eSpan && !(span.end <= eSpan.start || span.start >= eSpan.end);
+          });
+          if (!overlapsExisting) {
+            selectedVocabs.push(v);
+            usedVocabTargets.add(lowTarget);
+          }
+        }
+      }
+      selectedVocabs.sort((a, b) => a.lineId - b.lineId);
+
+      // (c) 前置詞・副詞穴埋めを選出（単語ハイライトの文字列区間とは絶対に被らせない）
+      const eligibleBlanks = scene.blankPool.filter((b) => {
+        const lineObj = scene.lines.find((l) => l.id === b.lineId);
+        if (!lineObj) return false;
+        const bSpan = findSpanInLine(lineObj.text, b.target, b.before || '', b.after || '');
+        if (!bSpan) return false;
+        // 選ばれた単語候補の区間と重なる前置詞は除外
+        const overlapsVocab = selectedVocabs.some((v) => {
+          if (v.lineId !== b.lineId) return false;
+          const vSpan = findSpanInLine(lineObj.text, v.target);
+          return vSpan && !(bSpan.end <= vSpan.start || bSpan.start >= vSpan.end);
+        });
+        return !overlapsVocab;
+      });
+
+      let orderedBlankCandidates = [];
+      if (mode === 'A') orderedBlankCandidates = [...eligibleBlanks];
+      else if (mode === 'B') orderedBlankCandidates = [...eligibleBlanks].reverse();
+      else orderedBlankCandidates = shuffleArray(eligibleBlanks);
+
+      const selectedBlanks = orderedBlankCandidates
+        .slice(0, cfg.blankCount)
+        .sort((a, b) => {
+          if (a.lineId !== b.lineId) return a.lineId - b.lineId;
+          const lineObj = scene.lines.find((l) => l.id === a.lineId);
+          const sa = findSpanInLine(lineObj.text, a.target, a.before || '', a.after || '');
+          const sb = findSpanInLine(lineObj.text, b.target, b.before || '', b.after || '');
+          return (sa ? sa.start : 0) - (sb ? sb.start : 0);
+        });
+
+      // (d) 最終バリデーション：和訳と単語の重複がないことを保証
+      const overlapDetected = selectedVocabs.some(
+        (v) => transLineIds.has(v.lineId) || (transTexts.length > 0 && isWordInsideTexts(v.target, transTexts))
+      );
+
+      // 表示用の連番ID（T1, V1, B1...）を付与
+      const transMap = {};
+      selectedTrans.forEach((t, idx) => {
+        transMap[`T${idx + 1}`] = { ...t, num: idx + 1, qid: `T${idx + 1}` };
+      });
+      const vocabMap = {};
+      selectedVocabs.forEach((v, idx) => {
+        vocabMap[`V${idx + 1}`] = { ...v, num: idx + 1, qid: `V${idx + 1}` };
+      });
+      const blankMap = {};
+      selectedBlanks.forEach((b, idx) => {
+        blankMap[`B${idx + 1}`] = { ...b, num: idx + 1, qid: `B${idx + 1}` };
+      });
+
+      return {
+        mode,
+        transKey: selectedTrans.map((t) => t.id).sort().join(','),
+        trans: transMap,
+        vocabs: vocabMap,
+        blanks: blankMap,
+        noOverlapVerified: !overlapDetected
+      };
+    }
+
+    /**
+     * ============================================================================
+     * 3. アプリケーション状態管理
+     * ============================================================================
      */
     const sceneStates = {};
-    SCENES.forEach((s) => {
-      sceneStates[s.id] = createEmptySceneState();
-    });
 
-    function createEmptySceneState() {
-      return {
-        blanks: {},       // { B1: 'of' }
-        vocabs: {},       // { V1: '狙う' }
-        vocabAuto: {},    // { V1: true/false }
-        vocabOverride: {},// { V1: true/false } (手動上書き)
-        trans: {},        // { T1: '和訳...' }
-        transGrade: {},   // { T1: 'ok' | 'close' | 'ng' }
+    function initSceneState(sceneId, mode = 'A') {
+      const scene = getScene(sceneId);
+      const prevKey = sceneStates[sceneId]?.problemSet?.transKey || '';
+      const problemSet = generateProblemSet(scene, mode, prevKey);
+      sceneStates[sceneId] = {
+        mode,
+        problemSet,
+        blanks: {},
+        vocabs: {},
+        vocabAuto: {},
+        vocabOverride: {},
+        trans: {},
+        transGrade: {},
         graded: false,
         showAllModels: false
       };
@@ -648,13 +1009,20 @@
     const appState = {
       activeSceneId: '1',
       mockMode: false,
-      mockScenes: [] // ランダムに選ばれた3場面のID配列
+      mockScenes: []
     };
 
+    function getScene(id) {
+      return SCENES.find((s) => s.id === id) || SCENES[0];
+    }
+
+    // 全場面をパターンAで初期化
+    SCENES.forEach((s) => initSceneState(s.id, 'A'));
+
     /**
-     * ============================================================
-     * DOM要素参照 & ユーティリティ
-     * ============================================================
+     * ============================================================================
+     * 4. DOM参照 & ヘルパー
+     * ============================================================================
      */
     const el = {
       normalTabs: document.getElementById('normal-tabs'),
@@ -669,6 +1037,11 @@
       btnCloseModal: document.getElementById('btn-close-modal'),
       btnMockNew: document.getElementById('btn-mock-new'),
       btnMockExit: document.getElementById('btn-mock-exit'),
+
+      btnVarA: document.getElementById('btn-var-A'),
+      btnVarB: document.getElementById('btn-var-B'),
+      btnVarR: document.getElementById('btn-var-R'),
+      poolInfoBadges: document.getElementById('pool-info-badges'),
 
       btnGrade: document.getElementById('btn-grade'),
       btnToggleAnswers: document.getElementById('btn-toggle-answers'),
@@ -687,7 +1060,7 @@
       el.toast.textContent = msg;
       el.toast.classList.remove('hidden');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => el.toast.classList.add('hidden'), 2200);
+      toastTimer = setTimeout(() => el.toast.classList.add('hidden'), 2300);
     }
 
     function escapeHtml(str) {
@@ -699,145 +1072,153 @@
         .replace(/'/g, '&#39;');
     }
 
-    function getScene(id) {
-      return SCENES.find((s) => s.id === id) || SCENES[0];
-    }
-
     /**
-     * ============================================================
-     * 再帰パーサー：ネストした [T1: ... [V1: ...] [B1: ...] ...] を安全にHTML化
-     * ============================================================
+     * ============================================================================
+     * 5. 本文レンダリング（選択された問題セットをプレーンテキストへ安全に差し込み）
+     * ============================================================================
      */
-    function parseScriptText(text, sceneId) {
+    function renderLineWithProblems(lineObj, sceneId) {
       const st = sceneStates[sceneId];
-      let html = '';
-      let i = 0;
+      const ps = st.problemSet;
+      const text = lineObj.text;
 
-      while (i < text.length) {
-        if (text[i] === '[') {
-          const rest = text.slice(i);
-          const match = rest.match(/^\[(T|V|B)(\d+):\s*/);
-          if (match) {
-            const tagType = match[1];
-            const tagNum = match[2];
-            const qid = `${tagType}${tagNum}`;
-            const startInner = i + match[0].length;
+      // この行に属する和訳問題（あれば1つ）
+      const transItem = Object.values(ps.trans).find((t) => t.lineIds.includes(lineObj.id));
+      const isFirstLineOfTrans = transItem && transItem.lineIds[0] === lineObj.id;
 
-            // 対応する閉じ括弧 ']' をネスト深度で探索
-            let depth = 1;
-            let j = startInner;
-            while (j < text.length && depth > 0) {
-              if (text[j] === '[') depth++;
-              else if (text[j] === ']') depth--;
-              if (depth > 0) j++;
-            }
+      // この行に属する単語問題・前置詞問題の区間を収集
+      const tokens = [];
 
-            const innerRaw = text.slice(startInner, j);
-            const innerHtml = parseScriptText(innerRaw, sceneId);
-
-            if (tagType === 'T') {
-              html += `<span id="script-${qid}" class="trans-span" data-qid="${qid}"><button type="button" data-jump-target="card-${qid}" class="jump-to-sheet inline-flex items-center px-1.5 py-0.5 mr-1 rounded text-[11px] font-extrabold bg-amber-500 hover:bg-amber-600 text-white align-middle cursor-pointer transition-colors shadow-xs">訳${tagNum}</button>${innerHtml}</span>`;
-            } else if (tagType === 'V') {
-              html += `<span id="script-${qid}" class="vocab-span" data-qid="${qid}"><button type="button" data-jump-target="card-${qid}" class="jump-to-sheet inline-flex items-center px-1.5 py-0.5 mr-1 rounded text-[11px] font-extrabold bg-sky-600 hover:bg-sky-700 text-white align-middle cursor-pointer transition-colors shadow-xs">単${tagNum}</button>${innerHtml}</span>`;
-            } else if (tagType === 'B') {
-              const savedVal = st.blanks[qid] || '';
-              const scene = getScene(sceneId);
-              const blankMeta = scene.blanks[qid];
-              const isCorrect =
-                st.graded &&
-                blankMeta &&
-                blankMeta.ans.some((a) => a.toLowerCase() === savedVal.trim().toLowerCase());
-
-              let inputColor = 'border-slate-300 bg-white text-slate-900 focus:border-navy focus:ring-navy/20';
-              if (st.graded) {
-                inputColor = isCorrect
-                  ? 'border-emerald-500 bg-emerald-50 text-emerald-900 font-bold'
-                  : 'border-rose-500 bg-rose-50 text-rose-900 font-bold';
-              }
-
-              const showCorrection = (st.graded && !isCorrect) || st.showAllModels;
-              const correctLabel = blankMeta ? blankMeta.ans[0] : '';
-
-              html += `<span id="script-${qid}" class="inline-flex items-center gap-1 mx-0.5 align-baseline"><button type="button" data-jump-target="card-${qid}" class="jump-to-sheet text-[11px] font-extrabold text-slate-500 hover:text-navy">(${tagNum})</button><input type="text" data-blank-id="${qid}" value="${escapeHtml(savedVal)}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="..." class="inline-blank-input w-20 sm:w-24 px-2 py-0.5 text-sm sm:text-[15px] rounded-lg border-2 focus:outline-none focus:ring-2 transition-colors ${inputColor}" />${
-                showCorrection
-                  ? `<span class="text-xs font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">${escapeHtml(correctLabel)}</span>`
-                  : ''
-              }</span>`;
-            }
-
-            i = j + 1;
-            continue;
-          }
+      Object.values(ps.vocabs).forEach((v) => {
+        if (v.lineId !== lineObj.id) return;
+        const span = findSpanInLine(text, v.target);
+        if (span) {
+          tokens.push({ type: 'vocab', start: span.start, end: span.end, item: v });
         }
-        html += escapeHtml(text[i]);
-        i++;
+      });
+
+      Object.values(ps.blanks).forEach((b) => {
+        if (b.lineId !== lineObj.id) return;
+        const span = findSpanInLine(text, b.target, b.before || '', b.after || '');
+        if (span) {
+          tokens.push({ type: 'blank', start: span.start, end: span.end, item: b });
+        }
+      });
+
+      // 開始位置でソートし、万が一重なる区間があればスキップ
+      tokens.sort((a, b) => a.start - b.start);
+      const safeTokens = [];
+      let lastEnd = 0;
+      for (const tk of tokens) {
+        if (tk.start >= lastEnd) {
+          safeTokens.push(tk);
+          lastEnd = tk.end;
+        }
       }
 
-      return html;
+      // テキストを組み立て
+      let innerHtml = '';
+      let cursor = 0;
+      for (const tk of safeTokens) {
+        if (tk.start > cursor) {
+          innerHtml += escapeHtml(text.slice(cursor, tk.start));
+        }
+
+        if (tk.type === 'vocab') {
+          const v = tk.item;
+          const rawWord = text.slice(tk.start, tk.end);
+          innerHtml += `<span id="script-${v.qid}" class="vocab-span"><button type="button" data-jump-target="card-${v.qid}" class="jump-to-sheet inline-flex items-center px-1.5 py-0.5 mr-1 rounded text-[11px] font-extrabold bg-sky-600 hover:bg-sky-700 text-white align-middle cursor-pointer transition-colors">単${v.num}</button>${escapeHtml(rawWord)}</span>`;
+        } else if (tk.type === 'blank') {
+          const b = tk.item;
+          const savedVal = st.blanks[b.qid] || '';
+          const isCorrect =
+            st.graded && b.ans.some((a) => a.toLowerCase() === savedVal.trim().toLowerCase());
+
+          let inputColor = 'border-slate-300 bg-white text-slate-900 focus:border-indigo-500 focus:ring-indigo-500/20';
+          if (st.graded) {
+            inputColor = isCorrect
+              ? 'border-emerald-500 bg-emerald-50 text-emerald-900 font-bold'
+              : 'border-rose-500 bg-rose-50 text-rose-900 font-bold';
+          }
+          const showCorrection = (st.graded && !isCorrect) || st.showAllModels;
+
+          innerHtml += `<span id="script-${b.qid}" class="inline-flex items-center gap-1 mx-0.5 align-baseline"><button type="button" data-jump-target="card-${b.qid}" class="jump-to-sheet text-[11px] font-extrabold text-slate-500 hover:text-indigo-700">(${b.num})</button><input type="text" data-blank-id="${b.qid}" value="${escapeHtml(savedVal)}" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="..." class="inline-blank-input w-20 sm:w-24 px-2 py-0.5 text-sm sm:text-[15px] rounded-lg border-2 focus:outline-none focus:ring-2 transition-colors ${inputColor}" />${
+            showCorrection
+              ? `<span class="text-xs font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">${escapeHtml(b.ans[0])}</span>`
+              : ''
+          }</span>`;
+        }
+
+        cursor = tk.end;
+      }
+      if (cursor < text.length) {
+        innerHtml += escapeHtml(text.slice(cursor));
+      }
+
+      // 和訳問題の対象行なら全体を和訳下線でラップ
+      if (transItem) {
+        const badge = isFirstLineOfTrans
+          ? `<button type="button" data-jump-target="card-${transItem.qid}" class="jump-to-sheet inline-flex items-center px-1.5 py-0.5 mr-1.5 rounded text-[11px] font-extrabold bg-amber-500 hover:bg-amber-600 text-white align-middle cursor-pointer transition-colors">訳${transItem.num}</button>`
+          : `<span class="inline-flex items-center px-1 py-0.5 mr-1 rounded text-[10px] font-bold bg-amber-200 text-amber-900 align-middle">訳${transItem.num}続</span>`;
+        return `<span id="${isFirstLineOfTrans ? `script-${transItem.qid}` : ''}" class="trans-span">${badge}${innerHtml}</span>`;
+      }
+
+      return innerHtml;
     }
 
     /**
-     * ============================================================
-     * スコア計算ロジック
-     * ============================================================
+     * ============================================================================
+     * 6. スコア集計
+     * ============================================================================
      */
-    function getVocabIsCorrect(sceneId, qid) {
+    function getVocabIsCorrect(sceneId, vid) {
       const st = sceneStates[sceneId];
-      if (typeof st.vocabOverride[qid] === 'boolean') {
-        return st.vocabOverride[qid];
-      }
-      return Boolean(st.vocabAuto[qid]);
+      if (typeof st.vocabOverride[vid] === 'boolean') return st.vocabOverride[vid];
+      return Boolean(st.vocabAuto[vid]);
     }
 
     function computeSceneScore(sceneId) {
-      const scene = getScene(sceneId);
       const st = sceneStates[sceneId];
+      const ps = st.problemSet;
 
-      const blankKeys = Object.keys(scene.blanks);
+      const bKeys = Object.keys(ps.blanks);
       let blankCorrect = 0;
-      blankKeys.forEach((k) => {
+      bKeys.forEach((k) => {
         const val = (st.blanks[k] || '').trim().toLowerCase();
-        if (scene.blanks[k].ans.some((a) => a.toLowerCase() === val)) {
-          blankCorrect++;
-        }
+        if (ps.blanks[k].ans.some((a) => a.toLowerCase() === val)) blankCorrect++;
       });
 
-      const vocabKeys = Object.keys(scene.vocabs);
+      const vKeys = Object.keys(ps.vocabs);
       let vocabCorrect = 0;
-      vocabKeys.forEach((k) => {
+      vKeys.forEach((k) => {
         if (getVocabIsCorrect(sceneId, k)) vocabCorrect++;
       });
 
-      const transKeys = Object.keys(scene.translations);
+      const tKeys = Object.keys(ps.trans);
       let transOk = 0;
       let transClose = 0;
-      let transGraded = 0;
-      transKeys.forEach((k) => {
-        const g = st.transGrade[k];
-        if (g) transGraded++;
-        if (g === 'ok') transOk++;
-        if (g === 'close') transClose++;
+      tKeys.forEach((k) => {
+        if (st.transGrade[k] === 'ok') transOk++;
+        if (st.transGrade[k] === 'close') transClose++;
       });
 
       return {
         blankCorrect,
-        blankTotal: blankKeys.length,
+        blankTotal: bKeys.length,
         vocabCorrect,
-        vocabTotal: vocabKeys.length,
+        vocabTotal: vKeys.length,
         transOk,
         transClose,
-        transGraded,
-        transTotal: transKeys.length
+        transTotal: tKeys.length
       };
     }
 
     /**
-     * ============================================================
-     * ナビゲーション・ヘッダー描画
-     * ============================================================
+     * ============================================================================
+     * 7. UI描画関数群
+     * ============================================================================
      */
     function renderTabs() {
-      // 通常モードのタブ
       el.normalTabs.innerHTML = '';
       SCENES.forEach((s) => {
         const active = !appState.mockMode && appState.activeSceneId === s.id;
@@ -846,8 +1227,8 @@
         btn.type = 'button';
         btn.className = `px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all border shrink-0 flex items-center gap-1.5 ${
           active
-            ? 'bg-navy text-white border-navy shadow-sm'
-            : 'bg-white text-slate-600 border-slate-200 hover:border-navy/40 hover:text-navy'
+            ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
+            : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:text-indigo-700'
         }`;
         btn.innerHTML = `<span>${escapeHtml(s.tabLabel)}</span>${
           st.graded ? '<span class="w-2 h-2 rounded-full bg-emerald-400"></span>' : ''
@@ -859,7 +1240,6 @@
         el.normalTabs.appendChild(btn);
       });
 
-      // 模試モード表示切替
       el.normalTabs.classList.toggle('hidden', appState.mockMode);
       el.mockBar.classList.toggle('hidden', !appState.mockMode);
 
@@ -878,11 +1258,11 @@
           btn.type = 'button';
           btn.className = `px-3 py-1.5 rounded-lg text-xs font-bold transition-all border flex items-center gap-1.5 ${
             active
-              ? 'bg-navy text-white border-navy shadow-sm'
+              ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
               : 'bg-white text-slate-700 border-indigo-200 hover:bg-indigo-100/70'
           }`;
           btn.innerHTML = `<span>第${idx + 1}問：${escapeHtml(s.tabLabel)}</span>${
-            graded ? '<span class="text-emerald-500">✓</span>' : ''
+            graded ? '<span class="text-emerald-400">✓</span>' : ''
           }`;
           btn.addEventListener('click', () => {
             appState.activeSceneId = sid;
@@ -892,77 +1272,87 @@
         });
       } else {
         el.btnMockToggle.className =
-          'w-full sm:w-auto px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold border transition-all flex items-center justify-center gap-1.5 bg-white text-navy border-navy/30 hover:bg-navy hover:text-white shadow-sm';
+          'w-full sm:w-auto px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold border transition-all flex items-center justify-center gap-1.5 bg-white text-indigo-700 border-indigo-300 hover:bg-indigo-600 hover:text-white shadow-sm';
         el.mockBtnIcon.textContent = '📝';
         el.mockBtnLabel.textContent = '本番模試モード (ランダム3場面)';
       }
     }
 
-    /**
-     * ============================================================
-     * ツールバー＆スコアバッジ描画
-     * ============================================================
-     */
     function renderToolbar() {
-      const sceneId = appState.activeSceneId;
-      const st = sceneStates[sceneId];
+      const scene = getScene(appState.activeSceneId);
+      const st = sceneStates[scene.id];
+      const ps = st.problemSet;
 
-      el.btnToggleAnswers.textContent = st.showAllModels
-        ? '模範解答を隠す'
-        : '模範解答をすべて表示';
+      // バリエーションボタンのアクティブ状態
+      const activeClass = 'bg-indigo-600 text-white border-indigo-600 shadow-sm';
+      const inactiveClass = 'bg-white text-slate-700 border-slate-200 hover:border-indigo-300 hover:text-indigo-700';
+
+      el.btnVarA.className = `var-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold border transition-all ${st.mode === 'A' ? activeClass : inactiveClass}`;
+      el.btnVarB.className = `var-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold border transition-all ${st.mode === 'B' ? activeClass : inactiveClass}`;
+      el.btnVarR.className = `var-btn px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold border transition-all flex items-center gap-1 ${st.mode === 'R' ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm' : 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100'}`;
+
+      // 収録候補数＆現在の出題構成＋重複なしバッジ
+      const bCount = Object.keys(ps.blanks).length;
+      const tCount = Object.keys(ps.trans).length;
+      const vCount = Object.keys(ps.vocabs).length;
+
+      el.poolInfoBadges.innerHTML = `
+        <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 border border-slate-200">
+          収録候補：前置詞${scene.blankPool.length} / 和訳${scene.transPool.length} / 単語${scene.vocabPool.length}
+        </span>
+        <span class="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-200">
+          出題中：前置詞${bCount} / 和訳${tCount} / 単語${vCount}
+        </span>
+        <span class="px-2.5 py-1 rounded-lg ${ps.noOverlapVerified ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200'} border">
+          ${ps.noOverlapVerified ? '和訳・単語の重複なし ✓' : '重複警告'}
+        </span>
+      `;
+
+      el.btnToggleAnswers.textContent = st.showAllModels ? '模範解答を隠す' : '模範解答をすべて表示';
 
       if (!st.graded) {
-        el.scoreBadges.innerHTML = `<span class="px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-500">未採点</span>`;
+        el.scoreBadges.innerHTML = `<span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-500">未採点</span>`;
       } else {
-        const sc = computeSceneScore(sceneId);
+        const sc = computeSceneScore(scene.id);
         let html = '';
         if (sc.blankTotal > 0) {
-          html += `<span class="px-2.5 py-1.5 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-200">穴埋め ${sc.blankCorrect}/${sc.blankTotal}</span>`;
+          html += `<span class="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-200">前置詞 ${sc.blankCorrect}/${sc.blankTotal}</span>`;
         }
         if (sc.vocabTotal > 0) {
-          html += `<span class="px-2.5 py-1.5 rounded-lg bg-sky-50 text-sky-800 border border-sky-200">単語 ${sc.vocabCorrect}/${sc.vocabTotal}</span>`;
+          html += `<span class="px-2.5 py-1 rounded-lg bg-sky-50 text-sky-800 border border-sky-200">単語 ${sc.vocabCorrect}/${sc.vocabTotal}</span>`;
         }
         if (sc.transTotal > 0) {
-          html += `<span class="px-2.5 py-1.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-200">和訳 ○${sc.transOk} △${sc.transClose} / ${sc.transTotal}</span>`;
+          html += `<span class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-900 border border-amber-200">和訳 ○${sc.transOk} △${sc.transClose}/${sc.transTotal}</span>`;
         }
         el.scoreBadges.innerHTML = html;
       }
     }
 
-    /**
-     * ============================================================
-     * 左ペイン（スクリプト全文）描画
-     * ============================================================
-     */
     function renderScriptPane() {
       const scene = getScene(appState.activeSceneId);
       el.scriptTitle.textContent = scene.title;
 
-      let lineNo = 0;
       const frag = document.createDocumentFragment();
-
-      scene.lines.forEach((item) => {
-        if (item.type === 'sub') {
+      scene.lines.forEach((lineObj) => {
+        if (lineObj.sub) {
           const h = document.createElement('div');
-          h.className = 'pt-4 pb-1 first:pt-0 text-xs sm:text-sm font-extrabold text-navy tracking-wide border-b border-slate-200/80 mb-2';
-          h.textContent = item.text;
+          h.className = 'pt-3 pb-1 first:pt-0 text-xs sm:text-sm font-extrabold text-indigo-800 tracking-wide border-b border-slate-200 mb-1.5';
+          h.textContent = lineObj.sub;
           frag.appendChild(h);
-        } else {
-          lineNo++;
-          const row = document.createElement('div');
-          row.className = 'flex items-baseline gap-2.5 py-1 px-2 rounded-lg hover:bg-slate-50/90 transition-colors';
-          row.innerHTML = `
-            <span class="w-6 text-right text-xs font-mono text-slate-400 select-none shrink-0">${lineNo}.</span>
-            <p class="flex-1 text-slate-800 break-words leading-[2.05]">${parseScriptText(item.text, scene.id)}</p>
-          `;
-          frag.appendChild(row);
         }
+        const row = document.createElement('div');
+        row.className = 'flex items-baseline gap-2.5 py-1 px-2 rounded-lg hover:bg-slate-50 transition-colors';
+        row.innerHTML = `
+          <span class="w-6 text-right text-xs font-mono text-slate-400 select-none shrink-0">${lineObj.id}.</span>
+          <p class="flex-1 text-slate-800 break-words leading-[2.1]">${renderLineWithProblems(lineObj, scene.id)}</p>
+        `;
+        frag.appendChild(row);
       });
 
       el.scriptPane.innerHTML = '';
       el.scriptPane.appendChild(frag);
 
-      // インライン入力イベントの紐付け
+      // 空欄入力イベント（IME変換確定Enterの誤動作防止）
       el.scriptPane.querySelectorAll('.inline-blank-input').forEach((input) => {
         input.addEventListener('input', (e) => {
           const bid = e.target.dataset.blankId;
@@ -972,110 +1362,32 @@
           if (e.isComposing || e.keyCode === 229) return;
           if (e.key === 'Enter') {
             e.preventDefault();
-            // 次の空欄へフォーカス移動
-            const allInputs = [...el.scriptPane.querySelectorAll('.inline-blank-input')];
-            const idx = allInputs.indexOf(e.target);
-            if (idx >= 0 && idx + 1 < allInputs.length) {
-              allInputs[idx + 1].focus();
-            }
+            const all = [...el.scriptPane.querySelectorAll('.inline-blank-input')];
+            const idx = all.indexOf(e.target);
+            if (idx >= 0 && idx + 1 < all.length) all[idx + 1].focus();
           }
         });
       });
 
-      // バッジクリック → 右ペインへジャンプ
+      // 本文バッジ → 解答用紙ジャンプ
       el.scriptPane.querySelectorAll('.jump-to-sheet').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          jumpToElement(btn.dataset.jumpTarget);
-        });
+        btn.addEventListener('click', () => jumpToElement(btn.dataset.jumpTarget));
       });
     }
 
-    /**
-     * ============================================================
-     * 右ペイン（解答用紙：和訳・単語・前置詞まとめ）描画
-     * ============================================================
-     */
     function renderAnswerPane() {
       const scene = getScene(appState.activeSceneId);
       const st = sceneStates[scene.id];
+      const ps = st.problemSet;
 
-      const bKeys = Object.keys(scene.blanks);
-      const vKeys = Object.keys(scene.vocabs);
-      const tKeys = Object.keys(scene.translations);
+      const tKeys = Object.keys(ps.trans);
+      const vKeys = Object.keys(ps.vocabs);
+      const bKeys = Object.keys(ps.blanks);
 
-      el.sheetCounts.textContent = `穴埋め${bKeys.length}・単語${vKeys.length}・和訳${tKeys.length}`;
+      el.sheetCounts.textContent = `和訳${tKeys.length}・単語${vKeys.length}・前置詞${bKeys.length}`;
       el.answerPane.innerHTML = '';
 
-      // 1. 単語問題セクション
-      if (vKeys.length > 0) {
-        const sec = document.createElement('div');
-        sec.className = 'space-y-3';
-        sec.innerHTML = `
-          <h3 class="text-sm font-extrabold text-sky-900 flex items-center gap-2 border-b border-sky-100 pb-1.5">
-            <span class="px-2 py-0.5 rounded bg-sky-600 text-white text-xs">単</span>
-            単語・表現問題（${vKeys.length}問）
-          </h3>
-        `;
-
-        vKeys.forEach((vid) => {
-          const num = vid.slice(1);
-          const item = scene.vocabs[vid];
-          const val = st.vocabs[vid] || '';
-          const isCorrect = getVocabIsCorrect(scene.id, vid);
-          const showModel = st.graded || st.showAllModels;
-
-          let cardBorder = 'border-slate-200 bg-slate-50/50';
-          if (st.graded) {
-            cardBorder = isCorrect
-              ? 'border-emerald-300 bg-emerald-50/40'
-              : 'border-rose-300 bg-rose-50/40';
-          }
-
-          const card = document.createElement('div');
-          card.id = `card-${vid}`;
-          card.className = `rounded-xl border p-3.5 space-y-2 transition-all ${cardBorder}`;
-          card.innerHTML = `
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <div class="flex items-center gap-2">
-                <button type="button" data-jump-target="script-${vid}" class="jump-to-script px-2 py-0.5 rounded text-xs font-extrabold bg-sky-600 hover:bg-sky-700 text-white transition-colors">単${num}</button>
-                <span class="font-bold text-slate-900 text-sm sm:text-base">${escapeHtml(item.word)}</span>
-              </div>
-              ${
-                st.graded
-                  ? `<div class="flex items-center gap-1.5">
-                      <span class="text-xs font-extrabold ${isCorrect ? 'text-emerald-700' : 'text-rose-600'}">${isCorrect ? '⭕ 正解' : '❌ 不正解'}</span>
-                      <button type="button" data-override-vocab="${vid}" class="btn-override-vocab px-2 py-0.5 rounded-lg text-[11px] font-bold border bg-white ${
-                        isCorrect
-                          ? 'text-rose-600 border-rose-200 hover:bg-rose-50'
-                          : 'text-emerald-700 border-emerald-200 hover:bg-emerald-50'
-                      }">${isCorrect ? '不正解にする' : '正解にする'}</button>
-                    </div>`
-                  : ''
-              }
-            </div>
-            <input
-              type="text"
-              data-vocab-id="${vid}"
-              value="${escapeHtml(val)}"
-              autocomplete="off"
-              placeholder="日本語の意味を入力..."
-              class="vocab-input w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500"
-            />
-            ${
-              showModel
-                ? `<div class="text-xs bg-white/90 rounded-lg p-2.5 border border-slate-200/80 space-y-1">
-                    <p><span class="font-bold text-emerald-700">模範解答：</span><span class="font-bold text-slate-900">${escapeHtml(item.ans)}</span></p>
-                    <p class="text-slate-600"><span class="font-bold">解説：</span>${escapeHtml(item.exp)}</p>
-                  </div>`
-                : ''
-            }
-          `;
-          sec.appendChild(card);
-        });
-        el.answerPane.appendChild(sec);
-      }
-
-      // 2. 和訳問題セクション
+      // 1. 和訳問題セクション
       if (tKeys.length > 0) {
         const sec = document.createElement('div');
         sec.className = 'space-y-3';
@@ -1087,11 +1399,13 @@
         `;
 
         tKeys.forEach((tid) => {
-          const num = tid.slice(1);
-          const item = scene.translations[tid];
+          const item = ps.trans[tid];
           const val = st.trans[tid] || '';
           const grade = st.transGrade[tid] || null;
           const showModel = st.graded || st.showAllModels;
+          const lineLabel = item.lineIds.length > 1
+            ? `行 ${item.lineIds[0]}〜${item.lineIds[item.lineIds.length - 1]}`
+            : `行 ${item.lineIds[0]}`;
 
           let cardBorder = 'border-slate-200 bg-slate-50/50';
           if (grade === 'ok') cardBorder = 'border-emerald-300 bg-emerald-50/40';
@@ -1103,7 +1417,10 @@
           card.className = `rounded-xl border p-3.5 space-y-2.5 transition-all ${cardBorder}`;
           card.innerHTML = `
             <div class="flex items-center justify-between gap-2">
-              <button type="button" data-jump-target="script-${tid}" class="jump-to-script px-2 py-0.5 rounded text-xs font-extrabold bg-amber-500 hover:bg-amber-600 text-white transition-colors">訳${num}（本文で確認）</button>
+              <div class="flex items-center gap-2">
+                <button type="button" data-jump-target="script-${tid}" class="jump-to-script px-2 py-0.5 rounded text-xs font-extrabold bg-amber-500 hover:bg-amber-600 text-white transition-colors">訳${item.num}（本文へ）</button>
+                <span class="text-[11px] font-semibold text-slate-400">${lineLabel}</span>
+              </div>
               ${
                 grade
                   ? `<span class="text-xs font-extrabold ${
@@ -1120,7 +1437,7 @@
             >${escapeHtml(val)}</textarea>
             ${
               showModel
-                ? `<div class="text-xs bg-white/95 rounded-lg p-3 border border-amber-200/80 space-y-1.5">
+                ? `<div class="text-xs bg-white rounded-lg p-3 border border-amber-200/80 space-y-1.5">
                     <p><span class="font-bold text-emerald-700">模範解答：</span><span class="font-bold text-slate-900">${escapeHtml(item.ans)}</span></p>
                     <p class="text-slate-600"><span class="font-bold text-amber-800">ポイント：</span>${escapeHtml(item.exp)}</p>
                     ${
@@ -1128,19 +1445,13 @@
                         ? `<div class="pt-1.5 flex items-center gap-1.5 flex-wrap">
                             <span class="text-[11px] font-bold text-slate-500 mr-1">自己採点：</span>
                             <button type="button" data-trans-grade="${tid}:ok" class="btn-trans-grade px-2.5 py-1 rounded-lg text-xs font-bold border transition-colors ${
-                              grade === 'ok'
-                                ? 'bg-emerald-600 text-white border-emerald-600'
-                                : 'bg-white text-emerald-700 border-emerald-300 hover:bg-emerald-50'
+                              grade === 'ok' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-emerald-700 border-emerald-300 hover:bg-emerald-50'
                             }">○ 正解</button>
                             <button type="button" data-trans-grade="${tid}:close" class="btn-trans-grade px-2.5 py-1 rounded-lg text-xs font-bold border transition-colors ${
-                              grade === 'close'
-                                ? 'bg-amber-500 text-white border-amber-500'
-                                : 'bg-white text-amber-800 border-amber-300 hover:bg-amber-50'
+                              grade === 'close' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-amber-800 border-amber-300 hover:bg-amber-50'
                             }">△ 惜しい</button>
                             <button type="button" data-trans-grade="${tid}:ng" class="btn-trans-grade px-2.5 py-1 rounded-lg text-xs font-bold border transition-colors ${
-                              grade === 'ng'
-                                ? 'bg-rose-600 text-white border-rose-600'
-                                : 'bg-white text-rose-700 border-rose-300 hover:bg-rose-50'
+                              grade === 'ng' ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-rose-700 border-rose-300 hover:bg-rose-50'
                             }">× 不正解</button>
                           </div>`
                         : ''
@@ -1154,34 +1465,95 @@
         el.answerPane.appendChild(sec);
       }
 
-      // 3. 前置詞・副詞穴埋め まとめ・解説セクション
+      // 2. 単語問題セクション
+      if (vKeys.length > 0) {
+        const sec = document.createElement('div');
+        sec.className = 'space-y-3';
+        sec.innerHTML = `
+          <h3 class="text-sm font-extrabold text-sky-900 flex items-center gap-2 border-b border-sky-100 pb-1.5">
+            <span class="px-2 py-0.5 rounded bg-sky-600 text-white text-xs">単</span>
+            単語・表現問題（${vKeys.length}問）
+          </h3>
+        `;
+
+        vKeys.forEach((vid) => {
+          const item = ps.vocabs[vid];
+          const val = st.vocabs[vid] || '';
+          const isCorrect = getVocabIsCorrect(scene.id, vid);
+          const showModel = st.graded || st.showAllModels;
+
+          let cardBorder = 'border-slate-200 bg-slate-50/50';
+          if (st.graded) {
+            cardBorder = isCorrect ? 'border-emerald-300 bg-emerald-50/40' : 'border-rose-300 bg-rose-50/40';
+          }
+
+          const card = document.createElement('div');
+          card.id = `card-${vid}`;
+          card.className = `rounded-xl border p-3.5 space-y-2 transition-all ${cardBorder}`;
+          card.innerHTML = `
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <div class="flex items-center gap-2">
+                <button type="button" data-jump-target="script-${vid}" class="jump-to-script px-2 py-0.5 rounded text-xs font-extrabold bg-sky-600 hover:bg-sky-700 text-white transition-colors">単${item.num}</button>
+                <span class="font-bold text-slate-900 text-sm sm:text-base">${escapeHtml(item.target)}</span>
+                <span class="text-[11px] text-slate-400">行${item.lineId}</span>
+              </div>
+              ${
+                st.graded
+                  ? `<div class="flex items-center gap-1.5">
+                      <span class="text-xs font-extrabold ${isCorrect ? 'text-emerald-700' : 'text-rose-600'}">${isCorrect ? '⭕ 正解' : '❌ 不正解'}</span>
+                      <button type="button" data-override-vocab="${vid}" class="btn-override-vocab px-2 py-0.5 rounded-lg text-[11px] font-bold border bg-white ${
+                        isCorrect ? 'text-rose-600 border-rose-200 hover:bg-rose-50' : 'text-emerald-700 border-emerald-200 hover:bg-emerald-50'
+                      }">${isCorrect ? '不正解にする' : '正解にする'}</button>
+                    </div>`
+                  : ''
+              }
+            </div>
+            <input
+              type="text"
+              data-vocab-id="${vid}"
+              value="${escapeHtml(val)}"
+              autocomplete="off"
+              placeholder="日本語の意味を入力..."
+              class="vocab-input w-full px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500"
+            />
+            ${
+              showModel
+                ? `<div class="text-xs bg-white rounded-lg p-2.5 border border-slate-200/80 space-y-1">
+                    <p><span class="font-bold text-emerald-700">模範解答：</span><span class="font-bold text-slate-900">${escapeHtml(item.ans)}</span></p>
+                    <p class="text-slate-600"><span class="font-bold">解説：</span>${escapeHtml(item.exp)}</p>
+                  </div>`
+                : ''
+            }
+          `;
+          sec.appendChild(card);
+        });
+        el.answerPane.appendChild(sec);
+      }
+
+      // 3. 前置詞・副詞穴埋め 一覧＆解説
       if (bKeys.length > 0) {
         const sec = document.createElement('div');
         sec.className = 'space-y-2.5';
         sec.innerHTML = `
-          <h3 class="text-sm font-extrabold text-navy flex items-center gap-2 border-b border-slate-200 pb-1.5">
-            <span class="px-2 py-0.5 rounded bg-navy text-white text-xs">( )</span>
+          <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-1.5">
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-white text-xs">( )</span>
             前置詞・副詞 穴埋め一覧（${bKeys.length}問）
           </h3>
-          <p class="text-[11px] text-slate-500">入力は左の本文中の空欄から行います。採点後に各空欄の解説が表示されます。</p>
+          <p class="text-[11px] text-slate-500">左の本文中の空欄に直接入力してください。採点後に解説が表示されます。</p>
         `;
 
-        const listWrap = document.createElement('div');
-        listWrap.className = 'space-y-2';
+        const list = document.createElement('div');
+        list.className = 'space-y-2';
 
         bKeys.forEach((bid) => {
-          const num = bid.slice(1);
-          const item = scene.blanks[bid];
+          const item = ps.blanks[bid];
           const userVal = (st.blanks[bid] || '').trim();
-          const isCorrect =
-            st.graded && item.ans.some((a) => a.toLowerCase() === userVal.toLowerCase());
+          const isCorrect = st.graded && item.ans.some((a) => a.toLowerCase() === userVal.toLowerCase());
           const showModel = st.graded || st.showAllModels;
 
           let cardStyle = 'border-slate-200 bg-slate-50/50';
           if (st.graded) {
-            cardStyle = isCorrect
-              ? 'border-emerald-300 bg-emerald-50/40'
-              : 'border-rose-300 bg-rose-50/40';
+            cardStyle = isCorrect ? 'border-emerald-300 bg-emerald-50/40' : 'border-rose-300 bg-rose-50/40';
           }
 
           const card = document.createElement('div');
@@ -1189,7 +1561,7 @@
           card.className = `rounded-xl border p-3 text-xs space-y-1 transition-all ${cardStyle}`;
           card.innerHTML = `
             <div class="flex items-center justify-between gap-2">
-              <button type="button" data-jump-target="script-${bid}" class="jump-to-script font-extrabold text-navy hover:underline">空欄 (${num}) を本文で見る</button>
+              <button type="button" data-jump-target="script-${bid}" class="jump-to-script font-extrabold text-indigo-700 hover:underline">空欄 (${item.num}) を本文で見る（行${item.lineId}）</button>
               ${
                 st.graded
                   ? `<span class="font-extrabold ${isCorrect ? 'text-emerald-700' : 'text-rose-600'}">${
@@ -1207,18 +1579,17 @@
                 : ''
             }
           `;
-          listWrap.appendChild(card);
+          list.appendChild(card);
         });
 
-        sec.appendChild(listWrap);
+        sec.appendChild(list);
         el.answerPane.appendChild(sec);
       }
 
-      // 入力イベント紐付け
+      // 入力イベント（IME誤動作防止）
       el.answerPane.querySelectorAll('.vocab-input').forEach((input) => {
         input.addEventListener('input', (e) => {
-          const vid = e.target.dataset.vocabId;
-          st.vocabs[vid] = e.target.value;
+          st.vocabs[e.target.dataset.vocabId] = e.target.value;
         });
         input.addEventListener('keydown', (e) => {
           if (e.isComposing || e.keyCode === 229) return;
@@ -1233,8 +1604,7 @@
 
       el.answerPane.querySelectorAll('.trans-textarea').forEach((ta) => {
         ta.addEventListener('input', (e) => {
-          const tid = e.target.dataset.transId;
-          st.trans[tid] = e.target.value;
+          st.trans[e.target.dataset.transId] = e.target.value;
         });
       });
 
@@ -1242,15 +1612,15 @@
       el.answerPane.querySelectorAll('.btn-override-vocab').forEach((btn) => {
         btn.addEventListener('click', () => {
           const vid = btn.dataset.overrideVocab;
-          const current = getVocabIsCorrect(scene.id, vid);
-          st.vocabOverride[vid] = !current;
+          const cur = getVocabIsCorrect(scene.id, vid);
+          st.vocabOverride[vid] = !cur;
           renderToolbar();
           renderAnswerPane();
-          showToast(!current ? '「正解」に切り替えました' : '「不正解」に切り替えました');
+          showToast(!cur ? '「正解」に切り替えました' : '「不正解」に切り替えました');
         });
       });
 
-      // 和訳自己採点ボタン
+      // 和訳自己採点
       el.answerPane.querySelectorAll('.btn-trans-grade').forEach((btn) => {
         btn.addEventListener('click', () => {
           const [tid, grade] = btn.dataset.transGrade.split(':');
@@ -1260,49 +1630,44 @@
         });
       });
 
-      // 本文へジャンプボタン
+      // 本文へジャンプ
       el.answerPane.querySelectorAll('.jump-to-script').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          jumpToElement(btn.dataset.jumpTarget);
-        });
+        btn.addEventListener('click', () => jumpToElement(btn.dataset.jumpTarget));
       });
     }
 
-    /**
-     * ============================================================
-     * スムーズスクロール＆ハイライト連携
-     * ============================================================
-     */
     function jumpToElement(targetId) {
       const target = document.getElementById(targetId);
       if (!target) return;
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
       target.classList.remove('focus-flash');
-      void target.offsetWidth; // reflow
+      void target.offsetWidth;
       target.classList.add('focus-flash');
-
-      // 入力欄があればフォーカス
       const input = target.querySelector('input, textarea');
-      if (input) {
-        setTimeout(() => input.focus({ preventScroll: true }), 250);
-      }
+      if (input) setTimeout(() => input.focus({ preventScroll: true }), 250);
     }
 
     /**
-     * ============================================================
-     * 採点・リセット・模試モードロジック
-     * ============================================================
+     * ============================================================================
+     * 8. アクション（採点・バリエーション切替・リセット・本番模試）
+     * ============================================================================
      */
-    function gradeScene(sceneId, silent = false) {
-      const scene = getScene(sceneId);
-      const st = sceneStates[sceneId];
+    function switchVariation(mode) {
+      const sid = appState.activeSceneId;
+      initSceneState(sid, mode);
+      renderAll();
+      const label = mode === 'A' ? 'パターンA' : mode === 'B' ? 'パターンB' : 'ランダム問題';
+      showToast(`${label}を生成しました（和訳・単語の重複なし ✓）`);
+    }
 
-      // 単語の自動部分一致採点
-      Object.keys(scene.vocabs).forEach((vid) => {
+    function gradeScene(sceneId, silent = false) {
+      const st = sceneStates[sceneId];
+      const ps = st.problemSet;
+
+      Object.keys(ps.vocabs).forEach((vid) => {
         const userVal = (st.vocabs[vid] || '').trim().toLowerCase();
-        const keys = scene.vocabs[vid].keys;
-        const ok = userVal.length > 0 && keys.some((k) => userVal.includes(k.toLowerCase()));
-        st.vocabAuto[vid] = ok;
+        const keys = ps.vocabs[vid].keys;
+        st.vocabAuto[vid] = userVal.length > 0 && keys.some((k) => userVal.includes(k.toLowerCase()));
       });
 
       st.graded = true;
@@ -1314,41 +1679,43 @@
 
     function resetCurrentScene() {
       const sid = appState.activeSceneId;
-      sceneStates[sid] = createEmptySceneState();
+      const st = sceneStates[sid];
+      st.blanks = {};
+      st.vocabs = {};
+      st.vocabAuto = {};
+      st.vocabOverride = {};
+      st.trans = {};
+      st.transGrade = {};
+      st.graded = false;
+      st.showAllModels = false;
       renderAll();
-      showToast('この場面の入力と採点結果をリセットしました');
+      showToast('現在の問題の入力と採点結果をリセットしました');
     }
 
     function startMockExam() {
-      const pool = ['1', '2', '3', '4', '5'];
-      for (let i = pool.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
-      }
-      const picked = pool.slice(0, 3).sort((a, b) => Number(a) - Number(b));
+      const picked = shuffleArray(['1', '2', '3', '4', '5'])
+        .slice(0, 3)
+        .sort((a, b) => Number(a) - Number(b));
 
-      // 選ばれた3場面をフレッシュな状態にリセット
-      picked.forEach((sid) => {
-        sceneStates[sid] = createEmptySceneState();
-      });
+      // 選ばれた3場面をすべてランダムバリエーションで新規生成
+      picked.forEach((sid) => initSceneState(sid, 'R'));
 
       appState.mockMode = true;
       appState.mockScenes = picked;
       appState.activeSceneId = picked[0];
       renderAll();
-      showToast(`本番模試を開始！（出題：場面${picked.join('・')}）`);
+      showToast(`本番模試を開始！（ランダム出題：場面${picked.join('・')}）`);
     }
 
     function openMockSummary() {
-      // 3場面すべてを一括採点
       appState.mockScenes.forEach((sid) => gradeScene(sid, true));
       renderAll();
 
       let sumBlankC = 0, sumBlankT = 0;
       let sumVocabC = 0, sumVocabT = 0;
       let sumTransOk = 0, sumTransClose = 0, sumTransT = 0;
-
       let breakdownHtml = '';
+
       appState.mockScenes.forEach((sid, idx) => {
         const s = getScene(sid);
         const sc = computeSceneScore(sid);
@@ -1358,9 +1725,9 @@
 
         breakdownHtml += `
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <div class="font-bold text-sm text-navy">第${idx + 1}問：${escapeHtml(s.title)}</div>
+            <div class="font-bold text-sm text-slate-900">第${idx + 1}問：${escapeHtml(s.title)}</div>
             <div class="flex flex-wrap gap-1.5 text-xs font-bold">
-              <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800">穴埋め ${sc.blankCorrect}/${sc.blankTotal}</span>
+              <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800">前置詞 ${sc.blankCorrect}/${sc.blankTotal}</span>
               <span class="px-2 py-0.5 rounded bg-sky-100 text-sky-800">単語 ${sc.vocabCorrect}/${sc.vocabTotal}</span>
               <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900">和訳 ○${sc.transOk} △${sc.transClose}/${sc.transTotal}</span>
             </div>
@@ -1375,26 +1742,26 @@
       el.mockModalBody.innerHTML = `
         <div class="grid grid-cols-3 gap-3 text-center">
           <div class="p-3.5 rounded-xl bg-indigo-50 border border-indigo-100">
-            <div class="text-[11px] font-bold text-indigo-700">穴埋め合計</div>
-            <div class="text-xl font-extrabold text-navy mt-0.5">${sumBlankC} <span class="text-xs text-slate-400">/ ${sumBlankT}</span></div>
+            <div class="text-[11px] font-bold text-indigo-700">前置詞合計</div>
+            <div class="text-xl font-extrabold text-slate-900 mt-0.5">${sumBlankC} <span class="text-xs text-slate-400">/ ${sumBlankT}</span></div>
           </div>
           <div class="p-3.5 rounded-xl bg-sky-50 border border-sky-100">
             <div class="text-[11px] font-bold text-sky-700">単語合計</div>
-            <div class="text-xl font-extrabold text-navy mt-0.5">${sumVocabC} <span class="text-xs text-slate-400">/ ${sumVocabT}</span></div>
+            <div class="text-xl font-extrabold text-slate-900 mt-0.5">${sumVocabC} <span class="text-xs text-slate-400">/ ${sumVocabT}</span></div>
           </div>
           <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-100">
             <div class="text-[11px] font-bold text-amber-800">和訳（自己採点）</div>
-            <div class="text-base font-extrabold text-navy mt-1">○${sumTransOk} △${sumTransClose} <span class="text-xs text-slate-400">/ ${sumTransT}</span></div>
+            <div class="text-base font-extrabold text-slate-900 mt-1">○${sumTransOk} △${sumTransClose} <span class="text-xs text-slate-400">/ ${sumTransT}</span></div>
           </div>
         </div>
-        <div class="text-center py-2 px-4 rounded-xl bg-emerald-50 border border-emerald-200 text-sm font-bold text-emerald-900">
-          自動採点パート（穴埋め＋単語）正答率：<span class="text-xl font-extrabold">${autoRate}%</span>（${autoCorrect} / ${autoTotal}問）
+        <div class="text-center py-2.5 px-4 rounded-xl bg-emerald-50 border border-emerald-200 text-sm font-bold text-emerald-900">
+          自動採点パート（前置詞＋単語）正答率：<span class="text-xl font-extrabold">${autoRate}%</span>（${autoCorrect} / ${autoTotal}問）
         </div>
         <div class="space-y-2">
           <h3 class="text-xs font-bold text-slate-500">各場面の内訳</h3>
           ${breakdownHtml}
         </div>
-        <p class="text-xs text-slate-500">※和訳の自己採点がまだの場合は、モーダルを閉じて各場面の「○ / △ / ×」を押してから再度このボタンを押すと反映されます。</p>
+        <p class="text-xs text-slate-500">※和訳の自己採点がまだの場合は、モーダルを閉じて各場面の「○ / △ / ×」を選んでから再度このボタンを押すと反映されます。</p>
       `;
 
       el.mockModal.classList.remove('hidden');
@@ -1408,18 +1775,20 @@
     }
 
     /**
-     * ============================================================
-     * 初期化・グローバルイベント
-     * ============================================================
+     * ============================================================================
+     * 9. イベントリスナー登録
+     * ============================================================================
      */
-    el.btnGrade.addEventListener('click', () => gradeScene(appState.activeSceneId, false));
+    el.btnVarA.addEventListener('click', () => switchVariation('A'));
+    el.btnVarB.addEventListener('click', () => switchVariation('B'));
+    el.btnVarR.addEventListener('click', () => switchVariation('R'));
 
+    el.btnGrade.addEventListener('click', () => gradeScene(appState.activeSceneId, false));
     el.btnToggleAnswers.addEventListener('click', () => {
       const st = sceneStates[appState.activeSceneId];
       st.showAllModels = !st.showAllModels;
       renderAll();
     });
-
     el.btnResetScene.addEventListener('click', resetCurrentScene);
 
     el.btnMockToggle.addEventListener('click', () => {
@@ -1449,7 +1818,6 @@
       renderAll();
     });
 
-    // 初回描画
     window.addEventListener('DOMContentLoaded', renderAll);
   </script>
 </body>
