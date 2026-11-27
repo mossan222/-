@@ -186,11 +186,11 @@
             ✓ 採点する
           </button>
           <button
-            id="btn-toggle-below-trans"
+            id="btn-toggle-inline-trans"
             type="button"
             class="px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs sm:text-sm font-bold transition-colors"
           >
-            本文下に和訳の模範解答を表示
+            本文内に和訳解答を表示
           </button>
           <button
             id="btn-toggle-all-models"
@@ -230,6 +230,26 @@
               </p>
             </div>
             <div class="flex items-center gap-1.5 text-[11px] font-bold">
+      <!-- ==================== 左カラム：英語本文（和訳解答は該当行の真下に表示） ==================== -->
+      <div class="lg:col-span-7 flex flex-col gap-4 min-w-0">
+
+        <!-- 英語本文カード -->
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="px-4 sm:px-5 py-3 border-b border-slate-100 bg-slate-50/80 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 id="script-title" class="text-base sm:text-lg font-extrabold text-slate-900">場面1：旅立ちと準備</h2>
+              <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">
+                空欄に直接入力し、[訳]・[単]・(1) バッジをクリックすると解答用紙へジャンプします。
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-bold">
+              <button
+                id="btn-header-toggle-inline-trans"
+                type="button"
+                class="px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 transition-colors"
+              >
+                本文内に和訳解答を表示
+              </button>
               <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 border border-indigo-200">(1) 前置詞</span>
               <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-200">訳 和訳</span>
               <span class="px-2 py-0.5 rounded bg-teal-100 text-teal-900 border border-teal-200">単 単語</span>
@@ -237,26 +257,6 @@
           </div>
 
           <div id="script-pane" class="p-4 sm:p-5 space-y-2 text-[15px] sm:text-base"></div>
-        </section>
-
-        <!-- 本文下の専用セクション：和訳 模範解答・ポイント（本文下まとめ） -->
-        <section id="below-trans-card" class="bg-white rounded-2xl border border-amber-200 shadow-sm overflow-hidden">
-          <div class="px-4 sm:px-5 py-3 border-b border-amber-100 bg-amber-50/80 flex flex-wrap items-center justify-between gap-2">
-            <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded-lg bg-amber-500 text-white text-xs font-extrabold">訳</span>
-              <h3 class="text-sm sm:text-base font-extrabold text-amber-950">
-                和訳 模範解答・ポイント（本文下まとめ）
-              </h3>
-            </div>
-            <button
-              id="btn-card-toggle-below"
-              type="button"
-              class="px-3 py-1 rounded-lg text-xs font-bold bg-white text-amber-900 border border-amber-300 hover:bg-amber-100 transition-colors"
-            >
-              表示する
-            </button>
-          </div>
-          <div id="below-trans-body" class="p-4 sm:p-5 space-y-3"></div>
         </section>
 
       </div>
@@ -887,7 +887,8 @@
         trans: {},
         transGrade: {},
         graded: false,
-        showBelowTrans: false,
+        showInlineTrans: false,
+        inlineTransOpen: {},
         showAllModels: false
       };
     }
@@ -925,16 +926,14 @@
       poolInfoBadges: document.getElementById('pool-info-badges'),
 
       btnGrade: document.getElementById('btn-grade'),
-      btnToggleBelowTrans: document.getElementById('btn-toggle-below-trans'),
+      btnToggleInlineTrans: document.getElementById('btn-toggle-inline-trans'),
+      btnHeaderToggleInlineTrans: document.getElementById('btn-header-toggle-inline-trans'),
       btnToggleAllModels: document.getElementById('btn-toggle-all-models'),
       btnResetScene: document.getElementById('btn-reset-scene'),
       scoreBadges: document.getElementById('score-badges'),
 
       scriptTitle: document.getElementById('script-title'),
       scriptPane: document.getElementById('script-pane'),
-      belowTransCard: document.getElementById('below-trans-card'),
-      belowTransBody: document.getElementById('below-trans-body'),
-      btnCardToggleBelow: document.getElementById('btn-card-toggle-below'),
 
       answerPane: document.getElementById('answer-pane'),
       sheetCounts: document.getElementById('sheet-counts'),
@@ -972,10 +971,18 @@
       const transItem = Object.values(ps.trans).find((t) => t.lineIds.includes(lineObj.id));
       if (transItem) {
         const isFirst = transItem.lineIds[0] === lineObj.id;
+        const isOpen = Boolean(st.showInlineTrans || st.showAllModels || st.inlineTransOpen[transItem.qid]);
         const badge = isFirst
           ? `<button type="button" data-jump-target="card-${transItem.qid}" class="jump-to-sheet inline-flex items-center px-1.5 py-0.5 mr-1.5 rounded text-[11px] font-extrabold bg-amber-500 hover:bg-amber-600 text-white align-middle cursor-pointer transition-colors">訳${transItem.num}</button>`
           : `<span class="inline-flex items-center px-1 py-0.5 mr-1 rounded text-[10px] font-bold bg-amber-200 text-amber-900 align-middle">訳${transItem.num}続</span>`;
-        return `<span id="${isFirst ? `script-${transItem.qid}` : ''}" class="trans-span">${badge}${escapeHtml(text)}</span>`;
+        const perLineToggle = isFirst
+          ? `<button type="button" data-toggle-inline-tid="${transItem.qid}" class="btn-perline-trans inline-flex items-center px-1.5 py-0.5 ml-1.5 rounded text-[10px] font-bold border align-middle transition-colors ${
+              isOpen
+                ? 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200'
+                : 'bg-white text-amber-800 border-amber-300 hover:bg-amber-50'
+            }">${isOpen ? '解答を隠す' : '解答を見る'}</button>`
+          : '';
+        return `<span id="${isFirst ? `script-${transItem.qid}` : ''}" class="trans-span">${badge}${escapeHtml(text)}</span>${perLineToggle}`;
       }
 
       // 2) 前置詞・副詞穴埋めの行かチェック
@@ -1162,14 +1169,14 @@
             : 'bg-rose-50 text-rose-700 border-rose-200'
         } border">
           ${ps.strictlyNonOverlapping ? '前置詞・和訳・単語の重複なし ✓' : '重複検出'}
-        </span>
-      `;
-
-      // 本文下和訳トグルボタンの表示
-      el.btnToggleBelowTrans.classList.toggle('hidden', tCount === 0);
-      el.btnToggleBelowTrans.textContent = st.showBelowTrans
-        ? '本文下の和訳模範解答を隠す'
-        : '本文下に和訳の模範解答を表示';
+      // 本文内和訳トグルボタンの表示
+      el.btnToggleInlineTrans.classList.toggle('hidden', tCount === 0);
+      el.btnHeaderToggleInlineTrans.classList.toggle('hidden', tCount === 0);
+      const inlineLabel = st.showInlineTrans
+        ? '本文内の和訳解答を隠す'
+        : '本文内に和訳解答を表示';
+      el.btnToggleInlineTrans.textContent = inlineLabel;
+      el.btnHeaderToggleInlineTrans.textContent = inlineLabel;
 
       el.btnToggleAllModels.textContent = st.showAllModels
         ? '全問の模範解答を隠す'
@@ -1195,6 +1202,8 @@
 
     function renderScriptPane() {
       const scene = getScene(appState.activeSceneId);
+      const st = sceneStates[scene.id];
+      const ps = st.problemSet;
       el.scriptTitle.textContent = scene.title;
 
       const frag = document.createDocumentFragment();
@@ -1205,13 +1214,57 @@
           h.textContent = lineObj.sub;
           frag.appendChild(h);
         }
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'space-y-1.5';
+
         const row = document.createElement('div');
         row.className = 'flex items-baseline gap-2.5 py-1 px-2 rounded-lg hover:bg-slate-50 transition-colors';
         row.innerHTML = `
           <span class="w-6 text-right text-xs font-mono text-slate-400 select-none shrink-0">${lineObj.id}.</span>
           <p class="flex-1 text-slate-800 break-words leading-[2.1]">${renderLineWithProblems(lineObj, scene.id)}</p>
         `;
-        frag.appendChild(row);
+        wrapper.appendChild(row);
+
+        // この行が和訳問題の最終行であり、かつ表示ONなら該当行のすぐ真下に模範解答カードを表示
+        const transItem = Object.values(ps.trans).find(
+          (t) => t.lineIds[t.lineIds.length - 1] === lineObj.id
+        );
+        if (transItem) {
+          const isOpen = Boolean(st.showInlineTrans || st.showAllModels || st.inlineTransOpen[transItem.qid]);
+          if (isOpen) {
+            const userAns = (st.trans[transItem.qid] || '').trim();
+            const grade = st.transGrade[transItem.qid];
+            const inlineBox = document.createElement('div');
+            inlineBox.className = 'ml-8 mr-1 mb-2 rounded-xl border border-amber-200 bg-amber-50/75 px-3.5 py-2.5 text-xs sm:text-sm space-y-1.5 shadow-sm';
+            inlineBox.innerHTML = `
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <div class="flex items-center gap-1.5">
+                  <span class="px-1.5 py-0.5 rounded bg-amber-500 text-white text-[10px] font-extrabold">訳${transItem.num} 模範解答</span>
+                  ${
+                    grade
+                      ? `<span class="text-[11px] font-extrabold ${
+                          grade === 'ok' ? 'text-emerald-700' : grade === 'close' ? 'text-amber-700' : 'text-rose-600'
+                        }">${grade === 'ok' ? '○ 正解' : grade === 'close' ? '△ 部分点' : '× 不正解'}</span>`
+                      : ''
+                  }
+                </div>
+                <button type="button" data-jump-target="card-${transItem.qid}" class="jump-to-sheet text-[11px] font-bold text-indigo-700 hover:underline">解答欄へ</button>
+              </div>
+              <p class="font-bold text-slate-900 leading-relaxed">${escapeHtml(transItem.ans)}</p>
+              <p class="text-xs text-slate-700 bg-white/85 rounded-lg px-2.5 py-1.5 border border-amber-200/70">
+                <span class="font-bold text-amber-800">ポイント：</span>${escapeHtml(transItem.exp)}
+              </p>
+              <p class="text-xs text-slate-600 ${userAns ? '' : 'hidden'}" data-inline-user-wrap="${transItem.qid}">
+                <span class="font-bold text-slate-500">あなたの解答：</span>
+                <span class="text-slate-800 font-medium" data-inline-user-trans="${transItem.qid}">${escapeHtml(userAns)}</span>
+              </p>
+            `;
+            wrapper.appendChild(inlineBox);
+          }
+        }
+
+        frag.appendChild(wrapper);
       });
 
       el.scriptPane.innerHTML = '';
@@ -1233,87 +1286,32 @@
         });
       });
 
+      // 行ごとの和訳解答トグル
+      el.scriptPane.querySelectorAll('.btn-perline-trans').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const tid = btn.dataset.toggleInlineTid;
+          const currentlyOpen = Boolean(st.showInlineTrans || st.showAllModels || st.inlineTransOpen[tid]);
+          if (currentlyOpen) {
+            if (st.showInlineTrans || st.showAllModels) {
+              // 全体表示中だった場合は他の開いている行を維持しつつこの行だけ閉じる
+              Object.keys(ps.trans).forEach((k) => {
+                st.inlineTransOpen[k] = k !== tid;
+              });
+              st.showInlineTrans = false;
+              st.showAllModels = false;
+            } else {
+              st.inlineTransOpen[tid] = false;
+            }
+          } else {
+            st.inlineTransOpen[tid] = true;
+          }
+          renderToolbar();
+          renderScriptPane();
+        });
+      });
+
       // 本文バッジ → 解答用紙ジャンプ
       el.scriptPane.querySelectorAll('.jump-to-sheet').forEach((btn) => {
-        btn.addEventListener('click', () => jumpToElement(btn.dataset.jumpTarget));
-      });
-    }
-
-    /**
-     * 本文直下に表示する「和訳 模範解答・ポイント（本文下まとめ）」の描画
-     */
-    function renderBelowTransSection() {
-      const scene = getScene(appState.activeSceneId);
-      const st = sceneStates[scene.id];
-      const tKeys = Object.keys(st.problemSet.trans);
-
-      if (tKeys.length === 0) {
-        el.belowTransCard.classList.add('hidden');
-        return;
-      }
-
-      el.belowTransCard.classList.remove('hidden');
-      const isVisible = st.showBelowTrans || st.graded || st.showAllModels;
-      el.btnCardToggleBelow.textContent = isVisible ? '隠す' : '表示する';
-
-      if (!isVisible) {
-        el.belowTransBody.innerHTML = `
-          <div class="text-xs sm:text-sm text-slate-500 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-1">
-            <span>「採点する」または「表示する」を押すと、ここに和訳問題（全${tKeys.length}問）の原文・あなたの解答・模範解答・ポイントが一覧表示されます。</span>
-          </div>
-        `;
-        return;
-      }
-
-      el.belowTransBody.innerHTML = '';
-      tKeys.forEach((tid) => {
-        const item = st.problemSet.trans[tid];
-        const origText = item.lineIds
-          .map((lid) => scene.lines.find((l) => l.id === lid)?.text || '')
-          .join(' ');
-        const userAns = (st.trans[tid] || '').trim();
-        const grade = st.transGrade[tid];
-
-        const box = document.createElement('div');
-        box.className = 'rounded-xl border border-amber-200/90 bg-amber-50/35 p-3.5 space-y-2';
-        box.innerHTML = `
-          <div class="flex items-center justify-between gap-2 flex-wrap">
-            <div class="flex items-center gap-2">
-              <button type="button" data-jump-target="script-${tid}" class="jump-below-btn px-2 py-0.5 rounded text-xs font-extrabold bg-amber-500 hover:bg-amber-600 text-white transition-colors">訳${item.num}</button>
-              <span class="text-[11px] font-bold text-slate-500">行 ${item.lineIds.join(', ')}</span>
-            </div>
-            <div class="flex items-center gap-2">
-              ${
-                grade
-                  ? `<span class="text-xs font-extrabold ${
-                      grade === 'ok' ? 'text-emerald-700' : grade === 'close' ? 'text-amber-700' : 'text-rose-600'
-                    }">${grade === 'ok' ? '○ 正解' : grade === 'close' ? '△ 部分点' : '× 不正解'}</span>`
-                  : ''
-              }
-              <button type="button" data-jump-target="card-${tid}" class="jump-below-btn text-[11px] font-bold text-indigo-700 hover:underline">解答欄へ</button>
-            </div>
-          </div>
-          <p class="text-xs sm:text-sm font-semibold text-slate-800 bg-white/90 rounded-lg px-3 py-2 border border-slate-200/80">
-            ${escapeHtml(origText)}
-          </p>
-          <div class="text-xs sm:text-sm space-y-1.5 pt-0.5">
-            <p class="text-slate-700">
-              <span class="inline-block font-bold text-slate-500 mr-1">あなたの解答：</span>
-              <span class="${userAns ? 'text-slate-900 font-medium' : 'text-slate-400 italic'}">${escapeHtml(userAns || '（未入力）')}</span>
-            </p>
-            <p class="text-slate-900">
-              <span class="inline-block font-bold text-emerald-700 mr-1">模範解答：</span>
-              <span class="font-bold">${escapeHtml(item.ans)}</span>
-            </p>
-            <p class="text-xs text-slate-600 bg-white rounded-lg px-2.5 py-1.5 border border-amber-100">
-              <span class="font-bold text-amber-800">ポイント：</span>${escapeHtml(item.exp)}
-            </p>
-          </div>
-        `;
-        el.belowTransBody.appendChild(box);
-      });
-
-      el.belowTransBody.querySelectorAll('.jump-below-btn').forEach((btn) => {
         btn.addEventListener('click', () => jumpToElement(btn.dataset.jumpTarget));
       });
     }
@@ -1537,17 +1535,17 @@
             e.preventDefault();
             const all = [...el.answerPane.querySelectorAll('.vocab-input')];
             const idx = all.indexOf(e.target);
-            if (idx >= 0 && idx + 1 < all.length) all[idx + 1].focus();
-          }
-        });
-      });
-
-      // 和訳入力イベント（本文下まとめが開いていればリアルタイム反映）
+      // 和訳入力イベント（本文内のインライン表示が開いていればリアルタイム反映）
       el.answerPane.querySelectorAll('.trans-textarea').forEach((ta) => {
         ta.addEventListener('input', (e) => {
-          st.trans[e.target.dataset.transId] = e.target.value;
-          if (st.showBelowTrans || st.graded || st.showAllModels) {
-            renderBelowTransSection();
+          const tid = e.target.dataset.transId;
+          st.trans[tid] = e.target.value;
+          const trimmed = e.target.value.trim();
+          const wrap = el.scriptPane.querySelector(`[data-inline-user-wrap="${tid}"]`);
+          const span = el.scriptPane.querySelector(`[data-inline-user-trans="${tid}"]`);
+          if (wrap && span) {
+            span.textContent = trimmed;
+            wrap.classList.toggle('hidden', trimmed.length === 0);
           }
         });
       });
@@ -1570,7 +1568,7 @@
           const [tid, grade] = btn.dataset.transGrade.split(':');
           st.transGrade[tid] = grade;
           renderToolbar();
-          renderBelowTransSection();
+          renderScriptPane();
           renderAnswerPane();
         });
       });
@@ -1616,12 +1614,12 @@
       });
 
       st.graded = true;
-      // 採点時は本文下の和訳模範解答セクションを自動で開く
-      st.showBelowTrans = true;
+      // 採点時は本文内の各和訳行の真下に模範解答を自動で表示する
+      st.showInlineTrans = true;
 
       if (!silent) {
         renderAll();
-        showToast('採点しました！本文下の和訳模範解答も自動で表示されました。');
+        showToast('採点しました！本文中の各和訳行の下に模範解答を表示しました。');
       }
     }
 
@@ -1635,7 +1633,8 @@
       st.trans = {};
       st.transGrade = {};
       st.graded = false;
-      st.showBelowTrans = false;
+      st.showInlineTrans = false;
+      st.inlineTransOpen = {};
       st.showAllModels = false;
       renderAll();
       showToast('現在の問題の入力と採点結果をリセットしました');
@@ -1711,28 +1710,23 @@
         </div>
         <p class="text-xs text-slate-500">※和訳の自己採点がまだの場合は、モーダルを閉じて各場面の「○ / △ / ×」を選んでから再度このボタンを押すと反映されます。</p>
       `;
-
-      el.mockModal.classList.remove('hidden');
-    }
-
-    function toggleBelowTrans() {
+    function toggleInlineTrans() {
       const st = sceneStates[appState.activeSceneId];
-      // 採点後・全問表示中に「隠す」を押した場合は強制表示フラグも解除して閉じられるようにする
-      if (st.showBelowTrans || st.showAllModels) {
-        st.showBelowTrans = false;
+      if (st.showInlineTrans) {
+        st.showInlineTrans = false;
+        st.inlineTransOpen = {};
         if (st.showAllModels) st.showAllModels = false;
       } else {
-        st.showBelowTrans = true;
+        st.showInlineTrans = true;
       }
       renderToolbar();
-      renderBelowTransSection();
+      renderScriptPane();
     }
 
     function renderAll() {
       renderTabs();
       renderToolbar();
       renderScriptPane();
-      renderBelowTransSection();
       renderAnswerPane();
     }
 
@@ -1746,13 +1740,18 @@
     el.btnVarR.addEventListener('click', () => switchVariation('R'));
 
     el.btnGrade.addEventListener('click', () => gradeScene(appState.activeSceneId, false));
-    el.btnToggleBelowTrans.addEventListener('click', toggleBelowTrans);
-    el.btnCardToggleBelow.addEventListener('click', toggleBelowTrans);
+    el.btnToggleInlineTrans.addEventListener('click', toggleInlineTrans);
+    el.btnHeaderToggleInlineTrans.addEventListener('click', toggleInlineTrans);
 
     el.btnToggleAllModels.addEventListener('click', () => {
       const st = sceneStates[appState.activeSceneId];
       st.showAllModels = !st.showAllModels;
-      if (st.showAllModels) st.showBelowTrans = true;
+      if (st.showAllModels) {
+        st.showInlineTrans = true;
+      } else {
+        st.showInlineTrans = false;
+        st.inlineTransOpen = {};
+      }
       renderAll();
     });
     el.btnResetScene.addEventListener('click', resetCurrentScene);
