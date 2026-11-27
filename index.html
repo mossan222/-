@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>魔女の宅急便 英語IIB 試験対策クイズ</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Noto Sans JP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '"Noto Sans JP"', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-indigo-100 selection:text-indigo-900">
+
+  <!-- ヘッダー -->
+  <header class="bg-white/90 backdrop-blur border-b border-slate-200 sticky top-0 z-30">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow-sm shrink-0">
+          K
+        </div>
+        <div class="truncate">
+          <h1 class="text-sm sm:text-base font-bold text-slate-900 truncate">魔女の宅急便 英語IIB 試験対策</h1>
+          <p class="text-xs text-slate-500 truncate">場面1〜5 ＋ 参考表現（全117問）</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <button
+          id="btn-header-home"
+          type="button"
+          class="hidden px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-xl border border-slate-200 transition-colors"
+        >
+          設定へ戻る
+        </button>
+      </div>
+    </div>
+    <!-- クイズ中の進捗バー -->
+    <div id="header-progress-wrap" class="hidden w-full bg-slate-100 h-1.5">
+      <div id="header-progress-bar" class="bg-indigo-600 h-1.5 transition-all duration-300" style="width: 0%"></div>
+    </div>
+  </header>
+
+  <!-- トースト通知（alert/confirmの代替） -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-medium shadow-lg transition-opacity duration-200"></div>
+
+  <!-- メインコンテンツ -->
+  <main class="flex-1 w-full max-w-3xl mx-auto px-4 py-6 sm:py-8">
+
+    <!-- ==================== 1. スタート（設定）画面 ==================== -->
+    <section id="screen-start" class="space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-7 space-y-6">
+        <div>
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 mb-2">
+            手入力式ドリル
+          </span>
+          <h2 class="text-xl sm:text-2xl font-bold text-slate-900">出題設定を選んでスタート</h2>
+          <p class="text-sm text-slate-500 mt-1">
+            前置詞の穴埋め・単語・和訳をまとめて対策できます。キーボードのEnterキーでテンポよく演習できます。
+          </p>
+        </div>
+
+        <!-- 出題形式 -->
+        <div class="space-y-2.5">
+          <label class="block text-sm font-bold text-slate-700">1. 出題形式</label>
+          <div id="filter-type" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <button type="button" data-val="all" class="filter-btn-type p-3 rounded-xl border text-sm font-semibold transition-all text-center">全部入り</button>
+            <button type="button" data-val="prep" class="filter-btn-type p-3 rounded-xl border text-sm font-semibold transition-all text-center">前置詞・副詞</button>
+            <button type="button" data-val="vocab" class="filter-btn-type p-3 rounded-xl border text-sm font-semibold transition-all text-center">単語・表現</button>
+            <button type="button" data-val="trans" class="filter-btn-type p-3 rounded-xl border text-sm font-semibold transition-all text-center">和訳</button>
+          </div>
+        </div>
+
+        <!-- 場面フィルター -->
+        <div class="space-y-2.5">
+          <label class="block text-sm font-bold text-slate-700">2. 場面フィルター</label>
+          <div id="filter-scene" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button type="button" data-val="all" class="filter-btn-scene px-3.5 py-2.5 rounded-xl border text-sm font-medium transition-all text-left">全範囲（場面1〜5＋参考表現）</button>
+            <button type="button" data-val="1" class="filter-btn-scene px-3.5 py-2.5 rounded-xl border text-sm font-medium transition-all text-left">場面1：旅立ち</button>
+            <button type="button" data-val="2" class="filter-btn-scene px-3.5 py-2.5 rounded-xl border text-sm font-medium transition-all text-left">場面2：先輩魔女</button>
+            <button type="button" data-val="3" class="filter-btn-scene px-3.5 py-2.5 rounded-xl border text-sm font-medium transition-all text-left">場面3：豪雨・海・時計塔</button>
+            <button type="button" data-val="4" class="filter-btn-scene px-3.5 py-2.5 rounded-xl border text-sm font-medium transition-all text-left">場面4：警官・トンボ</button>
+            <button type="button" data-val="5" class="filter-btn-scene px-3.5 py-2.5 rounded-xl border text-sm font-medium transition-all text-left">場面5：宿探し・おソノさん</button>
+            <button type="button" data-val="ref" class="filter-btn-scene px-3.5 py-2.5 rounded-xl border text-sm font-medium transition-all text-left sm:col-span-2">参考表現（スクリプト外）</button>
+          </div>
+        </div>
+
+        <!-- 出題順 -->
+        <div class="space-y-2.5">
+          <label class="block text-sm font-bold text-slate-700">3. 出題順</label>
+          <div id="filter-order" class="grid grid-cols-2 gap-2.5">
+            <button type="button" data-val="order" class="filter-btn-order p-3 rounded-xl border text-sm font-semibold transition-all text-center">順番通り</button>
+            <button type="button" data-val="shuffle" class="filter-btn-order p-3 rounded-xl border text-sm font-semibold transition-all text-center">ランダム（シャッフル）</button>
+          </div>
+        </div>
+
+        <!-- 該当問題数とスタートボタン -->
+        <div class="pt-2 border-t border-slate-100 space-y-3">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-500">選択中の該当問題数</span>
+            <span id="matching-count" class="font-bold text-indigo-700 text-base">117問</span>
+          </div>
+          <button
+            id="btn-start-quiz"
+            type="button"
+            class="w-full py-3.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-base shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            クイズを開始する
+          </button>
+
+          <!-- 復習ボタン（間違えた問題がある場合のみ表示） -->
+          <div id="start-review-wrap" class="hidden pt-2">
+            <div class="flex flex-col sm:flex-row gap-2">
+              <button
+                id="btn-start-review"
+                type="button"
+                class="flex-1 py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm shadow-sm transition-all"
+              >
+                間違えた問題だけ解き直す（<span id="start-review-count">0</span>問）
+              </button>
+              <button
+                id="btn-clear-review"
+                type="button"
+                class="py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-600 border border-slate-200 font-medium text-xs sm:text-sm transition-all"
+              >
+                復習リストをクリア
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 操作ヒント -->
+      <div class="bg-indigo-50/60 border border-indigo-100 rounded-2xl p-4 text-xs sm:text-sm text-indigo-900 space-y-1">
+        <p class="font-bold">💡 効率よく使うコツ</p>
+        <p>・前置詞・単語問題では、入力後に <kbd class="px-1.5 py-0.5 bg-white border border-indigo-200 rounded text-xs font-mono">Enter</kbd> で判定、もう一度 <kbd class="px-1.5 py-0.5 bg-white border border-indigo-200 rounded text-xs font-mono">Enter</kbd> で次の問題に進めます。</p>
+        <p>・和訳問題では、<kbd class="px-1.5 py-0.5 bg-white border border-indigo-200 rounded text-xs font-mono">Ctrl</kbd>+<kbd class="px-1.5 py-0.5 bg-white border border-indigo-200 rounded text-xs font-mono">Enter</kbd>（Macは⌘+Enter）でも解答を表示できます。</p>
+      </div>
+    </section>
+
+    <!-- ==================== 2. クイズ演習画面 ==================== -->
+    <section id="screen-quiz" class="hidden space-y-4">
+      <!-- ステータスバー -->
+      <div class="grid grid-cols-3 gap-2.5">
+        <div class="bg-white rounded-xl border border-slate-200/80 px-3 py-2.5 text-center shadow-sm">
+          <div class="text-[11px] font-medium text-slate-500">進捗</div>
+          <div class="text-sm sm:text-base font-bold text-slate-900">
+            <span id="stat-current">1</span> <span class="text-slate-400 font-normal">/</span> <span id="stat-total">10</span>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200/80 px-3 py-2.5 text-center shadow-sm">
+          <div class="text-[11px] font-medium text-slate-500">正答数</div>
+          <div id="stat-correct" class="text-sm sm:text-base font-bold text-emerald-600">0</div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200/80 px-3 py-2.5 text-center shadow-sm">
+          <div class="text-[11px] font-medium text-slate-500">連続正解</div>
+          <div class="text-sm sm:text-base font-bold text-amber-600"><span id="stat-streak">0</span> 🔥</div>
+        </div>
+      </div>
+
+      <!-- 問題カード -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-7 space-y-5">
+        <!-- タグ -->
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex flex-wrap items-center gap-2">
+            <span id="q-type-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-100 text-indigo-800">前置詞・副詞穴埋め</span>
+            <span id="q-scene-badge" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700">場面1：旅立ち</span>
+          </div>
+          <span id="q-review-badge" class="hidden px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-100 text-amber-800">復習モード</span>
+        </div>
+
+        <!-- 問題文エリア -->
+        <div class="space-y-3">
+          <p id="q-instruction" class="text-xs sm:text-sm font-medium text-slate-500"></p>
+          <div id="q-prompt" class="text-lg sm:text-xl font-bold text-slate-900 leading-relaxed break-words bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200/70"></div>
+          <div id="q-vocab-target-wrap" class="hidden flex items-center gap-2">
+            <span class="text-xs font-semibold text-slate-500">対象語句：</span>
+            <span id="q-vocab-target" class="px-3 py-1 rounded-lg bg-amber-100 text-amber-900 font-bold text-sm sm:text-base"></span>
+          </div>
+        </div>
+
+        <!-- 入力エリア（形式に応じて動的に切り替え） -->
+        <div id="input-area" class="space-y-3"></div>
+
+        <!-- アクションボタン（判定前） -->
+        <div id="action-submit-wrap" class="pt-1">
+          <button
+            id="btn-submit"
+            type="button"
+            class="w-full py-3.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-base shadow-sm transition-all"
+          >
+            解答を判定する
+          </button>
+        </div>
+
+        <!-- 判定・解説エリア（判定後に表示） -->
+        <div id="feedback-area" class="hidden space-y-4 pt-2 border-t border-slate-100">
+          <!-- 結果バナー（prep / vocab 用） -->
+          <div id="feedback-banner" class="hidden rounded-xl p-4 border">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <div class="flex items-center gap-2">
+                <span id="feedback-icon" class="text-xl"></span>
+                <span id="feedback-status" class="font-bold text-base"></span>
+              </div>
+              <!-- vocab用手動判定切り替えボタン -->
+              <button
+                id="btn-toggle-override"
+                type="button"
+                class="hidden px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors"
+              ></button>
+            </div>
+          </div>
+
+          <!-- 自分の解答（和訳用比較） -->
+          <div id="feedback-user-trans-wrap" class="hidden bg-slate-50 rounded-xl p-3.5 border border-slate-200">
+            <div class="text-xs font-bold text-slate-500 mb-1">あなたの和訳</div>
+            <p id="feedback-user-trans" class="text-sm sm:text-base text-slate-800 whitespace-pre-wrap"></p>
+          </div>
+
+          <!-- 模範解答＆解説 -->
+          <div class="bg-indigo-50/60 rounded-xl p-4 border border-indigo-100 space-y-2.5">
+            <div>
+              <div class="text-xs font-bold text-indigo-700 mb-0.5">模範解答</div>
+              <div id="feedback-answer" class="text-base sm:text-lg font-bold text-slate-900"></div>
+            </div>
+            <div id="feedback-exp-wrap">
+              <div class="text-xs font-bold text-indigo-700 mb-0.5">解説・ポイント</div>
+              <p id="feedback-exp" class="text-sm text-slate-700 leading-relaxed"></p>
+            </div>
+          </div>
+
+          <!-- 次へ進むボタン（prep / vocab 用） -->
+          <div id="next-btn-wrap" class="hidden">
+            <button
+              id="btn-next"
+              type="button"
+              class="w-full py-3.5 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-base shadow-sm transition-all"
+            >
+              次の問題へ（Enter）
+            </button>
+          </div>
+
+          <!-- 自己採点ボタン（trans 用） -->
+          <div id="trans-grade-wrap" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <button
+              id="btn-trans-correct"
+              type="button"
+              class="py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base shadow-sm transition-all"
+            >
+              ✓ できた（正解）
+            </button>
+            <button
+              id="btn-trans-wrong"
+              type="button"
+              class="py-3.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm sm:text-base shadow-sm transition-all"
+            >
+              ✕ もう一度（復習リストへ）
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. 結果画面 ==================== -->
+    <section id="screen-result" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-8 text-center space-y-6">
+        <div>
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 mb-2">
+            演習完了！
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">結果サマリー</h2>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 max-w-lg mx-auto">
+          <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/70">
+            <div class="text-xs font-semibold text-slate-500 mb-1">正答率</div>
+            <div id="res-rate" class="text-2xl sm:text-3xl font-extrabold text-indigo-600">0%</div>
+          </div>
+          <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/70">
+            <div class="text-xs font-semibold text-slate-500 mb-1">正答数</div>
+            <div class="text-xl sm:text-2xl font-extrabold text-emerald-600 mt-1">
+              <span id="res-correct">0</span><span class="text-sm text-slate-400 font-semibold"> / <span id="res-total">0</span></span>
+            </div>
+          </div>
+          <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/70">
+            <div class="text-xs font-semibold text-slate-500 mb-1">最大連続</div>
+            <div class="text-xl sm:text-2xl font-extrabold text-amber-600 mt-1"><span id="res-max-streak">0</span> 🔥</div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 pt-2 max-w-lg mx-auto">
+          <button
+            id="btn-res-review"
+            type="button"
+            class="hidden flex-1 py-3.5 px-5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm sm:text-base shadow-sm transition-all"
+          >
+            間違えた問題だけ解き直す（<span id="res-wrong-count">0</span>問）
+          </button>
+          <button
+            id="btn-res-retry"
+            type="button"
+            class="flex-1 py-3.5 px-5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm sm:text-base shadow-sm transition-all"
+          >
+            同じ設定でもう一度
+          </button>
+          <button
+            id="btn-res-home"
+            type="button"
+            class="flex-1 py-3.5 px-5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-sm sm:text-base transition-all"
+          >
+            設定画面に戻る
+          </button>
+        </div>
+      </div>
+
+      <!-- 今回間違えた問題の一覧 -->
+      <div id="res-missed-section" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-6 space-y-4">
+        <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+          今回間違えた問題（復習メモ）
+        </h3>
+        <div id="res-missed-list" class="space-y-3"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="py-4 text-center text-xs text-slate-400">
+    英語IIB 試験対策ドリル（場面1〜5 ＋ 参考表現）
+  </footer>
+
+  <script>
+    /**
+     * ============================================================
+     * 問題データ（全117問）
+     *  - 前置詞・副詞穴埋め (prep): 45問
+     *  - 単語・表現 (vocab): 40問
+     *  - 和訳 (trans): 32問
+     * ============================================================
+     */
+    const SCENE_LABELS = {
+      '1': '場面1：旅立ち',
+      '2': '場面2：先輩魔女',
+      '3': '場面3：豪雨・海・時計塔',
+      '4': '場面4：警官・トンボ',
+      '5': '場面5：宿探し・おソノさん',
+      'ref': '参考表現（スクリプト外）'
+    };
+
+    const TYPE_LABELS = {
+      'prep': '前置詞・副詞穴埋め',
+      'vocab': '単語・表現',
+      'trans': '和訳'
+    };
+
+    const QUESTIONS = [
+      // ================= 前置詞・副詞穴埋め (45問) =================
+      // 場面1
+      { id: 'p1', type: 'prep', scene: '1', text: "Jiji, climb up and turn ( ___ ) the radio.", ans: ["on"], exp: "turn on：電源を入れる" },
+      { id: 'p2', type: 'prep', scene: '1', text: "I'm going to miss the wonderful sound ( ___ ) those little bells.", ans: ["of"], exp: "the sound of ～：～の音" },
+      { id: 'p3', type: 'prep', scene: '1', text: "Jiji, climb ( ___ ) and turn on the radio.", ans: ["up"], exp: "climb up：上に登る" },
+
+      // 場面2
+      { id: 'p4', type: 'prep', scene: '2', text: "Would you mind turning ( ___ ) that radio?", ans: ["off"], exp: "turn off：電源を切る・消す" },
+      { id: 'p5', type: 'prep', scene: '2', text: "I prefer to fly ( ___ ) being distracted.", ans: ["without"], exp: "without -ing：～することなく" },
+      { id: 'p6', type: 'prep', scene: '2', text: "Could you tell me, is it really hard to get settled ( ___ ) a brand new city?", ans: ["into"], exp: "get settled into ～：～に落ち着く・馴染む" },
+      { id: 'p7', type: 'prep', scene: '2', text: "Yes, I tell fortunes ( ___ ) love.", ans: ["about"], exp: "tell fortunes about love：恋愛占いをする" },
+      { id: 'p8', type: 'prep', scene: '2', text: "Ah, well, I'm nearly finished ( ___ ) my training period.", ans: ["with"], exp: "be finished with ～：～を終えている" },
+      { id: 'p9', type: 'prep', scene: '2', text: "I'm going home soon to show ( ___ ) my new skills.", ans: ["off"], exp: "show off：見せびらかす・披露する" },
+      { id: 'p10', type: 'prep', scene: '2', text: "Yes, ( ___ ) you, I'm sure it looks big.", ans: ["to"], exp: "to you：あなたにとっては" },
+
+      // 場面3
+      { id: 'p11', type: 'prep', scene: '3', text: "We can't stay ( ___ )!", ans: ["up"], exp: "stay up：ここでは「（空中に）留まり続ける・持ちこたえる」" },
+      { id: 'p12', type: 'prep', scene: '3', text: "Hold ( ___ )!", ans: ["on"], exp: "hold on：しっかりつかまる・耐える" },
+      { id: 'p13', type: 'prep', scene: '3', text: "Won't we get ( ___ ) trouble?", ans: ["in"], exp: "get in trouble：トラブルになる・怒られる" },
+      { id: 'p14', type: 'prep', scene: '3', text: "I'm soaked through, down ( ___ ) the bone.", ans: ["to"], exp: "down to the bone：骨の髄まで、芯まで" },
+      { id: 'p15', type: 'prep', scene: '3', text: "We didn't mean to fall asleep ( ___ ) your breakfast.", ans: ["in"], exp: "in your breakfast：あなたの朝食の中で" },
+      { id: 'p16', type: 'prep', scene: '3', text: "Look, ( ___ ) ahead.", ans: ["up"], exp: "up ahead：前方に、少し先に" },
+      { id: 'p17', type: 'prep', scene: '3', text: "Look ( ___ ) this city!", ans: ["at"], exp: "look at ～：～を見る" },
+      { id: 'p18', type: 'prep', scene: '3', text: "A place like this would be great to live ( ___ ).", ans: ["in"], exp: "live in a place の前置詞残し" },
+      { id: 'p19', type: 'prep', scene: '3', text: "Why, uh, nobody's seen one around here ( ___ ) a long time.", ans: ["in"], exp: "in a long time：長い間" },
+      { id: 'p20', type: 'prep', scene: '3', text: "That's great. Our trip is ( ___ ).", ans: ["over"], exp: "be over：終わる" },
+
+      // 場面4
+      { id: 'p21', type: 'prep', scene: '4', text: "Who do you think you are, jumping ( ___ ) into the street like that?", ans: ["out"], exp: "jump out：飛び出す" },
+      { id: 'p22', type: 'prep', scene: '4', text: "You were almost responsible ( ___ ) a big accident, zooming around ( ___ ) your broom back there.", ans: ["for", "on"], exp: "be responsible for ～（～の責任がある）／ on your broom（ほうきに乗って）" },
+      { id: 'p23', type: 'prep', scene: '4', text: "I'm gonna have to write you ( ___ ).", ans: ["up"], exp: "write A up：Aを違反として記録する・報告書を書く" },
+      { id: 'p24', type: 'prep', scene: '4', text: "He's getting ( ___ )!", ans: ["away"], exp: "get away：逃げる" },
+      { id: 'p25', type: 'prep', scene: '4', text: "Miss, wait ( ___ ).", ans: ["up"], exp: "wait up：立ち止まって待つ" },
+      { id: 'p26', type: 'prep', scene: '4', text: "Worked ( ___ ) pretty good, huh?", ans: ["out"], exp: "work out：うまくいく" },
+      { id: 'p27', type: 'prep', scene: '4', text: "Hey, Tombo, maybe you can sweep her ( ___ ) her feet with that broom.", ans: ["off"], exp: "sweep A off one's feet：Aを夢中にさせる" },
+      { id: 'p28', type: 'prep', scene: '4', text: "Thank you for getting me out ( ___ ) trouble.", ans: ["of"], exp: "get A out of trouble：Aをトラブルから助け出す" },
+      { id: 'p29', type: 'prep', scene: '4', text: "You sound ( ___ ) my grandmother.", ans: ["like"], exp: "sound like ～：～のように聞こえる・～みたいだ" },
+      { id: 'p30', type: 'prep', scene: '4', text: "Just go ( ___ ). Leave me alone.", ans: ["away"], exp: "go away：立ち去る" },
+
+      // 場面5
+      { id: 'p31', type: 'prep', scene: '5', text: "I've come to this town because I'm a new witch ( ___ ) training.", ans: ["in"], exp: "in training：修行中の、見習いの" },
+      { id: 'p32', type: 'prep', scene: '5', text: "The woman ( ___ ) the baby carriage who just went ( ___ ) the corner.", ans: ["with", "around"], exp: "with ～（～を押した）／ go around the corner（角を曲がる）" },
+      { id: 'p33', type: 'prep', scene: '5', text: "I could reach her ( ___ ) no time.", ans: ["in"], exp: "in no time：あっという間に、すぐに" },
+      { id: 'p34', type: 'prep', scene: '5', text: "Yeah, I'd like one ( ___ ) those.", ans: ["of"], exp: "one of those：あちらのものの1つ" },
+      { id: 'p35', type: 'prep', scene: '5', text: "Come ( ___ ) and wait a minute, will you?", ans: ["in"], exp: "come in：中に入る" },
+      { id: 'p36', type: 'prep', scene: '5', text: "Mmm, these are nice and fresh. Just out ( ___ ) the oven.", ans: ["of"], exp: "out of the oven：オーブンから出たばかり＝焼きたて" },
+      { id: 'p37', type: 'prep', scene: '5', text: "When I saw you fly off, I thought ( ___ ) a second I was dreaming.", ans: ["for"], exp: "for a second：一瞬（期間を表すfor）" },
+      { id: 'p38', type: 'prep', scene: '5', text: "Thanks ( ___ ) returning the pacifier.", ans: ["for"], exp: "Thanks for -ing：～してくれてありがとう" },
+      { id: 'p39', type: 'prep', scene: '5', text: "Well, I'll be ( ___ ) my way.", ans: ["on"], exp: "be on one's way：出発する、向かう途中である" },
+      { id: 'p40', type: 'prep', scene: '5', text: "Depends ( ___ ) the people. Now take me ( ___ ) instance.", ans: ["on", "for"], exp: "depend on ～（～次第）／ take A for instance（Aを例に取る）" },
+      { id: 'p41', type: 'prep', scene: '5', text: "We have a spare room ( ___ ) the attic.", ans: ["in"], exp: "in the attic：屋根裏に" },
+      { id: 'p42', type: 'prep', scene: '5', text: "You'd really let me stay ( ___ ) you?", ans: ["with"], exp: "stay with ～：～と一緒に住む・泊まる" },
+
+      // 参考表現
+      { id: 'p43', type: 'prep', scene: 'ref', text: "What would you like ( ___ ) drink?", ans: ["for"], exp: "What would you like for drink?：飲み物は何になさいますか？" },
+      { id: 'p44', type: 'prep', scene: 'ref', text: "The second shelf ( ___ ) the top.", ans: ["from"], exp: "from the top：上から" },
+      { id: 'p45', type: 'prep', scene: 'ref', text: "all the way ( ___ ) ～（～からはるばる）", ans: ["from"], exp: "all the way from ～：～からはるばる" },
+
+      // ================= 単語・表現 (40問) =================
+      // 場面1
+      { id: 'v1', type: 'vocab', scene: '1', text: "Aim your broomstick.", highlight: ["Aim"], target: "aim", ans: "～を狙う、向ける", keys: ["狙", "向"], exp: "命令文。Aim + 目的語 で「～を狙う・向ける」。" },
+      { id: 'v2', type: 'vocab', scene: '1', text: "I'm going to miss the wonderful sound of those little bells.", highlight: ["miss"], target: "miss", ans: "恋しく思う、寂しく思う", keys: ["恋し", "寂し", "さみし"], exp: "人や物がなくて寂しく思う・恋しく思う。" },
+      { id: 'v3', type: 'vocab', scene: '1', text: "I don't think I can handle it.", highlight: ["handle"], target: "handle", ans: "対処する、うまく扱う", keys: ["対処", "扱"], exp: "handle it で「それをうまく対処する・扱う」。" },
+
+      // 場面2
+      { id: 'v4', type: 'vocab', scene: '2', text: "I prefer to fly without being distracted.", highlight: ["distracted"], target: "distracted", ans: "気が散った、注意をそらされた", keys: ["気が散", "注意", "集中"], exp: "without being distracted で「気を散らされることなく」。" },
+      { id: 'v5', type: 'vocab', scene: '2', text: "Oh, yes, a lot can go wrong.", highlight: ["go wrong"], target: "go wrong", ans: "うまくいかない、問題が起きる", keys: ["うまくいかない", "問題", "失敗", "悪く"], exp: "a lot can go wrong で「たくさんのことがうまくいかないこともある」。" },
+      { id: 'v6', type: 'vocab', scene: '2', text: "But since my skill is fortune-telling...", highlight: ["fortune-telling"], target: "fortune-telling", ans: "占い", keys: ["占"], exp: "tell fortunes で「占いをする」。" },
+      { id: 'v7', type: 'vocab', scene: '2', text: "I'm nearly finished with my training period.", highlight: ["period"], target: "period", ans: "期間", keys: ["期間"], exp: "training period で「修行期間・訓練期間」。" },
+      { id: 'v8', type: 'vocab', scene: '2', text: "I hope you don't have too tough a time.", highlight: ["tough"], target: "tough", ans: "大変な、つらい、厳しい", keys: ["大変", "つら", "厳し", "苦労"], exp: "have a tough time で「苦労する・大変な思いをする」。" },
+      { id: 'v9', type: 'vocab', scene: '2', text: "Geez, what a snob.", highlight: ["snob"], target: "snob", ans: "気取り屋、感じの悪いやつ", keys: ["気取", "感じ", "嫌な", "鼻に"], exp: "見下すような気取り屋・嫌なやつを指す。" },
+
+      // 場面3
+      { id: 'v10', type: 'vocab', scene: '3', text: "I'm soaked through, down to the bone.", highlight: ["soaked"], target: "soaked", ans: "びしょ濡れの", keys: ["びしょ", "濡"], exp: "be soaked through で「完全にびしょ濡れ」。" },
+      { id: 'v11', type: 'vocab', scene: '3', text: "Big deal, just a big puddle of water.", highlight: ["puddle"], target: "puddle", ans: "水たまり", keys: ["水たまり", "水溜"], exp: "海を見たジジのセリフ「ただの大きな水たまりじゃないか」。" },
+      { id: 'v12', type: 'vocab', scene: '3', text: "Big deal, just a big puddle of water.", highlight: ["Big deal"], target: "big deal（皮肉）", ans: "大したことない", keys: ["大したこと", "たいしたこと"], exp: "本来は「重要なこと」だが、皮肉で「大したことない」の意味。" },
+      { id: 'v13', type: 'vocab', scene: '3', text: "I wonder if they have a witch there.", highlight: ["wonder"], target: "wonder", ans: "～かなと思う、疑問に思う、不思議に思う", keys: ["疑問", "不思議", "かな"], exp: "I wonder if ～ で「～かなあ／～だろうか」。" },
+      { id: 'v14', type: 'vocab', scene: '3', text: "Bless my hourglass.", highlight: ["hourglass"], target: "hourglass", ans: "砂時計", keys: ["砂時計"], exp: "時計塔のおじいちゃんの驚きのセリフ。" },
+
+      // 場面4
+      { id: 'v15', type: 'vocab', scene: '4', text: "And we'd be honored if we could live here.", highlight: ["be honored"], target: "be honored", ans: "光栄に思う", keys: ["光栄"], exp: "would be honored if ... could で丁寧な願望表現。" },
+      { id: 'v16', type: 'vocab', scene: '4', text: "You were almost responsible for a big accident.", highlight: ["responsible"], target: "responsible", ans: "責任がある", keys: ["責任"], exp: "be responsible for ～ で「～の責任がある」。" },
+      { id: 'v17', type: 'vocab', scene: '4', text: "You're supposed to obey the law.", highlight: ["obey"], target: "obey", ans: "従う、守る", keys: ["従", "守"], exp: "obey the law で「法律に従う・守る」。" },
+      { id: 'v18', type: 'vocab', scene: '4', text: "I have to do that with every minor.", highlight: ["minor"], target: "minor", ans: "未成年者", keys: ["未成年"], exp: "法律・警官の文脈では名詞で「未成年者」。" },
+      { id: 'v19', type: 'vocab', scene: '4', text: "I sure fooled that cop, huh?", highlight: ["fooled"], target: "fool（動詞）", ans: "だます", keys: ["だま", "騙"], exp: "動詞の fool は「人をだます」。cop は「警官」。" },
+      { id: 'v20', type: 'vocab', scene: '4', text: "Hey, that was me yelling thief.", highlight: ["yelling"], target: "yell", ans: "叫ぶ、大声を出す", keys: ["叫", "大声"], exp: "「泥棒！」と叫んでいたのは僕だよ、の場面。" },
+      { id: 'v21', type: 'vocab', scene: '4', text: "It's very rude to talk to a girl...", highlight: ["rude"], target: "rude", ans: "失礼な、無礼な", keys: ["失礼", "無礼"], exp: "It's very rude to ～ で「～するのはとても失礼だ」。" },
+      { id: 'v22', type: 'vocab', scene: '4', text: "You're kind of old-fashioned, aren't you?", highlight: ["old-fashioned"], target: "old-fashioned", ans: "古風な、時代遅れの", keys: ["古風", "時代遅れ", "古"], exp: "kind of old-fashioned で「ちょっと古風な」。" },
+      { id: 'v23', type: 'vocab', scene: '4', text: "Leave me alone.", highlight: ["Leave", "alone"], target: "leave A alone", ans: "Aを放っておく、一人にしておく", keys: ["放って", "一人", "ほって"], exp: "命令文で「放っておいて」。" },
+
+      // 場面5
+      { id: 'v24', type: 'vocab', scene: '5', text: "Do you have some identification?", highlight: ["identification"], target: "identification", ans: "身分証明書（ID）", keys: ["身分", "ID", "証明"], exp: "ホテルのフロントでのやり取り。IDの正式形。" },
+      { id: 'v25', type: 'vocab', scene: '5', text: "Oh, never mind.", highlight: ["never mind"], target: "never mind", ans: "気にしないで、もういいです", keys: ["気にしない", "もういい", "構わない"], exp: "「もう結構です・気にしないでください」の定番表現。" },
+      { id: 'v26', type: 'vocab', scene: '5', text: "I'll bet there are bigger and better ones.", highlight: ["bet"], target: "bet", ans: "（確信を持って）きっと～だと思う、賭ける", keys: ["確信", "きっと", "賭", "かけ"], exp: "確信度：bet（強い確信）＞ think（中立）＞ guess（推測）。" },
+      { id: 'v27', type: 'vocab', scene: '5', text: "You forgot your baby's pacifier!", highlight: ["pacifier"], target: "pacifier", ans: "おしゃぶり", keys: ["おしゃぶり"], exp: "おソノさんとの出会いのきっかけになる重要単語。" },
+      { id: 'v28', type: 'vocab', scene: '5', text: "I'm sorry, folks, but could you wait just a minute?", highlight: ["folks"], target: "folks", ans: "皆さん、人々", keys: ["皆", "みな", "人々"], exp: "親しみを込めて「皆さん」と呼びかける表現。" },
+      { id: 'v29', type: 'vocab', scene: '5', text: "The woman with the baby carriage...", highlight: ["baby carriage"], target: "baby carriage", ans: "ベビーカー、乳母車", keys: ["ベビーカー", "乳母車"], exp: "ベビーカーを押していた女性。" },
+      { id: 'v30', type: 'vocab', scene: '5', text: "My pleasure.", highlight: ["My pleasure"], target: "my pleasure", ans: "どういたしまして（お役に立ててうれしいです）", keys: ["どういたしまして", "喜", "うれし"], exp: "Thank you に対する丁寧な返答。" },
+      { id: 'v31', type: 'vocab', scene: '5', text: "Your new delivery girl is really quite special.", highlight: ["delivery"], target: "delivery", ans: "配達", keys: ["配達"], exp: "delivery girl で「配達係の女の子」。" },
+      { id: 'v32', type: 'vocab', scene: '5', text: "Bakery's downstairs. Upstairs is home.", highlight: ["downstairs", "Upstairs"], target: "downstairs / upstairs", ans: "下の階 / 上の階", keys: ["下の階", "上の階", "階下", "階上"], exp: "stair＝階段。downstairs（下の階）、upstairs（上の階）。" },
+      { id: 'v33', type: 'vocab', scene: '5', text: "So tell me, whereabouts are you two staying?", highlight: ["whereabouts"], target: "whereabouts", ans: "どの辺り", keys: ["どの辺", "どのあた", "どのへん"], exp: "where に about がついて「どの辺り」とぼかす表現。" },
+      { id: 'v34', type: 'vocab', scene: '5', text: "We have a spare room in the attic.", highlight: ["spare", "attic"], target: "spare / attic", ans: "余分な・空いている / 屋根裏", keys: ["屋根裏", "空", "余分", "予備"], exp: "spare room（空き部屋・予備の部屋）、attic（屋根裏）。" },
+      { id: 'v35', type: 'vocab', scene: '5', text: "But we haven't introduced ourselves.", highlight: ["introduced ourselves"], target: "introduce oneself", ans: "自己紹介をする", keys: ["自己紹介"], exp: "再帰代名詞 oneself を使って「自己紹介する」。" },
+
+      // 参考表現
+      { id: 'v36', type: 'vocab', scene: 'ref', text: "shelf（授業内の参考表現）", highlight: ["shelf"], target: "shelf", ans: "棚", keys: ["棚", "たな"], exp: "top shelf（一番上の棚）、middle（真ん中）、bottom（一番下）。" },
+      { id: 'v37', type: 'vocab', scene: 'ref', text: "starter（レストラン／居酒屋での意味）", highlight: ["starter"], target: "starter", ans: "前菜（居酒屋ならお通し）", keys: ["前菜", "お通し"], exp: "おしゃれなレストランでは「前菜」、居酒屋なら「お通し」。" },
+      { id: 'v38', type: 'vocab', scene: 'ref', text: "rely on（depend on の類義語）", highlight: ["rely on"], target: "rely on", ans: "～に頼る、信頼する", keys: ["頼", "信頼"], exp: "depend on の類義語として授業で紹介された重要表現。" },
+      { id: 'v39', type: 'vocab', scene: 'ref', text: "suppose（I suppose so.）", highlight: ["suppose"], target: "suppose", ans: "～だと思う", keys: ["思"], exp: "I suppose so. ＝ I think so.（そう思うよ）。" },
+      { id: 'v40', type: 'vocab', scene: 'ref', text: "It depends.（会話の定番表現）", highlight: ["It depends"], target: "It depends.", ans: "時と場合による、状況次第だ", keys: ["場合", "状況", "次第"], exp: "誘いや質問に対して「状況次第かな」と返す頻出表現。" },
+
+      // ================= 和訳 (32問) =================
+      // 場面1
+      { id: 't1', type: 'trans', scene: '1', text: "May our little baby be well and have a safe trip.", ans: "私たちの小さな子が元気で、安全な旅ができますように。", exp: "May + S + 動詞原形 は祈願「～でありますように」。" },
+      { id: 't2', type: 'trans', scene: '1', text: "I'm going to miss the wonderful sound of those little bells.", ans: "あの小さな鈴の素晴らしい音が恋しくなるだろうな。", exp: "miss＝恋しく思う。" },
+      { id: 't3', type: 'trans', scene: '1', text: "I'm headed south to see the ocean.", ans: "海を見るために南へ向かっているところよ。", exp: "be headed＝～へ向かっている。to see は目的の不定詞。" },
+      { id: 't4', type: 'trans', scene: '1', text: "I don't think I can handle it.", ans: "私にはそれをうまく扱えそうにないと思う。", exp: "I don't think + 文。handle＝対処する・扱う。" },
+
+      // 場面2
+      { id: 't5', type: 'trans', scene: '2', text: "Would you mind turning off that radio? I prefer to fly without being distracted.", ans: "そのラジオを消してもらえませんか？私は気を散らされずに飛ぶのが好きなんです。", exp: "Would you mind -ing?（～していただけませんか）、without being distracted（受動態の動名詞）。" },
+      { id: 't6', type: 'trans', scene: '2', text: "Could you tell me, is it really hard to get settled into a brand new city?", ans: "教えてくれる？まったく新しい街に落ち着くのって本当に大変なの？", exp: "get settled into ～（～に落ち着く）、brand new（まったく新しい）。" },
+      { id: 't7', type: 'trans', scene: '2', text: "But since my skill is fortune-telling, I can handle anything.", ans: "でも私の特技は占いだから、何でも対処できるわ。", exp: "since＝～なので（理由）。" },
+      { id: 't8', type: 'trans', scene: '2', text: "I'm going home soon to show off my new skills.", ans: "もうすぐ故郷に帰って、自分の新しい力を披露するのよ。", exp: "現在進行形で近い未来。show off＝見せびらかす・披露する。" },
+      { id: 't9', type: 'trans', scene: '2', text: "I hope you don't have too tough a time.", ans: "あなたがあまり苦労しないといいですね。", exp: "too + 形容詞 + a + 名詞 の語順。" },
+
+      // 場面3
+      { id: 't10', type: 'trans', scene: '3', text: "We better rest here until it's dry.", ans: "乾くまでここで休んだほうがいいね。", exp: "We better＝We had better（～したほうがよい）。" },
+      { id: 't11', type: 'trans', scene: '3', text: "Oops! Sorry! We didn't mean to fall asleep in your breakfast.", ans: "おっと、ごめんなさい！あなたの朝食の中で眠ってしまうつもりはなかったんです。", exp: "didn't mean to do（～するつもりはなかった）、fall asleep（眠ってしまう）。" },
+      { id: 't12', type: 'trans', scene: '3', text: "I wonder if they have a witch there.", ans: "あそこに魔女がいるのかな。", exp: "I wonder if ～（～かなと思う）。ifは「～かどうか」。" },
+      { id: 't13', type: 'trans', scene: '3', text: "This is just the kind of place I've always imagined!", ans: "ここはまさに私がずっと想像していたような場所だわ！", exp: "placeの後ろに関係代名詞thatが省略。現在完了。" },
+      { id: 't14', type: 'trans', scene: '3', text: "A place like this would be great to live in.", ans: "こんな場所に住めたら素晴らしいだろうな。", exp: "wouldは仮定的ニュアンス。live inの前置詞残し。" },
+      { id: 't15', type: 'trans', scene: '3', text: "Why, uh, nobody's seen one around here in a long time.", ans: "ええと、この辺りでは長い間、誰も（魔女を）見ていませんね。", exp: "nobody's seen＝nobody has seen。oneはa witchを指す。" },
+
+      // 場面4
+      { id: 't16', type: 'trans', scene: '4', text: "And we'd be honored if we could live here.", ans: "そして、もしここに住めたらとても光栄です。", exp: "would be honored if ... could（仮定法の丁寧な願望）。" },
+      { id: 't17', type: 'trans', scene: '4', text: "You were almost responsible for a big accident, zooming around on your broom back there.", ans: "あそこでほうきに乗って飛び回って、大事故を起こしかけたんだぞ。", exp: "be responsible for ～（～の責任がある）、zooming around（分詞構文）。" },
+      { id: 't18', type: 'trans', scene: '4', text: "You're supposed to obey the law. I'm gonna have to write you up.", ans: "法律を守らなければならないんだ。違反報告書を書くことになるぞ。", exp: "be supposed to do（～することになっている）、write A up（違反記録を書く）。" },
+      { id: 't19', type: 'trans', scene: '4', text: "You gotta be a real witch, the way you can fly that broom.", ans: "そのほうきで飛べる様子からすると、君は本物の魔女に違いないね。", exp: "gotta＝have got to（～に違いない）、the way ～（～の様子からすると）。" },
+      { id: 't20', type: 'trans', scene: '4', text: "It's very rude to talk to a girl before you've been introduced and before you know her name.", ans: "女の子に、紹介される前や名前を知る前に話しかけるのはとても失礼です。", exp: "形式主語構文、before you've been introduced（現在完了の受動態）。" },
+
+      // 場面5
+      { id: 't21', type: 'trans', scene: '5', text: "I'll bet there are bigger and better ones, ones that are friendlier than this.", ans: "ここよりもっと大きくて良い町、ここより親切な町がきっとあると思うよ。", exp: "I'll bet（確信を持ってきっと～だと思う）、ones＝towns。" },
+      { id: 't22', type: 'trans', scene: '5', text: "Without this, the baby will wake up and cry all the way home.", ans: "これがないと、赤ちゃんは目を覚まして家に着くまでずっと泣いてしまうわ。", exp: "Without this（これがなければ）、all the way home（家までずっと）。" },
+      { id: 't23', type: 'trans', scene: '5', text: "Excuse me, but would you like me to deliver it for you?", ans: "すみません、あなたの代わりにそれを届けましょうか？", exp: "Would you like me to do?（私に～してほしいですか＝～しましょうか）。" },
+      { id: 't24', type: 'trans', scene: '5', text: "Sorry to surprise you, but the lady in the bakery asked me to return this pacifier.", ans: "驚かせてごめんなさい、でもパン屋さんの女性にこのおしゃぶりを返すように頼まれたんです。", exp: "Sorry to do（理由の不定詞）、ask A to do（Aに～するよう頼む）。" },
+      { id: 't25', type: 'trans', scene: '5', text: "When I saw you fly off, I thought for a second I was dreaming.", ans: "あなたが飛び立っていくのを見たとき、一瞬夢を見ているのかと思ったわ。", exp: "知覚動詞 see + O + 原形、for a second（一瞬）。" },
+      { id: 't26', type: 'trans', scene: '5', text: "The baby's mother told me to give you this message.", ans: "赤ちゃんのお母さんが、このメッセージをあなたに渡すように私に言ったんです。", exp: "tell O to do（Oに～するように言う）。askとの違いに注意。" },
+      { id: 't27', type: 'trans', scene: '5', text: "I really must do something to show you my thanks.", ans: "あなたに感謝の気持ちを示すために、私は本当に何かしなければいけないわ。", exp: "my thanks＝名詞の「感謝の気持ち」。" },
+      { id: 't28', type: 'trans', scene: '5', text: "So tell me if I'm right. I'm guessing you're a witch in training.", ans: "じゃあ私が合っているかどうか教えて。あなたは修行中の魔女なんだと思うんだけど。", exp: "tell me if ～（～かどうか）、guess（確信のない推測）。" },
+      { id: 't29', type: 'trans', scene: '5', text: "I really love it here, but people don't seem to like witches in this town.", ans: "私はここがとても気に入っているんです、でもこの町の人々はどうやら魔女が好きではないようですね。", exp: "love（カジュアルな大好き・お気に入り）、seem to do（～のようだ）。" },
+      { id: 't30', type: 'trans', scene: '5', text: "So tell me, whereabouts are you two staying?", ans: "それで教えて、あなたたち二人はどの辺りに泊まっているの（泊まる予定なの）？", exp: "whereabouts＝どの辺り。" },
+      { id: 't31', type: 'trans', scene: '5', text: "Why didn't you tell me you have no place to stay?", ans: "どうして泊まる場所がないって私に言ってくれなかったの？", exp: "no place to stay（泊まるための場所がない：不定詞の形容詞的用法）。" },
+      { id: 't32', type: 'trans', scene: '5', text: "You'd really let me stay with you?", ans: "本当にあなたと一緒に泊まらせていただけるんですか？", exp: "使役動詞let（許可のニュアンス：～させていただく）。" }
+    ];
+
+    /**
+     * ============================================================
+     * アプリケーション状態管理
+     * ============================================================
+     */
+    const STORAGE_KEY = 'kiki_quiz_wrong_ids_v1';
+
+    const state = {
+      // 設定
+      selectedType: 'all',
+      selectedScene: 'all',
+      selectedOrder: 'order',
+
+      // 復習リスト（永続化）
+      wrongIds: new Set(),
+
+      // 現在のセッション
+      isReviewMode: false,
+      sessionQuestions: [],
+      currentIndex: 0,
+      correctCount: 0,
+      streak: 0,
+      maxStreak: 0,
+      sessionMissed: [], // { question, userAnswerText }
+      answered: false,
+      currentIsCorrect: false,
+      prevStreakBeforeAnswer: 0
+    };
+
+    // localStorageから復習リストを読み込み
+    function loadWrongIds() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            state.wrongIds = new Set(parsed);
+          }
+        }
+      } catch (e) {
+        // ストレージ利用不可環境ではメモリ上のみで動作
+      }
+    }
+
+    function saveWrongIds() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...state.wrongIds]));
+      } catch (e) {
+        // 無視
+      }
+    }
+
+    /**
+     * ============================================================
+     * DOM要素参照
+     * ============================================================
+     */
+    const el = {
+      headerHomeBtn: document.getElementById('btn-header-home'),
+      headerProgressWrap: document.getElementById('header-progress-wrap'),
+      headerProgressBar: document.getElementById('header-progress-bar'),
+      toast: document.getElementById('toast'),
+
+      // 画面
+      screenStart: document.getElementById('screen-start'),
+      screenQuiz: document.getElementById('screen-quiz'),
+      screenResult: document.getElementById('screen-result'),
+
+      // スタート画面
+      matchingCount: document.getElementById('matching-count'),
+      btnStartQuiz: document.getElementById('btn-start-quiz'),
+      startReviewWrap: document.getElementById('start-review-wrap'),
+      btnStartReview: document.getElementById('btn-start-review'),
+      startReviewCount: document.getElementById('start-review-count'),
+      btnClearReview: document.getElementById('btn-clear-review'),
+
+      // クイズ画面
+      statCurrent: document.getElementById('stat-current'),
+      statTotal: document.getElementById('stat-total'),
+      statCorrect: document.getElementById('stat-correct'),
+      statStreak: document.getElementById('stat-streak'),
+      qTypeBadge: document.getElementById('q-type-badge'),
+      qSceneBadge: document.getElementById('q-scene-badge'),
+      qReviewBadge: document.getElementById('q-review-badge'),
+      qInstruction: document.getElementById('q-instruction'),
+      qPrompt: document.getElementById('q-prompt'),
+      qVocabTargetWrap: document.getElementById('q-vocab-target-wrap'),
+      qVocabTarget: document.getElementById('q-vocab-target'),
+      inputArea: document.getElementById('input-area'),
+      actionSubmitWrap: document.getElementById('action-submit-wrap'),
+      btnSubmit: document.getElementById('btn-submit'),
+
+      // フィードバック
+      feedbackArea: document.getElementById('feedback-area'),
+      feedbackBanner: document.getElementById('feedback-banner'),
+      feedbackIcon: document.getElementById('feedback-icon'),
+      feedbackStatus: document.getElementById('feedback-status'),
+      btnToggleOverride: document.getElementById('btn-toggle-override'),
+      feedbackUserTransWrap: document.getElementById('feedback-user-trans-wrap'),
+      feedbackUserTrans: document.getElementById('feedback-user-trans'),
+      feedbackAnswer: document.getElementById('feedback-answer'),
+      feedbackExpWrap: document.getElementById('feedback-exp-wrap'),
+      feedbackExp: document.getElementById('feedback-exp'),
+      nextBtnWrap: document.getElementById('next-btn-wrap'),
+      btnNext: document.getElementById('btn-next'),
+      transGradeWrap: document.getElementById('trans-grade-wrap'),
+      btnTransCorrect: document.getElementById('btn-trans-correct'),
+      btnTransWrong: document.getElementById('btn-trans-wrong'),
+
+      // 結果画面
+      resRate: document.getElementById('res-rate'),
+      resCorrect: document.getElementById('res-correct'),
+      resTotal: document.getElementById('res-total'),
+      resMaxStreak: document.getElementById('res-max-streak'),
+      btnResReview: document.getElementById('btn-res-review'),
+      resWrongCount: document.getElementById('res-wrong-count'),
+      btnResRetry: document.getElementById('btn-res-retry'),
+      btnResHome: document.getElementById('btn-res-home'),
+      resMissedSection: document.getElementById('res-missed-section'),
+      resMissedList: document.getElementById('res-missed-list')
+    };
+
+    /**
+     * ============================================================
+     * ユーティリティ関数
+     * ============================================================
+     */
+    let toastTimer = null;
+    function showToast(msg) {
+      el.toast.textContent = msg;
+      el.toast.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        el.toast.classList.add('hidden');
+      }, 2200);
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function showScreen(name) {
+      el.screenStart.classList.toggle('hidden', name !== 'start');
+      el.screenQuiz.classList.toggle('hidden', name !== 'quiz');
+      el.screenResult.classList.toggle('hidden', name !== 'result');
+
+      const inQuiz = name === 'quiz';
+      el.headerHomeBtn.classList.toggle('hidden', name === 'start');
+      el.headerProgressWrap.classList.toggle('hidden', !inQuiz);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /**
+     * ============================================================
+     * 設定画面ロジック
+     * ============================================================
+     */
+    function getFilteredQuestions() {
+      return QUESTIONS.filter((q) => {
+        const matchType = state.selectedType === 'all' || q.type === state.selectedType;
+        const matchScene = state.selectedScene === 'all' || q.scene === state.selectedScene;
+        return matchType && matchScene;
+      });
+    }
+
+    function updateFilterUI() {
+      // 形式ボタン
+      document.querySelectorAll('.filter-btn-type').forEach((btn) => {
+        const active = btn.dataset.val === state.selectedType;
+        btn.className = `filter-btn-type p-3 rounded-xl border text-sm font-semibold transition-all text-center ${
+          active
+            ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+            : 'bg-white text-slate-700 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/40'
+        }`;
+      });
+
+      // 場面ボタン
+      document.querySelectorAll('.filter-btn-scene').forEach((btn) => {
+        const active = btn.dataset.val === state.selectedScene;
+        const spanClass = btn.dataset.val === 'ref' ? ' sm:col-span-2' : '';
+        btn.className = `filter-btn-scene px-3.5 py-2.5 rounded-xl border text-sm font-medium transition-all text-left${spanClass} ${
+          active
+            ? 'bg-indigo-50 text-indigo-800 border-indigo-500 font-bold ring-1 ring-indigo-500'
+            : 'bg-white text-slate-700 border-slate-200 hover:border-indigo-300 hover:bg-slate-50'
+        }`;
+      });
+
+      // 出題順ボタン
+      document.querySelectorAll('.filter-btn-order').forEach((btn) => {
+        const active = btn.dataset.val === state.selectedOrder;
+        btn.className = `filter-btn-order p-3 rounded-xl border text-sm font-semibold transition-all text-center ${
+          active
+            ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+            : 'bg-white text-slate-700 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/40'
+        }`;
+      });
+
+      const list = getFilteredQuestions();
+      el.matchingCount.textContent = `${list.length}問`;
+      el.btnStartQuiz.disabled = list.length === 0;
+
+      // 復習リストの表示更新
+      const reviewCount = state.wrongIds.size;
+      el.startReviewCount.textContent = reviewCount;
+      el.startReviewWrap.classList.toggle('hidden', reviewCount === 0);
+    }
+
+    /**
+     * ============================================================
+     * クイズ開始・描画ロジック
+     * ============================================================
+     */
+    function startSession(reviewOnly = false) {
+      state.isReviewMode = reviewOnly;
+      let list = [];
+
+      if (reviewOnly) {
+        list = QUESTIONS.filter((q) => state.wrongIds.has(q.id));
+        if (list.length === 0) {
+          showToast('復習する問題がありません');
+          return;
+        }
+      } else {
+        list = getFilteredQuestions();
+        if (list.length === 0) {
+          showToast('該当する問題がありません');
+          return;
+        }
+      }
+
+      if (state.selectedOrder === 'shuffle') {
+        list = shuffleArray(list);
+      }
+
+      state.sessionQuestions = list;
+      state.currentIndex = 0;
+      state.correctCount = 0;
+      state.streak = 0;
+      state.maxStreak = 0;
+      state.sessionMissed = [];
+
+      showScreen('quiz');
+      renderQuestion();
+    }
+
+    function updateStatsUI() {
+      const total = state.sessionQuestions.length;
+      const current = state.currentIndex + 1;
+      el.statCurrent.textContent = current;
+      el.statTotal.textContent = total;
+      el.statCorrect.textContent = state.correctCount;
+      el.statStreak.textContent = state.streak;
+
+      const pct = Math.round(((state.currentIndex + (state.answered ? 1 : 0)) / total) * 100);
+      el.headerProgressBar.style.width = `${pct}%`;
+    }
+
+    function formatPrepPrompt(text, blankCount) {
+      let idx = 0;
+      const circled = ['①', '②', '③'];
+      return escapeHtml(text).replace(/\(\s*___\s*\)/g, () => {
+        const label = blankCount > 1 ? circled[idx] || (idx + 1) : '___';
+        idx++;
+        return `<span class="inline-block px-2.5 py-0.5 mx-1 rounded-lg bg-indigo-100 text-indigo-800 border-b-2 border-indigo-500 font-mono text-base sm:text-lg">( ${label} )</span>`;
+      });
+    }
+
+    function formatVocabPrompt(text, highlights) {
+      let html = escapeHtml(text);
+      if (Array.isArray(highlights) && highlights.length > 0) {
+        highlights.forEach((word) => {
+          const escapedWord = escapeHtml(word).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const regex = new RegExp(`(${escapedWord})`, 'i');
+          html = html.replace(
+            regex,
+            '<mark class="bg-amber-200/80 text-slate-900 px-1.5 py-0.5 rounded font-extrabold">$1</mark>'
+          );
+        });
+      }
+      return html;
+    }
+
+    function renderQuestion() {
+      const q = state.sessionQuestions[state.currentIndex];
+      state.answered = false;
+      state.currentIsCorrect = false;
+      updateStatsUI();
+
+      // バッジ設定
+      el.qTypeBadge.textContent = TYPE_LABELS[q.type];
+      el.qSceneBadge.textContent = SCENE_LABELS[q.scene];
+      el.qReviewBadge.classList.toggle('hidden', !state.isReviewMode);
+
+      // 色分け
+      if (q.type === 'prep') {
+        el.qTypeBadge.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-100 text-indigo-800';
+      } else if (q.type === 'vocab') {
+        el.qTypeBadge.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 text-amber-800';
+      } else {
+        el.qTypeBadge.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-800';
+      }
+
+      // フィードバック領域をリセット
+      el.feedbackArea.classList.add('hidden');
+      el.feedbackBanner.classList.add('hidden');
+      el.btnToggleOverride.classList.add('hidden');
+      el.feedbackUserTransWrap.classList.add('hidden');
+      el.nextBtnWrap.classList.add('hidden');
+      el.transGradeWrap.classList.add('hidden');
+      el.actionSubmitWrap.classList.remove('hidden');
+      el.qVocabTargetWrap.classList.add('hidden');
+
+      // 形式ごとの描画
+      el.inputArea.innerHTML = '';
+
+      if (q.type === 'prep') {
+        const count = q.ans.length;
+        el.qInstruction.textContent =
+          count > 1
+            ? '空欄①・②に入る適切な前置詞・副詞を1語ずつ入力してください。'
+            : '空欄に入る適切な前置詞・副詞を1語入力してください。';
+        el.qPrompt.innerHTML = formatPrepPrompt(q.text, count);
+        el.btnSubmit.textContent = '解答を判定する（Enter）';
+
+        const gridClass = count > 1 ? 'grid grid-cols-1 sm:grid-cols-2 gap-3' : 'block';
+        const wrapper = document.createElement('div');
+        wrapper.className = gridClass;
+
+        const circled = ['①', '②', '③'];
+        for (let i = 0; i < count; i++) {
+          const fieldWrap = document.createElement('div');
+          fieldWrap.className = 'space-y-1';
+          if (count > 1) {
+            const lbl = document.createElement('label');
+            lbl.className = 'block text-xs font-bold text-slate-600';
+            lbl.textContent = `空欄 ${circled[i]}`;
+            fieldWrap.appendChild(lbl);
+          }
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.autocomplete = 'off';
+          input.autocapitalize = 'none';
+          input.spellcheck = false;
+          input.dataset.blankIndex = i;
+          input.placeholder = count > 1 ? `空欄${circled[i]}の英単語` : '英単語を入力（例: on）';
+          input.className =
+            'quiz-input w-full px-4 py-3.5 rounded-xl border border-slate-300 bg-white text-base font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all';
+          fieldWrap.appendChild(input);
+          wrapper.appendChild(fieldWrap);
+        }
+        el.inputArea.appendChild(wrapper);
+        // 最初の入力欄へフォーカス
+        const firstInput = el.inputArea.querySelector('.quiz-input');
+        if (firstInput) firstInput.focus();
+
+      } else if (q.type === 'vocab') {
+        el.qInstruction.textContent = 'ハイライトされた語句・表現の日本語の意味を入力してください。';
+        el.qPrompt.innerHTML = formatVocabPrompt(q.text, q.highlight);
+        el.qVocabTargetWrap.classList.remove('hidden');
+        el.qVocabTarget.textContent = q.target;
+        el.btnSubmit.textContent = '解答を判定する（Enter）';
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.autocomplete = 'off';
+        input.placeholder = '日本語の意味を入力してください';
+        input.className =
+          'quiz-input w-full px-4 py-3.5 rounded-xl border border-slate-300 bg-white text-base font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all';
+        el.inputArea.appendChild(input);
+        input.focus();
+
+      } else if (q.type === 'trans') {
+        el.qInstruction.textContent = '次の英文を自然な日本語に訳してください（文法構造・ニュアンスを意識）。';
+        el.qPrompt.textContent = q.text;
+        el.btnSubmit.textContent = '解答・ポイントを見る';
+
+        const textarea = document.createElement('textarea');
+        textarea.rows = 3;
+        textarea.placeholder = 'ここに和訳を入力してください（空欄のまま解答を見ることもできます）';
+        textarea.className =
+          'quiz-textarea w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-base text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all resize-y';
+        el.inputArea.appendChild(textarea);
+        textarea.focus();
+      }
+    }
+
+    /**
+     * ============================================================
+     * 判定・採点ロジック
+     * ============================================================
+     */
+    function applyResultState(q, isCorrect, userAnswerText) {
+      state.currentIsCorrect = isCorrect;
+
+      if (isCorrect) {
+        state.correctCount++;
+        state.streak++;
+        if (state.streak > state.maxStreak) state.maxStreak = state.streak;
+        state.wrongIds.delete(q.id);
+      } else {
+        state.streak = 0;
+        state.wrongIds.add(q.id);
+        // セッション内の間違いリストに追加（重複回避）
+        if (!state.sessionMissed.some((item) => item.question.id === q.id)) {
+          state.sessionMissed.push({ question: q, userAnswerText });
+        }
+      }
+      saveWrongIds();
+      updateStatsUI();
+    }
+
+    function updateFeedbackBannerUI(isCorrect, showOverrideBtn = false) {
+      el.feedbackBanner.classList.remove('hidden');
+      if (isCorrect) {
+        el.feedbackBanner.className = 'rounded-xl p-4 border bg-emerald-50 border-emerald-200 text-emerald-900';
+        el.feedbackIcon.textContent = '⭕';
+        el.feedbackStatus.textContent = '正解！';
+      } else {
+        el.feedbackBanner.className = 'rounded-xl p-4 border bg-rose-50 border-rose-200 text-rose-900';
+        el.feedbackIcon.textContent = '❌';
+        el.feedbackStatus.textContent = '不正解';
+      }
+
+      if (showOverrideBtn) {
+        el.btnToggleOverride.classList.remove('hidden');
+        if (isCorrect) {
+          el.btnToggleOverride.textContent = '自分の答えを不正解にする';
+          el.btnToggleOverride.className =
+            'px-3 py-1.5 rounded-lg text-xs font-semibold border border-rose-300 bg-white text-rose-700 hover:bg-rose-50 transition-colors';
+        } else {
+          el.btnToggleOverride.textContent = '自分の答えを正解にする';
+          el.btnToggleOverride.className =
+            'px-3 py-1.5 rounded-lg text-xs font-semibold border border-emerald-300 bg-white text-emerald-700 hover:bg-emerald-50 transition-colors';
+        }
+      }
+    }
+
+    function submitCurrentQuestion() {
+      if (state.answered) return;
+      const q = state.sessionQuestions[state.currentIndex];
+      state.prevStreakBeforeAnswer = state.streak;
+
+      if (q.type === 'prep') {
+        const inputs = [...el.inputArea.querySelectorAll('.quiz-input')];
+        const userAnswers = inputs.map((inp) => inp.value.trim());
+
+        const isCorrect = q.ans.every(
+          (correctWord, idx) => userAnswers[idx].toLowerCase() === correctWord.toLowerCase()
+        );
+
+        // 入力欄をロック＆正誤ハイライト
+        inputs.forEach((inp, idx) => {
+          inp.disabled = true;
+          const ok = userAnswers[idx].toLowerCase() === q.ans[idx].toLowerCase();
+          inp.classList.add(ok ? 'border-emerald-500' : 'border-rose-500', ok ? 'bg-emerald-50/40' : 'bg-rose-50/40');
+        });
+
+        state.answered = true;
+        applyResultState(q, isCorrect, userAnswers.join(' / ') || '（無回答）');
+
+        el.actionSubmitWrap.classList.add('hidden');
+        el.feedbackArea.classList.remove('hidden');
+        updateFeedbackBannerUI(isCorrect, false);
+
+        const circled = ['①', '②', '③'];
+        el.feedbackAnswer.textContent =
+          q.ans.length > 1
+            ? q.ans.map((w, i) => `${circled[i]} ${w}`).join('　')
+            : q.ans[0];
+        el.feedbackExp.textContent = q.exp;
+        el.nextBtnWrap.classList.remove('hidden');
+        el.btnNext.textContent =
+          state.currentIndex + 1 === state.sessionQuestions.length
+            ? '結果を見る（Enter）'
+            : '次の問題へ（Enter）';
+
+      } else if (q.type === 'vocab') {
+        const input = el.inputArea.querySelector('.quiz-input');
+        const userVal = input ? input.value.trim() : '';
+        if (input) input.disabled = true;
+
+        // キーワード部分一致で自動判定
+        const normalizedUser = userVal.toLowerCase();
+        const isCorrect =
+          normalizedUser.length > 0 &&
+          q.keys.some((k) => normalizedUser.includes(k.toLowerCase()));
+
+        state.answered = true;
+        applyResultState(q, isCorrect, userVal || '（無回答）');
+
+        el.actionSubmitWrap.classList.add('hidden');
+        el.feedbackArea.classList.remove('hidden');
+        updateFeedbackBannerUI(isCorrect, true);
+
+        el.feedbackAnswer.textContent = q.ans;
+        el.feedbackExp.textContent = q.exp;
+        el.nextBtnWrap.classList.remove('hidden');
+        el.btnNext.textContent =
+          state.currentIndex + 1 === state.sessionQuestions.length
+            ? '結果を見る（Enter）'
+            : '次の問題へ（Enter）';
+
+      } else if (q.type === 'trans') {
+        const textarea = el.inputArea.querySelector('.quiz-textarea');
+        const userVal = textarea ? textarea.value.trim() : '';
+        if (textarea) textarea.disabled = true;
+
+        state.answered = true;
+        el.actionSubmitWrap.classList.add('hidden');
+        el.feedbackArea.classList.remove('hidden');
+
+        el.feedbackUserTransWrap.classList.remove('hidden');
+        el.feedbackUserTrans.textContent = userVal || '（未入力）';
+        el.feedbackAnswer.textContent = q.ans;
+        el.feedbackExp.textContent = q.exp;
+        el.transGradeWrap.classList.remove('hidden');
+      }
+    }
+
+    // 単語問題の手動判定切り替え
+    function toggleVocabOverride() {
+      const q = state.sessionQuestions[state.currentIndex];
+      if (!state.answered || q.type !== 'vocab') return;
+
+      const input = el.inputArea.querySelector('.quiz-input');
+      const userVal = input ? input.value.trim() : '';
+
+      if (state.currentIsCorrect) {
+        // 正解 -> 不正解へ変更
+        state.currentIsCorrect = false;
+        state.correctCount = Math.max(0, state.correctCount - 1);
+        state.streak = 0;
+        state.wrongIds.add(q.id);
+        if (!state.sessionMissed.some((item) => item.question.id === q.id)) {
+          state.sessionMissed.push({ question: q, userAnswerText: userVal || '（無回答）' });
+        }
+        showToast('「不正解」に切り替えました（復習リストに追加）');
+      } else {
+        // 不正解 -> 正解へ変更
+        state.currentIsCorrect = true;
+        state.correctCount++;
+        state.streak = state.prevStreakBeforeAnswer + 1;
+        if (state.streak > state.maxStreak) state.maxStreak = state.streak;
+        state.wrongIds.delete(q.id);
+        state.sessionMissed = state.sessionMissed.filter((item) => item.question.id !== q.id);
+        showToast('「正解」に切り替えました');
+      }
+
+      saveWrongIds();
+      updateStatsUI();
+      updateFeedbackBannerUI(state.currentIsCorrect, true);
+    }
+
+    // 和訳問題の自己採点
+    function gradeTranslation(isCorrect) {
+      const q = state.sessionQuestions[state.currentIndex];
+      const textarea = el.inputArea.querySelector('.quiz-textarea');
+      const userVal = textarea ? textarea.value.trim() : '';
+      applyResultState(q, isCorrect, userVal || '（未入力）');
+      goNextQuestion();
+    }
+
+    function goNextQuestion() {
+      if (state.currentIndex + 1 < state.sessionQuestions.length) {
+        state.currentIndex++;
+        renderQuestion();
+      } else {
+        renderResult();
+      }
+    }
+
+    /**
+     * ============================================================
+     * 結果画面描画
+     * ============================================================
+     */
+    function renderResult() {
+      showScreen('result');
+      const total = state.sessionQuestions.length;
+      const correct = state.correctCount;
+      const rate = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+      el.resRate.textContent = `${rate}%`;
+      el.resCorrect.textContent = correct;
+      el.resTotal.textContent = total;
+      el.resMaxStreak.textContent = state.maxStreak;
+
+      // 間違えた問題の復習ボタン
+      const missedCount = state.sessionMissed.length;
+      el.resWrongCount.textContent = missedCount;
+      el.btnResReview.classList.toggle('hidden', missedCount === 0);
+
+      // 今回間違えた問題一覧の描画
+      if (missedCount > 0) {
+        el.resMissedSection.classList.remove('hidden');
+        el.resMissedList.innerHTML = '';
+        state.sessionMissed.forEach(({ question, userAnswerText }) => {
+          const card = document.createElement('div');
+          card.className = 'p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2';
+
+          const ansText = Array.isArray(question.ans) ? question.ans.join(' / ') : question.ans;
+          const promptText =
+            question.type === 'vocab'
+              ? `${question.text} 【${question.target}】`
+              : question.text;
+
+          card.innerHTML = `
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-indigo-100 text-indigo-800">${escapeHtml(TYPE_LABELS[question.type])}</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-200 text-slate-700">${escapeHtml(SCENE_LABELS[question.scene])}</span>
+            </div>
+            <p class="text-sm sm:text-base font-bold text-slate-900">${escapeHtml(promptText)}</p>
+            <div class="text-xs sm:text-sm space-y-1">
+              <p class="text-rose-600"><span class="font-bold">あなたの解答：</span>${escapeHtml(userAnswerText)}</p>
+              <p class="text-emerald-700"><span class="font-bold">模範解答：</span>${escapeHtml(ansText)}</p>
+              <p class="text-slate-600"><span class="font-bold">解説：</span>${escapeHtml(question.exp)}</p>
+            </div>
+          `;
+          el.resMissedList.appendChild(card);
+        });
+      } else {
+        el.resMissedSection.classList.add('hidden');
+      }
+    }
+
+    /**
+     * ============================================================
+     * イベントリスナー登録
+     * ============================================================
+     */
+    function bindEvents() {
+      // フィルターボタン
+      document.querySelectorAll('.filter-btn-type').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.selectedType = btn.dataset.val;
+          updateFilterUI();
+        });
+      });
+
+      document.querySelectorAll('.filter-btn-scene').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.selectedScene = btn.dataset.val;
+          updateFilterUI();
+        });
+      });
+
+      document.querySelectorAll('.filter-btn-order').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.selectedOrder = btn.dataset.val;
+          updateFilterUI();
+        });
+      });
+
+      // スタート・復習・クリア
+      el.btnStartQuiz.addEventListener('click', () => startSession(false));
+      el.btnStartReview.addEventListener('click', () => startSession(true));
+      el.btnClearReview.addEventListener('click', () => {
+        state.wrongIds.clear();
+        saveWrongIds();
+        updateFilterUI();
+        showToast('復習リストをクリアしました');
+      });
+
+      // ヘッダー「設定へ戻る」
+      el.headerHomeBtn.addEventListener('click', () => {
+        updateFilterUI();
+        showScreen('start');
+      });
+
+      // クイズ操作ボタン
+      el.btnSubmit.addEventListener('click', submitCurrentQuestion);
+      el.btnNext.addEventListener('click', goNextQuestion);
+      el.btnToggleOverride.addEventListener('click', toggleVocabOverride);
+      el.btnTransCorrect.addEventListener('click', () => gradeTranslation(true));
+      el.btnTransWrong.addEventListener('click', () => gradeTranslation(false));
+
+      // 結果画面ボタン
+      el.btnResReview.addEventListener('click', () => {
+        // 今回のセッションで間違えた問題のみを出題
+        const missedQuestions = state.sessionMissed.map((m) => m.question);
+        if (missedQuestions.length === 0) return;
+        state.isReviewMode = true;
+        state.sessionQuestions =
+          state.selectedOrder === 'shuffle' ? shuffleArray(missedQuestions) : missedQuestions;
+        state.currentIndex = 0;
+        state.correctCount = 0;
+        state.streak = 0;
+        state.maxStreak = 0;
+        state.sessionMissed = [];
+        showScreen('quiz');
+        renderQuestion();
+      });
+
+      el.btnResRetry.addEventListener('click', () => startSession(state.isReviewMode));
+      el.btnResHome.addEventListener('click', () => {
+        updateFilterUI();
+        showScreen('start');
+      });
+
+      // キーボードショートカット（IME変換確定のEnterを無視する安全な実装）
+      document.addEventListener('keydown', (e) => {
+        if (el.screenQuiz.classList.contains('hidden')) return;
+        if (e.isComposing || e.keyCode === 229) return;
+        if (e.key !== 'Enter') return;
+
+        const q = state.sessionQuestions[state.currentIndex];
+        if (!q) return;
+
+        if (q.type === 'trans') {
+          // 和訳は Ctrl+Enter / Cmd+Enter で解答表示
+          if (!state.answered && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            submitCurrentQuestion();
+          }
+          return;
+        }
+
+        // prep / vocab の場合
+        if (!state.answered) {
+          // 2空欄あるprepで、1つ目の空欄にいて2つ目が空なら2つ目へ移動
+          if (q.type === 'prep' && q.ans.length > 1) {
+            const inputs = [...el.inputArea.querySelectorAll('.quiz-input')];
+            const activeIdx = inputs.indexOf(document.activeElement);
+            if (activeIdx === 0 && inputs[1] && inputs[1].value.trim() === '') {
+              e.preventDefault();
+              inputs[1].focus();
+              return;
+            }
+          }
+          e.preventDefault();
+          submitCurrentQuestion();
+        } else {
+          // 判定後はEnterで次の問題へ
+          e.preventDefault();
+          goNextQuestion();
+        }
+      });
+    }
+
+    // 初期化
+    window.addEventListener('DOMContentLoaded', () => {
+      loadWrongIds();
+      bindEvents();
+      updateFilterUI();
+      showScreen('start');
+    });
+  </script>
+</body>
+</html>
